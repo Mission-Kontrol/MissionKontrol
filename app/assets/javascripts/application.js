@@ -9,3 +9,5 @@
 //= require bootstrap-sprockets
 //= require metisMenu/jquery.metisMenu.js
 //= require inspinia.js
+//= require components/tables
+//= require_tree .
