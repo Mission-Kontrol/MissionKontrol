@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    image: postgres:alpine
+    ports:
+      - '15432:5432'
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  web:
+    build: .
+    command: bash
+    volumes:
+      - .:/app
+    volumes_from:
+      - bundle
+    ports:
+      - "3000:3000"
+    environment:
+      BUNDLE_SILENCE_ROOT_WARNING: "true"
+      HISTFILE: /app/.bash_history
+      KUWINDA_DATABASE_HOST: db
+      KUWINDA_DATABASE_USER: postgres
+      KUWINDA_DATABASE_PASSWORD: postgres
+    depends_on:
+      - db
+
+  bundle:
+    image: busybox
+    volumes:
+      - /bundle
