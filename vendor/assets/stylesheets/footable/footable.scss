@@ -1,0 +1,210 @@
+//colors
+$color_gallery_approx: #eee;
+$color_suva_gray_approx: #888888;
+$color_black_haze_approx: #f7f7f7;
+
+//fonts
+$font_0: footable;
+
+//urls
+$url_0: url(fonts/footable.eot);
+$url_1: url(fonts/footable.eot?#iefix);
+$url_2: url(fonts/footable.woff);
+$url_3: url(fonts/footable.ttf);
+$url_4: url(fonts/footable.svg);
+
+@font-face {
+	font-family: $font_0;
+	src: $url_0;
+	src: $url_1 format('embedded-opentype'), $url_2 format('woff'), $url_3 format('truetype'), $url_4 format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@media screen and(-webkit-min-device-pixel-ratio: 0) {
+	@font-face {
+		font-family: $font_0;
+		src: $url_4 format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+}
+.footable {
+	width: 100%;
+
+	&.breakpoint {
+		> tbody > tr {
+			> td {
+				&.footable-cell-detail {
+					background: $color_gallery_approx;
+					border-top: none;
+				}
+				> span.footable-toggle {
+					display: inline-block;
+					font-family: $font_0;
+					speak: none;
+					font-style: normal;
+					font-weight: normal;
+					font-variant: normal;
+					text-transform: none;
+					padding-right: 5px;
+					font-size: 14px;
+					color: $color_suva_gray_approx;
+					&:before {
+						content: "\e000";
+					}
+				}
+			}
+			&.footable-detail-show > td {
+				border-bottom: none;
+				> span.footable-toggle:before {
+					content: "\e001";
+				}
+			}
+			&:hover:not(.footable-row-detail) {
+				cursor: pointer;
+			}
+		}
+		&.toggle-circle > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e005";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e004";
+			}
+		}
+		&.toggle-circle-filled > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e003";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e002";
+			}
+		}
+		&.toggle-square > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e007";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e006";
+			}
+		}
+		&.toggle-square-filled > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e009";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e008";
+			}
+		}
+		&.toggle-arrow > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e00f";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e011";
+			}
+		}
+		&.toggle-arrow-small > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e013";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e015";
+			}
+		}
+		&.toggle-arrow-circle > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e01b";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e01d";
+			}
+		}
+		&.toggle-arrow-circle-filled > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e00b";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e00d";
+			}
+		}
+		&.toggle-arrow-tiny > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e01f";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e021";
+			}
+		}
+		&.toggle-arrow-alt > tbody > tr {
+			&.footable-detail-show > td > span.footable-toggle:before {
+				content: "\e017";
+			}
+			> td > span.footable-toggle:before {
+				content: "\e019";
+			}
+		}
+		&.toggle-medium > tbody > tr > td > span.footable-toggle {
+			font-size: 18px;
+		}
+		&.toggle-large > tbody > tr > td > span.footable-toggle {
+			font-size: 24px;
+		}
+	}
+	> thead > tr > th {
+		//Instead of the line below you could use @include user-select($select)
+		user-select: none;
+		&.footable-sortable:hover {
+			cursor: pointer;
+		}
+		&.footable-sorted > span.footable-sort-indicator:before {
+			content: "\e013";
+		}
+		&.footable-sorted-desc > span.footable-sort-indicator:before {
+			content: "\e012";
+		}
+		> span.footable-sort-indicator {
+			display: inline-block;
+			font-family: $font_0;
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			padding-left: 5px;
+			&:before {
+				content: "\e022";
+			}
+		}
+	}
+	> tfoot .pagination {
+		margin: 0;
+	}
+	&.no-paging .hide-if-no-paging {
+		display: none;
+	}
+}
+.footable-row-detail-inner {
+	display: table;
+}
+.footable-row-detail-row {
+	display: table-row;
+	line-height: 1.5em;
+}
+.footable-row-detail-group {
+	display: block;
+	line-height: 2em;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.footable-row-detail-name {
+	display: table-cell;
+	font-weight: bold;
+	padding-right: 0.5em;
+}
+.footable-row-detail-value {
+	display: table-cell;
+}
+.footable-odd {
+	background-color: $color_black_haze_approx;
+}

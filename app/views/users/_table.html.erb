@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5>Users</h5>
+
+        <div class="ibox-tools">
+          <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+          <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search in table">
+
+        <table class="footable table table-stripped default footable-loaded" data-page-size="2" data-filter=#filter>
+          <thead>
+            <tr>
+              <th class="footable-visible footable-first-column footable-sortable">
+                Email
+                <span class="footable-sort-indicator" />
+              </th>
+              <th class="footable-visible footable-sortable">
+                Sign in count
+                <span class="footable-sort-indicator" />
+              </th>
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+                Current sign in at
+                <span class="footable-sort-indicator" />
+              </th>
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+                Last sign in at
+                <span class="footable-sort-indicator" />
+              </th>
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+                Created at
+                <span class="footable-sort-indicator" />
+              </th>
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+                Updated at
+                <span class="footable-sort-indicator" />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.each do |user| %>
+              <tr class="gradeX">
+                <td>
+                  <%= user.email %>
+                </td>
+                <td>
+                  <%= user.sign_in_count %>
+                </td>
+                <td>
+                  <%= user.current_sign_in_at %>
+                </td>
+                <td class="center">
+                  <%= user.last_sign_in_at %>
+                </td>
+                <td class="center">
+                  <%= user.created_at %>
+                </td>
+                <td class="center">
+                  <%= user.updated_at %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5">
+                <ul class="pagination pull-right"></ul>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<% content_for :javascript do %>
+
+  <script type="text/javascript">
+    $(function() {
+
+      $('.footable').footable();
+      $('.footable2').footable();
+
+
+    });
+  </script>
+
+<% end %>
