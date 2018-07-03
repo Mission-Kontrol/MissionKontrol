@@ -22,6 +22,11 @@ services:
       KUWINDA_DATABASE_HOST: db
       KUWINDA_DATABASE_USER: postgres
       KUWINDA_DATABASE_PASSWORD: postgres
+      CLIENT_DATABASE_HOST: db
+      CLIENT_DATABASE_USER: postgres
+      CLIENT_DATABASE_PASSWORD: postgres
+      CLIENT_DATABASE_DEVELOPMENT: client_database_development
+      CLIENT_DATABASE_URL: postgres://fmubmupymxawnt:278d5db10a01380f9437b9ad2e3ba7bc94952f3ac6530f1e470e69e61eef9863@ec2-50-19-86-17.compute-1.amazonaws.com:5432/d5aftrkne5t1cm
     depends_on:
       - db
 

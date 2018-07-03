@@ -19,3 +19,30 @@ bundle exec rails generate devise User
 bundle exec rails db:migrate
 bundle exec rails c
 exit
+bundle exec rails generate rspec:install
+bundle exec rails s
+bundle install
+bundle install rails s
+bundle exec rails s
+bundle install
+bundle install
+bundle install
+bundle install
+bundle exec rails s
+bundle install
+bundle exec rails s
+bundle exec rails s
+bundle exec rake db:seed
+bundle exec rails s
+bundle exec rails s
+bundle exec rails s
+bundle install
+bundle exec rails s
+bundle install
+bundle exec rails s
+bundle exec rails s
+bundle exec rails s
+exit
+bundle exec rails c
+bundle exec rails c
+exit
