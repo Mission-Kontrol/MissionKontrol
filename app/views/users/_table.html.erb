@@ -14,34 +14,26 @@
         </div>
       </div>
       <div class="ibox-content">
-        <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search in table">
-
-        <table class="footable table table-stripped default footable-loaded footable-table" data-page-size="2" data-filter=#filter data-sorting="true">
+        <table class="footable table table-stripped default footable-loaded footable-table" data-page-size="2" data-filter=#filter data-sorting="true" data-filtering="true">
           <thead>
             <tr>
               <th class="footable-visible footable-first-column footable-sortable">
                 Email
-                <span class="footable-sort-indicator" />
               </th>
               <th class="footable-visible footable-sortable">
                 Sign in count
-                <span class="footable-sort-indicator" />
               </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
                 Current sign in at
-                <span class="footable-sort-indicator" />
               </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
                 Last sign in at
-                <span class="footable-sort-indicator" />
               </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
                 Created at
-                <span class="footable-sort-indicator" />
               </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet">
+              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
                 Updated at
-                <span class="footable-sort-indicator" />
               </th>
             </tr>
           </thead>
