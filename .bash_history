@@ -46,3 +46,43 @@ exit
 bundle exec rails c
 bundle exec rails c
 exit
+bundle exec rspec
+bundle install
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rails c
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rails g migration RenameUsersTable
+bundle exec rails g migration RenameUsersTable
+bundle exec rails db:migrate
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rspec
+bundle exec rails s
+bundle exec rspec
+bundle exec rspec
+bundle exec rails s
+rake routes
+bundle exec rake routes
+bundle exec rails s
+bundle exec rspec
+exit

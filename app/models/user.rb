@@ -1,2 +1,2 @@
-class User < ClientDbBase
+class User < ClientRecord
 end
