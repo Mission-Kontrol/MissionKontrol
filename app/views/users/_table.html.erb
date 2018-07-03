@@ -41,7 +41,7 @@
             <% users.each do |user| %>
               <tr class="gradeX">
                 <td>
-                  <%= user.email %>
+                  <%= link_to user.email, user_path(user) %>
                 </td>
                 <td>
                   <%= user.sign_in_count %>

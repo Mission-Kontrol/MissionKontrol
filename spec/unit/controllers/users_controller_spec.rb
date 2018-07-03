@@ -1,9 +1,20 @@
 require 'rails_helper'
 
 describe UsersController, type: :controller do
-  subject { get :index }
+  context '#index' do
+    subject { get :index }
 
-  describe '#index' do
+    it 'will render the page' do
+      expect(response.status).to eq(200)
+    end
+  end
+
+  context '#show' do
+    subject { get :show, params: params }
+
+    let(:user) { create(:user) }
+    let(:params) { { id: user.id } }
+
     it 'will render the page' do
       expect(response.status).to eq(200)
     end

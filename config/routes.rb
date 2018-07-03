@@ -5,5 +5,5 @@ Rails.application.routes.draw do
 
   resources :admin_users, only: :index
 
-  resources :users, only: :index
+  resources :users, only: [:index, :show]
 end
