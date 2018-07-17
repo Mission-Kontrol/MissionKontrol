@@ -1,0 +1,11 @@
+sailing:
+  id: 1
+  day: Tuesday
+  user_id: 1
+
+snowboarding:
+  id: 2
+  day: Friday
+  user_id: 3
+
+# ["id", "day", "area", "level", "plan", "space", "meeting", "created_at", "updated_at", "user_id"]

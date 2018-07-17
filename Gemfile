@@ -45,7 +45,7 @@ group :test do
   gem 'rspec-collection_matchers'
   gem 'rspec-its', '~> 1.2.0'
   gem 'rspec-rails', '~> 3.7.2'
-  gem 'rubocop', require: false
+  gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'vcr', '~> 4.0.0'
   gem 'webmock', '~> 3.3.0'

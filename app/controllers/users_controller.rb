@@ -50,4 +50,12 @@ class UsersController < ApplicationController
       i.kind == 'note'
     end
   end
+
+  def table_connections
+    Kuwinda::Presenter::ListTableConnections.new(ClientRecord, 'events', @user.id).call
+  end
+
+  def permitted_params
+    params.require(:user).permit(:id)
+  end
 end
