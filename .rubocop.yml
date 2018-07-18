@@ -1,0 +1,8 @@
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'config/initializers/devise.rb'
+    - 'db/migrate/*'
+
+Documentation:
+  Enabled: false

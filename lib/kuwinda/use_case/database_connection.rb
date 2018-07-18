@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Kuwinda
   module UseCase
     class DatabaseConnection
-      def initialize(gateway: nil)
-        @gateway = gateway
+      def initialize
+        @gateway = database_connection_gateway
       end
 
       def execute
@@ -13,7 +15,7 @@ module Kuwinda
 
       attr_reader :gateway
 
-      def gateway
+      def database_connection_gateway
         Kuwinda::Gateway::DatabaseConnectionGateway.new
       end
     end

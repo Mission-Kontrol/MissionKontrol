@@ -1,13 +1,12 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
-  def is_active_controller(controller_name, class_name = nil)
-    if params[:controller] == controller_name
-     class_name == nil ? "active" : class_name
-    else
-       nil
-    end
+  def active_controller?(controller_name, class_name = nil)
+    return nil unless params[:controller] == controller_name
+    class_name.nil? ? 'active' : class_name
   end
 
-  def is_active_action(action_name)
-    params[:action] == action_name ? "active" : nil
+  def active_action?(action_name)
+    params[:action] == action_name ? 'active' : nil
   end
 end

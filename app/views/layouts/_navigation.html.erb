@@ -30,10 +30,10 @@
           KW
         </div>
       </li>
-      <li class="<%= is_active_controller('dashboards') %>">
+      <li class="<%= active_controller?('dashboards') %>">
         <a href=""><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Tables</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('dashboards', 'in') %>">
-          <li class="<%= is_active_action('dashboard_1') %>">
+        <ul class="nav nav-second-level collapse <%= active_controller?('dashboards', 'in') %>">
+          <li class="<%= active_action?('dashboard_1') %>">
             <%= link_to "Users", users_path %>
           </li>
 
