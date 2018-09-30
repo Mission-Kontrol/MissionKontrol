@@ -51,9 +51,11 @@ class UsersController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/LineLength
   def table_connections
     Kuwinda::Presenter::ListTableConnections.new(ClientRecord, 'events', @user.id).call
   end
+  # rubocop:enable Metrics/LineLength
 
   def permitted_params
     params.require(:user).permit(:id)

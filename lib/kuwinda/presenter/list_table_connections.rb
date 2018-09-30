@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Kuwinda
   module Presenter
     class ListTableConnections
@@ -8,9 +10,10 @@ module Kuwinda
       end
 
       def call
-        query = database.connection.exec_query("SELECT * FROM events WHERE user_id = #{user_id}")
-        key = query.columns
-        values = query.rows
+        query_string = "SELECT * FROM events WHERE user_id = #{user_id}"
+        response = database.connection.exec_query(query_string)
+        key = response.columns
+        values = response.rows
 
         @objects = []
 
