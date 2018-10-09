@@ -8,6 +8,7 @@
 //= require jquery/jquery-3.1.1.min.js
 //= require bootstrap-sprockets
 //= require metisMenu/jquery.metisMenu.js
-//= require inspinia.js
-//= require components/tables
+//= require slimscroll/jquery.slimscroll.min.js
+//= require flot/jquery.flot.js
+//= require flot/jquery.flot.spline.js
 //= require_tree .
