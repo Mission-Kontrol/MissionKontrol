@@ -1,6 +1,11 @@
 $(document).ready(function() {
   loadFlotChart();
+  loadFooTable();
 });
+
+var loadFooTable = function() {
+  $('.footable').footable();
+}
 
 var loadFlotChart = function() {
   var data1 = [

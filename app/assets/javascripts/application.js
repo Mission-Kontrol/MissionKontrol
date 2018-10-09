@@ -11,4 +11,5 @@
 //= require slimscroll/jquery.slimscroll.min.js
 //= require flot/jquery.flot.js
 //= require flot/jquery.flot.spline.js
+//= require footable/footable.all.min.js
 //= require_tree .
