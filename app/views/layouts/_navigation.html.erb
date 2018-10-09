@@ -49,18 +49,21 @@
         <% end %>
       </li>
 
-      <li class="<%= active_controller?('users') %>">
-        <%= link_to users_path do %>
-          <i class="fa fa-user"></i>
-          <span class="nav-label" data-i18n="nav.layouts">Users</span>
-        <% end %>
-      </li>
-
-      <li class="<%= active_controller?('companies') %>">
-        <%= link_to companies_path do %>
+      <li class="<%= active_controller?('users') || active_controller?('companies') %>">
+        <a href="">
           <i class="fa fa-users"></i>
-          <span class="nav-label" data-i18n="nav.layouts">Companies</span>
-        <% end %>
+          <span class="nav-label" data-i18n="nav.dashboard">Customers</span> <span class="fa arrow"></span>
+        </a>
+
+        <ul class="nav nav-second-level collapse">
+          <li class="">
+            <%= link_to "Users", users_path %>
+          </li>
+
+          <li class="">
+            <%= link_to "Companies", companies_path %>
+          </li>
+        </ul>
       </li>
 
       <li class="<%= active_controller?('work_lists') %>">
@@ -69,14 +72,12 @@
           <span class="nav-label" data-i18n="nav.dashboard">Worklists</span> <span class="fa arrow"></span>
         </a>
 
-        <ul class="nav nav-second-level collapse <%= active_controller?('work_lists', 'in') %>">
-          <li class="">
-            <%= link_to "work list 1", "#" %>
-          </li>
-
-          <li class="">
-            <%= link_to "work list 2", "#" %>
-          </li>
+        <ul class="nav nav-second-level collapse">
+          <% [ 'Accounts without demos', 'End of trial calls', 'Slipping away' ].each_with_index do |i, index| %>
+            <li class="">
+              <%= link_to "#{i}", work_list_path(index + 1) %>
+            </li>
+          <% end %>
         </ul>
       </li>
 
