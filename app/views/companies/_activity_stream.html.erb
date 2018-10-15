@@ -1,0 +1,30 @@
+<div class="activity-stream">
+  <% 4.times do %>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="stream">
+            <div class="stream-badge">
+                <i class="fa fa-pencil"></i>
+            </div>
+            
+            <div class="stream-panel">
+                <div class="stream-info">
+                    <a href="#">
+                        <img src="<%= image_path('a2.jpg') %>" />
+                        <span>Johnny Silvertongue</span>
+                    </a>
+                </div>
+
+                Met with Jane, good progress she’s agreed to look at a 5 year contract.
+
+                <div class="stream-info">
+                  <br>
+                  <p><span class="date">5m ago</span></p>
+                  <p>Jane Mandon</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,50 @@
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+    <h5>Activity history</h5>
+  </div>
+
+  <div class="ibox-content">
+    <div class="tabs-container">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab-1">All</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-2">Calls</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-3">Meetings</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-4">Notes</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+          <div class="panel-body">
+            <%= render 'shared/demo_activity_stream' %>
+
+            <button type="button" class="btn btn-block btn-primary margin-top-20">Show more</button>
+          </div>
+        </div>
+
+        <div id="tab-2" class="tab-pane">
+          <div class="panel-body">
+            <%= render 'shared/demo_activity_stream' %>
+
+            <button type="button" class="btn btn-block btn-primary margin-top-20">Show more</button>
+          </div>
+        </div>
+
+        <div id="tab-3" class="tab-pane">
+          <div class="panel-body">
+            <%= render 'activity_stream' %>
+
+            <button type="button" class="btn btn-block btn-primary margin-top-20">Show more</button>
+          </div>
+        </div>
+
+        <div id="tab-4" class="tab-pane">
+          <div class="panel-body">
+            <%= render 'shared/demo_activity_stream' %>
+
+            <button type="button" class="btn btn-block btn-primary margin-top-20">Show more</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
