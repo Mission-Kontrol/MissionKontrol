@@ -25,4 +25,17 @@ RSpec.configure do |config|
     ActionMailer::Base.deliveries.clear
     I18n.locale = :en
   end
+
+  config.include FactoryBot::Syntax::Methods
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 end
