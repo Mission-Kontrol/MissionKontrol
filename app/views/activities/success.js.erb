@@ -1,0 +1,3 @@
+$(".activity-stream").prepend("<%= j render @activity %>");
+toastr.success('Activity was successfully created.');
+$('textarea[name="activity[content]"').val("");
