@@ -1,0 +1,42 @@
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+    <h5>Companies</h5>
+  </div>
+
+  <div class="ibox-content">
+    <input type="text" class="form-control input-sm m-b-xs" id="filter"
+    placeholder="Search in table">
+
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>URL</th>
+          <th data-hide="phone,tablet">Industry</th>
+          <th data-hide="phone,tablet">Phone</th>
+          <th data-hide="phone,tablet">Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @companies.each do |company| %>
+          <tr class="">
+            <td><%= link_to company.name, company_path(company) %></td>
+            <td><%= company.website_url %></td>
+            <td><%= company.industries %></td>
+            <td class="center"><%= company.phone_number %></td>
+            <td class="center"><%= company.status %></td>
+          </tr>
+        <% end %>
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td colspan="5">
+            <ul class="pagination pull-right"></ul>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
