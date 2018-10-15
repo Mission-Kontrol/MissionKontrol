@@ -12,9 +12,11 @@ Rails.application.routes.draw do
 
   resources :admin_users, only: :index
   resources :users, only: %i[index show]
-  resources :companies, only: %i[index]
+  resources :companies, only: %i[index show]
   resources :work_lists, only: %i[index show]
   resources :reports, only: %i[index]
 
   get 'dashboard', to: 'dashboard#show'
+
+  resources :activities, only: :create
 end
