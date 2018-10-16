@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Activity < ApplicationRecord
+  KINDS = %w(note meeting call)
   validates :content, presence: true
-  validates :kind, presence: true
+  validates :kind, presence: true, inclusion: { in: KINDS }
   validates :user_id, presence: true
 
   class << self

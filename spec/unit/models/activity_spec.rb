@@ -43,6 +43,16 @@ describe Activity do
     expect(activity.errors.keys).to include(:kind)
   end
 
+  it 'is invalid without a correct activity kind' do
+    activity = build(:activity)
+
+    activity.kind = "incorrectactivity"
+
+    expect(activity).to_not be_valid
+    expect(activity.errors.keys).to include(:kind)
+    expect(activity.errors.full_messages).to include("Kind is not included in the list")
+  end
+
   it 'is invalid without a user_id' do
     activity = build(:activity)
 

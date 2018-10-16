@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-sm-3 col-sm-offset-6">
         <div class="form-group">
-          <%= form.select(:kind, ["note", "meeting", "call"].map { |i| [i, i] }, { }, { class: "form-control" }) %>
+          <%= form.select(:kind, Activity::KINDS.map { |i| [i, i] }, { }, { class: "form-control" }) %>
         </div>
       </div>
 
