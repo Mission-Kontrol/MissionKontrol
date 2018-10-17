@@ -13,51 +13,50 @@
       </ul>
 
       <div class="tab-content">
-        <div id="tab-1" class="tab-pane active">
+        <div id="tab-1" class="tab-pane active all-activities-tab">
           <div class="panel-body">
             <%= render 'activities/form', activity: @activity %>
 
             <% if @activities.all.size > 0 %>
               <%= render 'activity_stream', activities: @activities.all %>
             <% else %>
-              <p>No activity has been recored for this user.</p>
+              <p class="default-message">No activity has been recored for this user.</p>
             <% end %>
-
 
             <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
           </div>
         </div>
 
-        <div id="tab-2" class="tab-pane">
+        <div id="tab-2" class="tab-pane activity-tab-for-calls">
           <div class="panel-body">
             <% if @activities.calls.size > 0 %>
               <%= render 'activity_stream', activities: @activities.calls %>
             <% else %>
-              <p>No calls has been recored for this user.</p>
+              <p class="default-message">No calls has been recored for this user.</p>
             <% end %>
 
             <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
           </div>
         </div>
 
-        <div id="tab-3" class="tab-pane">
+        <div id="tab-3" class="tab-pane activity-tab-for-meetings">
           <div class="panel-body">
             <% if @activities.meetings.size > 0 %>
               <%= render 'activity_stream', activities: @activities.meetings %>
             <% else %>
-              <p>No meetings has been recored for this user.</p>
+              <p class="default-message">No meetings has been recored for this user.</p>
             <% end %>
 
             <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
           </div>
         </div>
 
-        <div id="tab-4" class="tab-pane">
+        <div id="tab-4" class="tab-pane activity-tab-for-notes">
           <div class="panel-body">
             <% if @activities.notes.size > 0 %>
               <%= render 'activity_stream', activities: @activities.notes %>
             <% else %>
-              <p>No notes has been recored for this user.</p>
+              <p class="default-message">No notes has been recored for this user.</p>
             <% end %>
 
             <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>

@@ -1,3 +1,20 @@
-$(".activity-stream").prepend("<%= j render @activity %>");
+$(".all-activities-tab .activity-stream").prepend("<%= j render @activity %>");
+$('.all-activities-tab .default-message').remove();
+
+if ("<%= @activity.kind %>" === "note") {
+  $(".activity-tab-for-notes .activity-stream").prepend("<%= j render @activity %>");
+  $('.activity-tab-for-notes .default-message').remove();
+}
+
+if ("<%= @activity.kind %>" === "call") {
+  $(".activity-tab-for-calls .activity-stream").prepend("<%= j render @activity %>");
+  $('.activity-tab-for-calls .default-message').remove();
+}
+
+if ("<%= @activity.kind %>" === "meeting") {
+  $(".activity-tab-for-meetings .activity-stream").prepend("<%= j render @activity %>");
+  $('.activity-tab-for-meetings .default-message').remove();
+}
+
 toastr.success('Activity was successfully created.');
 $('textarea[name="activity[content]"').val("");
