@@ -29,12 +29,14 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner[:active_record,
+                    { connection: :test }].strategy = :transaction
+    DatabaseCleaner[:active_record,
+                    { connection: :test }].clean_with(:truncation)
   end
 
   config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
+    DatabaseCleaner[:active_record, { connection: :test }].cleaning do
       example.run
     end
   end
