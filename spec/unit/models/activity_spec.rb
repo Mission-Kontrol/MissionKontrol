@@ -46,11 +46,13 @@ describe Activity do
   it 'is invalid without a correct activity kind' do
     activity = build(:activity)
 
-    activity.kind = "incorrectactivity"
+    activity.kind = 'incorrectactivity'
+    activity.valid?
+    errors = activity.errors.full_messages
 
     expect(activity).to_not be_valid
     expect(activity.errors.keys).to include(:kind)
-    expect(activity.errors.full_messages).to include("Kind is not included in the list")
+    expect(errors).to include('Kind is not included in the list')
   end
 
   it 'is invalid without a user_id' do
@@ -64,16 +66,12 @@ describe Activity do
 
   describe '.find_all_by_user_id' do
     it 'finds all activities for a given user by their user id' do
-      user = create(:user)
-      user1 = create(:user)
-      user2 = create(:user)
+      create_list(:activity, 5, user_id: 1)
+      create(:activity, user_id: 2)
+      create(:activity, user_id: 3)
 
-      create_list(:activity, 5, user_id: user.id)
-      create(:activity, user_id: user1.id)
-      create(:activity, user_id: user2.id)
-
-      actual = described_class.find_all_by_user_id(user_id: user.id)
-      expected = [user.id]
+      actual = described_class.find_all_by_user_id(user_id: 1)
+      expected = [1]
 
       expect(actual.map(&:user_id).uniq).to eq(expected)
     end
