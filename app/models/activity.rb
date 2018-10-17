@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Activity < ApplicationRecord
-  KINDS = %w(note meeting call)
+  KINDS = %w[note meeting call].freeze
   validates :content, presence: true
   validates :kind, presence: true, inclusion: { in: KINDS }
   validates :user_id, presence: true
