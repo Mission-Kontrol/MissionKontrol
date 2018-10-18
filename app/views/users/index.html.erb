@@ -19,5 +19,20 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-  <%= render 'table', users: @users %>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Users</h5>
+        </div>
+
+        <div class="ibox-content">
+          <input type="text" class="form-control input-sm m-b-xs" id="filter"
+          placeholder="Search in table">
+
+          <%= render 'table' %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
