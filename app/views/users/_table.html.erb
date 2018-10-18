@@ -1,75 +1,33 @@
-<div class="row">
-  <div class="col-lg-12">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <h5>Users</h5>
+<table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Sign in count</th>
+      <th data-hide="phone,tablet">Current sign in at</th>
+      <th data-hide="phone,tablet">Last sign in at</th>
+      <th data-hide="phone,tablet">Created at</th>
+      <th data-hide="phone,tablet">Updated at</th>
+    </tr>
+  </thead>
 
-        <div class="ibox-tools">
-          <a class="collapse-link">
-            <i class="fa fa-chevron-up"></i>
-          </a>
-          <a class="close-link">
-            <i class="fa fa-times"></i>
-          </a>
-        </div>
-      </div>
-      <div class="ibox-content">
-        <table class="footable table table-stripped default footable-loaded footable-table" data-page-size="2" data-filter=#filter data-sorting="true" data-filtering="true">
-          <thead>
-            <tr>
-              <th class="footable-visible footable-first-column footable-sortable">
-                Email
-              </th>
-              <th class="footable-visible footable-sortable">
-                Sign in count
-              </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
-                Current sign in at
-              </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
-                Last sign in at
-              </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
-                Created at
-              </th>
-              <th class="footable-visible footable-sortable" data-hide="phone,tablet" data-type="date">
-                Updated at
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <% users.each do |user| %>
-            <tr class="gradeX">
-              <td>
-                <%= link_to user.email, user_path(user) %>
-              </td>
-              <td>
-                <%= user.sign_in_count %>
-              </td>
-              <td>
-                <%= user.current_sign_in_at %>
-              </td>
-              <td class="center">
-                <%= user.last_sign_in_at %>
-              </td>
-              <td class="center">
-                <%= user.created_at %>
-              </td>
-              <td class="center">
-                <%= user.updated_at %>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="5">
-                <ul class="pagination pull-right"></ul>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr class="">
+        <td><%= link_to user.email, user_path(user) %></td>
+        <td><%= user.sign_in_count %></td>
+        <td><%= user.current_sign_in_at %></td>
+        <td><%= user.last_sign_in_at %></td>
+        <td><%= user.created_at %></td>
+        <td><%= user.updated_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <ul class="pagination pull-right"></ul>
+      </td>
+    </tr>
+  </tfoot>
+</table>
