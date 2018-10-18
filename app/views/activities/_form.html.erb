@@ -1,11 +1,12 @@
 <div>
-  <%= form_with(model: activity, local: false, data: { 'activity-form' => true }) do |form| %>
+  <%= form_with(model: @activity, local: false, data: { 'activity-form' => true }) do |form| %>
     <div class="form-group">
       <%= form.text_area :content, class: "form-control" %>
     </div>
 
     <div class="form-group">
-      <%= form.hidden_field :user_id, id: :activity_user_id, value: params[:id]  %>
+      <%= form.hidden_field :feedable_type, id: :feedable_type, value: feedable_type  %>
+      <%= form.hidden_field :feedable_id, id: :feedable_id, value: feedable_id  %>
     </div>
 
     <div class="row">
