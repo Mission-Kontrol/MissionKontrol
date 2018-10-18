@@ -34,7 +34,7 @@
     </div>
 
     <div class="col-lg-8">
-      <%= render 'activity_history', activity: @activity %>
+      <%= render 'shared/activity_history', feedable_type: "user", feedable_id: params[:id] %>
     </div>
   </div>
 </div>
