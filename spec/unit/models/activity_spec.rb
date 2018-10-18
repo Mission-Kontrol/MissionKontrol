@@ -5,8 +5,12 @@ require 'rails_helper'
 describe Activity do
   let(:an_activity) { described_class.new }
 
-  it 'responds to user_id' do
-    expect(an_activity).to respond_to(:user_id)
+  it 'responds to feedable_id' do
+    expect(an_activity).to respond_to(:feedable_id)
+  end
+
+  it 'responds to feedable_type' do
+    expect(an_activity).to respond_to(:feedable_type)
   end
 
   it 'responds to content' do
@@ -43,6 +47,16 @@ describe Activity do
     expect(activity.errors.keys).to include(:kind)
   end
 
+  Activity::KINDS.each do |kind|
+    it "is valid with a known activity kind - #{kind}" do
+      activity = build(:activity, :user)
+
+      activity.kind = kind
+
+      expect(activity).to be_valid
+    end
+  end
+
   it 'is invalid without a correct activity kind' do
     activity = build(:activity)
 
@@ -55,25 +69,49 @@ describe Activity do
     expect(errors).to include('Kind is not included in the list')
   end
 
-  it 'is invalid without a user_id' do
+  it 'is invalid without a feedable_id' do
     activity = build(:activity)
 
-    activity.user_id = nil
+    activity.feedable_id = nil
 
     expect(activity).to_not be_valid
-    expect(activity.errors.keys).to include(:user_id)
+    expect(activity.errors.keys).to include(:feedable_id)
   end
 
-  describe '.find_all_by_user_id' do
-    it 'finds all activities for a given user by their user id' do
-      create_list(:activity, 5, user_id: 1)
-      create(:activity, user_id: 2)
-      create(:activity, user_id: 3)
+  it 'is invalid without a feedable_type' do
+    activity = build(:activity)
 
-      actual = described_class.find_all_by_user_id(user_id: 1)
-      expected = [1]
+    activity.feedable_type = nil
 
-      expect(actual.map(&:user_id).uniq).to eq(expected)
+    expect(activity).to_not be_valid
+    expect(activity.errors.keys).to include(:feedable_type)
+  end
+
+  it 'is invalid without a correct feedable type' do
+    activity = build(:activity)
+
+    activity.feedable_type = 'incorrect_feedable_type'
+    activity.valid?
+    errors = activity.errors.full_messages
+
+    expect(activity).to_not be_valid
+    expect(activity.errors.keys).to include(:feedable_type)
+    expect(errors).to include('Feedable type is not included in the list')
+  end
+
+  #
+  # TODO: this needs a user or company record to exist, I am trying to stay away
+  # from creating or modifying records on the target DB as we don't own it and
+  # I feel it may be the wrong way to go about testing this usecase, discuss
+  # with team and come back to this
+  Activity::FEEDABLE_TYPES.each do |type|
+    xit "is valid with a known feedable_type - #{type}" do
+      activity = build(:activity)
+
+      activity.feedable_id = 1
+      activity.feedable_type = type
+
+      expect(activity).to be_valid
     end
   end
 end
