@@ -12,3 +12,14 @@
  *= require site
  *= require_self
  */
+
+
+/* inspinia theme overides */
+.navbar.navbar-static-top {
+  background-color: inherit;
+}
+
+/* helper class to help find elements by showing a border around it */
+.showme {
+  border: 1px solid red;
+}

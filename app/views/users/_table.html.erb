@@ -39,26 +39,26 @@
           </thead>
           <tbody>
             <% users.each do |user| %>
-              <tr class="gradeX">
-                <td>
-                  <%= link_to user.email, user_path(user) %>
-                </td>
-                <td>
-                  <%= user.sign_in_count %>
-                </td>
-                <td>
-                  <%= user.current_sign_in_at %>
-                </td>
-                <td class="center">
-                  <%= user.last_sign_in_at %>
-                </td>
-                <td class="center">
-                  <%= user.created_at %>
-                </td>
-                <td class="center">
-                  <%= user.updated_at %>
-                </td>
-              </tr>
+            <tr class="gradeX">
+              <td>
+                <%= link_to user.email, user_path(user) %>
+              </td>
+              <td>
+                <%= user.sign_in_count %>
+              </td>
+              <td>
+                <%= user.current_sign_in_at %>
+              </td>
+              <td class="center">
+                <%= user.last_sign_in_at %>
+              </td>
+              <td class="center">
+                <%= user.created_at %>
+              </td>
+              <td class="center">
+                <%= user.updated_at %>
+              </td>
+            </tr>
             <% end %>
           </tbody>
           <tfoot>
@@ -73,19 +73,3 @@
     </div>
   </div>
 </div>
-</div>
-
-
-<% content_for :javascript do %>
-
-  <script type="text/javascript">
-    $(function() {
-
-      $('.footable').footable();
-      $('.footable2').footable();
-
-
-    });
-  </script>
-
-<% end %>

@@ -12,3 +12,6 @@
 !/log/.keep
 /tmp
 .bash_history
+
+.ruby-version
+.byebug_history
