@@ -8,18 +8,32 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+
+ *= require toastr/toastr.min.css
  *= require font-awesome
  *= require site
  *= require_self
  */
 
 
-/* inspinia theme overides */
+/*
+  inspinia theme overides
+*/
 .navbar.navbar-static-top {
   background-color: inherit;
 }
 
-/* helper class to help find elements by showing a border around it */
+/*
+  helper classes
+*/
 .showme {
   border: 1px solid red;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.width-100 {
+  width: 100%;
 }

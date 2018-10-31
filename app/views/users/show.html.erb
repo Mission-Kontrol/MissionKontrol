@@ -1,0 +1,40 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-xs-3 col-sm-2 col-lg-1">
+    <img alt="image" class="img-circle" src="/assets/a8-19ef84b7d694fe0b264a03cf5237e837311e869c0e3779e50e976339749844bb.jpg" width="100%" style="margin-top: 10px">
+  </div>
+
+  <div class="col-xs-9 col-sm-10 col-lg-7">
+    <h2>Jane Mandon</h2>
+
+    <p>CEO - eCorp</p>
+  </div>
+
+  <div class="col-xs-12 col-sm-12 col-lg-4">
+    <form style="margin-top: 20px" class="">
+      <div class="row">
+        <div class="col-lg-4">
+          <label class="form-control">Status</label>
+        </div>
+
+        <div class="col-lg-8">
+          <select class="form-control" name="">
+            <option value="">Qualified</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-lg-4">
+      <%= render 'user_summary' %>
+      <%= render 'company_summary' %>
+    </div>
+
+    <div class="col-lg-8">
+      <%= render 'activity_history', activity: @activity %>
+    </div>
+  </div>
+</div>

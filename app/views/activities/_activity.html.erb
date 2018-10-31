@@ -1,0 +1,30 @@
+<div class="stream">
+  <% if activity.kind == "call"  %>
+    <div class="stream-badge">
+      <i class="fa fa-phone"></i>
+    </div>
+  <% elsif activity.kind == "meeting"  %>
+    <div class="stream-badge">
+      <i class="fa fa-calendar"></i>
+    </div>
+  <% elsif activity.kind == "note"  %>
+    <div class="stream-badge">
+      <i class="fa fa-pencil"></i>
+    </div>
+  <% else  %>
+    <div class="stream-badge">
+      <i class="fa fa-circle"></i>
+    </div>
+  <% end  %>
+
+  <div class="stream-panel">
+    <div class="stream-info">
+      <a href="#">
+        <img src="<%= image_path('a2.jpg') %>" />
+        <span>Johnny Silvertongue</span>
+        <span class="date"><%= time_ago_in_words(activity.created_at) %> ago</span>
+      </a>
+    </div>
+    <%= activity.content %>
+  </div>
+</div>

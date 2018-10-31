@@ -1,0 +1,25 @@
+<div>
+  <%= form_with(model: activity, local: false, data: { 'activity-form' => true }) do |form| %>
+    <div class="form-group">
+      <%= form.text_area :content, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.hidden_field :user_id, id: :activity_user_id, value: params[:id]  %>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 col-sm-offset-6">
+        <div class="form-group">
+          <%= form.select(:kind, Activity::KINDS.map { |i| [i, i] }, { }, { class: "form-control" }) %>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="actions">
+          <%= form.submit 'Save', class: 'btn btn-primary width-100' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
