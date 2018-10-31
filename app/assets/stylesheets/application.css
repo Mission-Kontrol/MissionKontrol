@@ -12,6 +12,7 @@
  *= require toastr/toastr.min.css
  *= require font-awesome
  *= require site
+ *= require devise
  *= require_self
  */
 
