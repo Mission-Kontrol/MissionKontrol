@@ -33,6 +33,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'
+  gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
 end
 
 group :test do
