@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :admin_users, :controllers => {:registrations => "admin_user_registrations"}
+  devise_for(
+    :admin_users,
+    controllers: {
+      registrations: 'admin_user_registrations'
+    }
+  )
 
   root to: 'home#index'
 
