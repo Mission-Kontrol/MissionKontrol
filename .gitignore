@@ -15,3 +15,8 @@
 
 .ruby-version
 .byebug_history
+
+Guardfile
+
+config/admin_db_*
+config/target_db_*
