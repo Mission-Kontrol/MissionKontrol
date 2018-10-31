@@ -3,6 +3,7 @@ AllCops:
     - 'db/schema.rb'
     - 'config/initializers/devise.rb'
     - 'db/migrate/*'
+    - 'Guardfile'
 
 Documentation:
   Enabled: false

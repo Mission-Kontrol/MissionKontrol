@@ -5,7 +5,6 @@ ruby '2.5.1'
 
 gem 'rails', '5.1.1'
 
-# gem 'bootstrap', '~> 4.0.0'
 gem 'bootstrap-sass', '~> 3.3.7'
 gem 'coffee-rails'
 gem 'devise', '~> 4.4.3'
@@ -29,16 +28,15 @@ group :development, :test do
 end
 
 group :development do
+  gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
   gem 'listen'
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'web-console'
-  gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
 end
 
 group :test do
   gem 'capybara', '~> 2.17.0'
-  # gem 'capybara-webkit'
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'ffaker'
