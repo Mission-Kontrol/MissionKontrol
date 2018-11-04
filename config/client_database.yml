@@ -13,3 +13,7 @@ development:
 test:
   <<: *default
   database: <%= ENV['CLIENT_DATABASE_DEVELOPMENT'] %>
+
+production:
+  <<: *default
+  database: <%= ENV['CLIENT_DATABASE_URL'] %>
