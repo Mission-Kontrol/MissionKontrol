@@ -47,6 +47,7 @@ group :test do
   gem 'rspec-rails', '~> 3.7.2'
   gem 'rubocop'
   gem 'rubocop-rspec'
+  gem 'shoulda-matchers'
   gem 'vcr', '~> 4.0.0'
   gem 'webmock', '~> 3.3.0'
   gem 'with_model', '~> 2.0.0'

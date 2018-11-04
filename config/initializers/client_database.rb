@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if Rails.env == 'test'
+if Rails.env == 'test' || Rails.env.development?
   uri = URI.parse(ENV['CLIENT_DATABASE_URL'])
   CLIENT_DB = {
     adapter: 'postgresql',

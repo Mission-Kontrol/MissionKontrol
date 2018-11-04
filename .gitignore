@@ -21,3 +21,5 @@ Guardfile
 
 config/admin_db_*
 config/target_db_*
+
+.env
