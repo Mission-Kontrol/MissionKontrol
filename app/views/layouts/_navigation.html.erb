@@ -67,24 +67,9 @@
       </li>
 
       <li class="<%= active_controller?('work_lists') %>">
-        <a href="">
-          <i class="fa fa-list-ol" aria-hidden="true"></i>
-          <span class="nav-label" data-i18n="nav.dashboard">Worklists</span> <span class="fa arrow"></span>
-        </a>
-
-        <ul class="nav nav-second-level collapse">
-          <% [ 'Accounts without demos', 'End of trial calls', 'Slipping away' ].each_with_index do |i, index| %>
-            <li class="">
-              <%= link_to "#{i}", work_list_path(index + 1) %>
-            </li>
-          <% end %>
-        </ul>
-      </li>
-
-      <li class="<%= active_controller?('reports') %>">
-        <%= link_to reports_path do %>
-          <i class="fa fa-line-chart"></i>
-          <span class="nav-label" data-i18n="nav.layouts">Reports</span>
+        <%= link_to work_lists_path do %>
+          <i class="fa fa-list" aria-hidden="true"></i>
+          <span class="nav-label" data-i18n="nav.work_lists">Work lists</span>
         <% end %>
       </li>
     </ul>

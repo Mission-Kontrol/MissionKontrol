@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="">Join</label> <br>
+      <%= select_tag(:db_table_name, options_for_select(@db_table_names), prompt: "Select a table to join with", class: 'form-control') %>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-9 col-lg-3">
+    <div class="form-group">
+      <label for="">Where</label> <br>
+      <%= select_tag(:db_column_names, grouped_options_for_select(@hash_of_tables_and_columns), prompt: "Select a column to filter by", class: 'form-control') %>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-3 col-lg-1">
+    <div class="form-group">
+      <label for=""></label> <br>
+      <input type="text" name="" value="is" disabled class="form-control">
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-9 col-lg-3">
+    <div class="form-group">
+      <label for="">Condition</label> <br>
+      <%= select_tag(:db_query_conditons, options_for_select(@array_of_query_conditions), prompt: "Select a condition to filter by", class: 'form-control') %>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-3 col-lg-3">
+    <div class="form-group">
+      <label for="">Value</label> <br>
+      <input type="text" name="" value="" class="form-control">
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-12 col-lg-2">
+    <div class="form-group" style="text-align: right">
+      <label for=""></label> <br>
+      <a href="" class="btn btn-default">Remove</a>
+    </div>
+  </div>
+</div>

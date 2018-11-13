@@ -1,0 +1,30 @@
+<table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th data-sort-ignore="true">actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @work_lists.each do |work_list| %>
+      <tr>
+        <td>
+          <%= work_list.name %>
+        </td>
+
+        <td>
+          <%= link_to 'View work list', work_list_path(work_list) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td colspan="2">
+        <ul class="pagination pull-right"></ul>
+      </td>
+    </tr>
+  </tfoot>
+</table>

@@ -1,0 +1,10 @@
+<% @work_list.sql_filters.each_with_index do |filter, index|  %>
+  <%= render 'work_lists/form/column_filter', { filter: filter, index: index } %>
+<% end  %>
+
+<div class="row ">
+  <div class="col-xs-12" style="text-align: right">
+    <%= link_to "Add 'AND'", '/add-sql-filter', remote: true, method: :post, class: "btn btn-default" %>
+    <a href="#" class="btn btn-default">Add 'OR'</a>
+  </div>
+</div>
