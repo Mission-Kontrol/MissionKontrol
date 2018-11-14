@@ -3,11 +3,13 @@
 require 'webmock/rspec'
 require 'vcr'
 
-WebMock.disable_net_connect!(allow_localhost: true)
+# WebMock.disable_net_connect!(allow_localhost: true)
 
 VCR.configure do |config|
   config.cassette_library_dir = 'fixtures/cassettes'
   config.hook_into :webmock
+  config.ignore_localhost = true
+  config.default_cassette_options = { record: :once }
 end
 
 RSpec.configure do |config|

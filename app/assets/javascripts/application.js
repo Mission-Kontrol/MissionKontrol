@@ -11,4 +11,5 @@
 //= require metisMenu/jquery.metisMenu.js
 //= require slimscroll/jquery.slimscroll.min.js
 //= require toastr/toastr.min.js
+//= require dualListbox/jquery.bootstrap-duallistbox.js
 //= require_tree .

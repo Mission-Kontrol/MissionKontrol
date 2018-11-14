@@ -1,0 +1,71 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <%= select_tag "Select table", options_for_select(@available_tables), prompt: 'Select a table', class: "form-control m-b select2" %>
+    </div>
+
+    <div class="col-sm-10">
+      <div id="field_select" class="bootstrap-duallistbox-container row moveonselect">
+        <div class="col-sm-8">
+          <select multiple="multiple" id="bootstrap-duallistbox-nonselected-list_" class="form-control field_select_options" style="height: 162px;">
+<!--
+            <option value="id">id</option>
+            <option value="day">day</option>
+            <option value="area">area</option>
+            <option value="level">level</option>
+            <option value="plan">plan</option>
+            <option value="space">space</option>
+            <option value="meeting">meeting</option>
+            <option value="created_at">created_at</option>
+            <option value="updated_at">updated_at</option>
+            <option value="user_id">user_id</option> -->
+          </select>
+        </div>
+        <!-- <div class="box1 col-md-6">
+          <label for="bootstrap-duallistbox-nonselected-list_" style="display: none;"></label>
+          <span class="info-container">
+            <span class="info">Fields on your database</span>
+          </span>
+
+          <input class="filter form-control" type="text" placeholder="Filter">
+
+          <div class="btn-group buttons">
+            <button type="button" class="btn moveall btn-default" title="Move all">
+              <i class="fa fa-arrow-right"></i><i class="fa fa-arrow-right"></i>
+            </button>
+            <button type="button" class="btn move btn-default" title="Move selected">
+              <i class="fa fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <select multiple="multiple" id="bootstrap-duallistbox-nonselected-list_ field_select_options" class="form-control field_select_options" style="height: 162px;">
+
+          </select>
+        </div> -->
+
+        <!-- <div class="box2 col-md-6">
+          <label for="bootstrap-duallistbox-selected-list_" style="display: none;"></label>
+          <span class="info-container">
+            <span class="info">Fields to display on view</span>
+          </span>
+
+          <input class="filter form-control" type="text" placeholder="Filter">
+
+          <div class="btn-group buttons">
+            <button type="button" class="btn remove btn-default" title="Remove selected">
+              <i class="fa fa-arrow-left"></i>
+            </button>
+            <button type="button" class="btn removeall btn-default" title="Remove all">
+              <i class="fa fa-arrow-left"></i>
+              <i class="fa fa-arrow-left"></i>
+            </button>
+          </div>
+
+          <select multiple="multiple" id="bootstrap-duallistbox-selected-list_" class="form-control" style="height: 162px;">
+
+          </select>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

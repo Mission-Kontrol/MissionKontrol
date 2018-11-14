@@ -14,15 +14,11 @@ describe Kuwinda::Presenter::ListAvailableTables do
 
   context 'listing tables' do
     it 'displays the available tables' do
-      VCR.use_cassette('successfully_connected_with_datase') do
-        expect(subject).to include('Attending Events', 'Users', 'Events')
-      end
+      expect(subject).to include('Attending Events', 'Users', 'Events')
     end
 
     it 'does not display the schema_migrations table' do
-      VCR.use_cassette('successfully_connected_with_datase') do
-        expect(subject).to_not include('schema_migrations')
-      end
+      expect(subject).to_not include('schema_migrations')
     end
   end
 end
