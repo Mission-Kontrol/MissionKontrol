@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <label for="">Data</label> <br>
-    <%= select_tag(:db_table_name, options_for_select(@db_table_names), prompt: "Select a table to work on", class: 'form-control') %>
+    <%= select_tag("work_list[data_table_name]", options_for_select(@db_table_names, :selected => @work_list.data_table_name), prompt: "Select a table to work on", class: 'form-control') %>
   </div>
 
   <div class="tabs-container" style="margin-bottom: 20px">
@@ -22,7 +22,7 @@
     </ul>
 
     <div class="tab-content">
-      <div id="tab-1" class="tab-pane active all-activities-tab">
+      <div id="tab-1" class="tab-pane active">
         <div class="panel-body">
           <div class="tabs-container" style="">
             <ul class="nav nav-tabs">
@@ -49,7 +49,7 @@
 
       <div id="tab-2" class="tab-pane">
         <div class="panel-body">
-          <p>Nothing here yet.</p>
+          <p><%= @work_list.to_sql %></p>
         </div>
       </div>
 

@@ -11,10 +11,27 @@ class WorkList < ApplicationRecord
   after_initialize :add_default_filter
 
   def to_sql
-    SQLFilterJoiner.join(filters: self.sql_filters)
+    result = ""
+    result += generate_db_select_sql
+    result += " "
+    result += generate_filters_sql
+    result += ";"
   end
 
   private
+
+  def generate_db_select_sql
+    "select * from #{self.data_table_name}"
+  end
+
+  def generate_filters_sql
+    result = ""
+    self.sql_filters.each do |filter_attributes|
+      filter = SQLFilterFactory.build_sql_filter(filter_attributes["sql_filter"])
+      result += filter.to_sql
+    end
+    result
+  end
 
   def add_default_filter
     unless self.sql_filters.present?

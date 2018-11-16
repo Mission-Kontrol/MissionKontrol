@@ -7,9 +7,9 @@ module SQLFilter
 
     def to_sql
       if operator
-        "where #{self.column} = #{self.value} #{operator} "
+        "#{operator} #{self.column} = '#{self.value}' "
       else
-        "where #{self.column} = #{self.value} "
+        "where #{self.column} = '#{self.value}' "
       end
     end
 

@@ -37,7 +37,7 @@ module SQLFilter
           filter.column = column
           filter.value = value
           filter.operator = operator
-          expected = "where #{column} = #{value} #{operator} "
+          expected = "#{operator} #{column} = '#{value}' "
 
           expect(filter.to_sql).to eq(expected)
         end
@@ -51,7 +51,7 @@ module SQLFilter
           filter = described_class.new
           filter.column = column
           filter.value = value
-          expected = "where #{column} = #{value} "
+          expected = "where #{column} = '#{value}' "
 
           expect(filter.to_sql).to eq(expected)
         end
@@ -70,10 +70,10 @@ module SQLFilter
         filter.value = value
         filter.operator = operator
         expected = {}
-        expected[:column] = column
-        expected[:value] = value
-        expected[:kind] = kind
-        expected[:operator] = operator
+        expected['column'] = column
+        expected['value'] = value
+        expected['kind'] = kind
+        expected['operator'] = operator
 
         expect(filter.to_hash).to eq(expected)
       end

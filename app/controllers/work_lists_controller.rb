@@ -73,9 +73,12 @@ class WorkListsController < ApplicationController
   def work_list_params
     params.require(:work_list).permit(:name,
                                      :details,
+                                     :data_table_name,
                                      sql_filters: [sql_filter: [
                                                                 :operator,
-                                                                :kind
+                                                                :kind,
+                                                                :column,
+                                                                :value
                                                                 ]])
   end
 

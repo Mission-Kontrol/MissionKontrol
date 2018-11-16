@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181108144047) do
+ActiveRecord::Schema.define(version: 20181116183747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20181108144047) do
     t.jsonb "sql_filters", default: []
     t.string "sql_query"
     t.jsonb "outcomes", default: []
+    t.string "data_table_name"
   end
 
 end

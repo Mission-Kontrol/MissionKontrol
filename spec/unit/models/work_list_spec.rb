@@ -17,25 +17,35 @@ describe WorkList do
     expect(a_work_list).to respond_to(:sql_filters)
   end
 
-  it 'responds to add_sql_filter' do
-    expect(a_work_list).to respond_to(:add_sql_filter)
-  end
-
-  it 'responds to remove_sql_filter' do
-    expect(a_work_list).to respond_to(:remove_sql_filter)
-  end
-
-  it "responds to sql_filters_as_sql" do
-    expect(a_work_list).to respond_to(:sql_filters_as_sql)
-  end
-
-  it "responds to sql_filters_as_objects" do
-    expect(a_work_list).to respond_to(:sql_filters_as_objects)
+  it "responds to to_sql" do
+    expect(a_work_list).to respond_to(:to_sql)
   end
 
   it "is invalid without a name" do
     a_work_list.name = nil
     a_work_list.valid?
     expect(a_work_list.errors.keys).to include(:name)
+  end
+
+  describe "to_sql" do
+    it "joins sql filters correctly" do
+      expected = "select * from users where name = 'dave' or name = 'david' ;";
+      work_list = build(:work_list)
+      work_list.data_table_name = "users"
+      filter = work_list.sql_filters.first["sql_filter"]
+      filter['value'] = 'dave'
+      filter['column'] = 'name'
+      filter1 = {
+        'kind' => 'equal',
+        'column' => 'name',
+        'operator' => 'or',
+        'value' => 'david'
+      }
+      work_list.sql_filters << { 'sql_filter' => filter1 }
+
+      actual = work_list.to_sql
+
+      expect(actual).to eq(expected)
+    end
   end
 end

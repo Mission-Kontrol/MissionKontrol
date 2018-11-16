@@ -11,7 +11,6 @@ class SQLFilterFactory
     filter.column = filter_attributes['column']
     filter.value = filter_attributes['value']
     filter.operator = filter_attributes['operator']
-    filter.id = filter_attributes['id']
     filter
   end
 end
