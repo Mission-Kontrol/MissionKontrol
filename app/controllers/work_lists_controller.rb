@@ -62,9 +62,26 @@ class WorkListsController < ApplicationController
     end
   end
 
+  def add_work_list_outcome
+    @outcome = WorkListOutcome.new({
+      'title' => '',
+      'detail' => ''
+    })
+
+    respond_to do |format|
+      format.js { render action: 'add_work_list_outcome/success' }
+    end
+  end
+
   def remove_sql_filter
     respond_to do |format|
       format.js { render action: 'remove_sql_filter/success' }
+    end
+  end
+
+  def remove_work_list_outcome
+    respond_to do |format|
+      format.js { render action: 'remove_work_list_outcome/success' }
     end
   end
 
@@ -79,7 +96,11 @@ class WorkListsController < ApplicationController
                                                                 :kind,
                                                                 :column,
                                                                 :value
-                                                                ]])
+                                                                ]],
+                                      outcomes: [outcome: [
+                                                            :title,
+                                                            :detail
+                                                            ]])
   end
 
   def set_worklist

@@ -20,4 +20,6 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#show'
   post 'add-sql-filter', to: 'work_lists#add_sql_filter'
   post 'remove-sql-filter', to: 'work_lists#remove_sql_filter'
+  post 'remove-work-list-outcome', to: 'work_lists#remove_work_list_outcome'
+  post 'add-work-list-outcome', to: 'work_lists#add_work_list_outcome'
 end

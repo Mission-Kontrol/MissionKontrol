@@ -62,37 +62,21 @@
   </div>
 
   <div class="form-group">
-    <label for="">Define the possible outcomes</label> <br>
+    <label for="">Define the possible outcomes</label> <br><br>
 
-    <% @work_list.outcomes.each do |outcome_attributes| %>
-    <% @outcome = OpenStruct.new(outcome_attributes['outcome']) %>
-      <div class="row">
-        <div class="col-sm-12 col-md-3">
-          <div class="form-group">
-            <%= text_field_tag "work_list[outcomes][][outcome][title]", @outcome.title , class: 'form-control', placeholder: "Title e.g. success"%>
-          </div>
-        </div>
+    <div id="work-list-outcomes-container">
+      <% @work_list.outcomes.each do |outcome_attributes| %>
+        <%= render 'work_lists/form/outcome', outcome: WorkListOutcome.new(outcome_attributes['outcome']) %>
+      <% end %>
+    </div>
 
-        <div class="col-sm-12 col-md-7">
-          <div class="form-group">
-            <%= text_field_tag "work_list[outcomes][][outcome][title]", @outcome.title , class: 'form-control', placeholder: "Talked to customer"%>
-          </div>
-        </div>
-
-        <div class="col-sm-12 col-md-2">
-          <div class="form-group" style="text-align: right">
-            <label for=""></label> <br>
-            <a href="#" class="btn btn-default">Remove</a>
-          </div>
-        </div>
-
-        <div class="col-sm-12">
-          <div class="form-group" style="text-align: right">
-            <a href="#" class="btn btn-default">Add Outcome</a>
-          </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group" style="text-align: right">
+          <%= link_to "Add Outcome", add_work_list_outcome_path, remote: true, method: :post, class: "btn btn-default" %>
         </div>
       </div>
-    <% end %>
+    </div>
   </div>
 
   <div class="form-group">

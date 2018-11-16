@@ -9,6 +9,7 @@ class WorkList < ApplicationRecord
 
   validates :name, presence: true
   after_initialize :add_default_filter
+  after_initialize :add_default_outcome
 
   def to_sql
     result = ""
@@ -37,6 +38,17 @@ class WorkList < ApplicationRecord
     unless self.sql_filters.present?
       filter = SQLFilter::Equal.new
       self.sql_filters << { 'sql_filter' => filter.to_hash }
+    end
+  end
+
+  def add_default_outcome
+    unless self.outcomes.present?
+      outcome = {
+        'title' => '',
+        'detail' => ''
+      }
+
+      self.outcomes << { 'outcome' => outcome }
     end
   end
 end
