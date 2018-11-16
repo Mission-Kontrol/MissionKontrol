@@ -1,10 +1,10 @@
 <div class="row " style="border-bottom: 1px solid #eaeaea; margin-bottom: 15px">
   <div class="col-md-4 col-lg-2 ">
     <div class="form-group">
-      <% if filter['operator'].nil? %>
-        <input type="text" name="" value="WHERE" disabled class="form-control">
+      <% if filter.operator.nil? %>
+        <%= text_field_tag "work_list[sql_filters][][sql_filter][operator]", "WHERE", class: 'form-control', readonly: true %>
       <% else %>
-        <input type="text" name="" value="AND" disabled class="form-control">
+        <%= text_field_tag "work_list[sql_filters][][sql_filter][operator]", filter.operator, class: 'form-control', readonly: true %>
       <% end %>
     </div>
   </div>
@@ -23,19 +23,19 @@
 
   <div class="col-sm-12 col-md-8 col-lg-2 ">
     <div class="form-group">
-      <%= select_tag(:db_query_conditons, options_for_select(@array_of_query_conditions), class: 'form-control') %>
+      <%= select_tag("work_list[sql_filters][][sql_filter][kind]", options_for_select(@array_of_query_conditions), class: 'form-control') %>
     </div>
   </div>
 
   <div class="col-sm-12 col-md-8 col-lg-2 ">
     <div class="form-group">
-      <input type="text" name="" value="Target value" class="form-control">
+      <input type="text" name="" value="" class="form-control">
     </div>
   </div>
 
   <div class="col-sm-12 col-md-4 col-lg-2 ">
     <div class="form-group" style="text-align: right">
-      <a href="" class="btn btn-default" style="margin-bottom: 0">Remove</a>
+      <%= link_to "Remove", remove_sql_filter_path(sql_filter: { id: filter.id }), remote: true, method: :post, class: "btn btn-default remove-filter-btn" %>
     </div>
   </div>
 </div>

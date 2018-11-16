@@ -2,14 +2,12 @@
 
 class WorkListsController < ApplicationController
   layout 'dashboard'
-  before_action :set_worklist, only: [:create]
+  before_action :set_db_tables, only: [:new, :create, :add_sql_filter, :edit]
+  before_action :set_db_columns, only: [:new, :create, :add_sql_filter, :edit]
+  before_action :set_query_conditions, only: [:new, :create, :add_sql_filter, :edit]
 
   def index
-    @work_lists = [
-      OpenStruct.new(name: 'Accounts without demos'),
-      OpenStruct.new(name: 'End of trial calls'),
-      OpenStruct.new(name: 'Slipping away'),
-    ]
+    @work_lists = WorkList.all
   end
 
   def show
@@ -22,31 +20,74 @@ class WorkListsController < ApplicationController
     @work_list = work_lists[params[:id].to_i - 1]
   end
 
+  def edit
+    @work_list = WorkList.find(params[:id])
+  end
+
   def new
-    filter = SQLFilter::Equal.new
-    filter.column = "name"
     @work_list = WorkList.new
-    @work_list.add_sql_filter(filter)
+  end
 
-    # @column_filters = []
-    # @column_filters << SQLFilter::Equal.new
-    # @column_filters << SQLFilter::Equal.new
+  def create
+    @work_list = WorkList.new(work_list_params)
 
-    # create
+    respond_to do |format|
+      if @work_list.save
+        flash[:notice] = "Work list was successfully created."
+        format.js { render action: 'create/success', js: "window.location='#{work_lists_path}'" }
+      else
+        format.js { render action: 'create/error' }
+      end
+    end
+  end
 
-    # @work_list = WorkList.new
-    @db_table_names = ClientRecord.connection.tables
-    @array_of_query_conditions = [
-      'equal',
-      # 'between',
-      # 'not equal',
-      # 'greater than',
-      # 'greater than or equal to',
-      # 'less than',
-      # 'less than or equal to',
-      # 'is empty'
-    ]
+  def update
+    @work_list = WorkList.find(params[:id])
 
+    respond_to do |format|
+      if @work_list.update(work_list_params)
+        flash[:notice] = "Work list was successfully updated."
+        format.js { render action: 'update/success', js: "window.location='#{work_lists_path}'" }
+      else
+        format.js { render action: 'update/error' }
+      end
+    end
+  end
+
+  def add_sql_filter
+    @sql_filter = SQLFilter::Equal.new({operator: params[:sql_filter][:operator]})
+
+    respond_to do |format|
+      format.js { render action: 'add_sql_filter/success' }
+    end
+  end
+
+  def remove_sql_filter
+    respond_to do |format|
+      format.js { render action: 'remove_sql_filter/success' }
+    end
+  end
+
+  private
+
+  def work_list_params
+    params.require(:work_list).permit(:name,
+                                     :details,
+                                     sql_filters: [sql_filter: [
+                                                                :operator,
+                                                                :kind
+                                                                ]])
+  end
+
+  def set_worklist
+    @work_list = WorkList.new(work_list_params)
+  end
+
+  def set_db_tables
+    @db_table_names ||= ClientRecord.connection.tables
+  end
+
+  def set_db_columns
     @hash_of_tables_and_columns = {}
     ClientRecord.connection.tables.each do |table|
       @hash_of_tables_and_columns[table] = []
@@ -56,50 +97,9 @@ class WorkListsController < ApplicationController
     end
   end
 
-  def create
-    sql_filters = []
-    sql_filter = SQLFilter::Equal.new
-    sql_filter.id = 1
-    sql_filter.kind = "equal"
-    sql_filter.operator = nil
-    sql_filters << sql_filter
-
-    @worklist.sql_filters = sql_filters.to_json
-
-    if @worklist.save
-      redirect_to work_lists_path
-    else
-      render :new
-    end
-  end
-
-  def add_sql_filter
-    # create filter
-    # append to list
-    
-    # @activity = @feedable.activities.new(activity_params)
-    #
-    # respond_to do |format|
-    #   if @feedable.save
-    #     format.js { render action: 'success' }
-    #   else
-    #     format.js { render action: 'failure', status: :unprocessable_entity }
-    #   end
-    # end
-  end
-
-  private
-
-  def work_list_params
-    params.require(:work_list).permit(:name,
-                                     :details)
-  end
-
-  def set_worklist
-    filter = SQLFilter::Equal.new
-    filter.column = "name"
-    @work_list = WorkList.new(work_list_params)
-    @work_list.add_sql_filter(filter)
-    @work_list
+  def set_query_conditions
+    @array_of_query_conditions = [
+      'equal'
+    ]
   end
 end

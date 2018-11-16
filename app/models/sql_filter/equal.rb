@@ -1,5 +1,10 @@
 module SQLFilter
   class Equal < SQLFilter::Base
+    def initialize(args={})
+      args[:kind] = "equal"
+      super(args)
+    end
+
     def to_sql
       if operator
         "where #{self.column} = #{self.value} #{operator} "
@@ -14,16 +19,7 @@ module SQLFilter
       hash['column'] = self.column
       hash['operator'] = self.operator
       hash['value'] = self.value
-      hash['id'] = self.id
       hash
-    end
-
-    private
-
-    def initialize
-      args = {}
-      args[:kind] = "equal"
-      super(args)
     end
   end
 end

@@ -1,4 +1,4 @@
-<%= form_for(@work_list, html: {class: "m-t"}) do |f| %>
+<%= form_for(@work_list, html: {class: "m-t"}, remote: true) do |f| %>
   <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name, class: "form-control" %>
@@ -18,7 +18,7 @@
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#tab-1">Builder</a></li>
       <li class=""><a data-toggle="tab" href="#tab-2">Raw SQL</a></li>
-      <li class=""><a data-toggle="tab" href="#tab-3">Preview</a></li>
+      <li class="hide"><a data-toggle="tab" href="#tab-3">Preview</a></li>
     </ul>
 
     <div class="tab-content">
@@ -27,19 +27,19 @@
           <div class="tabs-container" style="">
             <ul class="nav nav-tabs">
               <li class="active"><a data-toggle="tab" href="#tab-5">Filters</a></li>
-              <li class=""><a data-toggle="tab" href="#tab-6">Joins</a></li>
+              <li class="hide"><a data-toggle="tab" href="#tab-6">Joins</a></li>
             </ul>
 
             <div class="tab-content" style="">
               <div id="tab-5" class="tab-pane active">
                 <div class="panel-body" style="border: none">
-                  <%= render 'work_lists/form/column_filters' %>
+                  <%= render 'work_lists/form/sql_filters', work_list_form: f %>
                 </div>
               </div>
 
               <div id="tab-6" class="tab-pane">
                 <div class="panel-body" style="border: none">
-                  <%= render 'work_lists/form/table_joins' %>
+                  <%= render 'work_lists/form/sql_joins' %>
                 </div>
               </div>
             </div>
@@ -47,30 +47,15 @@
         </div>
       </div>
 
-      <div id="tab-2" class="tab-pane activity-tab-for-calls">
+      <div id="tab-2" class="tab-pane">
         <div class="panel-body">
-          <div class="form-group">
-            <%= f.label :sql_query %>
-            <%= f.text_field :sql_query, class: "form-control" %>
-          </div>
+          <p>Nothing here yet.</p>
         </div>
       </div>
 
-      <div id="tab-3" class="tab-pane activity-tab-for-meetings">
+      <div id="tab-3" class="tab-pane">
         <div class="panel-body">
-          <div class="form-group">
-            <%= f.label :sql_query %>
-            <%= f.text_field :sql_query, class: "form-control" %>
-          </div>
-        </div>
-      </div>
-
-      <div id="tab-4" class="tab-pane activity-tab-for-notes">
-        <div class="panel-body">
-          <div class="form-group">
-            <%= f.label :sql_query %>
-            <%= f.text_field :sql_query, class: "form-control" %>
-          </div>
+          <p>Nothing here yet.</p>
         </div>
       </div>
     </div>
@@ -79,34 +64,35 @@
   <div class="form-group">
     <label for="">Define the possible outcomes</label> <br>
 
-    <div class="row">
-      <div class="col-sm-12 col-md-5">
-        <div class="form-group">
-          <label for="">Title</label> <br>
-          <input type="text" name="" value="" class="form-control">
+    <% @work_list.outcomes.each do |outcome_attributes| %>
+    <% @outcome = OpenStruct.new(outcome_attributes['outcome']) %>
+      <div class="row">
+        <div class="col-sm-12 col-md-3">
+          <div class="form-group">
+            <%= text_field_tag "work_list[outcomes][][outcome][title]", @outcome.title , class: 'form-control', placeholder: "Title e.g. success"%>
+          </div>
         </div>
-      </div>
 
-      <div class="col-sm-12 col-md-5">
-        <div class="form-group">
-          <label for="">Detail</label> <br>
-          <input type="text" name="" value="" class="form-control">
+        <div class="col-sm-12 col-md-7">
+          <div class="form-group">
+            <%= text_field_tag "work_list[outcomes][][outcome][title]", @outcome.title , class: 'form-control', placeholder: "Talked to customer"%>
+          </div>
         </div>
-      </div>
 
-      <div class="col-sm-12 col-md-2">
-        <div class="form-group" style="text-align: right">
-          <label for=""></label> <br>
-          <a href="#" class="btn btn-default">remove</a>
+        <div class="col-sm-12 col-md-2">
+          <div class="form-group" style="text-align: right">
+            <label for=""></label> <br>
+            <a href="#" class="btn btn-default">Remove</a>
+          </div>
         </div>
-      </div>
 
-      <div class="col-sm-12">
-        <div class="form-group" style="text-align: right">
-          <a href="#" class="btn btn-primary">Add Outcome</a>
+        <div class="col-sm-12">
+          <div class="form-group" style="text-align: right">
+            <a href="#" class="btn btn-default">Add Outcome</a>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   </div>
 
   <div class="form-group">

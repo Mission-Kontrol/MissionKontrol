@@ -7,24 +7,19 @@ class WorkList < ApplicationRecord
     ['3 hour', 3]
   ]
 
-  # def sql_filters_as_hash
-  #   JSON.parse(self.sql_filters)
-  # end
+  validates :name, presence: true
+  after_initialize :add_default_filter
 
-  def add_sql_filter(filter)
-    if self.sql_filters.size > 0
-      last_filter = sql_filters.sort_by { |k| k['id'] }.last
-      filter.id = last_filter['id'] + 1
-      self.sql_filters << filter.to_hash
-    else
-      filter.id = 1
-      self.sql_filters << filter.to_hash
-    end
+  def to_sql
+    SQLFilterJoiner.join(filters: self.sql_filters)
   end
 
-  def remove_sql_filter(filter)
-    existing_filter = self.sql_filters.select { |h| h["id"] == filter.id }.last
-    return unless existing_filter
-    self.sql_filters.delete_if { |h| h["id"] == existing_filter['id'] }
+  private
+
+  def add_default_filter
+    unless self.sql_filters.present?
+      filter = SQLFilter::Equal.new
+      self.sql_filters << { 'sql_filter' => filter.to_hash }
+    end
   end
 end
