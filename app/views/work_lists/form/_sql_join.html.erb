@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="form-group">
       <label for="">Join</label> <br>
-      <%= select_tag(:db_table_name, options_for_select(@db_table_names), prompt: "Select a table to join with", class: 'form-control') %>
+      <%= select_tag(:db_table_name, options_for_select(@set_db_tables), prompt: "Select a table to join with", class: 'form-control') %>
     </div>
   </div>
 

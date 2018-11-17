@@ -6,32 +6,32 @@ module SQLFilter
   describe Equal do
     let(:an_equal_sql_filter) { described_class.new }
 
-    it "responds to column" do
+    it 'responds to column' do
       expect(an_equal_sql_filter).to respond_to(:column)
     end
 
-    it "responds to kind" do
+    it 'responds to kind' do
       expect(an_equal_sql_filter).to respond_to(:kind)
     end
 
-    it "responds to value" do
+    it 'responds to value' do
       expect(an_equal_sql_filter).to respond_to(:value)
     end
 
-    it "responds to to_sql" do
+    it 'responds to to_sql' do
       expect(an_equal_sql_filter).to respond_to(:to_sql)
     end
 
-    it "has correct kind" do
-      expect(an_equal_sql_filter.kind).to eq("equal")
+    it 'has correct kind' do
+      expect(an_equal_sql_filter.kind).to eq('equal')
     end
 
-    describe "#to_sql" do
-      context "when operator is present" do
-        it "returns correct SQL" do
-          column = "name"
-          value = "foobar"
-          operator = "and"
+    describe '#to_sql' do
+      context 'when operator is present' do
+        it 'returns correct SQL' do
+          column = 'name'
+          value = 'foobar'
+          operator = 'and'
 
           filter = described_class.new
           filter.column = column
@@ -43,10 +43,10 @@ module SQLFilter
         end
       end
 
-      context "when operator is not present" do
-        it "returns correct SQL" do
-          column = "name"
-          value = "foobar"
+      context 'when operator is not present' do
+        it 'returns correct SQL' do
+          column = 'name'
+          value = 'foobar'
 
           filter = described_class.new
           filter.column = column
@@ -58,12 +58,12 @@ module SQLFilter
       end
     end
 
-    describe "#to_hash" do
-      it "returns correct hash of attributes" do
-        column = "name"
-        value = "foobar"
-        kind = "equal"
-        operator = "and"
+    describe '#to_hash' do
+      it 'returns correct hash of attributes' do
+        column = 'name'
+        value = 'foobar'
+        kind = 'equal'
+        operator = 'and'
 
         filter = described_class.new
         filter.column = column

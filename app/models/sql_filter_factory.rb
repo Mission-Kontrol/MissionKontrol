@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SQLFilterFactory
   def self.build_sql_filter(filter_attributes)
     case filter_attributes['kind']

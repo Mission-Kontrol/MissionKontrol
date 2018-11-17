@@ -5,7 +5,7 @@
 </div>
 
 <div class="row ">
-  <div class="col-xs-12" style="text-align: right">
+  <div class="col-xs-12" style="text-align: right;padding: 0">
     <%= link_to "Add 'AND'", add_sql_filter_path(sql_filter: { operator: 'and' }), remote: true, method: :post, class: "btn btn-default" %>
     <%= link_to "Add 'OR'", add_sql_filter_path(sql_filter: { operator: 'or' }), remote: true, method: :post, class: "btn btn-default" %>
   </div>
