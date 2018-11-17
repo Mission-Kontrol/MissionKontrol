@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <label for="">Data</label> <br>
-    <%= select_tag("work_list[data_table_name]", options_for_select(@db_table_names, :selected => @work_list.data_table_name), prompt: "Select a table to work on", class: 'form-control') %>
+    <%= select_tag("work_list[data_table_name]", options_for_select(@set_db_tables, :selected => @work_list.data_table_name), prompt: "Select a table to work on", class: 'form-control') %>
   </div>
 
   <div class="tabs-container" style="margin-bottom: 20px">

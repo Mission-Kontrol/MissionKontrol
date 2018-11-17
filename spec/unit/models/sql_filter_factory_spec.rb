@@ -8,7 +8,7 @@ describe SQLFilterFactory do
   end
 
   describe '.build_sql_filter' do
-    context "when sql filter kind is equal" do
+    context 'when sql filter kind is equal' do
       it 'returns a SQLFilter::Equal filter' do
         filter_attributes = {}
         filter_attributes['kind'] = 'equal'
@@ -17,7 +17,7 @@ describe SQLFilterFactory do
       end
     end
 
-    context "when sql filter kind is unknown" do
+    context 'when sql filter kind is unknown' do
       it 'returns nil' do
         filter_attributes = {}
         filter_attributes['kind'] = 'notknown'
