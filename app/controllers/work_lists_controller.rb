@@ -4,19 +4,13 @@ class WorkListsController < ApplicationController
   layout 'dashboard'
   before_action :set_db_tables, only: %i[new create add_sql_filter edit]
   before_action :set_db_columns, only: %i[new create add_sql_filter edit]
-  before_action :set_query_conditions, only: %i[new create add_sql_filter edit]
 
   def index
-    @work_lists = WorkList.all
+    @work_lists = WorkList.order(created_at: :desc)
   end
 
   def show
-    work_lists = [
-      'Accounts without demos',
-      'End of trial calls',
-      'Slipping away'
-    ]
-    @work_list = work_lists[params[:id].to_i - 1]
+    @work_list = WorkList.find(params[:id])
   end
 
   def edit
@@ -33,7 +27,7 @@ class WorkListsController < ApplicationController
 
     if @work_list.save
       handle_success(action: 'create/success',
-                     js: "window.location='#{work_lists_path}'",
+                     js_func: "window.location='#{work_lists_path}'",
                      notice: 'Work list was successfully created.')
     else
       render action: 'create/error'
@@ -46,7 +40,7 @@ class WorkListsController < ApplicationController
 
     if @work_list.update(work_list_params)
       handle_success(action: 'update/success',
-                     js: "window.location='#{work_lists_path}'",
+                     js_func: "window.location='#{work_lists_path}'",
                      notice: 'Work list was successfully updated.')
     else
       render action: 'update/error'
@@ -120,12 +114,8 @@ class WorkListsController < ApplicationController
     end
   end
 
-  def set_query_conditions
-    @array_of_query_conditions = WorkList::QUERY_CONDITIONS
-  end
-
-  def handle_success(action:, js:, notice:)
+  def handle_success(action:, js_func:, notice:)
     flash[:notice] = notice
-    render(action: action, js: js)
+    render(action: action, js: js_func)
   end
 end

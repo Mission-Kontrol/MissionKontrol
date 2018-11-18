@@ -8,4 +8,11 @@ class WorkListOutcome
     self.title = args['title'] || ''
     self.detail = args['detail'] || ''
   end
+
+  def to_hash
+    hash = {}
+    hash['title'] = title
+    hash['detail'] = detail
+    hash
+  end
 end

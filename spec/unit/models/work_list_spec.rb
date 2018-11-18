@@ -29,7 +29,7 @@ describe WorkList do
 
   describe 'to_sql' do
     it 'joins sql filters correctly' do
-      expected = "select * from users where name = 'dave' or name = 'david' ;"
+      expected = "SELECT * FROM users where name = 'dave' or name = 'david' ;"
       work_list = build(:work_list)
       work_list.data_table_name = 'users'
       filter = work_list.sql_filters.first['sql_filter']

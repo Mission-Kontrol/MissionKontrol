@@ -3,4 +3,7 @@
 require_relative 'sql_filter/equal'
 
 module SQLFilter
+  QUERY_CONDITIONS = [
+    'equal'
+  ].freeze
 end

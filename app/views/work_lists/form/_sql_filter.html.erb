@@ -23,7 +23,7 @@
 
   <div class="col-sm-12 col-md-8 col-lg-2 ">
     <div class="form-group">
-      <%= select_tag("work_list[sql_filters][][sql_filter][kind]", options_for_select(@array_of_query_conditions), class: 'form-control') %>
+      <%= select_tag("work_list[sql_filters][][sql_filter][kind]", options_for_select(SQLFilter::QUERY_CONDITIONS), class: 'form-control') %>
     </div>
   </div>
 

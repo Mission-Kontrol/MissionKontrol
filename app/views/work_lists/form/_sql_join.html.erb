@@ -23,7 +23,7 @@
   <div class="col-sm-12 col-md-9 col-lg-3">
     <div class="form-group">
       <label for="">Condition</label> <br>
-      <%= select_tag(:db_query_conditons, options_for_select(@array_of_query_conditions), prompt: "Select a condition to filter by", class: 'form-control') %>
+      <%= select_tag(:db_query_conditons, options_for_select(SQLFilter::QUERY_CONDITIONS), prompt: "Select a condition to filter by", class: 'form-control') %>
     </div>
   </div>
 

@@ -3,12 +3,8 @@
 class WorkList < ApplicationRecord
   FAILURE_TIMEOUT_INTERVALS = [
     ['1 hour', 1],
-    ['2 hour', 2],
-    ['3 hour', 3]
-  ].freeze
-
-  QUERY_CONDITIONS = [
-    'equal'
+    ['2 hours', 2],
+    ['3 hours', 3]
   ].freeze
 
   validates :name, presence: true
@@ -23,7 +19,7 @@ class WorkList < ApplicationRecord
   private
 
   def generate_db_select_sql
-    "select * from #{data_table_name}"
+    "SELECT * FROM #{data_table_name}"
   end
 
   def generate_filters_sql
@@ -44,10 +40,7 @@ class WorkList < ApplicationRecord
 
   def add_default_outcome
     return if outcomes.present?
-    outcome = {
-      'title' => '',
-      'detail' => ''
-    }
+    outcome = WorkListOutcome.new.to_hash
     outcomes << { 'outcome' => outcome }
   end
 end
