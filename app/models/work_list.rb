@@ -8,12 +8,16 @@ class WorkList < ApplicationRecord
   ].freeze
 
   validates :name, presence: true
-  after_initialize :add_default_filter
-  after_initialize :add_default_outcome
+  after_initialize :add_default_filter,
+                   :add_default_outcome
 
   def to_sql
     result = ''
     result + generate_db_select_sql + ' ' + generate_filters_sql + ';'
+  end
+
+  def sql_to_run
+    sql_query.present? ? sql_query : to_sql
   end
 
   private

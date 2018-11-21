@@ -26,9 +26,33 @@
           <h5><%= @work_list.name %></h5>
         </div>
 
-        <div class="ibox-content">
+        <div class="ibox-content" style="overflow-x: scroll">
+          <p><%= @work_list.details %></p>
+
           <input type="text" class="form-control input-sm m-b-xs" id="filter"
           placeholder="Search in table">
+
+          <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+            <thead>
+              <tr>
+                <% @work_list_data.columns.each do |col| %>
+                  <th data-sort-ignore="true"><%= col %></th>
+                <% end %>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @work_list_data.rows.each do |row| %>
+                <tr>
+                  <% row.each do |val|  %>
+                    <td>
+                      <%= val %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <label for="">Data</label> <br>
-    <%= select_tag("work_list[data_table_name]", options_for_select(@set_db_tables, :selected => @work_list.data_table_name), prompt: "Select a table to work on", class: 'form-control') %>
+    <%= select_tag("work_list[data_table_name]", options_for_select(@set_db_tables, :selected => @work_list.data_table_name), prompt: "Select a table to work on", class: 'form-control table-select') %>
   </div>
 
   <div class="tabs-container" style="margin-bottom: 20px">
@@ -24,32 +24,15 @@
     <div class="tab-content">
       <div id="tab-1" class="tab-pane active">
         <div class="panel-body">
-          <div class="tabs-container" style="">
-            <ul class="nav nav-tabs">
-              <li class="active"><a data-toggle="tab" href="#tab-5">Filters</a></li>
-              <li class="hide"><a data-toggle="tab" href="#tab-6">Joins</a></li>
-            </ul>
-
-            <div class="tab-content" style="">
-              <div id="tab-5" class="tab-pane active">
-                <div class="panel-body" style="border: none">
-                  <%= render 'work_lists/form/sql_filters', work_list_form: f %>
-                </div>
-              </div>
-
-              <div id="tab-6" class="tab-pane">
-                <div class="panel-body" style="border: none">
-                  <%= render 'work_lists/form/sql_joins' %>
-                </div>
-              </div>
-            </div>
-          </div>
+          <%= render 'work_lists/form/sql_filters', work_list_form: f %>
         </div>
       </div>
 
       <div id="tab-2" class="tab-pane">
         <div class="panel-body">
-          <p><%= @work_list.to_sql %></p>
+          <div class="form-group">
+            <%= f.text_field :sql_query, placeholder: @work_list.to_sql, class: 'form-control'%>
+          </div>
         </div>
       </div>
 

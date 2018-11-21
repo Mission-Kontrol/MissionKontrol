@@ -11,6 +11,7 @@ class WorkListsController < ApplicationController
 
   def show
     @work_list = WorkList.find(params[:id])
+    @work_list_data = ClientRecord.connection.exec_query(@work_list.sql_to_run)
   end
 
   def edit
