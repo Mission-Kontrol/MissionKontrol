@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Build new view for a table', type: :feature do
-  scenario 'viewing available fields for a table' do
+  scenario 'viewing available fields for a table', js: true do
     given_i_am_on_the_new_view_builder_page
     when_i_select_the_users_table
     then_i_expect_to_see_available_fields
@@ -19,5 +19,6 @@ def when_i_select_the_users_table
 end
 
 def then_i_expect_to_see_available_fields
-  expect(page).to have_content('Email')
+  wait_for_ajax
+  expect(page).to have_content('email')
 end

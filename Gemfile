@@ -37,6 +37,7 @@ end
 
 group :test do
   gem 'capybara', '~> 2.17.0'
+  gem 'capybara-selenium'
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'ffaker'
