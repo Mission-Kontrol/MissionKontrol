@@ -16,7 +16,8 @@ class ViewBuilderController < ApplicationController
   end
 
   def create
-    @view_builder = ViewBuilder.new(table_name: field_params[:table],
+    @view_builder = ViewBuilder.new(view_name: params[:view_name],
+                                    table_name: field_params[:table],
                                     table_attributes: table_attributes(field_params[:selectedOptions]))
 
     if @view_builder.save!
@@ -32,7 +33,7 @@ class ViewBuilderController < ApplicationController
     @view_builder.table_attributes[:default_rows] = params[:defaultRows]
 
     if @view_builder.save!
-      render 'something'
+      redirect_to view_builder_url(@view_builder)
     end
   end
 
@@ -51,7 +52,7 @@ class ViewBuilderController < ApplicationController
   end
 
   def field_params
-    params.permit(:table, selectedOptions: [])
+    params.permit(:view_name, :table, selectedOptions: [])
   end
 
   def table_attributes(field_params)

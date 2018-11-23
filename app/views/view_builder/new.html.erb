@@ -1,6 +1,9 @@
 <div class="row wrapper wrapper-content border-bottom white-bg">
   <div class="form-group row">
     <div class="col-sm-10">
+      <%= text_field_tag "View name", nil, placeholder: "Provide a name for your view...", class: "form-control m-b" %>
+    </div>
+    <div class="col-sm-10">
       <%= select_tag "Select table", options_for_select(@available_tables), prompt: 'Select a table', class: "form-control m-b select2" %>
     </div>
 

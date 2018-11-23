@@ -64,6 +64,7 @@ function saveFieldConfiguration () {
       type: 'POST',
       data: {
         table: $('#Select_table').val(),
+        view_name: $('#View_name').val(),
         selectedOptions: selectedOptions
       },
       error: function(XMLHttpRequest, errorTextStatus, error){
