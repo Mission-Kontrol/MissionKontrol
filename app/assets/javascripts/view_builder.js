@@ -79,14 +79,14 @@ function saveFieldConfiguration () {
 function loadTableConfigurations () {
   $('#updateFieldConfiguration').click(function() {
     var tableConfigurations = $('#tableOrderConfiguration tr').map(function (a, b) {
-                                var field = $('.tableField', b).text();
-                                // var position = $('.tablePosition', b).text();
-                                return field ;
+                                var field = $('.tableField', b).data('value');
+                                var position = $('.tableField', b).data('pos');
+                                return { Field: field, Position: position } ;
                               }).get();
-    var defaultRows = $("#default_rows").val()
-    var viewBuilder = $("#tableOrderConfiguration").data("viewBuilder")
+    var defaultRows = $("#defaultRows").val()
+    var viewBuilderId = $("#tableOrderConfiguration").data("viewBuilderId")
     $.ajax({
-      url: "/view_builder/" + viewBuilder,
+      url: "/view_builder/" + viewBuilderId,
       type: 'PUT',
       data: {
         tableConfigurations: tableConfigurations,
@@ -101,6 +101,3 @@ function loadTableConfigurations () {
     })
   })
 }
-
-
-// https://forum.jquery.com/topic/moving-table-rows-up-or-down-and-dynamically-adjusting-each-row-s-sequence-id

@@ -21,17 +21,19 @@ class ViewBuilderController < ApplicationController
 
     if @view_builder.save!
       render 'configure_table_order', view_builder: @view_builder
-      # format.html { render '/view_builder/table_order' }
     end
   end
 
   def update
     @view_builder = ViewBuilder.find(params[:id])
 
-    @view_builder.table_attributes = table_attributes(params[:tableConfigurations])
+    @view_builder.table_attributes = configure_attributes(params[:tableConfigurations])
 
-    @view_builder.table_attributes.merge(default_rows: params[:defaultRow])
-    render 'something'
+    @view_builder.table_attributes[:default_rows] = params[:defaultRows]
+
+    if @view_builder.save!
+      render 'something'
+    end
   end
 
   def configure_table_order
@@ -56,8 +58,18 @@ class ViewBuilderController < ApplicationController
     table_attributes = {}
 
     field_params.each_with_index do |i, field|
-      return if i.nil?
+      next if i.nil?
       table_attributes[field] = i
+    end
+
+    { 'visible_fields': table_attributes }
+  end
+
+  def configure_attributes(field_params)
+    table_attributes = {}
+
+    field_params.as_json.each do |_k, value|
+      table_attributes[value['Position']] = value['Field']
     end
 
     { 'visible_fields': table_attributes }
