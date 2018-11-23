@@ -5,6 +5,7 @@ $(function() {
     toastr.success('Table changed, remember to update your filters.');
     filterColumnsByTable()
   })
+  $('#visible-column-select').bootstrapDualListbox();
 })
 
 function removeFilter(event) {
@@ -30,12 +31,13 @@ function filterColumnsByTable() {
 
   if (options) {
     $( "select[name^='work_list[sql_filters][][sql_filter][column]']" ).html(options);
+    $("#visible-column-select").html(options);
+    $('#visible-column-select').bootstrapDualListbox('refresh', true);
   }
 }
 
 function getOptionsForColumnSelect(tableName) {
   var columns = $('#sql-filter-columns').html();
-  var table = $('.table-select :selected').text();
-  var label = "optgroup[label='" + table + "']";
+  var label = "optgroup[label='" + tableName + "']";
   return $(columns).filter(label).html();
 }
