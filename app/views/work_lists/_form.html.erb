@@ -31,6 +31,7 @@
       <div id="tab-2" class="tab-pane">
         <div class="panel-body">
           <div class="form-group">
+            <label for="">Leave blank to use builder SQL</label>
             <%= f.text_field :sql_query, placeholder: @work_list.to_sql, class: 'form-control'%>
           </div>
         </div>
@@ -42,6 +43,13 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="form-group">
+    <label for="">Visible columns</label>
+    <p>Choose which columns will be visible on this work list</p>
+    <select class="" id="visible-column-select" name="work_list[visible_columns][]" multiple>
+    </select>
   </div>
 
   <div class="form-group">
@@ -63,7 +71,10 @@
   </div>
 
   <div class="form-group">
-    <label for="">On failure how long before the worklist item should re-appear?</label>
+    <label for="">
+      On failure how long before the worklist item should re-appear?
+    </label>
+
     <%= select_tag(:failure_timeout_interval, options_for_select(WorkList::FAILURE_TIMEOUT_INTERVALS), class: 'form-control') %>
   </div>
 
@@ -71,3 +82,30 @@
     <%= f.submit "Save", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+  let visibleColumnSelectDualList = $('#visible-column-select') ;
+  let visibleColumns = <%= raw @work_list.visible_columns.to_json %> ;
+
+  var selectedTable = $('.table-select :selected').text();
+
+  if (selectedTable) {
+    var options = getOptionsForColumnSelect(selectedTable);
+    var modifiedOptions = "";
+
+    $(options).each(function() {
+      if (visibleColumns.includes($(this).val())) {
+        $(this).attr('selected','selected');
+        modifiedOptions += this.outerHTML
+      } else {
+        modifiedOptions += this.outerHTML
+      }
+    })
+
+    if (options) {
+      $("#visible-column-select").html(modifiedOptions);
+      $('#visible-column-select').bootstrapDualListbox('refresh', true);
+    }
+  }
+</script>

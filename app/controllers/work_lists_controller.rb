@@ -77,6 +77,8 @@ class WorkListsController < ApplicationController
     params.require(:work_list).permit(:name,
                                       :details,
                                       :data_table_name,
+                                      :sql_query,
+                                      visible_columns: [],
                                       sql_filters: sql_filter_params,
                                       outcomes: outcome_params)
   end

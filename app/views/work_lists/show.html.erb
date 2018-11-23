@@ -36,17 +36,19 @@
             <thead>
               <tr>
                 <% @work_list_data.columns.each do |col| %>
+                  <% next unless @work_list.visible_columns.include?(col) %>
                   <th data-sort-ignore="true"><%= col %></th>
                 <% end %>
               </tr>
             </thead>
 
             <tbody>
-              <% @work_list_data.rows.each do |row| %>
+              <% @work_list_data.to_hash.each do |row| %>
                 <tr>
-                  <% row.each do |val|  %>
+                  <% row.each do |k, v|  %>
+                  <% next unless @work_list.visible_columns.include?(k) %>
                     <td>
-                      <%= val %>
+                      <%= v %>
                     </td>
                   <% end %>
                 </tr>

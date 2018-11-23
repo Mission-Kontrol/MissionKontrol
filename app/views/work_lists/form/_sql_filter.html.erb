@@ -11,7 +11,7 @@
 
   <div class="col-sm-12 col-md-8 col-lg-3 ">
     <div class="form-group">
-      <%= select_tag("work_list[sql_filters][][sql_filter][column]", grouped_options_for_select(@hash_of_tables_and_columns, filter.column), prompt: "Select a column", class: 'form-control column-select') %>
+      <%= select_tag("work_list[sql_filters][][sql_filter][column]", grouped_options_for_select(@hash_of_tables_and_columns, filter.column), prompt: "Select a table to begin", class: 'form-control column-select') %>
     </div>
   </div>
 
