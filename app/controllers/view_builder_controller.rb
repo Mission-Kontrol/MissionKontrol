@@ -35,6 +35,8 @@ class ViewBuilderController < ApplicationController
 
     @view_builder.table_attributes[:default_rows] = params[:defaultRows]
 
+    @view_builder.status = params[:status] if params[:status]
+
     if @view_builder.save!
       render json: { success: true }
     end

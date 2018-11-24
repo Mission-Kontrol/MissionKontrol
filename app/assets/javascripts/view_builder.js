@@ -86,12 +86,14 @@ function loadTableConfigurations () {
                               }).get();
     var defaultRows = $("#defaultRows").val()
     var viewBuilderId = $("#tableOrderConfiguration").data("viewBuilderId")
+    var status = $("#status").val()
     $.ajax({
       url: "/view_builder/" + viewBuilderId,
       type: 'PUT',
       data: {
         tableConfigurations: tableConfigurations,
-        defaultRows: defaultRows
+        defaultRows: defaultRows,
+        status: status
       },
       error: function(XMLHttpRequest, errorTextStatus, error){
                 alert("Failed: "+ errorTextStatus+" ;"+error);

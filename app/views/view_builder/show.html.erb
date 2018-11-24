@@ -28,7 +28,7 @@
                   <h5>Default visible rows:</h5>
                   <%= select_tag "default_rows", options_for_select((2..50), @view_builder.table_attributes['default_rows']), class: "form-control m-b select2", id: "defaultRows" %>
                   <h5>Status:</h5>
-                  <%= select_tag "status", options_for_select(status_options, selected: @view_builder.status), class: "form-control m-b select2" %>
+                  <%= select_tag "status", options_for_select(status_options, selected: @view_builder.status), class: "form-control m-b select2", id: "status" %>
                 </div>
               </div>
             </div>
