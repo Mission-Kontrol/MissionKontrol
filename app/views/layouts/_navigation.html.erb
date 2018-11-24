@@ -81,6 +81,23 @@
         </ul>
       </li>
 
+      <li class="<%= active_controller?('view_builder') %>">
+        <a href="">
+          <i class="fa fa-cogs" aria-hidden="true"></i>
+          <span class="nav-label" data-i18n="nav.dashboard">ViewBuilder</span> <span class="fa arrow"></span>
+        </a>
+
+        <ul class="nav nav-second-level collapse">
+          <li class="">
+            <%= link_to "View all", view_builder_index_path %>
+          </li>
+
+          <li class="">
+            <%= link_to "Add new", new_view_builder_path %>
+          </li>
+        </ul>
+      </li>
+
       <li class="<%= active_controller?('reports') %>">
         <%= link_to reports_path do %>
           <i class="fa fa-line-chart"></i>

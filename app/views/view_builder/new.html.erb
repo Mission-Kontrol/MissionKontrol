@@ -3,7 +3,7 @@
     <h2>View configuration</h2>
   </div>
   <div class="col-sm-2 pull-right">
-    <%= if @view_builder %>
+    <% if @view_builder %>
       <button type="button" class="btn btn-<%= @view_builder.status %>"><%= @view_builder.status.capitalize %></button>
     <% end %>
   </div>

@@ -2,6 +2,9 @@
   <div class="col-sm-4">
     <h2>Available Views</h2>
   </div>
+  <div class="col-sm-2 pull-right">
+    <%= link_to('Add new', new_view_builder_path, html_options = { class: "btn btn-info" }) %>
+  </div>
 </div>
 
 <div class="row">
@@ -23,7 +26,7 @@
                 <button type="button" class="btn btn-<%= view_builder.status %>"><%= view_builder.status.capitalize %>
               </td>
               <td>
-                <%= link_to('View/Edit', view_builder_url(view_builder), html_options = { class: "btn btn-info" }) %>
+                <%= link_to('View/Edit', view_builder_path(view_builder), html_options = { class: "btn btn-info" }) %>
               </td>
             </tr>
           <% end %>
