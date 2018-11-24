@@ -1,1 +1,67 @@
-What what
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>View configuration</h2>
+  </div>
+  <div class="col-sm-2 pull-right">
+    <button type="button" class="btn btn-<%= @view_builder.status %>"><%= @view_builder.status.capitalize %></button>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="wrapper wrapper-content border-bottom border-top white-bg">
+      <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+          <div class="row">
+            <div class="col-sm-5">
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h4>View Details</h4>
+                </div>
+                <div class="panel-body">
+                  <h5>View name:</h5>
+                  <%= text_field_tag "View name", "#{@view_builder.view_name}", class: "form-control m-b" %>
+                  <h5>Table:</h5>
+                  <p><%= @view_builder.table_name %></p>
+                  <h5>Default visible rows:</h5>
+                  <%= select_tag "default_rows", options_for_select((2..50), @view_builder.table_attributes['default_rows']), class: "form-control m-b select2", id: "defaultRows" %>
+                  <h5>Status:</h5>
+                  <%= select_tag "status", options_for_select(status_options, selected: @view_builder.status), class: "form-control m-b select2" %>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-5 pull-right">
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  <h4>Table fields</h4>
+                </div>
+                <div class="panel-body">
+                  <table id="tableOrderConfiguration" class="footable table" data-page-size="8" data-filter="#filter" data-view-builder-id="<%= @view_builder.id %>">
+                    <thead>
+                      <tr>
+                        <th>Field Name</th>
+                      </tr>
+                    </thead>
+                    <tbody class='sortable'>
+                      <% @view_builder.table_attributes['visible_fields'].each do |key, value| %>
+                        <tr class="fields_<%= key %>">
+                          <td class="tableField" data-value="<%= value %>"><%= value %></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2 pull-right">
+          <button type='button' class='btn btn-block btn-primary margin-top-20' id='updateFieldConfiguration'>Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

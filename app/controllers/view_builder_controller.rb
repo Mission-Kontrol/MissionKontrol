@@ -8,7 +8,10 @@ class ViewBuilderController < ApplicationController
     @available_tables = available_tables
   end
 
-  def show; end
+  def show
+    @view_builder = ViewBuilder.find(params[:id])
+
+  end
 
   def table_fields
     @fields = list_table_fields(params[:table])
@@ -33,7 +36,7 @@ class ViewBuilderController < ApplicationController
     @view_builder.table_attributes[:default_rows] = params[:defaultRows]
 
     if @view_builder.save!
-      redirect_to view_builder_url(@view_builder)
+      render json: { success: true }
     end
   end
 

@@ -97,7 +97,7 @@ function loadTableConfigurations () {
                 alert("Failed: "+ errorTextStatus+" ;"+error);
              },
       success: function(response, status, request){
-        $('body').html(response);
+        window.location = '/view_builder/' + viewBuilderId
       }
     })
   })
