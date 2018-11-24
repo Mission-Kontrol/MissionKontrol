@@ -22,7 +22,7 @@
                 </div>
                 <div class="panel-body">
                   <h5>View name:</h5>
-                  <%= text_field_tag "View name", "#{@view_builder.view_name}", class: "form-control m-b" %>
+                  <%= text_field_tag "View name", "#{@view_builder.view_name}", class: "form-control m-b", id: "viewName" %>
                   <h5>Table:</h5>
                   <p><%= @view_builder.table_name %></p>
                   <h5>Default visible rows:</h5>
@@ -38,7 +38,7 @@
                   <h4>Table fields</h4>
                 </div>
                 <div class="panel-body">
-                  <table id="tableOrderConfiguration" class="footable table" data-page-size="8" data-filter="#filter" data-view-builder-id="<%= @view_builder.id %>">
+                  <table id="tableOrderConfiguration" class="table table-hover" data-page-size="8" data-filter="#filter" data-view-builder-id="<%= @view_builder.id %>">
                     <thead>
                       <tr>
                         <th>Field Name</th>

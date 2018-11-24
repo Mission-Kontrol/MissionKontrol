@@ -1,0 +1,34 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Available Views</h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="wrapper wrapper-content border-bottom border-top white-bg">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>View name</th>
+            <th>View status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @view_builders.each do |view_builder| %>
+            <tr>
+              <td><%= view_builder.view_name %></td>
+              <td>
+                <button type="button" class="btn btn-<%= view_builder.status %>"><%= view_builder.status.capitalize %>
+              </td>
+              <td>
+                <%= link_to('View/Edit', view_builder_url(view_builder), html_options = { class: "btn btn-info" }) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

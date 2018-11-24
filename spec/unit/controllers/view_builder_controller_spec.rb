@@ -120,7 +120,20 @@ describe ViewBuilderController, type: :controller do
     end
 
     it 'will assign the view_builder' do
+      expect(assigns[:view_builder]).to eq view_builder
+    end
+  end
 
+  describe '#index' do
+    before { get :index }
+    let(:view_builder) { create(:view_builder) }
+
+    it 'will render the page' do
+      expect(response.status).to eq(200)
+    end
+
+    it 'will assign the view_builders' do
+      expect(assigns[:view_builders]).to eq [view_builder]
     end
   end
 end

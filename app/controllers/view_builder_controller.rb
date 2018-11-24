@@ -10,7 +10,10 @@ class ViewBuilderController < ApplicationController
 
   def show
     @view_builder = ViewBuilder.find(params[:id])
+  end
 
+  def index
+    @view_builders = ViewBuilder.all.sort
   end
 
   def table_fields
@@ -31,11 +34,7 @@ class ViewBuilderController < ApplicationController
   def update
     @view_builder = ViewBuilder.find(params[:id])
 
-    @view_builder.table_attributes = configure_attributes(params[:tableConfigurations])
-
-    @view_builder.table_attributes[:default_rows] = params[:defaultRows]
-
-    @view_builder.status = params[:status] if params[:status]
+    update_attributes(@view_builder, params)
 
     if @view_builder.save!
       render json: { success: true }
@@ -79,5 +78,12 @@ class ViewBuilderController < ApplicationController
     end
 
     { 'visible_fields': table_attributes }
+  end
+
+  def update_attributes(view_builder, params)
+    view_builder.table_attributes = configure_attributes(params[:tableConfigurations])
+    view_builder.table_attributes[:default_rows] = params[:defaultRows]
+    view_builder.status = params[:status] if params[:status]
+    view_builder.view_name = params[:name] if params[:name]
   end
 end

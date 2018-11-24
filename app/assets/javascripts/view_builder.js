@@ -84,16 +84,18 @@ function loadTableConfigurations () {
                                 var position = $('.tableField', b).data('pos');
                                 return { Field: field, Position: position } ;
                               }).get();
-    var defaultRows = $("#defaultRows").val()
-    var viewBuilderId = $("#tableOrderConfiguration").data("viewBuilderId")
-    var status = $("#status").val()
+    var defaultRows = $("#defaultRows").val();
+    var viewBuilderId = $("#tableOrderConfiguration").data("viewBuilderId");
+    var status = $("#status").val();
+    var name = $('#viewName').val();
     $.ajax({
       url: "/view_builder/" + viewBuilderId,
       type: 'PUT',
       data: {
         tableConfigurations: tableConfigurations,
         defaultRows: defaultRows,
-        status: status
+        status: status,
+        name: name
       },
       error: function(XMLHttpRequest, errorTextStatus, error){
                 alert("Failed: "+ errorTextStatus+" ;"+error);
