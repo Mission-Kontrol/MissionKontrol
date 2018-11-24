@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
   get 'view_builder/table_fields', to: 'view_builder#table_fields'
   get 'view_builder/table_order', to: 'view_builder#configure_table_order'
+  get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
+
   resources :view_builder
 
   resources :work_lists, only: %i[index show]

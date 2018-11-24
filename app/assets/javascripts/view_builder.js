@@ -1,6 +1,7 @@
 $(document).ready(function() {
   loadTableFields();
   loadTableConfigurations();
+  loadViewData();
 });
 
 function loadDualSelect () {
@@ -105,4 +106,32 @@ function loadTableConfigurations () {
       }
     })
   })
+}
+
+function loadViewData () {
+  if($('#viewBuilderPanel').length >= 1) {
+    viewBuilderId = $('#viewBuilderPanel').data("viewBuilderId");
+    userId = $('#viewBuilderPanel').data("userId");
+    $.ajax({
+      url: "/view_builder/retrieve_data",
+      type: 'GET',
+      data: {
+        viewBuilderId: viewBuilderId,
+        userId: userId
+      },
+      error: function(XMLHttpRequest, errorTextStatus, error){
+                alert("Failed: "+ errorTextStatus+" ;"+error);
+             },
+     success: function(data){
+       $.each(data, function (i, val) {
+         $('#viewTableBody').append("<tr>")
+         $.each(val, function (i,val) {
+           $('#viewTableBody').append("<td>" + val + "</td>")
+         })
+         $('#viewTableBody').append("/<tr>")
+       })
+       console.log(data)
+     }
+    })
+  }
 }

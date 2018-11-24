@@ -41,11 +41,22 @@ class ViewBuilderController < ApplicationController
     end
   end
 
+  def retrieve_data
+    @view_builder = ViewBuilder.find(params[:viewBuilderId])
+    data = retrieve_data_from_database(params[:userId], @view_builder)
+    render json: data
+  end
+
   def configure_table_order
 
   end
 
   private
+
+  def retrieve_data_from_database(query_limiter, view_builder)
+    query = "user_id = #{query_limiter}"
+    Kuwinda::Presenter::RetrieveData.new(ClientRecord, view_builder, query).call
+  end
 
   def list_table_fields(table)
     Kuwinda::Presenter::ListTableFields.new(ClientRecord, table).call

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
 describe ViewBuilderController, type: :controller do
   let(:table) { 'Users' }
 
@@ -134,6 +135,22 @@ describe ViewBuilderController, type: :controller do
 
     it 'will assign the view_builders' do
       expect(assigns[:view_builders]).to eq [view_builder]
+    end
+  end
+
+  describe '#get_data' do
+    before { get :get_data, params: params }
+    let(:user) { create(:user, email: 'test@email.com') }
+    let(:view_builder) { create(:view_builder) }
+    let(:params) do
+      {
+        userId: user.id,
+        viewBuilderId: view_builder.id
+      }
+    end
+
+    it 'will return the data as a json' do
+      expect(response.body).to eq 'data'
     end
   end
 end
