@@ -123,14 +123,15 @@ function loadViewData () {
                 alert("Failed: "+ errorTextStatus+" ;"+error);
              },
      success: function(data){
+       var result = ""
        $.each(data, function (i, val) {
-         $('#viewTableBody').append("<tr>")
+         result += "<tr>"
          $.each(val, function (i,val) {
-           $('#viewTableBody').append("<td>" + val + "</td>")
+           result += "<td>" + val + "</td>"
          })
-         $('#viewTableBody').append("/<tr>")
+         result += "</tr>"
        })
-       console.log(data)
+       $('#viewTableBody').append(result)
      }
     })
   }
