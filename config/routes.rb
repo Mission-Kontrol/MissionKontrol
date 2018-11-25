@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :companies, only: %i[index show]
 
   get 'view_builder/table_fields', to: 'view_builder#table_fields'
-  get 'view_builder/table_order', to: 'view_builder#configure_table_order'
+  get 'view_builder/view', to: 'view_builder#view_page'
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
   resources :view_builder

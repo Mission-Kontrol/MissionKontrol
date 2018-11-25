@@ -3,6 +3,7 @@
 class ViewBuilderController < ApplicationController
   layout 'dashboard'
   skip_before_action :verify_authenticity_token
+  before_action :load_view_builder, only: [:show, :update, :view_page]
 
   def new
     @available_tables = available_tables
@@ -47,14 +48,17 @@ class ViewBuilderController < ApplicationController
     render json: data
   end
 
-  def configure_table_order
-
+  def view_page
   end
 
   private
 
+  def load_view_builder
+    @view_builder = ViewBuilder.find(params[:id])
+  end
+
   def retrieve_data_from_database(query_limiter, view_builder)
-    query = "user_id = #{query_limiter}"
+    query = query_limiter.empty? ? '' : "WHERE user_id = #{query_limiter}"
     Kuwinda::Presenter::RetrieveData.new(ClientRecord, view_builder, query).call
   end
 

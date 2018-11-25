@@ -10,7 +10,7 @@ module Kuwinda
       end
 
       def call
-        query_string = "SELECT #{query_fields} FROM #{table} WHERE #{query_limiter}"
+        query_string = "SELECT #{query_fields} FROM #{table} #{query_limiter}"
         response = database.connection.exec_query(query_string)
 
         display_results(response)

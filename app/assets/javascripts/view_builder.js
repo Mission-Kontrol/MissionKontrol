@@ -48,6 +48,7 @@ function loadTableFields () {
             $("#bootstrap-duallistbox-nonselected-list_").append(opt);
           })
           loadDualSelect();
+          replaceArrowGlypicon();
           saveFieldConfiguration();
         }
       })

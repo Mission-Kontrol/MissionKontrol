@@ -1,4 +1,4 @@
-<div class="ibox float-e-margins" id="viewBuilderPanel" data-view-builder-id="<%= view_builder.id %>" data-user-id="<%= @user.id %>">
+<div class="ibox float-e-margins" id="viewBuilderPanel" data-view-builder-id="<%= view_builder.id %>" data-user-id="<%= @user.id if @user %>">
   <div class="ibox-title">
     <h5><%= view_builder.view_name %></h5>
   </div>
@@ -13,7 +13,6 @@
         </tr>
       </thead>
       <tbody id="viewTableBody">
-
       </tbody>
     </table>
   </div>
