@@ -10,7 +10,7 @@ describe Kuwinda::Presenter::RetrieveData do
     Kuwinda::UseCase::DatabaseConnection.new.execute
   end
   let(:view_builder) { create(:view_builder) }
-  let(:query_limiter) { 'user_id = 1' }
+  let(:query_limiter) { 'WHERE user_id = 1' }
   let(:expected_result) do
     {
       0 => ['London', 'pro', 'gold', 1],
