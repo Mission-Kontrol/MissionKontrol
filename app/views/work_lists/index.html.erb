@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Worklists</h2>
+    <h2>Work lists</h2>
 
     <ol class="breadcrumb">
       <li>
@@ -8,7 +8,7 @@
       </li>
 
       <li class="active">
-        <span>Worklists</span>
+        <span>Work lists</span>
       </li>
     </ol>
   </div>
@@ -20,13 +20,17 @@
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>Worklists</h5>
+
+          <div class="ibox-tools">
+            <%= link_to 'Create new work list', new_work_list_path, class: 'btn btn-primary btn-xs' %>
+          </div>
         </div>
 
         <div class="ibox-content">
           <input type="text" class="form-control input-sm m-b-xs" id="filter"
           placeholder="Search in table">
 
-          <%= render 'shared/demo_table' %>
+          <%= render 'work_list_table' %>
         </div>
       </div>
     </div>

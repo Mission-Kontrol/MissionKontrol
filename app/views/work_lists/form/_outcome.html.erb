@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-sm-12 col-md-3">
+    <div class="form-group">
+      <%= text_field_tag "work_list[outcomes][][outcome][title]", outcome.title , class: 'form-control', placeholder: "Title e.g. success"%>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-7">
+    <div class="form-group">
+      <%= text_field_tag "work_list[outcomes][][outcome][detail]", outcome.detail , class: 'form-control', placeholder: "Talked to customer"%>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-2">
+    <div class="form-group" style="text-align: right">
+      <%= link_to "Remove", remove_work_list_outcome_path, remote: true, method: :post, class: "btn btn-default remove-work-list-outcome-btn" %>
+    </div>
+  </div>
+</div>

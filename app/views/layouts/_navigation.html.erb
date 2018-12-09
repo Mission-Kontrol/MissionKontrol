@@ -67,6 +67,11 @@
       </li>
 
       <li class="<%= active_controller?('work_lists') %>">
+        <%= link_to work_lists_path do %>
+          <i class="fa fa-list" aria-hidden="true"></i>
+          <span class="nav-label" data-i18n="nav.work_lists">Work lists</span>
+        <% end %>
+
         <a href="">
           <i class="fa fa-list-ol" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.dashboard">Worklists</span> <span class="fa arrow"></span>

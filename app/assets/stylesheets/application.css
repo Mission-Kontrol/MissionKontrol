@@ -38,3 +38,7 @@
 .width-100 {
   width: 100%;
 }
+
+.alert ul {
+  list-style-type: none;
+}

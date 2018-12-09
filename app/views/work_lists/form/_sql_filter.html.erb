@@ -1,0 +1,50 @@
+<div class="row " style="border-bottom: 1px solid #eaeaea; margin-bottom: 15px">
+  <div class="col-md-4 col-lg-2 ">
+    <div class="form-group">
+      <% if filter.operator.nil? %>
+        <%= text_field_tag "work_list[sql_filters][][sql_filter][operator]", "WHERE", class: 'form-control', readonly: true %>
+      <% else %>
+        <%= text_field_tag "work_list[sql_filters][][sql_filter][operator]", filter.operator, class: 'form-control', readonly: true %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-8 col-lg-3 ">
+    <div class="form-group">
+      <%= select_tag("work_list[sql_filters][][sql_filter][column]", grouped_options_for_select(@hash_of_tables_and_columns, filter.column), prompt: "Select a column", class: 'form-control column-select') %>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-4 col-lg-1 ">
+    <div class="form-group">
+      <input type="text" name="" value="is" disabled class="form-control">
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-8 col-lg-2 ">
+    <div class="form-group">
+      <%= select_tag("work_list[sql_filters][][sql_filter][kind]", options_for_select(SQLFilter::QUERY_CONDITIONS), class: 'form-control') %>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-8 col-lg-2 ">
+    <div class="form-group">
+      <%= text_field_tag "work_list[sql_filters][][sql_filter][value]", filter.value, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-4 col-lg-2 ">
+    <div class="form-group" style="text-align: right">
+      <%= link_to "Remove", remove_sql_filter_path, remote: true, method: :post, class: "btn btn-default remove-filter-btn" %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var selectedTable = $('.table-select :selected').text();
+  var selectedColumn = $(".column-select:last").find(":selected").text();
+
+  if (selectedTable) {
+    filterColumnByTable(selectedTable, selectedColumn);
+  }
+</script>

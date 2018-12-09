@@ -1,0 +1,2 @@
+$("<%= escape_javascript(render partial: 'work_lists/form/sql_filter' , locals: { filter: @sql_filter }) %>").appendTo("#sql-filters-container");
+toastr.success('Filter added, remember to save your work list.');

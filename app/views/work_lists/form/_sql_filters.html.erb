@@ -1,0 +1,22 @@
+<style media="screen">
+  #sql-filter-columns {
+    display: none;
+  }
+</style>
+
+<div class="row" id="sql-filters-container">
+  <%= select_tag("sql-filter-columns", grouped_options_for_select(@hash_of_tables_and_columns), id: 'sql-filter-columns') %>
+
+  <div class="col-xs-12">
+    <% @work_list.sql_filters.each do |filter_attributes| %>
+      <%= render 'work_lists/form/sql_filter', filter: SQLFilterFactory.build_sql_filter(filter_attributes["sql_filter"]) %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row ">
+  <div class="col-xs-12" style="text-align: right;padding: 0">
+    <%= link_to "Add 'AND'", add_sql_filter_path(sql_filter: { operator: 'and' }), remote: true, method: :post, class: "btn btn-default" %>
+    <%= link_to "Add 'OR'", add_sql_filter_path(sql_filter: { operator: 'or' }), remote: true, method: :post, class: "btn btn-default" %>
+  </div>
+</div>
