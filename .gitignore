@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+.env
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -20,3 +21,5 @@ Guardfile
 
 config/admin_db_*
 config/target_db_*
+
+.env

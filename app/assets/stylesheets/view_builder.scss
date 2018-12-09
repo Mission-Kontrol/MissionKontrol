@@ -1,0 +1,20 @@
+@import "dualListbox/bootstrap-duallistbox.min.css";
+
+.select-pending, .btn-pending {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.select-active, .btn-active {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+
+}
+
+.select-deactivated, .btn-deactivated {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}

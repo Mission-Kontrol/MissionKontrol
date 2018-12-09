@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @activity = @user.activities.new
     @activities = OpenStruct.new
+    @view_builders = find_view_builders
     group_activities_by_kind
   end
 
@@ -49,5 +50,17 @@ class UsersController < ApplicationController
     @activities.notes = @activities_for_user.select do |i|
       i.kind == 'note'
     end
+  end
+
+  def table_fields
+    Kuwinda::Presenter::ListTableFields.new(ClientRecord, 'Users').call
+  end
+
+  def permitted_params
+    params.require(:user).permit(:id)
+  end
+
+  def find_view_builders
+    ViewBuilder.where(status: 'active', table_name: 'Events')
   end
 end

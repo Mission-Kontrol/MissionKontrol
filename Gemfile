@@ -37,6 +37,7 @@ end
 
 group :test do
   gem 'capybara', '~> 2.17.0'
+  gem 'capybara-selenium'
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'ffaker'
@@ -45,8 +46,9 @@ group :test do
   gem 'rspec-collection_matchers'
   gem 'rspec-its', '~> 1.2.0'
   gem 'rspec-rails', '~> 3.7.2'
-  gem 'rubocop', require: false
+  gem 'rubocop'
   gem 'rubocop-rspec'
+  gem 'shoulda-matchers'
   gem 'vcr', '~> 4.0.0'
   gem 'webmock', '~> 3.3.0'
   gem 'with_model', '~> 2.0.0'
