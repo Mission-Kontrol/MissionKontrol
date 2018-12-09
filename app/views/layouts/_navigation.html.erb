@@ -71,6 +71,54 @@
           <i class="fa fa-list" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.work_lists">Work lists</span>
         <% end %>
+
+        <a href="">
+          <i class="fa fa-list-ol" aria-hidden="true"></i>
+          <span class="nav-label" data-i18n="nav.dashboard">Worklists</span> <span class="fa arrow"></span>
+        </a>
+
+        <ul class="nav nav-second-level collapse">
+          <% [ 'Accounts without demos', 'End of trial calls', 'Slipping away' ].each_with_index do |i, index| %>
+            <li class="">
+              <%= link_to "#{i}", work_list_path(index + 1) %>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+
+      <li class="<%= active_action?('view_page') %>">
+        <a href="">
+          <i class="fa fa-cogs" aria-hidden="true"></i>
+          <span class="nav-label" data-i18n="nav.dashboard">ViewBuilder</span> <span class="fa arrow"></span>
+        </a>
+
+        <ul class="nav nav-second-level collapse">
+          <li class="">
+            <%= link_to "View all", view_builder_index_path %>
+          </li>
+
+          <li class="">
+            <%= link_to "Add new", new_view_builder_path %>
+          </li>
+        </ul>
+      </li>
+
+      <% if @view_builders.any? %>
+        <% @view_builders.each do |view_builder| %>
+          <li class="<%= active_controller?('view_builder') %>">
+            <%= link_to view_builder_view_path(id: view_builder) do %>
+            <i class="fa fa-anchor"></i>
+            <span class="nav-label" data-i18n="nav.layouts"><%= view_builder.view_name %></span>
+            <% end %>
+          </li>
+        <% end %>
+      <% end %>
+
+      <li class="<%= active_controller?('reports') %>">
+        <%= link_to reports_path do %>
+          <i class="fa fa-line-chart"></i>
+          <span class="nav-label" data-i18n="nav.layouts">Reports</span>
+        <% end %>
       </li>
     </ul>
   </div>
