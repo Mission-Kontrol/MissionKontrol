@@ -4,7 +4,6 @@ class WorkListsController < ApplicationController
   layout 'dashboard'
   before_action :set_db_tables, only: %i[new create add_sql_filter edit]
   before_action :set_db_columns, only: %i[new create add_sql_filter edit]
-  # before_action :set_activities_for_company, only: :show
 
   def index
     @work_lists = WorkList.order(created_at: :desc)
