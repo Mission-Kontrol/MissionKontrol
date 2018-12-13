@@ -1,6 +1,5 @@
-# frozen_string_literal: true
+#!/usr/bin/env ruby
 
-# !/usr/bin/env ruby
 VENDOR_PATH = File.expand_path('..', __dir__)
 Dir.chdir(VENDOR_PATH) do
   exec "yarnpkg #{ARGV.join(' ')}"

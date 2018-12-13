@@ -13,6 +13,7 @@
 !/log/.keep
 /tmp
 .bash_history
+.env
 
 .ruby-version
 .byebug_history
