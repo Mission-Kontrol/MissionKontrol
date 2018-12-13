@@ -92,7 +92,6 @@ GEM
       railties (>= 3.0.0)
     ffaker (2.9.0)
     ffi (1.9.25)
-    flamegraph (0.9.5)
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     formatador (0.2.5)
@@ -163,8 +162,6 @@ GEM
     public_suffix (3.0.2)
     puma (3.11.4)
     rack (2.0.5)
-    rack-mini-profiler (1.0.1)
-      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.1)
@@ -281,7 +278,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    stackprof (0.2.12)
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
       ref
@@ -329,7 +325,6 @@ DEPENDENCIES
   devise (~> 4.4.3)
   factory_bot_rails (~> 4.8.2)
   ffaker
-  flamegraph (~> 0.9.5)
   font-awesome-rails (~> 4.7.0.4)
   guard-rspec (~> 4.7, >= 4.7.3)
   jbuilder (~> 2.7.0)
@@ -339,7 +334,6 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (~> 3.11.2)
-  rack-mini-profiler (~> 1.0, >= 1.0.1)
   rails (= 5.1.1)
   rails-controller-testing
   rails-ujs (~> 0.1.0)
@@ -355,7 +349,6 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen
-  stackprof (~> 0.2.12)
   therubyracer (~> 0.12.3)
   turbolinks (~> 5.1.0)
   uglifier (~> 4.1.5)
