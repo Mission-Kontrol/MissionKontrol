@@ -151,6 +151,7 @@
         saveSelections(dualListbox, selectIndex);
 
         dualListbox.elements['select'+selectIndex].empty().scrollTop(0);
+
         var regex = new RegExp($.trim(dualListbox.elements['filterInput'+selectIndex].val()), 'gi'),
             allOptions = dualListbox.element.find('option'),
             options = dualListbox.element;

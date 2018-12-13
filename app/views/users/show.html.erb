@@ -37,4 +37,15 @@
       <%= render 'shared/activity_history', feedable_type: "user", feedable_id: params[:id] %>
     </div>
   </div>
+  <% if @view_builders.any? %>
+    <% @view_builders.each do |view_builder| %>
+      <div class="row">
+        <div class="col-sm-12">
+          <%= render 'view_builder/panel', view_builder: view_builder %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div>
 </div>

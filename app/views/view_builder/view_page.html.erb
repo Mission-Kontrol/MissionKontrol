@@ -1,0 +1,26 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-6">
+    <h2><%= @view_builder.view_name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to 'Home', dashboard_path %>
+      </li>
+
+      <li>
+        <%= link_to 'View Builders', view_builder_index_path %>
+      </li>
+
+      <li class="active">
+        <strong><%= @view_builder.view_name %></strong>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <%= render 'view_builder/panel', view_builder: @view_builder %>
+    </div>
+  </div>
+</div>

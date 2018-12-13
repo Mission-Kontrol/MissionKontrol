@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181122170852) do
+
+ActiveRecord::Schema.define(version: 20181123181141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +53,13 @@ ActiveRecord::Schema.define(version: 20181122170852) do
     t.jsonb "outcomes", default: []
     t.string "data_table_name"
     t.jsonb "visible_columns", default: []
+  end
+
+  create_table "view_builders", force: :cascade do |t|
+    t.string "table_name", null: false
+    t.jsonb "table_attributes", default: "{}", null: false
+    t.string "view_name"
+    t.string "status", default: "pending"
   end
 
 end
