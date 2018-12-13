@@ -13,7 +13,16 @@ Rails.application.routes.draw do
   resources :admin_users, only: :index
   resources :users, only: %i[index show]
   resources :companies, only: %i[index show]
+
   resources :work_lists, only: %i[index show new create edit update]
+
+
+  get 'view_builder/table_fields', to: 'view_builder#table_fields'
+  get 'view_builder/view', to: 'view_builder#view_page'
+  get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
+
+  resources :view_builder
+
   resources :reports, only: %i[index]
   resources :activities, only: :create
 

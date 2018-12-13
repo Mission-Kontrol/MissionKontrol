@@ -1,0 +1,29 @@
+marko:
+  id: 1
+  name: Marko
+  email: marko@example.com
+
+# "id",
+#  "email",
+#  "encrypted_password",
+#  "reset_password_token",
+#  "reset_password_sent_at",
+#  "remember_created_at",
+#  "sign_in_count",
+#  "current_sign_in_at",
+#  "last_sign_in_at",
+#  "current_sign_in_ip",
+#  "last_sign_in_ip",
+#  "created_at",
+#  "updated_at",
+#  "provider",
+#  "uid",
+#  "user",
+#  "name",
+#  "image_file_name",
+#  "image_content_type",
+#  "image_file_size",
+#  "image_updated_at",
+#  "level",
+#  "choice",
+#  "number"

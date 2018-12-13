@@ -12,4 +12,5 @@
 //= require slimscroll/jquery.slimscroll.min.js
 //= require toastr/toastr.min.js
 //= require dualListbox/jquery.bootstrap-duallistbox.js
+//= require html5sortable/html5sortable.js
 //= require_tree .
