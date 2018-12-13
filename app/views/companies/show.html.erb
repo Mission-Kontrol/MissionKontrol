@@ -33,7 +33,15 @@
     </div>
 
     <div class="col-lg-6">
-      <%= render 'shared/activity_history', feedable_type: "company", feedable_id: params[:id] %>
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Activity history</h5>
+        </div>
+
+        <div class="ibox-content">
+          <%= render 'shared/activity_history', feedable_type: "company", feedable_id: params[:id] %>
+        </div>
+      </div>
     </div>
 
     <div class="col-lg-6">

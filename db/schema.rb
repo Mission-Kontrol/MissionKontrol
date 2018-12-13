@@ -52,8 +52,9 @@ ActiveRecord::Schema.define(version: 20181123181141) do
     t.string "sql_query"
     t.jsonb "outcomes", default: []
     t.string "data_table_name"
+    t.jsonb "visible_columns", default: []
   end
-  
+
   create_table "view_builders", force: :cascade do |t|
     t.string "table_name", null: false
     t.jsonb "table_attributes", default: "{}", null: false

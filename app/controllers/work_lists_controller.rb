@@ -12,6 +12,12 @@ class WorkListsController < ApplicationController
   def show
     @work_list = WorkList.find(params[:id])
     @work_list_data = ClientRecord.connection.exec_query(@work_list.sql_to_run)
+
+    @activities = OpenStruct.new
+    @activities.all = []
+    @activities.calls = []
+    @activities.meetings = []
+    @activities.notes = []
   end
 
   def edit
@@ -77,6 +83,8 @@ class WorkListsController < ApplicationController
     params.require(:work_list).permit(:name,
                                       :details,
                                       :data_table_name,
+                                      :sql_query,
+                                      visible_columns: [],
                                       sql_filters: sql_filter_params,
                                       outcomes: outcome_params)
   end

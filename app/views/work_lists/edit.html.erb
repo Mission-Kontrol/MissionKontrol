@@ -11,6 +11,10 @@
         <%= link_to 'Work lists', work_lists_path %>
       </li>
 
+      <li>
+        <%= link_to @work_list.name, work_list_path(@work_list) %>
+      </li>
+
       <li class="active">
         <strong>Edit</strong>
       </li>
