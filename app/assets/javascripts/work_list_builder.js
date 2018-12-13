@@ -17,7 +17,7 @@ function removeWorkListOutcome(event) {
 }
 
 function filterColumnByTable(selectedTable, selectedColumn) {
-  var options = getOptionsForColumnSelect(selectedTable);
+  let options = getOptionsForColumnSelect(selectedTable);
 
   if (options) {
     $( "select[name^='work_list[sql_filters][][sql_filter][column]']:last" ).html(options);
@@ -26,8 +26,8 @@ function filterColumnByTable(selectedTable, selectedColumn) {
 }
 
 function filterColumnsByTable() {
-  var table = $('.table-select :selected').text();
-  var options = getOptionsForColumnSelect(table);
+  let table = $('.table-select :selected').text();
+  let options = getOptionsForColumnSelect(table);
 
   if (options) {
     $( "select[name^='work_list[sql_filters][][sql_filter][column]']" ).html(options);
@@ -37,7 +37,7 @@ function filterColumnsByTable() {
 }
 
 function getOptionsForColumnSelect(tableName) {
-  var columns = $('#sql-filter-columns').html();
-  var label = "optgroup[label='" + tableName + "']";
+  let columns = $('#sql-filter-columns').html();
+  let label = "optgroup[label='" + tableName + "']";
   return $(columns).filter(label).html();
 }

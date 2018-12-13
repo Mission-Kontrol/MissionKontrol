@@ -1,3 +1,6 @@
+<%= content_tag :div, class: "work_list_visible_columns", data: { columns: @work_list.visible_columns.to_json } do %>
+<% end %>
+
 <%= form_for(@work_list, html: {class: "m-t"}, remote: true) do |f| %>
   <div class="form-group">
     <%= f.label :name %>
@@ -82,30 +85,3 @@
     <%= f.submit "Save", class: "btn btn-primary" %>
   </div>
 <% end %>
-
-
-<script type="text/javascript">
-  let visibleColumnSelectDualList = $('#visible-column-select') ;
-  let visibleColumns = <%= raw @work_list.visible_columns.to_json %> ;
-
-  var selectedTable = $('.table-select :selected').text();
-
-  if (selectedTable) {
-    var options = getOptionsForColumnSelect(selectedTable);
-    var modifiedOptions = "";
-
-    $(options).each(function() {
-      if (visibleColumns.includes($(this).val())) {
-        $(this).attr('selected','selected');
-        modifiedOptions += this.outerHTML
-      } else {
-        modifiedOptions += this.outerHTML
-      }
-    })
-
-    if (options) {
-      $("#visible-column-select").html(modifiedOptions);
-      $('#visible-column-select').bootstrapDualListbox('refresh', true);
-    }
-  }
-</script>

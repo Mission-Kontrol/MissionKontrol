@@ -39,22 +39,69 @@
                   <% next unless @work_list.visible_columns.include?(col) %>
                   <th data-sort-ignore="true"><%= col %></th>
                 <% end %>
+
+                <th data-sort-ignore="true"></th>
               </tr>
             </thead>
 
             <tbody>
               <% @work_list_data.to_hash.each do |row| %>
-                <tr>
+
+                <tr data-work-list-item='<%= row.select { |k, v| @work_list.visible_columns.include?(k) }.to_json %>' data-work-list-table='<%= @work_list.data_table_name %>'>
                   <% row.each do |k, v|  %>
                   <% next unless @work_list.visible_columns.include?(k) %>
                     <td>
                       <%= v %>
                     </td>
                   <% end %>
+                  <td>
+                    <a href="#" class="show-work-list-item-btn">view</a>
+                  </td>
                 </tr>
               <% end %>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-form" class="modal fade" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding: 0">
+        <div class="row" style="background-color: #eaeaea;">
+          <div class="col-sm-5 b-r" style="padding: 50px 25px">
+            <h3 class="m-t-none m-b">
+              <%= @work_list.name %>
+            </h3>
+
+            <p>
+              <%= @work_list.details %>
+            </p>
+
+            <div class="work_list_item_data">
+            </div>
+
+            <div class="text-center" style="margin-top: 60px">
+              <% @work_list.outcomes.each_with_index do |outcome_attributes, index| %>
+                <% @outcome = WorkListOutcome.new(outcome_attributes["outcome"]) %>
+                <% if index == 0 %>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" style="width:160px;margin-bottom: 15px"><%= @outcome.detail %></button><br>
+                <% else %>
+                  <button type="button" class="btn btn-default" data-dismiss="modal" style="width:160px;margin-bottom: 15px"><%= @outcome.detail %></button><br>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="col-sm-7" style="background-color: white;padding: 50px 25px;min-height: 500px">
+            <h5>Activity history</h5>
+            <hr>
+
+            <%= render 'shared/activity_history', feedable_type: @work_list.data_table_name.singularize, feedable_id: 1 %>
+          </div>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ class WorkListsController < ApplicationController
   layout 'dashboard'
   before_action :set_db_tables, only: %i[new create add_sql_filter edit]
   before_action :set_db_columns, only: %i[new create add_sql_filter edit]
+  # before_action :set_activities_for_company, only: :show
 
   def index
     @work_lists = WorkList.order(created_at: :desc)
@@ -12,6 +13,12 @@ class WorkListsController < ApplicationController
   def show
     @work_list = WorkList.find(params[:id])
     @work_list_data = ClientRecord.connection.exec_query(@work_list.sql_to_run)
+
+    @activities = OpenStruct.new
+    @activities.all = []
+    @activities.calls = []
+    @activities.meetings = []
+    @activities.notes = []
   end
 
   def edit
