@@ -17,35 +17,59 @@
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
     <div class="col-lg-12">
-        <div class="ibox-content">
-          <div class="tabs-container" style="margin-bottom: 20px">
-            <ul class="nav nav-tabs">
-              <li class="active"><a data-toggle="tab" href="#tab-1">Activity feed</a></li>
-            </ul>
+      <div class="tabs-container" style="margin-bottom: 20px">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#tab-1">Activity feed</a></li>
+        </ul>
 
-            <div class="tab-content">
-              <div id="tab-1" class="tab-pane active">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-sm-4 showme">
-                      <p>speakers</p>
-                    </div>
-                    <div class="col-sm-4 showme">
-                      <p>commentable</p>
-                    </div>
-                    <div class="col-sm-4 showme">
-                      <p>primary table</p>
-                    </div>
-                  </div>
+        <div class="tab-content">
+          <div id="tab-1" class="tab-pane active">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-4 ">
+                </div>
+
+                <div class="col-sm-4 ">
+                  <p>Commentable</p>
+                </div>
+
+                <div class="col-sm-4 ">
+                  <p>Primary table</p>
+                </div>
+
+                <div class="col-sm-12">
+                  <hr>
                 </div>
               </div>
+                <% @target_db_tables.each do |t| %>
+                  <div class="row">
+                  <div class="col-sm-4 ">
+                    <p><%= t %></p>
+                  </div>
+                  <div class="col-sm-4 ">
+                    <div class="form-group">
+                      <input type="checkbox">
+                    </div>
+                  </div>
+                  <div class="col-sm-4 ">
+                    <div class="form-group">
+                      <%= select_tag("settings[primary_table_name]", options_for_select(@target_db_tables), prompt: "None", class: 'form-control') %>
+                    </div>
+                  </div>
+                  </div>
+                <% end %>
             </div>
           </div>
+        </div>
+      </div>
+
+        <!-- <div class="ibox-content"> -->
+
           <!-- <input type="text" class="form-control input-sm m-b-xs" id="filter" -->
           <!-- placeholder="Search in table"> -->
 
           <%# render 'work_list_table' %>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>

@@ -1,0 +1,53 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2><%= @table_name.capitalize %></h2>
+
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to 'Home', dashboard_path %>
+      </li>
+
+      <li class="">
+        <span>Tables</span>
+      </li>
+
+      <li class="">
+        <span><%= @table_name.capitalize %></span>
+      </li>
+
+      <li class="active">
+        <span><%= @row["id"] %></span>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-lg-4">
+      <%= render 'record_summary' %>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Activity history</h5>
+        </div>
+
+        <div class="ibox-content">
+          <%# render 'shared/activity_history', feedable_type: "user", feedable_id: params[:id] %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @view_builders.any? %>
+    <% @view_builders.each do |view_builder| %>
+      <div class="row">
+        <div class="col-sm-12">
+          <%= render 'view_builder/panel', view_builder: view_builder %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

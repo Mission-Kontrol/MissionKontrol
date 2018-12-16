@@ -1,0 +1,33 @@
+<div class="table-responsive">
+  <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+    <thead>
+      <tr>
+        <% @table.rows.columns.each do |c|%>
+          <th data-sort-ignore="true"><%= c %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @table.rows.each do |r|%>
+        <tr class="">
+          <% r.each do |k, v|%>
+            <td><%= v %></td>
+          <% end %>
+          
+          <td>
+            <%= link_to 'View Record', table_record_preview_url(@table.name, 2) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td colspan=<%= @table.rows.columns.size + 1 %>>
+          <ul class="pagination pull-right"></ul>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

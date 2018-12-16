@@ -1,0 +1,13 @@
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <div class="row">
+      <div class="col-xs-12">
+        <% @row.each do |k, v| %>
+          <p>
+            <strong><%= k %>:</strong> <%= v %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

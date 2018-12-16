@@ -12,7 +12,13 @@
     <ul class="nav navbar-top-links navbar-right">
       <li>
         <%= link_to edit_admin_user_registration_path do %>
-          <i class="fa fa-cog"></i>
+          <i class="fa fa-user" aria-hidden="true"></i>
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to dashboard_settings_path do %>
+          <span>Settings</span>
         <% end %>
       </li>
     </ul>
