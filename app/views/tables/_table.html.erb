@@ -2,21 +2,21 @@
   <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
     <thead>
       <tr>
-        <% @table.rows.columns.each do |c|%>
+        <% @target_db_repo.all.columns.each do |c|%>
           <th data-sort-ignore="true"><%= c %></th>
         <% end %>
       </tr>
     </thead>
 
     <tbody>
-      <% @table.rows.each do |r|%>
+      <% @target_db_repo.all.each do |r|%>
         <tr class="">
           <% r.each do |k, v|%>
             <td><%= v %></td>
           <% end %>
-          
+
           <td>
-            <%= link_to 'View Record', table_record_preview_url(@table.name, 2) %>
+            <%= link_to 'View Record', table_record_preview_url(@target_db_repo.table, 2) %>
           </td>
         </tr>
       <% end %>
@@ -24,7 +24,7 @@
 
     <tfoot>
       <tr>
-        <td colspan=<%= @table.rows.columns.size + 1 %>>
+        <td colspan=<%= @target_db_repo.all.columns.size + 1 %>>
           <ul class="pagination pull-right"></ul>
         </td>
       </tr>

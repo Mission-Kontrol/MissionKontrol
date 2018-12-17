@@ -8,6 +8,10 @@ class AdminUser < ApplicationRecord
 
   include SensitiveData
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def admin_database_name
     SensitiveData.get_admin_database_credential(:database_name)
   end

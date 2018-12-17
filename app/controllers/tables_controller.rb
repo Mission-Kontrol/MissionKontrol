@@ -2,7 +2,8 @@
 
 class TablesController < ApplicationController
   layout 'dashboard'
-  before_action :authenticate_admin_user!
+  before_action :authenticate_admin_user!, :set_target_db_repo
+
 
   def show
     @activities = OpenStruct.new
@@ -10,17 +11,16 @@ class TablesController < ApplicationController
     @activities.calls = []
     @activities.meetings = []
     @activities.notes = []
-    @users = User.all
-    @companies = Company.all
-    @table_name = params[:id]
-    @table = Table.new
-    @table.name = @table_name
   end
 
   def preview
-    table = Table.new
-    table.name = params[:table_name]
-    @table_name = table.name
-    @row = table.row(params[:record_id]).first
+    @target_db_repo.table = params[:table_name]
+    @row = @target_db_repo.find(params[:record_id])
+  end
+
+  private
+
+  def set_target_db_repo
+    @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:id])
   end
 end
