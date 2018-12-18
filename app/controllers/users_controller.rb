@@ -2,7 +2,6 @@
 
 class UsersController < ApplicationController
   layout 'dashboard'
-  before_action :set_activities_for_user, only: :show
 
   def index
     @users = User.all
@@ -11,16 +10,24 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @activity = @user.activities.new
+    @activity = Activity.new
     @activities = OpenStruct.new
     @view_builders = find_view_builders
-    group_activities_by_kind
+    set_activities_for_user
   end
 
   private
 
   def set_activities_for_user
-    @activities_for_user = User.find(params[:id]).activities
+    feedable_type = 'users'
+    feedable_id = params[:id]
+
+    @activities_for_user = Activity.where(
+      feedable_type: feedable_type,
+      feedable_id: feedable_id
+    )
+
+    group_activities_by_kind
   end
 
   def group_activities_by_kind
