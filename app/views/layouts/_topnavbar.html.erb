@@ -11,14 +11,8 @@
 
     <ul class="nav navbar-top-links navbar-right">
       <li>
-        <%= link_to edit_admin_user_registration_path do %>
-          <i class="fa fa-user" aria-hidden="true"></i>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to dashboard_settings_path do %>
-          <span>Settings</span>
+        <% if admin_user_signed_in? %>
+          <%= link_to "Logout", destroy_admin_user_session_path, method: :delete, :class => 'navbar-link'  %>
         <% end %>
       </li>
     </ul>
