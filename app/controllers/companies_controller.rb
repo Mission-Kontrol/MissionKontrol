@@ -2,7 +2,6 @@
 
 class CompaniesController < ApplicationController
   layout 'dashboard'
-  before_action :set_activities_for_company, only: :show
 
   def index
     @companies = Company.all
@@ -11,14 +10,22 @@ class CompaniesController < ApplicationController
   def show
     @company = Company.find(params[:id])
     @activities = OpenStruct.new
-    @activity = @company.activities.new
-    group_activities_by_kind
+    @activity = Activity.new
+    set_activities_for_company
   end
 
   private
 
   def set_activities_for_company
-    @activities_for_company = Company.find(params[:id]).activities
+    feedable_type = 'companies'
+    feedable_id = params[:id]
+
+    @activities_for_company = Activity.where(
+      feedable_type: feedable_type,
+      feedable_id: feedable_id
+    )
+
+    group_activities_by_kind
   end
 
   def group_activities_by_kind

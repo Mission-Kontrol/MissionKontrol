@@ -35,7 +35,7 @@
         </div>
 
         <div class="ibox-content">
-          <%# render 'shared/activity_history', feedable_type: "user", feedable_id: params[:id] %>
+          <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
         </div>
       </div>
     </div>

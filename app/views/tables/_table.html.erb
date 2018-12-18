@@ -16,7 +16,7 @@
           <% end %>
 
           <td>
-            <%= link_to 'View Record', table_record_preview_url(@target_db_repo.table, 2) %>
+            <%= link_to 'View Record', table_record_preview_url(@target_db_repo.table, r['id']) %>
           </td>
         </tr>
       <% end %>
