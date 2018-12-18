@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :companies, only: %i[index show]
   resources :work_lists, only: %i[index show new create edit update]
 
-  resources :tables, only: %i[index show new create edit update]
+  resources :tables, only: %i[show]
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'
 
   get 'view_builder/table_fields', to: 'view_builder#table_fields'

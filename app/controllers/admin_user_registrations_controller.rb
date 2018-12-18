@@ -31,9 +31,14 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   end
 
   def configure_permitted_parameters
+    db_params = permitted_admin_db_params + permitted_target_db_params
     devise_parameter_sanitizer.permit(
       :account_update,
-      keys: permitted_admin_db_params + permitted_target_db_params
+      keys: [
+        'first_name',
+        'last_name',
+        'company_name'
+      ] + permitted_admin_db_params + permitted_target_db_params
     )
   end
 
