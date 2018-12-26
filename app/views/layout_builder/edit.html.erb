@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-12">
+    <div>
+      <h2 style="display: inline-block">Layout - <%= @view_builder.view_name %></h2>
+      <div class="" style="clear:both">
+
+      <% if @view_builder %>
+        <button type="button" class="pull-right btn btn-<%= @view_builder.status %>"><%= @view_builder.status.capitalize %></button>
+      <% end %>
+      </div>
+    </div>
+
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to 'Database', dashboard_path %>
+      </li>
+
+      <li>
+        <%= link_to "Table: #{@view_builder.table_name}", dashboard_path %>
+      </li>
+
+      <li>
+        <%= link_to "Layout: #{@view_builder.view_name}", dashboard_path %>
+      </li>
+
+      <li>
+        <strong><%= link_to "Settings", dashboard_path %></strong>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="tabs-container">
+    <div class="tabs-left">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#tab-6"><i class="fa fa-wrench" aria-hidden="true"></i> General settings</a></li>
+          <li class=""><a data-toggle="tab" href="#tab-7"><i class="fa fa-database" aria-hidden="true"></i>Fields</a></li>
+        </ul>
+
+        <div class="tab-content ">
+          <div id="tab-6" class="tab-pane active">
+            <div class="panel-body">
+              <%= render 'general_settings_form' %>
+            </div>
+          </div>
+
+          <div id="tab-7" class="tab-pane">
+            <div class="panel-body">
+              <%= render 'field_settings_form' %>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <select class="" id="layout-settings-visible-column-select">
+</select> -->

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181217165628) do
+ActiveRecord::Schema.define(version: 20181224123606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,15 @@ ActiveRecord::Schema.define(version: 20181217165628) do
     t.string "company_name"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "layout_settings", force: :cascade do |t|
+    t.integer "layout_id", null: false
+    t.string "primary_table"
+    t.boolean "show_status", default: false, null: false
+    t.boolean "commentable", default: false, null: false
+    t.string "parent_comments_table"
+    t.jsonb "visible_columns", default: []
   end
 
   create_table "view_builders", force: :cascade do |t|

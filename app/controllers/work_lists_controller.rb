@@ -3,7 +3,7 @@
 class WorkListsController < ApplicationController
   layout 'dashboard'
   before_action :set_db_tables, only: %i[new create add_sql_filter edit]
-  before_action :set_db_columns, only: %i[new create add_sql_filter edit]
+  # before_action :set_db_columns, only: %i[new create add_sql_filter edit]
 
   def index
     @work_lists = WorkList.order(created_at: :desc)
@@ -111,16 +111,6 @@ class WorkListsController < ApplicationController
 
   def set_db_tables
     @set_db_tables ||= ClientRecord.connection.tables
-  end
-
-  def set_db_columns
-    @hash_of_tables_and_columns = {}
-    ClientRecord.connection.tables.each do |table|
-      @hash_of_tables_and_columns[table] = []
-      ClientRecord.connection.columns(table).each do |column|
-        @hash_of_tables_and_columns[table] << column.name
-      end
-    end
   end
 
   def handle_success(action:, js_func:, notice:)

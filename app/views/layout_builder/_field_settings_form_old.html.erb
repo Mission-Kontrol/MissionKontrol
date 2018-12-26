@@ -1,0 +1,26 @@
+<style media="screen">
+  #primary-table-fields {
+    display: none;
+  }
+</style>
+
+<%= content_tag :div, class: "layout_visible_columns", data: { columns: @layout_setting.visible_columns.to_json } do %>
+<% end %>
+
+<div class="">
+  <%= select_tag("primary-table-fields", grouped_options_for_select(@hash_of_tables_and_columns), id: 'primary-table-fields') %>
+</div>
+
+<div class="alert alert-warning" id="layout-setting-missing-primary-table-alert">
+  Please select a primary table.
+</div>
+
+<div class="">
+  <strong>Fields</strong>
+  <p>Select the fields that will be visible for this layout.</p>
+</div>
+
+<div class="showme" id="options-for-table">
+  <select class="" id="visible-column-select" name="layout-settings-visible-columns">
+  </select>
+</div>

@@ -1,0 +1,51 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-6">
+    <h2>Available Layouts</h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to 'Home', dashboard_path %>
+      </li>
+
+      <li class="active">
+        <strong><%= link_to 'Layouts', layouts_path %><strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-2 pull-right margin-top-nav hide">
+    <%= link_to('Add new', new_layout_path, html_options = { class: "btn btn-info" }) %>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Layout name</th>
+                <th>Layout status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @view_builders.each do |view_builder| %>
+                <tr>
+                  <td><%= view_builder.view_name %></td>
+                  <td>
+                    <button type="button" class="btn btn-<%= view_builder.status %>"><%= view_builder.status.capitalize %>
+                  </td>
+                  <td>
+                    <%= link_to('View', layout_path(view_builder), html_options = { class: "btn btn-info" }) %>
+                    <%= link_to('Settings', edit_layout_path(view_builder.id), html_options = { class: "btn btn-info" }) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
