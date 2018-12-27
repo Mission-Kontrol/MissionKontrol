@@ -4,6 +4,7 @@ class LayoutBuilderController < ApplicationController
   layout 'dashboard'
   skip_before_action :verify_authenticity_token
   before_action :load_view_builder, only: [:show, :update, :view_page, :edit]
+  before_action :set_layout_setting, only: [:edit]
 
   def new
     @available_tables = available_tables
@@ -53,8 +54,8 @@ class LayoutBuilderController < ApplicationController
 
   def edit
     @available_tables = available_tables
-    @layout_setting = LayoutSetting.new(layout_setting_params)
-    @layout_setting.layout_id = params[:id]
+    @layout_setting = LayoutSetting.find_by_layout_id(params[:id]) || LayoutSetting.new
+    # @layout_setting.layout_id =
   end
 
   private
@@ -108,7 +109,7 @@ class LayoutBuilderController < ApplicationController
     view_builder.view_name = params[:name] if params[:name]
   end
 
-  def layout_setting_params
-    # params.require(:layout_setting).permit(visible_columns: [])
+  def set_layout_setting
+    @layout_setting = LayoutSetting.find_by_layout_id(@view_builder.id) || LayoutSetting.new
   end
 end

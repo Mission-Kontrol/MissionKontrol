@@ -1,22 +1,16 @@
 <style media="screen">
-  #primary-table-fields {
-    display: none;
-  }
-
   .bootstrap-duallistbox-container.row {
     margin: 0;
   }
 </style>
 
-<!-- columns for target db table -->
-<%= content_tag :div, class: "layout_visible_columns", data: { columns: @layout_setting.visible_columns.to_json } do %>
-<% end %>
-
-<div class="">
-  <%= select_tag("primary-table-fields", grouped_options_for_select(@hash_of_tables_and_columns), id: 'primary-table-fields') %>
-</div>
-
 <%= form_with(model: @layout_setting) do |form| %>
+  <!-- <div class="form-group">
+    <div id="fieldSelect"></div>
+    </div>
+  </div> -->
+
+
   <div class="hide form-group" id="options-for-table">
     <strong>Fields</strong>
     <p>Select the fields that will be visible for this layout.</p>
@@ -25,6 +19,6 @@
   </div>
 
   <div class="actions" style="text-align: right">
-    <%= form.submit "Save", class: "btn btn-primary" %>
+    <%# form.submit "Save", class: "btn btn-primary" %>
   </div>
 <% end %>
