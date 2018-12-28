@@ -4,18 +4,18 @@ $(document).ready(function() {
   let primaryTable = $('#layout_setting_primary_table').val();
 
   if (primaryTable && primaryTable != "Select a primary table") {
-    updateOptionsForLayoutSettingVisibleFields(primaryTable);
+    updateOptionsForLayoutSettingVisibleColumns(primaryTable);
   }
 
   $("#layout_setting_primary_table").change(function(evt) {
-    toastr.success('Primary Table changed, remember to save and update your fields.');
-    updateOptionsForLayoutSettingVisibleFields(evt.target.value);
+    toastr.success('Primary Table changed, remember to save.');
+    updateOptionsForLayoutSettingVisibleColumns(evt.target.value);
   })
 });
 
-function updateOptionsForLayoutSettingVisibleFields(primaryTable) {
+function updateOptionsForLayoutSettingVisibleColumns(primaryTable) {
 
-  let selected = [];
+let visibleColumns = $('#layout_setting_visible_columns').data('columns') ;
 
   $.ajax({
     url: "/view_builder/table_fields",
@@ -32,7 +32,14 @@ function updateOptionsForLayoutSettingVisibleFields(primaryTable) {
       $("#layout_setting_visible_columns").empty();
 
       $.each(data, function (i, val) {
-        var opt = '<option value="'+ val +'">'+ val +'</option>'
+        var opt;
+
+        if (visibleColumns.includes(val)) {
+          opt = '<option value="'+ val +'" selected>'+ val +'</option>';
+        } else {
+          opt = '<option value="'+ val +'">'+ val +'</option>';
+        }
+
         $("#layout_setting_visible_columns").append(opt);
       })
 

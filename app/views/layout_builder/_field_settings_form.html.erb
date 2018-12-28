@@ -13,8 +13,17 @@
     <strong>Fields</strong>
     <p>Select the fields that will be visible for this layout.</p>
 
-    <select class="" id="layout_setting_visible_columns" name="layout_setting[visible_columns][]" multiple>
-    </select>
+
+
+
+
+    <%= select_tag 'layout_setting[visible_columns][]',
+                    '',
+                    multiple: true,
+                    include_blank: false,
+                    prompt: "",
+                    data: { columns: @layout_setting.visible_columns.to_json },
+                    id: "layout_setting_visible_columns" %>
   </div>
 
   <div class="actions" style="text-align: right">
