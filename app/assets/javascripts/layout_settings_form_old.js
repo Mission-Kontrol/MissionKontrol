@@ -1,3 +1,5 @@
+
+
 $(function() {
   $(".layout-setting-primary-table-select").change(function(evt) {
     toastr.success('Primary table changed, remember to update your fields');

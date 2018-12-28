@@ -39,6 +39,7 @@ class LayoutSettingsController < ApplicationController
                                             :parent_comments_table,
                                             :show_status,
                                             :commentable,
-                                            :layout_id)
+                                            :layout_id,
+                                            visible_columns: [])
   end
 end

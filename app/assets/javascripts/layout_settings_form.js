@@ -1,68 +1,42 @@
-$(function() {
-  $(".layout-setting-primary-table-select").change(function(evt) {
-    toastr.success('Primary table changed, remember to update your fields');
-    filterColumnsByTableName(evt.target.value);
-    showOptionsForTable();
+$(document).ready(function() {
+  $('#layout_setting_visible_columns').bootstrapDualListbox();
+
+  let primaryTable = $('#layout_setting_primary_table').val();
+
+  if (primaryTable && primaryTable != "Select a primary table") {
+    updateOptionsForLayoutSettingVisibleFields(primaryTable);
+  }
+
+  $("#layout_setting_primary_table").change(function(evt) {
+    toastr.success('Primary Table changed, remember to save and update your fields.');
+    updateOptionsForLayoutSettingVisibleFields(evt.target.value);
   })
+});
 
-  $('#layout-settings-visible-column-select').bootstrapDualListbox();
+function updateOptionsForLayoutSettingVisibleFields(primaryTable) {
 
-  let metaTag = $('meta[name=psj]');
-  let isCurrentControllerLayoutBuilder = metaTag.attr('controller') == 'layout_builder';
-  let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+  let selected = [];
 
-  if (isCurrentControllerLayoutBuilder && isCurrentActionEdit) {
-    let visibleColumnSelectDualList = $('#layout-settings-visible-column-select') ;
-    let visibleColumns = $('.layout_visible_columns').data('columns') ;
-    let selectedTable = $('.layout-setting-primary-table :selected').text();
+  $.ajax({
+    url: "/view_builder/table_fields",
+    type: 'GET',
+    data: {
+      table: primaryTable
+    },
+    async: true,
+    dataType: "json",
+    error: function(XMLHttpRequest, errorTextStatus, error){
+              alert("Failed: "+ errorTextStatus+" ;"+error);
+           },
+    success: function(data){
+      $("#layout_setting_visible_columns").empty();
 
-    if (selectedTable && selectedTable != "Select a primary table") {
-      // closeMissingPrimaryTableAlert();
-      // document.getElementById('layout-setting-missing-primary-table-alert').style.display = 'none';
-
-      filterColumnsByTableName(selectedTable);
-      showOptionsForTable();
-
-      let options = getOptionsForColumnSelect(selectedTable);
-      let modifiedOptions = "";
-
-      $(options).each(function() {
-        if (visibleColumns.includes($(this).val())) {
-          $(this).attr('selected','selected');
-          modifiedOptions += this.outerHTML
-        } else {
-          modifiedOptions += this.outerHTML
-        }
+      $.each(data, function (i, val) {
+        var opt = '<option value="'+ val +'">'+ val +'</option>'
+        $("#layout_setting_visible_columns").append(opt);
       })
 
-      if (options) {
-        $("#layout-settings-visible-column-select").html(modifiedOptions);
-        $('#layout-settings-visible-column-select').bootstrapDualListbox('refresh', true);
-      }
+      $('#layout_setting_visible_columns').bootstrapDualListbox('refresh', true);
     }
-  }
-})
-
-function filterColumnsByTableName(tableName) {
-  let options = getOptionsForTableName(tableName);
-
-  if (options) {
-    $("#layout-settings-visible-column-select").html(options);
-    $('#layout-settings-visible-column-select').bootstrapDualListbox('refresh', true);
-  }
+  })
 }
-
-function getOptionsForTableName(tableName) {
-  let columns = $('#primary-table-fields').html();
-  let label = "optgroup[label='" + tableName + "']";
-  return $(columns).filter(label).html();
-}
-
-function showOptionsForTable() {
-  $('#options-for-table').removeClass('hide');
-}
-//
-// function closeMissingPrimaryTableAlert() {
-//   // $('#layout-setting-missing-primary-table-alert').addClass('hide');
-//   document.getElementById('layout-setting-missing-primary-table-alert').style.display = 'none';
-// }
