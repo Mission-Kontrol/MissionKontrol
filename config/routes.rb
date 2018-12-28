@@ -31,7 +31,6 @@ Rails.application.routes.draw do
   resources :activities, only: :create
 
   get 'dashboard', to: 'dashboard#show'
-  get 'dashboard/settings', to: 'dashboard#settings'
   post 'add-sql-filter', to: 'work_lists#add_sql_filter'
   post 'remove-sql-filter', to: 'work_lists#remove_sql_filter'
   post 'remove-work-list-outcome', to: 'work_lists#remove_work_list_outcome'
