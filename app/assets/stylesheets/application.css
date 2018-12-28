@@ -15,6 +15,7 @@
  *= require site
  *= require devise
  *= require view_builder
+ *= require layout_builder
  *= require_self
  */
 

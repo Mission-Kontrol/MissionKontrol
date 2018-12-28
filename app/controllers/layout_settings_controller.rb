@@ -9,7 +9,7 @@ class LayoutSettingsController < ApplicationController
       if @layout_setting.save
         format.js { render action: 'create/success' }
       else
-        format.js { render action: 'create/failure', status: :unprocessable_entity }
+        format.js { render action: 'create/error', status: :unprocessable_entity }
       end
     end
   end
@@ -19,7 +19,7 @@ class LayoutSettingsController < ApplicationController
       if @layout_setting.update(layout_setting_params)
         format.js { render action: 'update/success' }
       else
-        format.js { render action: 'update/failure', status: :unprocessable_entity }
+        format.js { render action: 'update/error', status: :unprocessable_entity }
       end
     end
   end

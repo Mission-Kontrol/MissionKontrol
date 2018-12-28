@@ -11,12 +11,9 @@ $(document).ready(function() {
     toastr.success('Primary Table changed, remember to save.');
     updateOptionsForLayoutSettingVisibleColumns(evt.target.value);
   })
-});
+})
 
 function updateOptionsForLayoutSettingVisibleColumns(primaryTable) {
-
-let visibleColumns = $('#layout_setting_visible_columns').data('columns') ;
-
   $.ajax({
     url: "/view_builder/table_fields",
     type: 'GET',
@@ -29,21 +26,27 @@ let visibleColumns = $('#layout_setting_visible_columns').data('columns') ;
               alert("Failed: "+ errorTextStatus+" ;"+error);
            },
     success: function(data){
-      $("#layout_setting_visible_columns").empty();
-
-      $.each(data, function (i, val) {
-        var opt;
-
-        if (visibleColumns.includes(val)) {
-          opt = '<option value="'+ val +'" selected>'+ val +'</option>';
-        } else {
-          opt = '<option value="'+ val +'">'+ val +'</option>';
-        }
-
-        $("#layout_setting_visible_columns").append(opt);
-      })
-
-      $('#layout_setting_visible_columns').bootstrapDualListbox('refresh', true);
+      updateDualList(data);
     }
   })
+}
+
+function updateDualList(data) {
+  $("#layout_setting_visible_columns").empty();
+
+  let visibleColumns = $('#layout_setting_visible_columns').data('columns') ;
+
+  $.each(data, function (i, val) {
+    var opt;
+
+    if (visibleColumns.includes(val)) {
+      opt = '<option value="'+ val +'" selected>'+ val +'</option>';
+    } else {
+      opt = '<option value="'+ val +'">'+ val +'</option>';
+    }
+
+    $("#layout_setting_visible_columns").append(opt);
+  })
+
+  $('#layout_setting_visible_columns').bootstrapDualListbox('refresh', true);
 }
