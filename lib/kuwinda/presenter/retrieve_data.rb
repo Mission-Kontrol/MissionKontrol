@@ -10,6 +10,7 @@ module Kuwinda
       end
 
       def call
+        binding.pry
         query_string = "SELECT #{query_fields} FROM #{table} #{query_limiter}"
         response = database.connection.exec_query(query_string)
 

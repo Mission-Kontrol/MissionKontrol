@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :view_builder do
     view_name { 'View name' }
-    table_name { 'Events' }
+    table_name { 'events' }
     status { 'active' }
     table_attributes do
       {
