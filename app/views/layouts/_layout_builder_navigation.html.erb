@@ -1,0 +1,34 @@
+<div class="row height-100 white-bg" style="">
+  <div class="col-sm-3 height-100" style="border-right: 1px solid #e9e9e9">
+    <br>
+    <a class="layout-builder-nav-item active" style="" href="/" data-tab-name="layout_builder_general_settings_form">
+      <i class="fa fa-wrench" aria-hidden="true"></i>
+    </a>
+
+    <a class="layout-builder-nav-item" style="" href="/" data-tab-name="layout_builder_field_settings_form">
+      <i class="fa fa-database" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="col-sm-9 height-100" style="border-right: 1px solid #e9e9e9">
+    <br>
+    <div class="" style="margin: 10px 0px">
+      <div class="" id="layout_builder_general_settings_form">
+        <h4>General settings</h4>
+
+        <p>
+          <small>
+            Saved.
+          </small>
+        </p>
+        <%= render 'general_settings_form' %>
+      </div>
+
+      <div class="hide" id="layout_builder_field_settings_form">
+        <h4>Fields</h4>
+
+        <%= render 'field_settings_form' %>
+      </div>
+    </div>
+  </div>
+</div>
