@@ -1,0 +1,67 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-xs-9 col-sm-10 col-lg-7">
+    <div class="layout-placeholder"></div>
+    <div class="layout-placeholder"></div>
+  </div>
+
+  <div class="col-xs-12 col-sm-12 col-lg-4">
+    <form style="margin-top: 20px" class="">
+      <div class="row">
+        <div class="col-lg-4">
+          <label class="form-control">Status</label>
+        </div>
+
+        <div class="col-lg-8">
+          <select class="form-control" name="">
+            <option value="">Qualified</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <div class="layout-placeholder"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="layout-placeholder">
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="layout-placeholder">
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="layout-placeholder">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @view_builders.any? %>
+    <% @view_builders.each do |view_builder| %>
+      <div class="row showme hide">
+        <div class="col-sm-12">
+          <%= render 'view_builder/panel', view_builder: view_builder %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
