@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class LayoutBuilderController < ApplicationController
-  layout 'dashboard'
+  layout 'layout_builder', only: [:new, :edit]
+  layout 'dashboard', only: [:index]
   skip_before_action :verify_authenticity_token
   before_action :load_view_builder, only: [:show, :update, :view_page, :edit]
 
   def new
     @available_tables = available_tables
+    @layout_setting = LayoutSetting.new
   end
 
   def show
