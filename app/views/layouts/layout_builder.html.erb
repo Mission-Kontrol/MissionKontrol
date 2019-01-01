@@ -1,0 +1,37 @@
+<style media="screen">
+  .height-100 {
+    height: 100%;
+  }
+</style>
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Kuwinda</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <%= tag :meta, name: :psj, action: action_name, controller: controller_name %>
+  </head>
+
+  <body class="gray-bg" style="">
+    <div class="container-fluid height-100">
+      <div class="row">
+        <div class="col-sm-3">
+          <%= render 'layouts/layout_builder_navigation' %>
+        </div>
+
+        <div class="col-sm-9">
+          <%= render 'shared/flash_message' %>
+
+          <%= render 'layouts/layout_builder_topnavbar' %>
+
+          <%= yield %>
+
+          <% render 'layouts/footer' %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
