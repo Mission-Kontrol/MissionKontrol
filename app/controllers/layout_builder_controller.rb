@@ -24,6 +24,11 @@ class LayoutBuilderController < ApplicationController
     render json: @fields
   end
 
+  def table_fields_with_type
+    @fields_with_type = list_table_fields_with_type(params[:table])
+    render json: @fields_with_type
+  end
+
   def create
     @view_builder = ViewBuilder.new(view_name: params[:view_name],
                                     table_name: field_params[:table],
@@ -68,6 +73,10 @@ class LayoutBuilderController < ApplicationController
 
   def list_table_fields(table)
     Kuwinda::Presenter::ListTableFields.new(ClientRecord, table).call
+  end
+
+  def list_table_fields_with_type(table)
+    Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
   end
 
   def available_tables
