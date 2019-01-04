@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   resources :tables, only: %i[show]
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'
 
+  get 'layouts/table_fields_with_type', to: 'layout_builder#table_fields_with_type'
   resources :layout_builder, as: "layouts", path: 'layouts'
+
   resources :layout_settings, only: %i[create update]
 
   get 'view_builder/table_fields', to: 'view_builder#table_fields'
