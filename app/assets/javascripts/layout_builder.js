@@ -12,10 +12,10 @@ $(document).ready(function() {
   $('.layout_builder_selected_table_name').click(function(evt) {
     evt.preventDefault();
     var table = $(this).data().tableName;
-    console.log("selected table is - ", table);
     hideFieldSettingsFormScreen1();
     showFieldSettingsFormScreen2();
     getOptionsForDraggable(table);
+    document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
   })
 
   $('.layout_builder_field_settings_form_back_btn').click(function() {
@@ -31,7 +31,25 @@ $(document).ready(function() {
     goToPreviousScreen();
   })
 
+  $('#layout-builder-modal-save-button').click(function() {
+    var layoutName = document.getElementById('layout-builder-modal-form-name').value;
+    var layoutPrimaryTable = document.getElementById('layout-builder-modal-form-primary-table').value;
+    saveLayout(layoutName, layoutPrimaryTable);
+  })
+
   $('#myModal').modal({});
+
+  // init draggable & dropable
+
+  // debugger
+  const draggable = new Draggable.Draggable(document.getElementById('draggable-fields-container'), {});
+
+  const droppable = new Draggable.Droppable(document.getElementById('droppable-header-container'), {
+    dropzone: '#dropzone'
+  });
+
+  droppable.on('droppable:dropped', () => console.log('droppable:dropped'));
+  droppable.on('droppable:returned', () => console.log('droppable:returned'));
 })
 
 function removeActiveClass(elements) {
@@ -81,10 +99,60 @@ function getOptionsForDraggable(primaryTable) {
   })
 }
 
-function updateDraggable(data) {
-  console.log(data);
+function saveLayout(name, primaryTable) {
+  var layoutID;
+  var redirectURL;
 
-  // <div class="layout-builder-draggable-field">
-  //   <i class="<%= icon_for_field_type('string') %>" aria-hidden="true"></i> Name
-  // </div>
+  $.ajax({
+    url: "/layouts",
+    type: 'POST',
+    data: {
+      table: primaryTable,
+      view_name: name
+    },
+    error: function(XMLHttpRequest, errorTextStatus, error){
+              alert("Failed: "+ errorTextStatus+" ;"+error);
+           },
+    success: function(response, status, request){
+      layoutID = response.id;
+      redirectURL = "/layouts/" + layoutID + "/edit";
+      window.location.replace(redirectURL);
+    }
+  })
+}
+
+function updateDraggable(data) {
+  $('#draggable-fields-container').html('');
+
+  for (var i = 0; i < data.length; i++) {
+    var fieldName = data[i][0]
+    var fieldType = data[i][1]
+    var icon = iconForFieldType(fieldType);
+    var item = "<div class='layout-builder-draggable-field draggable-source'>" +
+    "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
+    "</div>"
+    $('#draggable-fields-container').append(item);
+  }
+}
+
+function iconForFieldType(fieldType) {
+  switch(fieldType) {
+    case 'string':
+    case 'text':
+      return 'fa fa-font'
+      break;
+    case 'time':
+    case 'timestamp':
+      return 'fa fa-clock-o'
+      break;
+    case 'date':
+    case 'datetime':
+      return 'fa fa-calendar'
+      break;
+    case 'boolean':
+      return 'fa fa-toggle-on'
+      break;
+    default:
+      return 'fa fa-font'
+  }
 }
