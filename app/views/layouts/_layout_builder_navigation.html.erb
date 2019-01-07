@@ -1,5 +1,11 @@
-<div class="row height-100 white-bg" style="">
-  <div class="col-sm-3 height-100 white-bg" style="border-right: 1px solid #e9e9e9">
+<style media="screen">
+  .min-height-100 {
+    min-height: 100%
+  }
+</style>
+
+<div class="row min-height-100 white-bg" style="">
+  <div class="col-sm-3 min-height-100 white-bg" style="">
     <br>
     <a class="layout-builder-nav-item active" style="" href="/" data-tab-name="layout_builder_general_settings_form">
       <i class="fa fa-wrench" aria-hidden="true"></i>
@@ -10,17 +16,18 @@
     </a>
   </div>
 
-  <div class="col-sm-9 height-100" style="border-right: 1px solid #e9e9e9">
+  <div class="col-sm-9 min-height-100" style="border-right: 1px solid #e9e9e9; border-left: 1px solid #e9e9e9">
     <br>
     <div class="" style="margin: 10px 0px">
       <div class="" id="layout_builder_general_settings_form">
         <h4>General settings</h4>
 
-        <p>
+        <p class="hide">
           <small>
             Saved.
           </small>
         </p>
+        
         <%= render 'general_settings_form' %>
       </div>
 
@@ -48,43 +55,16 @@
             <a href="#" class="layout_builder_field_settings_form_back_btn" style="margin-right: 5px">
               <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
             </a>
-            Fields / Users
+            <span id="layout_builder_selected_table_name"></span>
           </h4>
 
           <p>Select a table you would like to fields.</p>
 
           <div class="" style="border-top: 1px solid #F3F3F4;"></div>
 
-          <div class="" id="draggable_fields">
-
-          </div>
-
-          <div class="layout-builder-draggable-field">
-            <i class="<%= icon_for_field_type('string') %>" aria-hidden="true"></i> Name
-          </div>
-
-          <div class="layout-builder-draggable-field">
-            <i class="<%= icon_for_field_type('timestamp') %>" aria-hidden="true"></i> Email
-          </div>
-
-          <div class="layout-builder-draggable-field">
-            <i class="<%= icon_for_field_type('date') %>" aria-hidden="true"></i> Created at
-          </div>
-
-          <div class="layout-builder-draggable-field">
-            <i class="<%= icon_for_field_type('time') %>" aria-hidden="true"></i> Updated at
-          </div>
-
-          <div class="layout-builder-draggable-field">
-            <i class="<%= icon_for_field_type('datetime') %>" aria-hidden="true"></i> Published at
-          </div>
-
-          <div class="layout-builder-draggable-field">
-            <i class="<%= icon_for_field_type('boolean') %>" aria-hidden="true"></i> is disabled
+          <div class="" id="draggable-fields-container">
           </div>
         </div>
-
-        <%# render 'field_settings_form' %>
       </div>
     </div>
   </div>
