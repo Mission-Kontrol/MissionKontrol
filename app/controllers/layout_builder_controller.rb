@@ -31,20 +31,29 @@ class LayoutBuilderController < ApplicationController
 
   def create
     @view_builder = ViewBuilder.new(view_name: params[:view_name],
-                                    table_name: field_params[:table],
-                                    table_attributes: table_attributes(field_params[:selectedOptions]))
+                                    table_name: field_params[:table])
 
     if @view_builder.save!
-      render 'configure_table_order', view_builder: @view_builder
+      render json: @view_builder
     end
+
+    # if @view_builder.save!
+    #   render 'configure_table_order', view_builder: @view_builder
+    # end
   end
 
   def update
+    # respond_to :js
     @view_builder = ViewBuilder.find(params[:id])
 
     update_attributes(@view_builder, params)
 
-    render json: { success: true } if @view_builder.save!
+    if @view_builder.save!
+
+      respond_to do |format|
+        format.js { render 'layout_builder/update/success' }
+      end
+    end
   end
 
   def retrieve_data
@@ -56,6 +65,7 @@ class LayoutBuilderController < ApplicationController
   def view_page; end
 
   def edit
+    # @view_builder = ViewBuilder.find(params[:id])
     @available_tables = available_tables
     @layout_setting = LayoutSetting.find_by_layout_id(@view_builder.id) || LayoutSetting.new
   end
@@ -109,9 +119,19 @@ class LayoutBuilderController < ApplicationController
   end
 
   def update_attributes(view_builder, params)
-    view_builder.table_attributes = configure_attributes(params[:tableConfigurations])
-    view_builder.table_attributes[:default_rows] = params[:defaultRows]
+    # view_builder.table_attributes = configure_attributes(params[:tableConfigurations])
+    # view_builder.table_attributes[:default_rows] = params[:defaultRows]
     view_builder.status = params[:status] if params[:status]
     view_builder.view_name = params[:name] if params[:name]
+    view_builder.commentable = params[:view_builder][:commentable] if params[:view_builder][:commentable]
+    view_builder.show_status = params[:view_builder][:show_status] if params[:view_builder][:show_status]
+    view_builder.table_name = params[:view_builder][:table_name] if params[:view_builder][:table_name]
+    view_builder.parent_comment_table = params[:view_builder][:parent_comment_table] if params[:view_builder][:parent_comment_table]
+    # binding.pry
   end
+
+  # def handle_success(action:, js_func:, notice:)
+  #   flash[:notice] = notice
+  #   render(action: action, js: js_func)
+  # end
 end
