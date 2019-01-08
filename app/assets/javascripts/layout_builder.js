@@ -39,17 +39,39 @@ $(document).ready(function() {
 
   $('#myModal').modal({});
 
-  // init draggable & dropable
+  // init draggable & droppable
 
   // debugger
-  const draggable = new Draggable.Draggable(document.getElementById('draggable-fields-container'), {});
+  // const draggable = new Draggable.Draggable(document.getElementById('draggable-fields-container'), {});
 
-  const droppable = new Draggable.Droppable(document.getElementById('droppable-header-container'), {
-    dropzone: '#dropzone'
-  });
 
-  droppable.on('droppable:dropped', () => console.log('droppable:dropped'));
-  droppable.on('droppable:returned', () => console.log('droppable:returned'));
+  var containers = document.querySelectorAll('.containerr');
+  //
+  // var draggable = new window.Draggable.Sortable(containers, {
+  //   draggable: '.drag-item',
+  //   appendTo: '.containerr',
+  //   classes: {
+  //     body: 'draggable-container--is-dragging',
+  //   },
+  // });
+
+  // draggable.on('sortable:sorted', function() {
+  //   console.log('sorted!');
+  // });
+
+  // const droppable = new Draggable.Droppable($('#droppable-fields-container'), {
+  //   draggable: 'div',
+  //   dropzone: 'dropzone'
+  // });
+  //
+
+  // const droppable = new window.Draggable.Droppable(containers, {
+  //   draggable: '.drag-item',
+  //   droppable: '.dropzone'
+  // });
+  //
+  // droppable.on('droppable:dropped', () => console.log('droppable:dropped'));
+  // droppable.on('droppable:returned', () => console.log('droppable:returned'));
 })
 
 function removeActiveClass(elements) {

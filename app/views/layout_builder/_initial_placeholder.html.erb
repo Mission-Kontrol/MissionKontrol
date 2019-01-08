@@ -1,90 +1,41 @@
-<style media="screen">
-  .layout-builder-delete-zone {
-    background-color: white;
-    border: 1px solid #d3d3d3;
-    border-radius: 50%;
-    padding:10px 13px;
-  }
-</style>
+<div class="draggable-containers">
+  <div class="draggable-container">
+    <ul class="draggable-list">
+      <li>item 1</li>
+      <li>item 2</li>
+      <li>item 3</li>
+    </ul>
+  </div>
 
-<div class="row">
-  <div class="col-lg-12">
-    <p class="text-center" style="padding: 10px">
-      <span class="layout-builder-delete-zone"><i class="fa fa-times"></i></span>
-    </p>
+  <div class="droppable-container-1 dropzone">
+    <p>droppable-container-1</p>
+    <ul class="draggable-list">
+      <li>item 4</li>
+      <li>item 5</li>
+      <li>item 6</li>
+    </ul>
+  </div>
+
+  <div class="droppable-container-2 dropzone">
+    <p>droppable-container-2</p>
+    <ul class="draggable-list">
+      <li>item 7</li>
+      <li>item 8</li>
+      <li>item 9</li>
+    </ul>
   </div>
 </div>
 
-<div class="row wrapper border-bottom white-bg page-heading showme" id='droppable-header-container'>
-  <div class="col-xs-9 col-sm-10 col-lg-7 showme" id="dropzone">
-    <div class="layout-placeholder"></div>
-    <div class="layout-placeholder"></div>
-  </div>
+<script type="text/javascript">
+  (function() {
+    const sortablee = new window.Draggable.Sortable(document.querySelectorAll('ul'), {
+      draggable: 'li'
+    });
 
-  <div class="col-xs-12 col-sm-12 col-lg-4">
-    <form style="margin-top: 20px" class="">
-      <div class="row">
-        <div class="col-lg-4">
-          <label class="form-control">Status</label>
-        </div>
+    sortablee.on('sortable:start', () => console.log('sortable:start'));
+    sortablee.on('sortable:sort', () => console.log('sortable:sort'));
+    sortablee.on('sortable:sorted', () => console.log('sortable:sorted'));
+    sortablee.on('sortable:stop', () => console.log('sortable:stop'));
+  })
 
-        <div class="col-lg-8">
-          <select class="form-control" name="">
-            <option value="">Qualified</option>
-          </select>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight">
-  <div class="row">
-    <div class="col-lg-4">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content">
-          <div class="layout-placeholder"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-8">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="layout-placeholder">
-              </div>
-            </div>
-
-            <div class="col-sm-4">
-              <div class="layout-placeholder">
-              </div>
-            </div>
-
-            <div class="col-sm-4">
-              <div class="layout-placeholder">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-8 col-lg-offset-4">
-      <p class="text-center white-bg" style="padding: 10px">
-        <i class="fa fa-plus"></i>
-      </p>
-    </div>
-  </div>
-
-  <% if @view_builders.any? %>
-    <% @view_builders.each do |view_builder| %>
-      <div class="row showme hide">
-        <div class="col-sm-12">
-          <%= render 'view_builder/panel', view_builder: view_builder %>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-</div>
+</script>
