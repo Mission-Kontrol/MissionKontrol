@@ -1,4 +1,4 @@
-FROM ruby:2.5.3
+FROM ruby:2.5
 
 RUN apt-get update -qq && apt-get install -yq \
   build-essential \
