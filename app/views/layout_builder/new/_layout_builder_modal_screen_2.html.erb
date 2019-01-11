@@ -16,9 +16,9 @@
           <label for="">Primary table.</label>
           <p>Select the primary table that this layout will be based on.</p>
           <%= select_tag 'layout_builder_name',
-                          options_for_select(@available_tables, selected: @layout_setting.primary_table),
+                          options_for_select(@available_tables, selected: @view_builder.table_name),
                           prompt: "Select a table",
-                          class: 'form-control table-select',
+                          class: 'form-control',
                           id: 'layout-builder-modal-form-primary-table'
                           %>
         </div>
