@@ -8,7 +8,7 @@ class LayoutBuilderController < ApplicationController
 
   def new
     @available_tables = available_tables
-    @layout_setting = LayoutSetting.new
+    @view_builder = ViewBuilder.new
   end
 
   def show
