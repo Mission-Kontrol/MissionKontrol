@@ -47,9 +47,9 @@ $(document).ready(function() {
 
   // var containers = document.querySelectorAll('.containerr');
 
-  const sortable = new Draggable.Sortable(document.querySelectorAll('ul'), {
-    draggable: 'li'
-  });
+  // const sortable = new Draggable.Sortable(document.querySelectorAll('ul'), {
+  //   draggable: 'li'
+  // });
 
   //
   // var draggable = new window.Draggable.Sortable(containers, {
@@ -148,6 +148,7 @@ function saveLayout(name, primaryTable) {
   })
 }
 
+// rename this to update draggable fields
 function updateDraggable(data) {
   $('#draggable-fields-container').html('');
 
@@ -155,11 +156,14 @@ function updateDraggable(data) {
     var fieldName = data[i][0]
     var fieldType = data[i][1]
     var icon = iconForFieldType(fieldType);
-    var item = "<div class='layout-builder-draggable-field draggable-source'>" +
+    var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source'>" +
     "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
     "</div>"
     $('#draggable-fields-container').append(item);
   }
+
+  // clearDraggableContainers();
+  updateDraggableContainers();
 }
 
 function iconForFieldType(fieldType) {
@@ -182,4 +186,14 @@ function iconForFieldType(fieldType) {
     default:
       return 'fa fa-font'
   }
+}
+
+function updateDraggableContainers() {
+  new window.Draggable.Sortable(document.querySelectorAll('.layout-builder-draggable-container'), {
+    draggable: '.layout-builder-draggable-item'
+  });
+}
+
+function clearDraggableContainers() {
+  $('.layout-builder-draggable-container').html('');
 }
