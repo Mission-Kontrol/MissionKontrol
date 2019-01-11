@@ -45,7 +45,12 @@ $(document).ready(function() {
   // const draggable = new Draggable.Draggable(document.getElementById('draggable-fields-container'), {});
 
 
-  var containers = document.querySelectorAll('.containerr');
+  // var containers = document.querySelectorAll('.containerr');
+
+  const sortable = new Draggable.Sortable(document.querySelectorAll('ul'), {
+    draggable: 'li'
+  });
+
   //
   // var draggable = new window.Draggable.Sortable(containers, {
   //   draggable: '.drag-item',
