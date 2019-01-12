@@ -6,7 +6,6 @@ class TablesController < ApplicationController
                 :set_target_db_repo,
                 :set_activities
 
-
   def show; end
 
   def preview

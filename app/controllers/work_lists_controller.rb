@@ -113,15 +113,15 @@ class WorkListsController < ApplicationController
     @set_db_tables ||= ClientRecord.connection.tables
   end
 
- def set_db_columns
-   @hash_of_tables_and_columns = {}
-   ClientRecord.connection.tables.each do |table|
-     @hash_of_tables_and_columns[table] = []
-     ClientRecord.connection.columns(table).each do |column|
-       @hash_of_tables_and_columns[table] << column.name
-     end
-   end
- end
+  def set_db_columns
+    @hash_of_tables_and_columns = {}
+    ClientRecord.connection.tables.each do |table|
+      @hash_of_tables_and_columns[table] = []
+      ClientRecord.connection.columns(table).each do |column|
+        @hash_of_tables_and_columns[table] << column.name
+      end
+    end
+  end
 
   def handle_success(action:, js_func:, notice:)
     flash[:notice] = notice

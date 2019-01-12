@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class LayoutSettingsController < ApplicationController
-
   before_action :set_layout_setting
 
   def create
@@ -28,18 +27,18 @@ class LayoutSettingsController < ApplicationController
 
   def set_layout_setting
     @layout_setting = if !params[:id].nil?
-      LayoutSetting.find(params[:id])
-    else
-      LayoutSetting.new(layout_setting_params)
+                        LayoutSetting.find(params[:id])
+                      else
+                        LayoutSetting.new(layout_setting_params)
     end
   end
 
   def layout_setting_params
     params.require(:layout_setting).permit(:primary_table,
-                                            :parent_comments_table,
-                                            :show_status,
-                                            :commentable,
-                                            :layout_id,
-                                            visible_columns: [])
+                                           :parent_comments_table,
+                                           :show_status,
+                                           :commentable,
+                                           :layout_id,
+                                           visible_columns: [])
   end
 end

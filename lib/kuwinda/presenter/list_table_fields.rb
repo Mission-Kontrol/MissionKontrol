@@ -19,7 +19,6 @@ module Kuwinda
   end
 end
 
-
 # query_string = "SELECT * FROM events WHERE user_id = #{user_id}"
 # response = database.connection.exec_query(query_string)
 # key = response.columns

@@ -1,9 +1,14 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   Exclude:
     - 'db/schema.rb'
     - 'config/initializers/devise.rb'
     - 'db/migrate/*'
     - 'Guardfile'
+    - 'bin/*'
+    - 'config/*'
+    - 'Rakefile'
 
 Documentation:
   Enabled: false

@@ -26,7 +26,6 @@ describe 'Build new view for a table', type: :feature do
     end
 
     context 'modifying the fields positions' do
-
     end
   end
 end

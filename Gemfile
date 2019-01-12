@@ -21,8 +21,8 @@ gem 'turbolinks', '~> 5.1.0'
 gem 'uglifier', '~> 4.1.5'
 
 group :development, :test do
-  gem 'dotenv-rails'
   gem 'byebug'
+  gem 'dotenv-rails'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'spring-commands-rspec'

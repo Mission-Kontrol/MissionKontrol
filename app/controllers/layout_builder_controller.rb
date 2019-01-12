@@ -3,7 +3,7 @@
 class LayoutBuilderController < ApplicationController
   layout 'dashboard'
   skip_before_action :verify_authenticity_token
-  before_action :load_view_builder, only: [:show, :update, :view_page, :edit]
+  before_action :load_view_builder, only: %i[show update view_page edit]
 
   def new
     @available_tables = available_tables
@@ -37,9 +37,7 @@ class LayoutBuilderController < ApplicationController
 
     update_attributes(@view_builder, params)
 
-    if @view_builder.save!
-      render json: { success: true }
-    end
+    render json: { success: true } if @view_builder.save!
   end
 
   def retrieve_data
@@ -48,8 +46,7 @@ class LayoutBuilderController < ApplicationController
     render json: data
   end
 
-  def view_page
-  end
+  def view_page; end
 
   def edit
     @available_tables = available_tables

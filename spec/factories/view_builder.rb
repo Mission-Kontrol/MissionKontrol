@@ -5,7 +5,7 @@ FactoryBot.define do
     view_name { 'View name' }
     table_name { 'Events' }
     status { 'active' }
-    table_attributes {
+    table_attributes do
       {
         'visible_fields' => {
           '1' => 'area',
@@ -15,6 +15,6 @@ FactoryBot.define do
         },
         'default_rows' => '10'
       }
-    }
+    end
   end
 end

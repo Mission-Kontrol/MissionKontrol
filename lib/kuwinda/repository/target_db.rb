@@ -6,7 +6,7 @@ module Kuwinda
       attr_accessor :table,
                     :conn
 
-      def initialize(table=nil, conn=ClientRecord.connection)
+      def initialize(table = nil, conn = ClientRecord.connection)
         @table = table
         @conn = conn
       end
