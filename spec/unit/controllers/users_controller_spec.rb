@@ -9,7 +9,7 @@ describe UsersController, type: :controller do
     end
   end
 
-  context '#show' do
+  xcontext '#show' do
     before { get :show, params: params }
 
     let(:user) { create(:user) }
