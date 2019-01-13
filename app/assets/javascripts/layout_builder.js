@@ -38,45 +38,6 @@ $(document).ready(function() {
   })
 
   $('#myModal').modal({});
-
-  // init draggable & droppable
-
-  // debugger
-  // const draggable = new Draggable.Draggable(document.getElementById('draggable-fields-container'), {});
-
-
-  // var containers = document.querySelectorAll('.containerr');
-
-  // const sortable = new Draggable.Sortable(document.querySelectorAll('ul'), {
-  //   draggable: 'li'
-  // });
-
-  //
-  // var draggable = new window.Draggable.Sortable(containers, {
-  //   draggable: '.drag-item',
-  //   appendTo: '.containerr',
-  //   classes: {
-  //     body: 'draggable-container--is-dragging',
-  //   },
-  // });
-
-  // draggable.on('sortable:sorted', function() {
-  //   console.log('sorted!');
-  // });
-
-  // const droppable = new Draggable.Droppable($('#droppable-fields-container'), {
-  //   draggable: 'div',
-  //   dropzone: 'dropzone'
-  // });
-  //
-
-  // const droppable = new window.Draggable.Droppable(containers, {
-  //   draggable: '.drag-item',
-  //   droppable: '.dropzone'
-  // });
-  //
-  // droppable.on('droppable:dropped', () => console.log('droppable:dropped'));
-  // droppable.on('droppable:returned', () => console.log('droppable:returned'));
 })
 
 function removeActiveClass(elements) {
@@ -150,7 +111,7 @@ function saveLayout(name, primaryTable) {
 
 // rename this to update draggable fields
 function updateDraggable(data) {
-  $('#draggable-fields-container').html('');
+  $('#layout-builder-draggable-fields-container').html('');
 
   for (var i = 0; i < data.length; i++) {
     var fieldName = data[i][0]
@@ -159,11 +120,12 @@ function updateDraggable(data) {
     var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source'>" +
     "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
     "</div>"
-    $('#draggable-fields-container').append(item);
+    $('#layout-builder-draggable-fields-container').append(item);
   }
 
   // clearDraggableContainers();
-  updateDraggableContainers();
+  // updateDraggableContainers();
+  initializeDraggable();
 }
 
 function iconForFieldType(fieldType) {
@@ -188,12 +150,26 @@ function iconForFieldType(fieldType) {
   }
 }
 
-function updateDraggableContainers() {
-  new window.Draggable.Sortable(document.querySelectorAll('.layout-builder-draggable-container'), {
+function initializeDraggable() {
+  const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, .layout-builder-draggable-main-container'
+
+  const draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: '.layout-builder-draggable-item'
+  });
+
+  const trashContainer = draggable.containers[1]
+  const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
+
+  draggable.on('drag:stop', (dragEvent) => {
+    let currentContainer = dragEvent.source.parentNode;
+
+    if (currentContainer === trashContainer) {
+      fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0])
+    }
   });
 }
 
+// TODO: this should reset only the layout containers and not the fields container
 function clearDraggableContainers() {
   $('.layout-builder-draggable-container').html('');
 }
