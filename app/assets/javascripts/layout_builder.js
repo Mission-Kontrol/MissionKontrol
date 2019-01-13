@@ -82,7 +82,7 @@ function getOptionsForDraggable(primaryTable) {
               alert("Failed: "+ errorTextStatus+" ;"+error);
            },
     success: function(data){
-      updateDraggable(data);
+      updateDraggableFields(data);
     }
   })
 }
@@ -109,8 +109,7 @@ function saveLayout(name, primaryTable) {
   })
 }
 
-// rename this to update draggable fields
-function updateDraggable(data) {
+function updateDraggableFields(data) {
   $('#layout-builder-draggable-fields-container').html('');
 
   for (var i = 0; i < data.length; i++) {
@@ -123,8 +122,7 @@ function updateDraggable(data) {
     $('#layout-builder-draggable-fields-container').append(item);
   }
 
-  // clearDraggableContainers();
-  // updateDraggableContainers();
+  clearDroppableContainers();
   initializeDraggable();
 }
 
@@ -169,7 +167,10 @@ function initializeDraggable() {
   });
 }
 
-// TODO: this should reset only the layout containers and not the fields container
-function clearDraggableContainers() {
-  $('.layout-builder-draggable-container').html('');
+function clearDroppableContainers() {
+  const containers = document.querySelectorAll('#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, .layout-builder-draggable-main-container')
+
+  containers.forEach(function(container) {
+    container.innerHTML = ""
+  })
 }
