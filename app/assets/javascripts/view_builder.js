@@ -1,4 +1,4 @@
-// TODO: remove this file was view_builder has been renamed to layout_buidler across the app
+// TODO: remove this file once view_builder has been renamed to layout_buidler across the app
 
 $(document).ready(function() {
   return
