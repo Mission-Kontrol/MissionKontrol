@@ -37,7 +37,7 @@ $(document).ready(function() {
     saveLayout(layoutName, layoutPrimaryTable);
   })
 
-  $('#myModal').modal({});
+  $('#layout-builder-modal').modal({});
 })
 
 function removeActiveClass(elements) {
