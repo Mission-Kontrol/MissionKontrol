@@ -17,15 +17,16 @@
 
   <body class="gray-bg" style="">
     <div class="container-fluid height-100">
+
       <div class="row">
         <div class="col-sm-3">
           <%= render 'layouts/layout_builder_navigation' %>
         </div>
 
         <div class="col-sm-9">
-          <%= render 'shared/flash_message' %>
-
           <%= render 'layouts/layout_builder_topnavbar' %>
+
+          <%= render 'shared/flash_message' %>
 
           <%= yield %>
 
@@ -34,4 +35,7 @@
       </div>
     </div>
   </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.6/lib/draggable.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/sortable.js"></script>
 </html>

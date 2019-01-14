@@ -16,6 +16,23 @@
 
 .layout-placeholder {
   border: 1px dashed gray;
-  height: 20px;
+  min-height: 20px;
   margin: 20px 0 0 0;
+}
+
+.layout-builder-draggable-field {
+  padding: 10px 5px;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.23);
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  z-index: 1;
+  background-color: white;
+}
+
+.layout-builder-delete-zone {
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  border-radius: 50%;
+  padding:10px 13px;
 }

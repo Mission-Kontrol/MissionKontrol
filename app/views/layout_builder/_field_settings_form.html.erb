@@ -1,4 +1,5 @@
-<%= form_for @layout_setting, remote: true do |form| %>
+<% @action_for_layout_builder = action_name == 'edit' ? 'update' : 'create' %>
+<%= form_for @view_builder, :url => url_for(:controller => 'layout_builder', action: @action_for_layout_builder), remote: true, html: {class: 'hide'} do |form| %>
   <div class="form-group">
     <%= form.hidden_field :layout_id, value: params[:id] %>
   </div>
