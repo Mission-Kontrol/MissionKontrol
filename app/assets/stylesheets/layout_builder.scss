@@ -36,3 +36,33 @@
   border-radius: 50%;
   padding:10px 13px;
 }
+
+#layout-builder-draggable-trash-container {
+  padding: 10px;
+
+  p {
+    margin-top: 10px;
+  }
+}
+
+.layout-builder-side-nav {
+  min-height: 100%;
+  border-right: 1px solid #e9e9e9;
+  border-left: 1px solid #e9e9e9;
+}
+
+.light-border-bottom {
+  border-bottom: 1px solid #F3F3F4;
+}
+
+.layout-builder-side-nav-available-table {
+  padding: 10px 0;
+}
+
+.float-right {
+  float: right;
+}
+
+.layout_builder_field_settings_form_back_btn {
+  margin-right: 5px;
+}
