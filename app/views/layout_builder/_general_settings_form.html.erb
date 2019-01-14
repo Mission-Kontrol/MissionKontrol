@@ -1,4 +1,5 @@
-<%= form_for @layout_setting, remote: true do |form| %>
+<% @action_for_layout_builder = action_name == 'edit' ? 'update' : 'create' %>
+<%= form_for(@view_builder, :url => url_for(:controller => 'layout_builder', action: @action_for_layout_builder),  remote: true) do |form| %>
   <div class="form-group">
     <%= form.hidden_field :layout_id, value: params[:id] %>
   </div>
@@ -6,8 +7,8 @@
   <div class="form-group">
     <strong>Primary table</strong>
     <p>Select the primary table that this layout will be based on.</p>
-    <%= form.select :primary_table,
-                    options_for_select(@available_tables, selected: @layout_setting.primary_table),
+    <%= form.select :table_name,
+                    options_for_select(@available_tables, selected: @view_builder.table_name),
                     { prompt: "Select a table" },
                     { class: 'form-control' } %>
   </div>
@@ -27,8 +28,8 @@
   <div class="form-group">
     <strong>Parent comments table</strong>
     <p>Select a parent table if applicable. E.g. Companies might be parent to Users.</p>
-    <%= form.select :parent_comments_table,
-                    options_for_select(@available_tables, selected: @layout_setting.parent_comments_table),
+    <%= form.select :parent_comment_table,
+                    options_for_select(@available_tables, selected: @view_builder.parent_comment_table),
                     { prompt: "Select a table" },
                     { class: 'form-control' } %>
   </div>
