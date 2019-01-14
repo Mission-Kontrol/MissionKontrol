@@ -52,13 +52,13 @@ function hideSettingsForm() {
 }
 
 function goToNextScreen() {
-  $('#screen-1').toggleClass('hide');
-  $('#screen-2').toggleClass('hide');
+  $('#layout-builder-modal-screen-1').toggleClass('hide');
+  $('#layout-builder-modal-screen-2').toggleClass('hide');
 }
 
 function goToPreviousScreen() {
-  $('#screen-1').toggleClass('hide');
-  $('#screen-2').toggleClass('hide');
+  $('#layout-builder-modal-screen-1').toggleClass('hide');
+  $('#layout-builder-modal-screen-2').toggleClass('hide');
 }
 
 function hideFieldSettingsFormScreen1() {
