@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181224123606) do
+ActiveRecord::Schema.define(version: 20190107135321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,12 @@ ActiveRecord::Schema.define(version: 20181224123606) do
     t.jsonb "table_attributes", default: "{}", null: false
     t.string "view_name"
     t.string "status", default: "pending"
+    t.boolean "show_status", default: false, null: false
+    t.boolean "commentable", default: false, null: false
+    t.string "parent_comment_table"
+    t.jsonb "draggable_fields_header_container", default: []
+    t.jsonb "draggable_fields_side_container", default: []
+    t.jsonb "draggable_fields_main_container", default: []
   end
 
   create_table "work_lists", force: :cascade do |t|
