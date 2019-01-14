@@ -10,8 +10,11 @@
           <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="clear">
               <span class="block m-t-xs">
-                <strong class="font-bold"><%= current_admin_user.full_name %></strong>
+                <% if current_admin_user %>
+                  <strong class="font-bold"><%= current_admin_user.full_name %></strong>
+                <% end %>
               </span>
+
               <span class="text-muted text-xs block">Art Director </span>
             </span>
           </a>
