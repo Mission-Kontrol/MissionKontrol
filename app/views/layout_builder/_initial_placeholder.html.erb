@@ -1,84 +1,80 @@
 <div class="row">
-  <div class="col-lg-12 layout-placeholder" id="layout-builder-draggable-trash-container">
+  <div class="col-lg-12 layout-placeholder hide" id="layout-builder-draggable-trash-container">
     <p class="text-center">
       <span class="layout-builder-delete-zone"><i class="fa fa-times"></i></span>
     </p>
   </div>
 </div>
 
-<div class="row wrapper border-bottom white-bg page-heading" id='droppable-header-container'>
+<div class="row white-bg">
   <!-- header container -->
-  <div class="col-xs-9 col-sm-10 col-lg-7">
+  <div class="col-sm-7">
     <div class="row">
-      <div class="col-sm-12 layout-placeholder" id="layout-builder-draggable-header-container1">
+      <div class="col-sm-12">
+        <div class="layout-placeholder" id="layout-builder-draggable-header-container1">
+        </div>
       </div>
 
-      <div class="col-sm-12 layout-placeholder" id="layout-builder-draggable-header-container2">
+      <div class="col-sm-12">
+        <div class="layout-placeholder" id="layout-builder-draggable-header-container2">
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="col-xs-12 col-sm-12 col-lg-4">
-    <div class="row m-t">
-      <div class="col-lg-4">
-        <label class="form-control">Status</label>
-      </div>
-
-      <div class="col-lg-8">
-        <select class="form-control" name="">
-          <option value="">Qualified</option>
-        </select>
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="m-t text-align-right">
+          <p><b>Status</b></p>
+          <p>Qualified</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight">
-  <div class="row">
-    <!-- side container -->
-    <div class="col-lg-4">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-sm-12 layout-placeholder" id="layout-builder-draggable-side-container">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- main container -->
-    <div class="col-lg-8">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-sm-4 layout-placeholder layout-builder-draggable-main-container">
-            </div>
-
-            <div class="col-sm-4 layout-placeholder layout-builder-draggable-main-container">
-            </div>
-
-            <div class="col-sm-4 layout-placeholder layout-builder-draggable-main-container">
-            </div>
-
-            <div class="col-sm-12">
-              <p class="text-center white-bg m-t">
-                <i class="fa fa-plus"></i>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="row white-bg">
+  <!-- side container -->
+  <div class="col-lg-4">
+    <div class="layout-placeholder" id="layout-builder-draggable-side-container">
     </div>
   </div>
 
-  <% if @view_builders.any? %>
-    <% @view_builders.each do |view_builder| %>
-      <div class="row showme hide">
-        <div class="col-sm-12">
-          <%= render 'view_builder/panel', view_builder: view_builder %>
+  <!-- main container -->
+  <div class="col-lg-8">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="layout-placeholder layout-builder-draggable-main-container">
         </div>
       </div>
-    <% end %>
+
+      <div class="col-sm-4">
+        <div class="layout-placeholder layout-builder-draggable-main-container">
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="layout-placeholder layout-builder-draggable-main-container">
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <p class="text-center white-bg m-t">
+          <i class="fa fa-plus"></i>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @view_builders.any? %>
+  <% @view_builders.each do |view_builder| %>
+    <div class="row showme hide">
+      <div class="col-sm-12">
+        <%= render 'view_builder/panel', view_builder: view_builder %>
+      </div>
+    </div>
   <% end %>
-</div>
+<% end %>
