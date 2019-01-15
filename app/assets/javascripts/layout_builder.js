@@ -158,12 +158,28 @@ function initializeDraggable() {
   const trashContainer = draggable.containers[1]
   const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
 
+  draggable.on('drag:start', (dragEvent) => {
+    // show delete container
+    trashContainer.classList.toggle('hide');
+  })
+
   draggable.on('drag:stop', (dragEvent) => {
     let currentContainer = dragEvent.source.parentNode;
 
     if (currentContainer === trashContainer) {
       fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0])
+      
+      setTimeout(function () {
+        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+      }, 100);
+
+      setTimeout(function () {
+        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+      }, 2000);
     }
+
+    // hide delete container
+    trashContainer.classList.toggle('hide');
   });
 }
 
