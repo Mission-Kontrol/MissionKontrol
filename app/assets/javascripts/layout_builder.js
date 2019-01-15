@@ -14,6 +14,7 @@ $(document).ready(function() {
     var table = $(this).data().tableName;
     hideFieldSettingsFormScreen1();
     showFieldSettingsFormScreen2();
+    // clear droppable containers of previous elements belonging to incorrect fields
     getOptionsForDraggable(table);
     document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
   })
@@ -87,6 +88,32 @@ function getOptionsForDraggable(primaryTable) {
   })
 }
 
+function updateDraggableContainerItems() {
+  console.log('updating draggable container items')
+  return
+  // when a drag event is executed
+  // fetch all the containers and their fields for the current layout and save them
+  $.ajax({
+    url: "/layouts",
+    type: 'PATCH',
+    data: {
+      table: primaryTable,
+      view_name: name,
+      layo
+    },
+    error: function(XMLHttpRequest, errorTextStatus, error){
+              alert("Failed: "+ errorTextStatus+" ;"+error);
+           },
+    success: function(response, status, request){
+      // clear and update container fields for all containers
+      // updateDraggableItems();
+      layoutID = response.id;
+      redirectURL = "/layouts/" + layoutID + "/edit";
+      window.location.replace(redirectURL);
+    }
+  })
+}
+
 function saveLayout(name, primaryTable) {
   var layoutID;
   var redirectURL;
@@ -109,7 +136,17 @@ function saveLayout(name, primaryTable) {
   })
 }
 
+// TODO: update containers according to db values when initializing draggable
 function updateDraggableFields(data) {
+  // get header container1 field
+  // get header container2 field
+  // get header side nav fields
+  // get header side nav fields
+  // get main container 1 fields
+  // get main container 2 fields
+  // get main container 3 fields
+
+  // loop through fields and append each field to correct container
   $('#layout-builder-draggable-fields-container').html('');
 
   for (var i = 0; i < data.length; i++) {
@@ -149,7 +186,7 @@ function iconForFieldType(fieldType) {
 }
 
 function initializeDraggable() {
-  const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, .layout-builder-draggable-main-container'
+  const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
 
   const draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: '.layout-builder-draggable-item'
@@ -160,7 +197,6 @@ function initializeDraggable() {
 
   draggable.on('drag:start', (dragEvent) => {
     showTrashContainer();
-
   })
 
   draggable.on('drag:stop', (dragEvent) => {
@@ -176,6 +212,17 @@ function initializeDraggable() {
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
       }, 2000);
+      // reinitialize draggable
+      // update element
+      updateDraggableContainerItems();
+      console.log('item droppped into trash');
+    } else {
+      // add item to container
+      // append to container
+      // debugger
+      let currentContainerId = currentContainer.id
+      let currentFieldValue = dragEvent.source.innerText.trim()
+      console.log(currentFieldValue + ' droppped into container - ' + currentContainerId);
     }
 
     hideTrashContainer();
@@ -183,7 +230,7 @@ function initializeDraggable() {
 }
 
 function clearDroppableContainers() {
-  const containers = document.querySelectorAll('#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, .layout-builder-draggable-main-container')
+  const containers = document.querySelectorAll('#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3')
 
   containers.forEach(function(container) {
     container.innerHTML = ""
