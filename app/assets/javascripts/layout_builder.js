@@ -160,7 +160,9 @@ function initializeDraggable() {
 
   draggable.on('drag:start', (dragEvent) => {
     // show delete container
-    trashContainer.classList.toggle('hide');
+    // trashContainer.classList.toggle('hide');
+    $('#layout-builder-draggable-trash-container').addClass('animated fadeIn');
+    $('#layout-builder-draggable-trash-container').removeClass('hide');
   })
 
   draggable.on('drag:stop', (dragEvent) => {
@@ -168,18 +170,20 @@ function initializeDraggable() {
 
     if (currentContainer === trashContainer) {
       fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0])
-      
+
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+        // $('#layout-builder-draggable-trash-container').addClass('animated bounceOutLeft');
       }, 100);
 
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+        // $('#layout-builder-draggable-trash-container').addClass('animated bounceOutRight');
       }, 2000);
     }
 
     // hide delete container
-    trashContainer.classList.toggle('hide');
+    $('#layout-builder-draggable-trash-container').addClass('hide');
   });
 }
 
