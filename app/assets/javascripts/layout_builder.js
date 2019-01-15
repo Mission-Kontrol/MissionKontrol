@@ -159,10 +159,8 @@ function initializeDraggable() {
   const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
 
   draggable.on('drag:start', (dragEvent) => {
-    // show delete container
-    // trashContainer.classList.toggle('hide');
-    $('#layout-builder-draggable-trash-container').addClass('animated fadeIn');
-    $('#layout-builder-draggable-trash-container').removeClass('hide');
+    showTrashContainer();
+
   })
 
   draggable.on('drag:stop', (dragEvent) => {
@@ -173,17 +171,14 @@ function initializeDraggable() {
 
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
-        // $('#layout-builder-draggable-trash-container').addClass('animated bounceOutLeft');
       }, 100);
 
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
-        // $('#layout-builder-draggable-trash-container').addClass('animated bounceOutRight');
       }, 2000);
     }
 
-    // hide delete container
-    $('#layout-builder-draggable-trash-container').addClass('hide');
+    hideTrashContainer();
   });
 }
 
@@ -193,4 +188,13 @@ function clearDroppableContainers() {
   containers.forEach(function(container) {
     container.innerHTML = ""
   })
+}
+
+function showTrashContainer() {
+  $('#layout-builder-draggable-trash-container').addClass('animated zoomIn');
+  $('#layout-builder-draggable-trash-container').removeClass('hide');
+}
+
+function hideTrashContainer() {
+  $('#layout-builder-draggable-trash-container').addClass('hide');
 }
