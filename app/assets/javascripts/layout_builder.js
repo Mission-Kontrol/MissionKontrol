@@ -88,11 +88,15 @@ function getOptionsForDraggable(primaryTable) {
   })
 }
 
+// WIP
 function updateDraggableContainerItems() {
-  console.log('updating draggable container items')
-  return
   // when a drag event is executed
   // fetch all the containers and their fields for the current layout and save them
+  // if fields container - rebuild
+  // if draggable item container - update data array and rebuild
+
+  console.log('updating draggable container items')
+  return
   $.ajax({
     url: "/layouts",
     type: 'PATCH',
@@ -185,8 +189,10 @@ function iconForFieldType(fieldType) {
   }
 }
 
+// WIP
 function initializeDraggable() {
   const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
+  const dataContainers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
 
   const draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: '.layout-builder-draggable-item'
@@ -201,9 +207,15 @@ function initializeDraggable() {
 
   draggable.on('drag:stop', (dragEvent) => {
     let currentContainer = dragEvent.source.parentNode;
+    let destinationContainerId = currentContainer.id;
+    let sourceContainerId = dragEvent.data.sourceContainer.id;
+
+    let currentContainerId = currentContainer.id
+    let currentFieldValue = dragEvent.source.innerText.trim()
+    console.log(currentFieldValue + ' droppped into container - ' + currentContainerId);
 
     if (currentContainer === trashContainer) {
-      fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0])
+      fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
 
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
@@ -212,21 +224,55 @@ function initializeDraggable() {
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
       }, 2000);
-      // reinitialize draggable
-      // update element
-      updateDraggableContainerItems();
-      console.log('item droppped into trash');
-    } else {
-      // add item to container
-      // append to container
-      // debugger
-      let currentContainerId = currentContainer.id
-      let currentFieldValue = dragEvent.source.innerText.trim()
-      console.log(currentFieldValue + ' droppped into container - ' + currentContainerId);
     }
 
     hideTrashContainer();
+
+    let isSourceSaveable = isNotTrashContainer(sourceContainerId) && isNotFieldsContainer(sourceContainerId)
+    let isDestinationSaveable = isNotTrashContainer(destinationContainerId) && isNotFieldsContainer(destinationContainerId)
+
+    if (isSourceSaveable) {
+      saveDraggableContainer(dragEvent, sourceContainerId)
+    }
+
+    if (isDestinationSaveable) {
+      saveDraggableContainer(dragEvent, destinationContainerId)
+    }
   });
+}
+
+function isNotTrashContainer(containerId) {
+  return containerId != 'layout-builder-draggable-trash-container'
+}
+
+function isNotFieldsContainer(containerId) {
+  return containerId != 'layout-builder-draggable-fields-container'
+}
+
+function saveDraggableContainer(dragEvent, containerId) {
+  let notification;
+  let field = dragEvent.source.innerText.trim();
+  let queryId = "#" + containerId;
+  let containerItems = getContainerItems(containerId);
+  let containerItemsJSON = [];
+
+  notification = "layout updated with field: '" + field + "'"
+  // toastr.info(notification);
+
+  for (var i = 0; i < containerItems.length; i++) {
+    containerItemsJSON.push(containerItems[i].innerText.trim())
+  }
+
+  // save container items
+  // notify user of save
+  console.log(containerItemsJSON);
+  // console.log(notification)
+}
+
+function getContainerItems(containerId) {
+  let query;
+  query = "#" + containerId + " " + ".layout-builder-draggable-field:not(.draggable--original):not(.draggable-mirror)"
+  return document.querySelectorAll(query);
 }
 
 function clearDroppableContainers() {
