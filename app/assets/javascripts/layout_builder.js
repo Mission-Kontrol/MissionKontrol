@@ -88,32 +88,51 @@ function getOptionsForDraggable(primaryTable) {
   })
 }
 
-// WIP
-function updateDraggableContainerItems() {
-  // when a drag event is executed
-  // fetch all the containers and their fields for the current layout and save them
-  // if fields container - rebuild
-  // if draggable item container - update data array and rebuild
+function getContainerParam(containerId) {
+  switch(containerId) {
+    case 'layout-builder-draggable-header-container1':
+      return 'draggable_fields_header_container1'
+      break;
+    case 'layout-builder-draggable-header-container2':
+      return 'draggable_fields_header_container2'
+      break;
+    case 'layout-builder-draggable-main-container1':
+      return 'draggable_fields_main_container1'
+      break;
+    case 'layout-builder-draggable-main-container2':
+      return 'draggable_fields_main_container2'
+      break;
+    case 'layout-builder-draggable-main-container3':
+      return 'draggable_fields_main_container3'
+      break;
+    case 'layout-builder-draggable-side-container':
+      return 'draggable_fields_side_container'
+      break;
+    default:
+      console.error("unknown container - " + containerId);
+      return
+  }
+}
 
-  console.log('updating draggable container items')
+// WIP
+function updateLayoutBuilderContainer(containerId, containerItems) {
+  var url = window.location.href;
+  var id = url.split("/")[4];
+  var containerParam = getContainerParam(containerId)
   return
   $.ajax({
-    url: "/layouts",
+    url: "/layouts/" + id,
     type: 'PATCH',
     data: {
-      table: primaryTable,
-      view_name: name,
-      layo
+      view_builder: {
+        containerParam: containerItems
+      }
     },
     error: function(XMLHttpRequest, errorTextStatus, error){
               alert("Failed: "+ errorTextStatus+" ;"+error);
            },
     success: function(response, status, request){
-      // clear and update container fields for all containers
-      // updateDraggableItems();
-      layoutID = response.id;
-      redirectURL = "/layouts/" + layoutID + "/edit";
-      window.location.replace(redirectURL);
+      // alert("success")
     }
   })
 }
@@ -142,15 +161,6 @@ function saveLayout(name, primaryTable) {
 
 // TODO: update containers according to db values when initializing draggable
 function updateDraggableFields(data) {
-  // get header container1 field
-  // get header container2 field
-  // get header side nav fields
-  // get header side nav fields
-  // get main container 1 fields
-  // get main container 2 fields
-  // get main container 3 fields
-
-  // loop through fields and append each field to correct container
   $('#layout-builder-draggable-fields-container').html('');
 
   for (var i = 0; i < data.length; i++) {
@@ -160,11 +170,32 @@ function updateDraggableFields(data) {
     var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source'>" +
     "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
     "</div>"
-    $('#layout-builder-draggable-fields-container').append(item);
+
+    if (containerContainsField('layout-builder-draggable-header-container1', fieldName)) {
+      $('#layout-builder-draggable-header-container1').append(item);
+    } else if (containerContainsField('layout-builder-draggable-header-container2', fieldName)) {
+      $('#layout-builder-draggable-header-container2').append(item);
+    } else if (containerContainsField('layout-builder-draggable-side-container', fieldName)) {
+      $('#layout-builder-draggable-side-container').append(item);
+    } else if (containerContainsField('layout-builder-draggable-main-container1', fieldName)) {
+      $('#layout-builder-draggable-main-container1').append(item);
+    } else if (containerContainsField('layout-builder-draggable-main-container2', fieldName)) {
+      $('#layout-builder-draggable-main-container2').append(item);
+    } else if (containerContainsField('layout-builder-draggable-main-container3', fieldName)) {
+      $('#layout-builder-draggable-main-container3').append(item);
+    } else {
+      $('#layout-builder-draggable-fields-container').append(item);
+    }
   }
 
   clearDroppableContainers();
   initializeDraggable();
+}
+
+function containerContainsField(containerId, fieldName) {
+  let elementId = "#" + containerId;
+  let fields = $(elementId).data('fields-for-container');
+  return fields.includes(fieldName)
 }
 
 function iconForFieldType(fieldType) {
@@ -189,7 +220,6 @@ function iconForFieldType(fieldType) {
   }
 }
 
-// WIP
 function initializeDraggable() {
   const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
   const dataContainers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
@@ -256,17 +286,14 @@ function saveDraggableContainer(dragEvent, containerId) {
   let containerItems = getContainerItems(containerId);
   let containerItemsJSON = [];
 
-  notification = "layout updated with field: '" + field + "'"
-  // toastr.info(notification);
-
   for (var i = 0; i < containerItems.length; i++) {
     containerItemsJSON.push(containerItems[i].innerText.trim())
   }
 
-  // save container items
-  // notify user of save
-  console.log(containerItemsJSON);
-  // console.log(notification)
+  // notification = "Container updated"
+  // toastr.info(notification);
+
+  updateLayoutBuilderContainer(containerId, containerItemsJSON)
 }
 
 function getContainerItems(containerId) {
