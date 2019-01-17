@@ -48,7 +48,10 @@ $(document).ready(function() {
     saveLayout(layoutName, layoutPrimaryTable);
   })
 
-  $('#layout-builder-modal').modal({});
+  $('#layout-builder-modal').modal({
+    backdrop: 'static',
+    keyboard: false
+  });
 
   let currentTable = $('#view_builder_table_name').data('table-name');
 
