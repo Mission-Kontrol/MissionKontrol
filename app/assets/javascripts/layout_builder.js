@@ -1,5 +1,6 @@
-$(document).ready(function() {
+var draggable;
 
+$(document).ready(function() {
   $('.layout-builder-nav-item').click(function(evt) {
     let currentTable = $('#view_builder_table_name').data('table-name');
 
@@ -19,12 +20,11 @@ $(document).ready(function() {
   $('.layout_builder_selected_table_name').click(function(evt) {
     evt.preventDefault();
     var table = $(this).data().tableName;
-    hideFieldSettingsFormScreen1();
-    showFieldSettingsFormScreen2();
-    // clear droppable containers of previous elements belonging to incorrect fields
+    // hideFieldSettingsFormScreen1();
+    // showFieldSettingsFormScreen2();
 
-    // getOptionsForDraggable(table);
-    // document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
+    // delete all container data
+    rebuildDraggableFields(table)
   })
 
   $('.layout_builder_field_settings_form_back_btn').click(function() {
@@ -48,16 +48,19 @@ $(document).ready(function() {
 
   $('#layout-builder-modal').modal({});
 
-  // let currentTable = $('#view_builder_table_name').data('table-name');
-  // debugger
-  // getOptionsForDraggable(currentTable);
-  // document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
+  let currentTable = $('#view_builder_table_name').data('table-name');
+
+  if (currentTable) {
+      rebuildDraggableFields(currentTable);
+  }
 })
 
 function rebuildDraggableFields(table) {
+  if (draggable) {
+    draggable.destroy();
+  }
   hideFieldSettingsFormScreen1();
   showFieldSettingsFormScreen2();
-  // clear droppable containers of previous elements belonging to incorrect fields
   getOptionsForDraggable(table);
   document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
 }
@@ -109,57 +112,10 @@ function getOptionsForDraggable(primaryTable) {
   })
 }
 
-function getContainerParam(containerId) {
-  switch(containerId) {
-    case 'layout-builder-draggable-header-container1':
-      return 'draggable_fields_header_container1'
-      break;
-    case 'layout-builder-draggable-header-container2':
-      return 'draggable_fields_header_container2'
-      break;
-    case 'layout-builder-draggable-main-container1':
-      return 'draggable_fields_main_container1'
-      break;
-    case 'layout-builder-draggable-main-container2':
-      return 'draggable_fields_main_container2'
-      break;
-    case 'layout-builder-draggable-main-container3':
-      return 'draggable_fields_main_container3'
-      break;
-    case 'layout-builder-draggable-side-container':
-      return 'draggable_fields_side_container'
-      break;
-    default:
-      console.error("unknown container - " + containerId);
-      return
-  }
-}
-
-function saveLayout(name, primaryTable) {
-  var layoutID;
-  var redirectURL;
-
-  $.ajax({
-    url: "/layouts",
-    type: 'POST',
-    data: {
-      table: primaryTable,
-      view_name: name
-    },
-    error: function(XMLHttpRequest, errorTextStatus, error){
-              alert("Failed: "+ errorTextStatus+" ;"+error);
-           },
-    success: function(response, status, request){
-      layoutID = response.id;
-      redirectURL = "/layouts/" + layoutID + "/edit";
-      window.location.replace(redirectURL);
-    }
-  })
-}
-
 // TODO: update containers according to db values when initializing draggable
 function updateDraggableFields(data) {
   $('#layout-builder-draggable-fields-container').html('');
+  clearDroppableContainers();
 
   for (var i = 0; i < data.length; i++) {
     var fieldName = data[i][0]
@@ -169,26 +125,23 @@ function updateDraggableFields(data) {
     "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
     "</div>"
 
-    // if (containerIncludesField('layout-builder-draggable-header-container1', fieldName)) {
-    //   $('#layout-builder-draggable-header-container1').append(item);
-    // } else if (containerIncludesField('layout-builder-draggable-header-container2', fieldName)) {
-    //   $('#layout-builder-draggable-header-container2').append(item);
-    // } else if (containerIncludesField('layout-builder-draggable-side-container', fieldName)) {
-    //   $('#layout-builder-draggable-side-container').append(item);
-    // } else if (containerIncludesField('layout-builder-draggable-main-container1', fieldName)) {
-    //   $('#layout-builder-draggable-main-container1').append(item);
-    // } else if (containerIncludesField('layout-builder-draggable-main-container2', fieldName)) {
-    //   $('#layout-builder-draggable-main-container2').append(item);
-    // } else if (containerIncludesField('layout-builder-draggable-main-container3', fieldName)) {
-    //   $('#layout-builder-draggable-main-container3').append(item);
-    // } else {
-    //   $('#layout-builder-draggable-fields-container').append(item);
-    // }
-
-    $('#layout-builder-draggable-fields-container').append(item);
+    if (containerIncludesField('layout-builder-draggable-header-container1', fieldName)) {
+      $('#layout-builder-draggable-header-container1').append(item);
+    } else if (containerIncludesField('layout-builder-draggable-header-container2', fieldName)) {
+      $('#layout-builder-draggable-header-container2').append(item);
+    } else if (containerIncludesField('layout-builder-draggable-side-container', fieldName)) {
+      $('#layout-builder-draggable-side-container').append(item);
+    } else if (containerIncludesField('layout-builder-draggable-main-container1', fieldName)) {
+      $('#layout-builder-draggable-main-container1').append(item);
+    } else if (containerIncludesField('layout-builder-draggable-main-container2', fieldName)) {
+      $('#layout-builder-draggable-main-container2').append(item);
+    } else if (containerIncludesField('layout-builder-draggable-main-container3', fieldName)) {
+      $('#layout-builder-draggable-main-container3').append(item);
+    } else {
+      $('#layout-builder-draggable-fields-container').append(item);
+    }
   }
 
-  clearDroppableContainers();
   initializeDraggable();
 }
 
@@ -233,7 +186,7 @@ function initializeDraggable() {
   const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
   const dataContainers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
 
-  const draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
+  draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: '.layout-builder-draggable-item'
   });
 
@@ -355,4 +308,52 @@ function showTrashContainer() {
 
 function hideTrashContainer() {
   $('#layout-builder-draggable-trash-container').addClass('hide');
+}
+
+function getContainerParam(containerId) {
+  switch(containerId) {
+    case 'layout-builder-draggable-header-container1':
+      return 'draggable_fields_header_container1'
+      break;
+    case 'layout-builder-draggable-header-container2':
+      return 'draggable_fields_header_container2'
+      break;
+    case 'layout-builder-draggable-main-container1':
+      return 'draggable_fields_main_container1'
+      break;
+    case 'layout-builder-draggable-main-container2':
+      return 'draggable_fields_main_container2'
+      break;
+    case 'layout-builder-draggable-main-container3':
+      return 'draggable_fields_main_container3'
+      break;
+    case 'layout-builder-draggable-side-container':
+      return 'draggable_fields_side_container'
+      break;
+    default:
+      console.error("unknown container - " + containerId);
+      return
+  }
+}
+
+function saveLayout(name, primaryTable) {
+  var layoutID;
+  var redirectURL;
+
+  $.ajax({
+    url: "/layouts",
+    type: 'POST',
+    data: {
+      table: primaryTable,
+      view_name: name
+    },
+    error: function(XMLHttpRequest, errorTextStatus, error){
+              alert("Failed: "+ errorTextStatus+" ;"+error);
+           },
+    success: function(response, status, request){
+      layoutID = response.id;
+      redirectURL = "/layouts/" + layoutID + "/edit";
+      window.location.replace(redirectURL);
+    }
+  })
 }
