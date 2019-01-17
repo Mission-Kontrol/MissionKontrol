@@ -4,7 +4,6 @@ class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
   layout 'dashboard', only: [:index]
   skip_before_action :verify_authenticity_token
-  before_action :load_view_builder, only: %i[show update view_page edit]
 
   def new
     @available_tables = available_tables
@@ -17,11 +16,6 @@ class LayoutBuilderController < ApplicationController
 
   def index
     @view_builders = ViewBuilder.all.sort
-  end
-
-  def table_fields
-    @fields = list_table_fields(params[:table])
-    render json: @fields
   end
 
   def table_fields_with_type
@@ -51,17 +45,11 @@ class LayoutBuilderController < ApplicationController
     end
   end
 
-  def retrieve_data
-    @view_builder = ViewBuilder.find(params[:viewBuilderId])
-    data = retrieve_data_from_database(params[:userId], @view_builder)
-    render json: data
-  end
-
   def view_page; end
 
   def edit
+    @view_builder = ViewBuilder.find(params[:id])
     @available_tables = available_tables
-    @layout_setting = LayoutSetting.find_by_layout_id(@view_builder.id) || LayoutSetting.new
   end
 
   private
@@ -70,46 +58,12 @@ class LayoutBuilderController < ApplicationController
     @view_builder = ViewBuilder.find(params[:id])
   end
 
-  def retrieve_data_from_database(query_limiter, view_builder)
-    query = query_limiter.empty? ? '' : "WHERE user_id = #{query_limiter}"
-    Kuwinda::Presenter::RetrieveData.new(ClientRecord, view_builder, query).call
-  end
-
-  def list_table_fields(table)
-    Kuwinda::Presenter::ListTableFields.new(ClientRecord, table).call
-  end
-
   def list_table_fields_with_type(table)
     Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
   end
 
   def available_tables
     Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  end
-
-  def field_params
-    params.permit(:view_name, :table, selectedOptions: [])
-  end
-
-  def table_attributes(field_params)
-    table_attributes = {}
-
-    field_params.each_with_index do |i, field|
-      next if i.nil?
-      table_attributes[field] = i
-    end
-
-    { 'visible_fields': table_attributes }
-  end
-
-  def configure_attributes(field_params)
-    table_attributes = {}
-
-    field_params.as_json.each do |_k, value|
-      table_attributes[value['Position']] = value['Field']
-    end
-
-    { 'visible_fields': table_attributes }
   end
 
   def update_attributes(view_builder, params)
