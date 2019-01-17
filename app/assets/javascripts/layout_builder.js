@@ -1,5 +1,8 @@
 $(document).ready(function() {
+
   $('.layout-builder-nav-item').click(function(evt) {
+    let currentTable = $('#view_builder_table_name').data('table-name');
+
     evt.preventDefault();
     var elems = document.querySelectorAll(".layout-builder-nav-item");
     var tab = "#" + $(this).data().tabName;
@@ -7,6 +10,10 @@ $(document).ready(function() {
     hideSettingsForm();
     $(this).addClass('active');
     $(tab).removeClass('hide');
+
+    if (currentTable) {
+        rebuildDraggableFields(currentTable);
+    }
   })
 
   $('.layout_builder_selected_table_name').click(function(evt) {
@@ -15,8 +22,9 @@ $(document).ready(function() {
     hideFieldSettingsFormScreen1();
     showFieldSettingsFormScreen2();
     // clear droppable containers of previous elements belonging to incorrect fields
-    getOptionsForDraggable(table);
-    document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
+
+    // getOptionsForDraggable(table);
+    // document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
   })
 
   $('.layout_builder_field_settings_form_back_btn').click(function() {
@@ -40,11 +48,19 @@ $(document).ready(function() {
 
   $('#layout-builder-modal').modal({});
 
-  let currentTable = $('#view_builder_table_name').data('table-name');
+  // let currentTable = $('#view_builder_table_name').data('table-name');
   // debugger
   // getOptionsForDraggable(currentTable);
   // document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
 })
+
+function rebuildDraggableFields(table) {
+  hideFieldSettingsFormScreen1();
+  showFieldSettingsFormScreen2();
+  // clear droppable containers of previous elements belonging to incorrect fields
+  getOptionsForDraggable(table);
+  document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
+}
 
 function removeActiveClass(elements) {
   [].forEach.call(elements, function(el) {
@@ -117,29 +133,6 @@ function getContainerParam(containerId) {
       console.error("unknown container - " + containerId);
       return
   }
-}
-
-// WIP
-function updateLayoutBuilderContainer(containerId, containerItems) {
-  var url = window.location.href;
-  var id = url.split("/")[4];
-  var containerParam = getContainerParam(containerId)
-
-  $.ajax({
-    url: "/layouts/" + id,
-    type: 'PATCH',
-    data: {
-      view_builder: {
-        [containerParam]: containerItems
-      }
-    },
-    error: function(XMLHttpRequest, errorTextStatus, error){
-              alert("Failed: "+ errorTextStatus+" ;"+error);
-           },
-    success: function(response, status, request){
-      // alert("success")
-    }
-  })
 }
 
 function saveLayout(name, primaryTable) {
@@ -258,7 +251,8 @@ function initializeDraggable() {
 
     let currentContainerId = currentContainer.id
     let currentFieldValue = dragEvent.source.innerText.trim()
-    console.log(currentFieldValue + ' droppped into container - ' + currentContainerId);
+    // console.log(currentFieldValue + ' droppped into container - ' + currentContainerId);
+    console.log(currentContainerId + " updated with " + currentFieldValue);
 
     if (currentContainer === trashContainer) {
       fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
@@ -274,17 +268,21 @@ function initializeDraggable() {
 
     hideTrashContainer();
 
-    let isSourceSaveable = isNotTrashContainer(sourceContainerId) && isNotFieldsContainer(sourceContainerId)
-    let isDestinationSaveable = isNotTrashContainer(destinationContainerId) && isNotFieldsContainer(destinationContainerId)
+    // let isSourceSaveable = isNotTrashContainer(sourceContainerId) && isNotFieldsContainer(sourceContainerId)
+    // let isDestinationSaveable = isNotTrashContainer(destinationContainerId) && isNotFieldsContainer(destinationContainerId)
 
-    if (isSourceSaveable) {
+    if (isDataContainer(sourceContainerId)) {
       saveDraggableContainer(dragEvent, sourceContainerId)
     }
 
-    if (isDestinationSaveable) {
+    if (isDataContainer(destinationContainerId)) {
       saveDraggableContainer(dragEvent, destinationContainerId)
     }
   });
+}
+
+function isDataContainer(containerId) {
+  return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
 }
 
 function isNotTrashContainer(containerId) {
@@ -306,10 +304,34 @@ function saveDraggableContainer(dragEvent, containerId) {
     containerItemsJSON.push(containerItems[i].innerText.trim())
   }
 
-  // notification = "Container updated"
-  // toastr.info(notification);
-
   updateLayoutBuilderContainer(containerId, containerItemsJSON)
+}
+
+// WIP
+function updateLayoutBuilderContainer(containerId, containerItems) {
+  var url = window.location.href;
+  var id = url.split("/")[4];
+  var containerParam = getContainerParam(containerId);
+  var data = {};
+  data["view_builder"] = {};
+
+  if (containerItems.length === 0) {
+    data["view_builder"][containerParam] = JSON.stringify(containerItems)
+  } else {
+    data["view_builder"][containerParam] = containerItems
+  }
+
+  $.ajax({
+    url: "/layouts/" + id,
+    type: 'PATCH',
+    data: data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      console.error("PATCH /layouts/:id Failed: "+ errorTextStatus+" ;"+error);
+    },
+    success: function(response, status, request){
+      console.log("PATCH /layouts/:id Success")
+    }
+  })
 }
 
 function getContainerItems(containerId) {
