@@ -13,15 +13,17 @@ $(document).ready(function() {
     $(tab).removeClass('hide');
 
     if (currentTable) {
-        rebuildDraggableFields(currentTable);
+      hideFieldSettingsFormScreen1();
+      showFieldSettingsFormScreen2();
+      rebuildDraggableFields(currentTable);
     }
   })
 
   $('.layout_builder_selected_table_name').click(function(evt) {
     evt.preventDefault();
     var table = $(this).data().tableName;
-    // hideFieldSettingsFormScreen1();
-    // showFieldSettingsFormScreen2();
+    hideFieldSettingsFormScreen1();
+    showFieldSettingsFormScreen2();
 
     // delete all container data
     rebuildDraggableFields(table)
@@ -56,11 +58,11 @@ $(document).ready(function() {
 })
 
 function rebuildDraggableFields(table) {
+  // delete all container data on server
   if (draggable) {
     draggable.destroy();
   }
-  hideFieldSettingsFormScreen1();
-  showFieldSettingsFormScreen2();
+
   getOptionsForDraggable(table);
   document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
 }
