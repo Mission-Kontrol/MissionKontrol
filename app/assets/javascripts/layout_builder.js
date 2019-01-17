@@ -3,7 +3,6 @@ var draggable;
 $(document).ready(function() {
   $('.layout-builder-nav-item').click(function(evt) {
     let currentTable = $('#view_builder_table_name').data('table-name');
-
     evt.preventDefault();
     var elems = document.querySelectorAll(".layout-builder-nav-item");
     var tab = "#" + $(this).data().tabName;
@@ -24,9 +23,7 @@ $(document).ready(function() {
     var table = $(this).data().tableName;
     hideFieldSettingsFormScreen1();
     showFieldSettingsFormScreen2();
-
-    // delete all container data
-    rebuildDraggableFields(table)
+    rebuildDraggableFields(table);
   })
 
   $('.layout_builder_field_settings_form_back_btn').click(function() {
@@ -61,7 +58,6 @@ $(document).ready(function() {
 })
 
 function rebuildDraggableFields(table) {
-  // delete all container data on server
   if (draggable) {
     draggable.destroy();
   }
@@ -88,7 +84,6 @@ function getOptionsForDraggable(primaryTable) {
   })
 }
 
-// TODO: update containers according to db values when initializing draggable
 function updateDraggableFields(data) {
   $('#layout-builder-draggable-fields-container').html('');
   clearDroppableContainers();
@@ -148,11 +143,8 @@ function initializeDraggable() {
     let currentContainer = dragEvent.source.parentNode;
     let destinationContainerId = currentContainer.id;
     let sourceContainerId = dragEvent.data.sourceContainer.id;
-
     let currentContainerId = currentContainer.id
     let currentFieldValue = dragEvent.source.innerText.trim()
-    // console.log(currentFieldValue + ' droppped into container - ' + currentContainerId);
-    console.log(currentContainerId + " updated with " + currentFieldValue);
 
     if (currentContainer === trashContainer) {
       fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
@@ -167,9 +159,6 @@ function initializeDraggable() {
     }
 
     hideTrashContainer();
-
-    // let isSourceSaveable = isNotTrashContainer(sourceContainerId) && isNotFieldsContainer(sourceContainerId)
-    // let isDestinationSaveable = isNotTrashContainer(destinationContainerId) && isNotFieldsContainer(destinationContainerId)
 
     if (isDataContainer(sourceContainerId)) {
       saveDraggableContainer(dragEvent, sourceContainerId)
@@ -235,7 +224,6 @@ function saveDraggableContainer(dragEvent, containerId) {
   updateLayoutBuilderContainer(containerId, containerItemsJSON)
 }
 
-// WIP
 function updateLayoutBuilderContainer(containerId, containerItems) {
   var url = window.location.href;
   var id = url.split("/")[4];
@@ -257,8 +245,6 @@ function updateLayoutBuilderContainer(containerId, containerItems) {
       console.error("PATCH /layouts/:id Failed: "+ errorTextStatus+" ;"+error);
     },
     success: function(response, status, request){
-      // use response to update container data
-      // debugger
       console.log("PATCH /layouts/:id Success")
     }
   })
