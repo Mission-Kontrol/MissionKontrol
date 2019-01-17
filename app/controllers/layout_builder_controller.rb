@@ -66,6 +66,10 @@ class LayoutBuilderController < ApplicationController
     Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
 
+  def field_params
+    params.permit(:view_name, :table, selectedOptions: [])
+  end
+
   def update_attributes(view_builder, params)
     view_builder.status = params[:status] if params[:status]
     view_builder.view_name = params[:name] if params[:name]
