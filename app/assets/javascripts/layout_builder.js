@@ -70,35 +70,6 @@ function rebuildDraggableFields(table) {
   document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
 }
 
-function removeActiveClass(elements) {
-  [].forEach.call(elements, function(el) {
-    el.classList.remove("active");
-  });
-}
-
-function hideSettingsForm() {
-  $('#layout_builder_general_settings_form').addClass('hide');
-  $('#layout_builder_field_settings_form').addClass('hide');
-}
-
-function goToNextScreen() {
-  $('#layout-builder-modal-screen-1').toggleClass('hide');
-  $('#layout-builder-modal-screen-2').toggleClass('hide');
-}
-
-function goToPreviousScreen() {
-  $('#layout-builder-modal-screen-1').toggleClass('hide');
-  $('#layout-builder-modal-screen-2').toggleClass('hide');
-}
-
-function hideFieldSettingsFormScreen1() {
-  $('#layout_builder_field_settings_form_screen_1').toggleClass('hide');
-}
-
-function showFieldSettingsFormScreen2() {
-  $('#layout_builder_field_settings_form_screen_2').toggleClass('hide');
-}
-
 function getOptionsForDraggable(primaryTable) {
   $.ajax({
     url: "/layouts/table_fields_with_type",
@@ -150,41 +121,12 @@ function updateDraggableFields(data) {
   initializeDraggable();
 }
 
-function containerContainsField(containerId, fieldName) {
-  let elementId = "#" + containerId;
-  let fields = $(elementId).data('fields-for-container');
-  return fields.includes(fieldName)
-}
+function clearDroppableContainers() {
+  const containers = document.querySelectorAll('#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3')
 
-function containerIncludesField(containerId, fieldName) {
-  let elementId = "#" + containerId;
-  let fields = $(elementId).data('fields-for-container');
-  // if (fieldName === "email") {
-  //   // debugger
-  // }
-  return fields.includes(fieldName)
-}
-
-function iconForFieldType(fieldType) {
-  switch(fieldType) {
-    case 'string':
-    case 'text':
-      return 'fa fa-font'
-      break;
-    case 'time':
-    case 'timestamp':
-      return 'fa fa-clock-o'
-      break;
-    case 'date':
-    case 'datetime':
-      return 'fa fa-calendar'
-      break;
-    case 'boolean':
-      return 'fa fa-toggle-on'
-      break;
-    default:
-      return 'fa fa-font'
-  }
+  containers.forEach(function(container) {
+    container.innerHTML = ""
+  })
 }
 
 function initializeDraggable() {
@@ -239,6 +181,34 @@ function initializeDraggable() {
   });
 }
 
+function containerIncludesField(containerId, fieldName) {
+  let elementId = "#" + containerId;
+  let fields = $(elementId).data('fields-for-container');
+  return fields.includes(fieldName)
+}
+
+function iconForFieldType(fieldType) {
+  switch(fieldType) {
+    case 'string':
+    case 'text':
+      return 'fa fa-font'
+      break;
+    case 'time':
+    case 'timestamp':
+      return 'fa fa-clock-o'
+      break;
+    case 'date':
+    case 'datetime':
+      return 'fa fa-calendar'
+      break;
+    case 'boolean':
+      return 'fa fa-toggle-on'
+      break;
+    default:
+      return 'fa fa-font'
+  }
+}
+
 function isDataContainer(containerId) {
   return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
 }
@@ -287,6 +257,8 @@ function updateLayoutBuilderContainer(containerId, containerItems) {
       console.error("PATCH /layouts/:id Failed: "+ errorTextStatus+" ;"+error);
     },
     success: function(response, status, request){
+      // use response to update container data
+      // debugger
       console.log("PATCH /layouts/:id Success")
     }
   })
@@ -296,14 +268,6 @@ function getContainerItems(containerId) {
   let query;
   query = "#" + containerId + " " + ".layout-builder-draggable-field:not(.draggable--original):not(.draggable-mirror)"
   return document.querySelectorAll(query);
-}
-
-function clearDroppableContainers() {
-  const containers = document.querySelectorAll('#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3')
-
-  containers.forEach(function(container) {
-    container.innerHTML = ""
-  })
 }
 
 function showTrashContainer() {
@@ -361,4 +325,33 @@ function saveLayout(name, primaryTable) {
       window.location.replace(redirectURL);
     }
   })
+}
+
+function removeActiveClass(elements) {
+  [].forEach.call(elements, function(el) {
+    el.classList.remove("active");
+  });
+}
+
+function hideSettingsForm() {
+  $('#layout_builder_general_settings_form').addClass('hide');
+  $('#layout_builder_field_settings_form').addClass('hide');
+}
+
+function goToNextScreen() {
+  $('#layout-builder-modal-screen-1').toggleClass('hide');
+  $('#layout-builder-modal-screen-2').toggleClass('hide');
+}
+
+function goToPreviousScreen() {
+  $('#layout-builder-modal-screen-1').toggleClass('hide');
+  $('#layout-builder-modal-screen-2').toggleClass('hide');
+}
+
+function hideFieldSettingsFormScreen1() {
+  $('#layout_builder_field_settings_form_screen_1').toggleClass('hide');
+}
+
+function showFieldSettingsFormScreen2() {
+  $('#layout_builder_field_settings_form_screen_2').toggleClass('hide');
 }
