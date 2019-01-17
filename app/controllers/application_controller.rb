@@ -16,4 +16,10 @@ class ApplicationController < ActionController::Base
   def load_target_db_tables
     @target_db_tables ||= Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
+
+  protected
+
+  def after_sign_in_path_for(resource)
+    new_layout_path
+  end
 end
