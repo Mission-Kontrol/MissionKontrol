@@ -136,7 +136,7 @@ describe ViewBuilderController, type: :controller do
 
     it 'will assign the view_builders' do
       subject
-      expect(assigns[:view_builders]).to eq [view_builder]
+      expect(assigns[:view_builders]).to include view_builder
     end
   end
 

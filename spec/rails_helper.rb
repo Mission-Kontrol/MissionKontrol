@@ -51,17 +51,18 @@ RSpec.configure do |config|
 
   # Clear/clean test DB every test
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    # DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :truncation, { except: %w[users events attending_events] }
+    # DatabaseCleaner.clean_with(:transaction)
   end
 
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
+  # config.before(:each) do
+  #   DatabaseCleaner.start
+  # end
 
   config.after(:each) do
     DatabaseCleaner.clean
-end
+  end
 end
 
 Capybara.register_driver :chrome do |app|
