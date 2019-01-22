@@ -7,17 +7,18 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
     <%= tag :meta, name: :psj, action: action_name, controller: controller_name %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
   </head>
 
   <body class="gray-bg">
-    <div class="container-fluid">
+    <div class="container-fluid" style="max-width: 1080px">
 
       <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
           <%= render 'layouts/layout_builder_navigation' %>
         </div>
 
-        <div class="col-sm-9">
+        <div class="col-sm-8">
           <%= render 'layouts/layout_builder_topnavbar' %>
 
           <%= render 'shared/flash_message' %>

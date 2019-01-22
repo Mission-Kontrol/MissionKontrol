@@ -158,12 +158,27 @@ function initializeDraggable() {
   const trashContainer = draggable.containers[1]
   const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
 
+  draggable.on('drag:start', (dragEvent) => {
+    showTrashContainer();
+
+  })
+
   draggable.on('drag:stop', (dragEvent) => {
     let currentContainer = dragEvent.source.parentNode;
 
     if (currentContainer === trashContainer) {
       fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0])
+
+      setTimeout(function () {
+        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+      }, 100);
+
+      setTimeout(function () {
+        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+      }, 2000);
     }
+
+    hideTrashContainer();
   });
 }
 
@@ -173,4 +188,13 @@ function clearDroppableContainers() {
   containers.forEach(function(container) {
     container.innerHTML = ""
   })
+}
+
+function showTrashContainer() {
+  $('#layout-builder-draggable-trash-container').addClass('animated zoomIn');
+  $('#layout-builder-draggable-trash-container').removeClass('hide');
+}
+
+function hideTrashContainer() {
+  $('#layout-builder-draggable-trash-container').addClass('hide');
 }
