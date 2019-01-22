@@ -63,6 +63,15 @@ make bash
 bundle exec rails db:reset
 ```
 
+### Working with the dummy client database
+
+If the dummy client database has been emptied for whatever reason, you can run the seeds to fill it again with:
+
+```sh
+make bash
+bundle exec rake dummy_client_database:seeds
+```
+
 ### Working with Docker
 
 #### Starting Docker

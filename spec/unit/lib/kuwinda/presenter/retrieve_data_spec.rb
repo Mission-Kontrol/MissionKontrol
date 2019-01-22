@@ -10,17 +10,16 @@ describe Kuwinda::Presenter::RetrieveData do
     Kuwinda::UseCase::DatabaseConnection.new.execute
   end
   let(:view_builder) { create(:view_builder) }
-  let(:query_limiter) { 'WHERE user_id = 1' }
+  let(:query_limiter) { 'WHERE user_id = 3' }
   let(:expected_result) do
     {
-      0 => ['London', 'pro', 'gold', 1],
-      1 => ['Manchester', 'pro', 'silver', 1],
-      2 => ['Sheffield', 'beginner', 'silver', 1]
+      0 => ['London', 'pro', 'gold', 6],
+      1 => ['Morzine', 'beginner', 'silver', 2]
     }
   end
 
   context 'retrieving data' do
-    xit 'returns the correct fields from the table' do
+    it 'returns the correct fields from the table' do
       expect(subject).to eq expected_result
     end
   end
