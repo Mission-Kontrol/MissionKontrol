@@ -1,0 +1,15 @@
+<div class="row border-bottom">
+  <nav class="navbar navbar-static-top" role="navigation">
+    <ul class="nav navbar-top-links navbar-right">
+      <li>
+        <%= link_to "Dashboard", dashboard_path, :class => 'navbar-link'  %>
+      </li>
+
+      <li>
+        <% if admin_user_signed_in? %>
+          <%= link_to "Logout", destroy_admin_user_session_path, method: :delete, :class => 'navbar-link'  %>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+</div>

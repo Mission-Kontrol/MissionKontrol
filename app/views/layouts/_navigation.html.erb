@@ -10,8 +10,11 @@
           <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="clear">
               <span class="block m-t-xs">
-                <strong class="font-bold"><%= current_admin_user.full_name %></strong>
+                <% if current_admin_user %>
+                  <strong class="font-bold"><%= current_admin_user.full_name %></strong>
+                <% end %>
               </span>
+
               <span class="text-muted text-xs block">Art Director </span>
             </span>
           </a>
@@ -88,7 +91,7 @@
         <% end %>
       </li>
 
-      <li class="<%= active_action?('view_page') %>">
+      <li class="<%= active_action?('view_page') %> hide">
         <a href="">
           <i class="fa fa-cogs" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.dashboard">ViewBuilder</span> <span class="fa arrow"></span>
@@ -107,7 +110,7 @@
 
       <% if @view_builders.any? %>
         <% @view_builders.each do |view_builder| %>
-          <li class="<%= active_controller?('view_builder') %>">
+          <li class="<%= active_controller?('view_builder') %> hide">
             <%= link_to view_builder_view_path(id: view_builder) do %>
             <i class="fa fa-anchor"></i>
             <span class="nav-label" data-i18n="nav.layouts"><%= view_builder.view_name %></span>

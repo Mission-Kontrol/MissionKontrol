@@ -2,7 +2,7 @@
 
 class AdminUserRegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
-  layout 'dashboard'
+  layout 'application', only: [:new]
 
   protected
 

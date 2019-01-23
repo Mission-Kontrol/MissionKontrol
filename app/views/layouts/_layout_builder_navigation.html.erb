@@ -1,0 +1,65 @@
+<div class="row white-bg min-height-100vh">
+  <div class="col-sm-3 min-height-100vh">
+    <br>
+    <a class="layout-builder-nav-item active" href="/" data-tab-name="layout_builder_general_settings_form">
+      <i class="fa fa-wrench" aria-hidden="true"></i>
+    </a>
+
+    <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_field_settings_form">
+      <i class="fa fa-database" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="col-sm-9 layout-builder-side-nav min-height-100vh">
+    <br>
+    <div class="m-t">
+      <div id="layout_builder_general_settings_form">
+        <h4>General settings</h4>
+
+        <p class="hide">
+          <small>
+            Saved.
+          </small>
+        </p>
+
+        <%= render 'general_settings_form' %>
+      </div>
+
+      <div class="hide" id="layout_builder_field_settings_form">
+
+        <div id="layout_builder_field_settings_form_screen_1">
+          <h4>Fields</h4>
+
+          <p>Select the primary table that this layout will be based on.</p>
+
+          <div class="light-border-bottom"></div>
+
+          <% @available_tables.each do |table| %>
+            <div class="light-border-bottom layout-builder-side-nav-available-table">
+              <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= table %>>
+                <%= table %>
+                <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="hide" id="layout_builder_field_settings_form_screen_2">
+          <h4>
+            <a href="#" class="layout_builder_field_settings_form_back_btn hide">
+              <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+            </a>
+            <span id="layout_builder_selected_table_name"></span>
+          </h4>
+
+          <p>Select a table you would like to see fields for.</p>
+
+          <div class="light-border-bottom"></div>
+
+          <div id="layout-builder-draggable-fields-container">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

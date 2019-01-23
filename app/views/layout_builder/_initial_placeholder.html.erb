@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-lg-12 layout-placeholder hide" id="layout-builder-draggable-trash-container">
+    <p class="text-center">
+      <span><i class="fa fa-times"></i></span>
+    </p>
+  </div>
+</div>
+
+<div class="row white-bg">
+  <!-- header container -->
+  <div class="col-sm-7">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="layout-placeholder" id="layout-builder-draggable-header-container1" data-fields-for-container='<%= @view_builder.draggable_fields_header_container1 %>'>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="layout-placeholder" id="layout-builder-draggable-header-container2" data-fields-for-container='<%= @view_builder.draggable_fields_header_container2 %>'>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="m-t text-align-right">
+          <p><b>Status</b></p>
+          <p>Qualified</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row white-bg">
+  <!-- side container -->
+  <div class="col-sm-5 col-lg-4">
+    <div class="layout-placeholder" id="layout-builder-draggable-side-container" data-fields-for-container='<%= @view_builder.draggable_fields_side_container %>'>
+    </div>
+  </div>
+
+  <!-- main container -->
+  <div class="col-sm-7 col-lg-8">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="layout-placeholder" id="layout-builder-draggable-main-container1" data-fields-for-container='<%= @view_builder.draggable_fields_main_container1 %>'>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="layout-placeholder" id="layout-builder-draggable-main-container2" data-fields-for-container='<%= @view_builder.draggable_fields_main_container2 %>'>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="layout-placeholder" id="layout-builder-draggable-main-container3" data-fields-for-container='<%= @view_builder.draggable_fields_main_container3 %>'>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <p class="text-center white-bg m-t">
+          <i class="fa fa-plus"></i>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @view_builders.any? %>
+  <% @view_builders.each do |view_builder| %>
+    <div class="row showme hide">
+      <div class="col-sm-12">
+        <%= render 'view_builder/panel', view_builder: view_builder %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
