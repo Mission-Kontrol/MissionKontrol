@@ -56,6 +56,8 @@ $(document).ready(function() {
     document.getElementById("layout-builder-field-settings-tab").click();
     showFieldSettingsFormScreen2();
     rebuildDraggableFields(currentTable)
+  } else {
+    document.getElementById("layout-builder-general-settings-tab").click();
   }
 })
 
@@ -88,6 +90,11 @@ function getOptionsForDraggable(primaryTable) {
 
 function updateDraggableFields(data) {
   $('#layout-builder-draggable-fields-container').html('');
+
+  //
+  // populate containers first with data attributes for container as draggable items
+  //
+  // refreshFromDataAttributes();
 
   for (var i = 0; i < data.length; i++) {
     var fieldName = data[i][0]
@@ -131,6 +138,25 @@ function updateDraggableFields(data) {
   }
 
   initializeDraggable();
+}
+
+function refreshFromDataAttributes() {
+  // for each container, create a draggable item for its data attributes
+  let containerIds = ["#layout-builder-draggable-header-container1", "#layout-builder-draggable-header-container2", "#layout-builder-draggable-side-container", "#layout-builder-draggable-main-container1", "#layout-builder-draggable-main-container2", "#layout-builder-draggable-main-container3"]
+
+  for (var i = 0; i < containerIds.length; i++) {
+    let containerId = containerIds[i];
+    let containerData = $(containerId).data('fields-for-container');
+    for (var i = 0; i < containerData.length; i++) {
+      var fieldName = containerData[i][0]
+      var fieldType = containerData[i][1]
+      var icon = iconForFieldType(fieldType);
+      var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source'>" +
+      "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
+      "</div>"
+      $(containerId).append(item);
+    }
+  }
 }
 
 function containerDataContainsField(containerId, fieldName) {
