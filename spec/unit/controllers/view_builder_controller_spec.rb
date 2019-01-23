@@ -126,31 +126,34 @@ describe ViewBuilderController, type: :controller do
   end
 
   describe '#index' do
-    before { get :index }
-    let(:view_builder) { create(:view_builder) }
+    subject { get :index }
+    let!(:view_builder) { create(:view_builder) }
 
     it 'will render the page' do
+      subject
       expect(response.status).to eq(200)
     end
 
-    xit 'will assign the view_builders' do
-      expect(assigns[:view_builders]).to eq [view_builder]
+    it 'will assign the view_builders' do
+      subject
+      expect(assigns[:view_builders]).to include view_builder
     end
   end
 
-  xdescribe '#get_data' do
-    before { get :get_data, params: params }
-    let(:user) { create(:user, email: 'test@email.com') }
+  describe '#get_data' do
+    subject { get :retrieve_data, params: params }
+    # let(:user) { create(:user) }
     let(:view_builder) { create(:view_builder) }
     let(:params) do
       {
-        userId: user.id,
+        userId: 1,
         viewBuilderId: view_builder.id
       }
     end
 
     it 'will return the data as a json' do
-      expect(response.body).to eq 'data'
+      subject
+      expect(response.body).to eq '{}'
     end
   end
 end

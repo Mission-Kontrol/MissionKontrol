@@ -7,7 +7,7 @@ FactoryBot.define do
 
     trait :user do
       feedable_id 1
-      feedable_type 'User'
+      feedable_type 'users'
     end
   end
 end
