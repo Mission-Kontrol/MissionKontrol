@@ -1,7 +1,13 @@
 var draggable;
 
 $(document).ready(function() {
-  if (window.location.pathname.includes("layouts")) {
+  // todo change this to layouts controller ne
+  let metaTag = $('meta[name=psj]');
+  let isCurrentControllerLayout = metaTag.attr('controller') == 'layout_builder';
+  let isCurrentActionNew = metaTag.attr('action') == 'new';
+  let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+
+  if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
     $('.layout-builder-nav-item').click(function(evt) {
       evt.preventDefault();
 
