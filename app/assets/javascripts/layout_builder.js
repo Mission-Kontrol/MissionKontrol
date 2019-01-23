@@ -1,65 +1,63 @@
 var draggable;
 
 $(document).ready(function() {
-  $('.layout-builder-nav-item').click(function(evt) {
-    evt.preventDefault();
+  if (window.location.pathname.includes("layouts")) {
+    $('.layout-builder-nav-item').click(function(evt) {
+      evt.preventDefault();
+
+      let currentTable = $('#view_builder_table_name').data('table-name');
+
+      var tabName = $(this).data().tabName;
+
+      tablinks = document.getElementsByClassName("layout-builder-nav-item");
+
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      evt.currentTarget.className += " active";
+
+
+      goToTab(tabName);
+    })
+
+    $('.layout_builder_selected_table_name').click(function(evt) {
+      evt.preventDefault();
+      var table = $(this).data().tableName;
+      showFieldSettingsFormScreen2();
+      rebuildDraggableFields(table);
+    })
+
+    $('.layout_builder_field_settings_form_back_btn').click(function() {
+      showFieldSettingsFormScreen1();
+    })
+
+    $('#layout-builder-modal-next-button').click(function() {
+      goToNextScreen();
+    })
+
+    $('#layout-builder-modal-back-button').click(function() {
+      goToPreviousScreen();
+    })
+
+    $('#layout-builder-modal-save-button').click(function() {
+      var layoutName = document.getElementById('layout-builder-modal-form-name').value;
+      var layoutPrimaryTable = document.getElementById('layout-builder-modal-form-primary-table').value;
+      saveLayout(layoutName, layoutPrimaryTable);
+    })
+
+    $('#layout-builder-modal').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
 
     let currentTable = $('#view_builder_table_name').data('table-name');
 
-    var tabName = $(this).data().tabName;
-
-    tablinks = document.getElementsByClassName("layout-builder-nav-item");
-
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    evt.currentTarget.className += " active";
-
-
-    goToTab(tabName);
-  })
-
-  $('.layout_builder_selected_table_name').click(function(evt) {
-    evt.preventDefault();
-    var table = $(this).data().tableName;
-    showFieldSettingsFormScreen2();
-    rebuildDraggableFields(table);
-  })
-
-  $('.layout_builder_field_settings_form_back_btn').click(function() {
-    showFieldSettingsFormScreen1();
-  })
-
-  $('#layout-builder-modal-next-button').click(function() {
-    goToNextScreen();
-  })
-
-  $('#layout-builder-modal-back-button').click(function() {
-    goToPreviousScreen();
-  })
-
-  $('#layout-builder-modal-save-button').click(function() {
-    var layoutName = document.getElementById('layout-builder-modal-form-name').value;
-    var layoutPrimaryTable = document.getElementById('layout-builder-modal-form-primary-table').value;
-    saveLayout(layoutName, layoutPrimaryTable);
-  })
-
-  $('#layout-builder-modal').modal({
-    backdrop: 'static',
-    keyboard: false
-  });
-
-  let currentTable = $('#view_builder_table_name').data('table-name');
-
-  if (currentTable) {
-    if (window.location.pathname.includes("layouts")) {
+    if (currentTable) {
       document.getElementById("layout-builder-field-settings-tab").click();
-    }
-    showFieldSettingsFormScreen2();
-    rebuildDraggableFields(currentTable)
-  } else {
-    if (window.location.pathname.includes("layouts")) {
+      showFieldSettingsFormScreen2();
+      rebuildDraggableFields(currentTable)
+    } else {
       document.getElementById("layout-builder-general-settings-tab").click();
     }
   }
