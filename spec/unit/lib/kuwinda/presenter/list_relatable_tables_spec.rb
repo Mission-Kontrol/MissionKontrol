@@ -26,7 +26,7 @@ describe Kuwinda::Presenter::ListRelatableTables do
   context 'listing one to many connections' do
     let(:table) { 'Companies' }
 
-    it 'convers the table name to the singular' do
+    it 'converts the table name to the singular' do
       expect(relatable_tables.send(:convert_table_name, table)).to eq('company')
     end
   end
