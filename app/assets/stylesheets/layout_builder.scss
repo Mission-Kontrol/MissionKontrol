@@ -15,9 +15,10 @@
 }
 
 .layout-placeholder {
-  border: 1px dashed gray;
+  border: 1px solid #e9e9e9;
   min-height: 20px;
   margin: 10px 0;
+  padding: 5px 5px 0 5px;
 }
 
 .layout-builder-draggable-field {
@@ -87,4 +88,11 @@
 
 .pad-10-15 {
   padding: 10px 15px;
+}
+
+#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3  {
+
+  .layout-builder-draggable-item {
+    border: 1px dashed black;
+  }
 }
