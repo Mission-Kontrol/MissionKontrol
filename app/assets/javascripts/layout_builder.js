@@ -53,11 +53,15 @@ $(document).ready(function() {
   let currentTable = $('#view_builder_table_name').data('table-name');
 
   if (currentTable) {
-    document.getElementById("layout-builder-field-settings-tab").click();
+    if (window.location.pathname.includes("layouts")) {
+      document.getElementById("layout-builder-field-settings-tab").click();
+    }
     showFieldSettingsFormScreen2();
     rebuildDraggableFields(currentTable)
   } else {
-    document.getElementById("layout-builder-general-settings-tab").click();
+    if (window.location.pathname.includes("layouts")) {
+      document.getElementById("layout-builder-general-settings-tab").click();
+    }
   }
 })
 
