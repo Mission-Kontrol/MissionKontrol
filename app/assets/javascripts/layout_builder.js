@@ -1,7 +1,6 @@
 var draggable;
 
 $(document).ready(function() {
-  // todo change this to layouts controller ne
   let metaTag = $('meta[name=psj]');
   let isCurrentControllerLayout = metaTag.attr('controller') == 'layout_builder';
   let isCurrentActionNew = metaTag.attr('action') == 'new';
@@ -31,7 +30,7 @@ $(document).ready(function() {
       evt.preventDefault();
       var table = $(this).data().tableName;
       showFieldSettingsFormScreen2();
-      rebuildDraggableFields(table);
+      rebuildDraggable(table);
     })
 
     $('.layout_builder_field_settings_form_back_btn').click(function() {
@@ -62,20 +61,58 @@ $(document).ready(function() {
     if (currentTable) {
       document.getElementById("layout-builder-field-settings-tab").click();
       showFieldSettingsFormScreen2();
-      rebuildDraggableFields(currentTable)
+      rebuildDraggable(currentTable)
     } else {
       document.getElementById("layout-builder-general-settings-tab").click();
     }
   }
 })
 
-function rebuildDraggableFields(table) {
+function rebuildDraggable(table) {
   if (draggable) {
     draggable.destroy();
   }
 
+  rebuildDraggableDataContainers();
   getOptionsForDraggable(table);
   document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
+  initializeDraggable();
+}
+
+function rebuildDraggableDataContainers() {
+  let dataContainerIds = ["#layout-builder-draggable-header-container1",
+    "#layout-builder-draggable-header-container2",
+    "#layout-builder-draggable-side-container",
+    "#layout-builder-draggable-main-container1",
+    "#layout-builder-draggable-main-container2",
+    "#layout-builder-draggable-main-container3"]
+
+  for (var i = 0; i < dataContainerIds.length; i++) {
+    let containerId = dataContainerIds[i];
+    $(containerId).html('');
+    let data = JSON.parse($(containerId)[0].dataset.fieldsForContainer);
+
+    if (data != "[]") {
+      let fieldsForContainer = Object.values(data);
+
+      for (var j = 0; j < fieldsForContainer.length; j++) {
+        let field = fieldsForContainer[j]
+        let draggableField = buildDraggableField(field);
+        $(containerId).append(draggableField);
+      }
+    }
+  }
+}
+
+function buildDraggableField(field) {
+  // var fieldName = data[i][0]
+  // var fieldType = data[i][1]
+  // var fieldTable = data[i][2]
+  var icon = iconForFieldType(field.kind);
+  var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
+  "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+  "</div>"
+  return item
 }
 
 function getOptionsForDraggable(primaryTable) {
@@ -91,85 +128,69 @@ function getOptionsForDraggable(primaryTable) {
               alert("Failed: "+ errorTextStatus+" ;"+error);
            },
     success: function(data){
-      updateDraggableFields(data);
+      updateDraggableFieldsContainer(data);
     }
   })
 }
 
-function updateDraggableFields(data) {
+function updateDraggableFieldsContainer(data) {
   $('#layout-builder-draggable-fields-container').html('');
-
-  //
-  // populate containers first with data attributes for container as draggable items
-  //
-  // refreshFromDataAttributes();
-
   for (var i = 0; i < data.length; i++) {
-    var fieldName = data[i][0]
-    var fieldType = data[i][1]
-    var icon = iconForFieldType(fieldType);
-    var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source'>" +
-    "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
-    "</div>"
+    var field = {}
+    field["title"] = data[i][0]
+    field["kind"] = data[i][1]
+    field["table"] = data[i][2]
+    let draggableField = buildDraggableField(field);
 
     //
     // add field to draggable container if container data contains field AND
     // contianer does not already inlcude a dragable item with the same field name.
     //
-    if (containerDataContainsField('layout-builder-draggable-header-container1', fieldName)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container1', fieldName)) {
-        $('#layout-builder-draggable-header-container1').append(item);
+
+    if (containerDataContainsField('layout-builder-draggable-header-container1', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container1', field.title)) {
+        $('#layout-builder-draggable-header-container1').append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-header-container2', fieldName)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container2', fieldName)) {
-        $('#layout-builder-draggable-header-container2').append(item);
+    } else if (containerDataContainsField('layout-builder-draggable-header-container2', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container2', field.title)) {
+        $('#layout-builder-draggable-header-container2').append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-side-container', fieldName)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-side-container', fieldName)) {
-        $('#layout-builder-draggable-side-container').append(item);
+    } else if (containerDataContainsField('layout-builder-draggable-side-container', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-side-container', field.title)) {
+        $('#layout-builder-draggable-side-container').append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-main-container1', fieldName)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container1', fieldName)) {
-        $('#layout-builder-draggable-main-container1').append(item);
+    } else if (containerDataContainsField('layout-builder-draggable-main-container1', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container1', field.title)) {
+        $('#layout-builder-draggable-main-container1').append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-main-container2', fieldName)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container2', fieldName)) {
-        $('#layout-builder-draggable-main-container2').append(item);
+    } else if (containerDataContainsField('layout-builder-draggable-main-container2', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container2', field.title)) {
+        $('#layout-builder-draggable-main-container2').append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-main-container3', fieldName)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container3', fieldName)) {
-        $('#layout-builder-draggable-main-container3').append(item);
+    } else if (containerDataContainsField('layout-builder-draggable-main-container3', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container3', field.title)) {
+        $('#layout-builder-draggable-main-container3').append(draggableField);
       }
     } else {
-      $('#layout-builder-draggable-fields-container').append(item);
-    }
-  }
-
-  initializeDraggable();
-}
-
-function refreshFromDataAttributes() {
-  // for each container, create a draggable item for its data attributes
-  let containerIds = ["#layout-builder-draggable-header-container1", "#layout-builder-draggable-header-container2", "#layout-builder-draggable-side-container", "#layout-builder-draggable-main-container1", "#layout-builder-draggable-main-container2", "#layout-builder-draggable-main-container3"]
-
-  for (var i = 0; i < containerIds.length; i++) {
-    let containerId = containerIds[i];
-    let containerData = $(containerId).data('fields-for-container');
-    for (var i = 0; i < containerData.length; i++) {
-      var fieldName = containerData[i][0]
-      var fieldType = containerData[i][1]
-      var icon = iconForFieldType(fieldType);
-      var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source'>" +
-      "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
-      "</div>"
-      $(containerId).append(item);
+      $('#layout-builder-draggable-fields-container').append(draggableField);
     }
   }
 }
 
 function containerDataContainsField(containerId, fieldName) {
-  let fields = $('#' + containerId).data('fields-for-container');
-  return fields.includes(fieldName)
+  let data = JSON.parse($('#' + containerId)[0].dataset.fieldsForContainer);
+
+  if (data != "[]") {
+    let fields = Object.values(data)
+
+    for (var i = 0; i < fields.length; i++) {
+      if (fields[i].title === fieldName ) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 function containerContainsDraggableItem(containerId, fieldName) {
@@ -262,13 +283,16 @@ function isNotFieldsContainer(containerId) {
 
 function saveDraggableContainer(dragEvent, containerId) {
   let notification;
-  let field = dragEvent.source.innerText.trim();
   let queryId = "#" + containerId;
   let containerItems = getContainerItems(containerId);
   let containerItemsJSON = [];
 
   for (var i = 0; i < containerItems.length; i++) {
-    containerItemsJSON.push(containerItems[i].innerText.trim())
+    let field = {}
+    field["title"] = containerItems[i].innerText.trim()
+    field["table"] = containerItems[i].dataset.fieldTable
+    field["kind"] = containerItems[i].dataset.fieldType
+    containerItemsJSON.push(field)
   }
 
   updateLayoutBuilderContainer(containerId, containerItemsJSON)
