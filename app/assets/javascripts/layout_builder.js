@@ -105,9 +105,6 @@ function rebuildDraggableDataContainers() {
 }
 
 function buildDraggableField(field) {
-  // var fieldName = data[i][0]
-  // var fieldType = data[i][1]
-  // var fieldTable = data[i][2]
   var icon = iconForFieldType(field.kind);
   var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
   "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
