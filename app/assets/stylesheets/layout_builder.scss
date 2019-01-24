@@ -16,8 +16,8 @@
 
 .layout-placeholder {
   min-height: 20px;
-  margin: 10px 0;
-  padding: 5px 5px 0 5px;
+  margin: 10px 0 !important;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.23);
 }
 
 .layout-builder-draggable-field {
@@ -85,13 +85,13 @@
   padding-left:0;
 }
 
-.pad-10-15 {
-  padding: 10px 15px;
-}
-
 #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3  {
-
   .layout-builder-draggable-item {
     border: 1px dashed black;
   }
+}
+
+#layout-builder-draggable-side-container-wrapper {
+  border: 1px solid #efefef;
+  padding: 0px 15px;
 }
