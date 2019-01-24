@@ -37,6 +37,12 @@ $(document).ready(function() {
       showFieldSettingsFormScreen1();
     })
 
+    $('a#back_to_current_table_link').click(function() {
+      let currentTable = $('#view_builder_table_name').data('table-name');
+      rebuildDraggable(currentTable)
+      showFieldSettingsFormScreen2();
+    })
+
     $('#layout-builder-modal-next-button').click(function() {
       goToNextScreen();
     })
