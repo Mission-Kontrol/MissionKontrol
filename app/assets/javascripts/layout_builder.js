@@ -89,7 +89,6 @@ function rebuildDraggableDataContainers() {
 
   for (var i = 0; i < dataContainerIds.length; i++) {
     let containerId = dataContainerIds[i];
-    $(containerId).html('');
     let data = JSON.parse($(containerId)[0].dataset.fieldsForContainer);
 
     if (data != "[]") {
@@ -97,8 +96,10 @@ function rebuildDraggableDataContainers() {
 
       for (var j = 0; j < fieldsForContainer.length; j++) {
         let field = fieldsForContainer[j]
-        let draggableField = buildDraggableField(field);
-        $(containerId).append(draggableField);
+        if (!containerContainsDraggableItem(containerId, field.title)) {
+          let draggableField = buildDraggableField(field);
+          $(containerId).append(draggableField);
+        }
       }
     }
   }
