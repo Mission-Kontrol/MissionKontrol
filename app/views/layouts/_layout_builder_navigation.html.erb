@@ -30,11 +30,11 @@
         <div id="layout_builder_field_settings_form_screen_1">
           <h4>Fields</h4>
 
-          <p>Select the primary table that this layout will be based on.</p>
+          <p>Select a table to view related fields.</p>
 
           <div class="light-border-bottom"></div>
 
-          <% @available_tables.each do |table| %>
+          <% @relatable_tables.each do |table| %>
             <div class="light-border-bottom layout-builder-side-nav-available-table">
               <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= table %>>
                 <%= table %>
@@ -52,7 +52,7 @@
             <span id="layout_builder_selected_table_name"></span>
           </h4>
 
-          <p>Select a table you would like to see fields for.</p>
+          <p>Drag fields to the containers on the right to update layout.</p>
 
           <div class="light-border-bottom"></div>
 

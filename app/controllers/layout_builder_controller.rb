@@ -50,6 +50,7 @@ class LayoutBuilderController < ApplicationController
   def edit
     @view_builder = ViewBuilder.find(params[:id])
     @available_tables = available_tables
+    @relatable_tables = relatable_tables(@view_builder.table_name)
   end
 
   private
@@ -64,6 +65,10 @@ class LayoutBuilderController < ApplicationController
 
   def available_tables
     Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  end
+
+  def relatable_tables(table)
+    Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
   end
 
   def field_params
