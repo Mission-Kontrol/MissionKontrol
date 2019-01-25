@@ -9,7 +9,7 @@ module Kuwinda
 
       def call
         tables = database.connection.tables - ['schema_migrations']
-        tables.map(&:titleize)
+        tables.map
       end
 
       private
