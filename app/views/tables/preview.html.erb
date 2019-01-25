@@ -22,32 +22,16 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight">
-  <div class="row">
-    <div class="col-lg-4">
-      <%= render 'record_summary' %>
-    </div>
-
-    <div class="col-lg-8">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>Activity history</h5>
-        </div>
-
-        <div class="ibox-content">
-          <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
-        </div>
+<% if @layout_builder %>
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <%= render 'record_placeholder', layout_builder: @layout_builder %>
+  </div>
+<% else %>
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+      <div class="col-lg-4">
+        <%= render 'record_summary' %>
       </div>
     </div>
   </div>
-
-  <% if @view_builders.any? %>
-    <% @view_builders.each do |view_builder| %>
-      <div class="row">
-        <div class="col-sm-12">
-          <%= render 'view_builder/panel', view_builder: view_builder %>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-</div>
+<% end %>
