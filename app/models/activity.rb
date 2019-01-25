@@ -2,7 +2,7 @@
 
 class Activity < ApplicationRecord
   KINDS = %w[note meeting call].freeze
-  FEEDABLE_TYPES = ClientRecord.connection.tables
+  FEEDABLE_TYPES = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
 
   validates :content, presence: true
   validates :kind, presence: true, inclusion: { in: KINDS }
