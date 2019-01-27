@@ -1,0 +1,4 @@
+<% @header_container2_items = items_for_container(layout_builder, 'draggable_fields_header_container2') %>
+<% @header_container2_items.each do |k, v|  %>
+  <p><%= @row[v["title"]] %></p>
+<% end  %>

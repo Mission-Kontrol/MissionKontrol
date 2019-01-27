@@ -3,21 +3,11 @@
   <div class="col-sm-7">
     <div class="row">
       <div class="col-sm-12">
-        <div class="" id="">
-          <% @header_container1_items = layout_builder.draggable_fields_header_container1 %>
-          <% @header_container1_items.each do |k, v|  %>
-            <h3><%= @row[v["title"]] %></h3>
-          <% end  %>
-        </div>
+        <%= render 'tables/layout/header_container1', layout_builder: layout_builder %>
       </div>
 
       <div class="col-sm-12">
-        <div class="" id="">
-          <% @header_container2_items = layout_builder.draggable_fields_header_container2 %>
-          <% @header_container2_items.each do |k, v|  %>
-            <p><%= @row[v["title"]] %></p>
-          <% end  %>
-        </div>
+        <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
       </div>
     </div>
   </div>
@@ -38,12 +28,7 @@
   <!-- side container -->
   <div class="col-sm-5 col-lg-4 pad-left-none">
     <div class="white-bg" id='layout-builder-draggable-side-container-wrapper'>
-      <div class="" id="">
-        <% @side_container_items = layout_builder.draggable_fields_side_container %>
-        <% @side_container_items.each do |k, v|  %>
-          <p><b><%= v["title"] %></b> - <%= @row[v["title"]] %></p>
-        <% end  %>
-      </div>
+      <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
     </div>
   </div>
 
@@ -51,30 +36,15 @@
   <div class="col-sm-7 col-lg-8">
     <div class="row white-bg">
       <div class="col-sm-4">
-        <div class="p-t" id="">
-          <% @main_container1_items = layout_builder.draggable_fields_main_container1 %>
-          <% @main_container1_items.each do |k, v|  %>
-            <p><b><%= v["title"] %></b>: <%= @row[v["title"]] %></p>
-          <% end  %>
-        </div>
+        <%= render 'tables/layout/main_container1', layout_builder: layout_builder %>
       </div>
 
       <div class="col-sm-4">
-        <div class="" id="">
-          <% @main_container2_items = layout_builder.draggable_fields_main_container2 %>
-          <% @main_container2_items.each do |k, v|  %>
-            <p><b><%= v["title"] %></b>: <%= @row[v["title"]] %></p>
-          <% end  %>
-        </div>
+        <%= render 'tables/layout/main_container2', layout_builder: layout_builder %>
       </div>
 
       <div class="col-sm-4">
-        <div class="" id="">
-          <% @main_container3_items = layout_builder.draggable_fields_main_container3 %>
-          <% @main_container3_items.each do |k, v|  %>
-            <p><b><%= v["title"] %></b>: <%= @row[v["title"]] %></p>
-          <% end  %>
-        </div>
+        <%= render 'tables/layout/main_container3', layout_builder: layout_builder %>
       </div>
     </div>
 
