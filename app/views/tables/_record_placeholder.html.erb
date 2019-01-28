@@ -1,13 +1,21 @@
 <!-- header containers -->
-<div class="row white-bg">
+<div class="row white-bg table-record-placeholder">
   <div class="col-sm-7">
     <div class="row">
       <div class="col-sm-12">
-        <%= render 'tables/layout/header_container1', layout_builder: layout_builder %>
+        <div class="ibox" style="margin-bottom: 0">
+          <div class="ibox-content">
+            <%= render 'tables/layout/header_container1', layout_builder: layout_builder %>
+          </div>
+        </div>
       </div>
 
       <div class="col-sm-12">
-        <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
+        <div class="ibox" style="margin-bottom: 0">
+          <div class="ibox-content">
+            <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -24,27 +32,32 @@
 </div>
 <!-- header containers -->
 
-<div class="row m-t">
-  <!-- side container -->
-  <div class="col-sm-5 col-lg-4 pad-left-none">
-    <div class="white-bg" id='layout-builder-draggable-side-container-wrapper'>
-      <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
-    </div>
-  </div>
-
+<div class="row m-t table-record-placeholder">
   <!-- main containers -->
-  <div class="col-sm-7 col-lg-8">
+  <div class="col-sm-12">
     <div class="row white-bg">
       <div class="col-sm-4">
-        <%= render 'tables/layout/main_container1', layout_builder: layout_builder %>
+        <div class="ibox">
+          <div class="ibox-content">
+            <%= render 'tables/layout/main_container1', layout_builder: layout_builder %>
+          </div>
+        </div>
       </div>
 
       <div class="col-sm-4">
-        <%= render 'tables/layout/main_container2', layout_builder: layout_builder %>
+        <div class="ibox">
+          <div class="ibox-content">
+            <%= render 'tables/layout/main_container2', layout_builder: layout_builder %>
+          </div>
+        </div>
       </div>
 
       <div class="col-sm-4">
-        <%= render 'tables/layout/main_container3', layout_builder: layout_builder %>
+        <div class="ibox">
+          <div class="ibox-content">
+            <%= render 'tables/layout/main_container3', layout_builder: layout_builder %>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -64,4 +77,19 @@
       </div>
     <% end %>
   </div>
+  <!-- main containers -->
+</div>
+
+<div class="row m-t table-record-placeholder" style="margin-bottom: 15px">
+  <!-- side container -->
+  <div class="col-sm-5 col-lg-4 pad-left-none">
+    <div class="white-bg" id='layout-builder-draggable-side-container-wrapper'>
+      <div class="ibox">
+        <div class="ibox-content">
+          <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- side container -->
 </div>
