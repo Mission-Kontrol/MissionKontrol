@@ -97,8 +97,13 @@
 }
 
 .table-record-placeholder {
-  .ibox, .ibox-content, .ibox-title {
-    border-top: none;
-    padding-bottom: 0
-  }
+  padding: 15px;
+}
+
+.table-record-placeholder-header {
+  padding: 5px 15px;
+}
+
+.p-none {
+  padding: 0;
 }
