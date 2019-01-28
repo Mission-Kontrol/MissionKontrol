@@ -6,6 +6,7 @@ namespace :dummy_client_database do
     run_single_seeds(users_query)
     run_single_seeds(events_query)
     run_single_seeds(attending_events_query)
+    run_single_seeds(companies_query)
   end
 
   task user_seeds: :environment do
@@ -26,7 +27,10 @@ def client_database
 end
 
 def run_single_seeds(query)
-  client_database.connection.exec_query(query)
+  begin
+    client_database.connection.exec_query(query)
+  rescue ActiveRecord::RecordNotUnique => e
+  end
 end
 
 def events_query
@@ -41,10 +45,10 @@ end
 
 def users_query
   "INSERT INTO users (id, email, encrypted_password, name, level) VALUES
-    (3, 'test3@example.com', md5('password'), 'Test3', 'pro'),
-    (4, 'test4@example.com', md5('password'), 'Test4', 'beginner'),
-    (5, 'test5@example.com', md5('password'), 'Test5', 'intermediate'),
-    (6, 'test6@example.com', md5('password'), 'Test6', 'pro');"
+    (3, 'willie.m@kuwinda.io', md5('password'), 'Willie Monroe', 'pro'),
+    (4, 'jaime.m@kuwinda.io', md5('password'), 'Jaime Mungia', 'beginner'),
+    (5, 'claressa.s@kuwinda.io', md5('password'), 'Claressa Shields', 'intermediate'),
+    (6, 'katie.t.t@kuwinda.io', md5('password'), 'Katie Taylor', 'pro');"
 end
 
 def attending_events_query
@@ -54,4 +58,13 @@ def attending_events_query
     (3, 4, 3, '2016-06-01', '2016-06-01'),
     (4, 5, 6, '2016-06-01', '2016-06-01'),
     (5, 5, 3, '2016-06-01', '2016-06-01');"
+end
+
+def companies_query
+  "INSERT INTO companies (id, name, website_url, company_type, industries, status, headquarters_address, phone_number, created_at, updated_at) VALUES
+    (1, 'Ledner, Larkin and Stehr', 'http://kuhlman.name/malcolm.schimmel', 'Government Agency' ,'Museums and Institutions', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '821.359.2636' ,'2016-06-01', '2016-06-01'),
+    (2, 'Herzog-Grimes', 'http://kuhlman.name/malcolm.schimmel', 'Self-Employed' ,'Sports', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '160.106.3811' , '2016-06-01', '2016-06-01'),
+    (3, 'Schneider, Mante and Robel', 'http://kuhlman.name/malcolm.schimmel', 'Public Company' ,'Government Relations', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '611.882.5173' ,'2016-06-01', '2016-06-01'),
+    (4, 'Roberts, Schmeler and Waters', 'http://kuhlman.name/malcolm.schimmel', 'Educational Institution' ,'Telecommunications', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '(696) 181-7743' ,'2016-06-01', '2016-06-01'),
+    (5, 'Waters, Simonis and Nienow', 'http://kuhlman.name/malcolm.schimmel', 'Privately Held' ,'Judiciary', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '1-402-090-3611' , '2016-06-01', '2016-06-01');"
 end
