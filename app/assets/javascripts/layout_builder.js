@@ -1,69 +1,122 @@
 var draggable;
 
 $(document).ready(function() {
-  $('.layout-builder-nav-item').click(function(evt) {
+  let metaTag = $('meta[name=psj]');
+  let isCurrentControllerLayout = metaTag.attr('controller') == 'layout_builder';
+  let isCurrentActionNew = metaTag.attr('action') == 'new';
+  let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+
+  if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
+    $('.layout-builder-nav-item').click(function(evt) {
+      evt.preventDefault();
+
+      let currentTable = $('#view_builder_table_name').data('table-name');
+
+      var tabName = $(this).data().tabName;
+
+      tablinks = document.getElementsByClassName("layout-builder-nav-item");
+
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      evt.currentTarget.className += " active";
+
+
+      goToTab(tabName);
+    })
+
+    $('.layout_builder_selected_table_name').click(function(evt) {
+      evt.preventDefault();
+      var table = $(this).data().tableName;
+      showFieldSettingsFormScreen2();
+      rebuildDraggable(table);
+    })
+
+    $('.layout_builder_field_settings_form_back_btn').click(function() {
+      showFieldSettingsFormScreen1();
+    })
+
+    $('a#back_to_current_table_link').click(function() {
+      let currentTable = $('#view_builder_table_name').data('table-name');
+      rebuildDraggable(currentTable)
+      showFieldSettingsFormScreen2();
+    })
+
+    $('#layout-builder-modal-next-button').click(function() {
+      goToNextScreen();
+    })
+
+    $('#layout-builder-modal-back-button').click(function() {
+      goToPreviousScreen();
+    })
+
+    $('#layout-builder-modal-save-button').click(function() {
+      var layoutName = document.getElementById('layout-builder-modal-form-name').value;
+      var layoutPrimaryTable = document.getElementById('layout-builder-modal-form-primary-table').value;
+      saveLayout(layoutName, layoutPrimaryTable);
+    })
+
+    $('#layout-builder-modal').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+
     let currentTable = $('#view_builder_table_name').data('table-name');
-    evt.preventDefault();
-    var elems = document.querySelectorAll(".layout-builder-nav-item");
-    var tab = "#" + $(this).data().tabName;
-    removeActiveClass(elems);
-    hideSettingsForm();
-    $(this).addClass('active');
-    $(tab).removeClass('hide');
 
     if (currentTable) {
-      hideFieldSettingsFormScreen1();
+      document.getElementById("layout-builder-field-settings-tab").click();
       showFieldSettingsFormScreen2();
-      rebuildDraggableFields(currentTable);
+      rebuildDraggable(currentTable)
+    } else {
+      document.getElementById("layout-builder-general-settings-tab").click();
     }
-  })
-
-  $('.layout_builder_selected_table_name').click(function(evt) {
-    evt.preventDefault();
-    var table = $(this).data().tableName;
-    hideFieldSettingsFormScreen1();
-    showFieldSettingsFormScreen2();
-    rebuildDraggableFields(table);
-  })
-
-  $('.layout_builder_field_settings_form_back_btn').click(function() {
-    hideFieldSettingsFormScreen1();
-    showFieldSettingsFormScreen2();
-  })
-
-  $('#layout-builder-modal-next-button').click(function() {
-    goToNextScreen();
-  })
-
-  $('#layout-builder-modal-back-button').click(function() {
-    goToPreviousScreen();
-  })
-
-  $('#layout-builder-modal-save-button').click(function() {
-    var layoutName = document.getElementById('layout-builder-modal-form-name').value;
-    var layoutPrimaryTable = document.getElementById('layout-builder-modal-form-primary-table').value;
-    saveLayout(layoutName, layoutPrimaryTable);
-  })
-
-  $('#layout-builder-modal').modal({
-    backdrop: 'static',
-    keyboard: false
-  });
-
-  let currentTable = $('#view_builder_table_name').data('table-name');
-
-  if (currentTable) {
-      rebuildDraggableFields(currentTable);
   }
 })
 
-function rebuildDraggableFields(table) {
+function rebuildDraggable(table) {
   if (draggable) {
     draggable.destroy();
   }
 
+  rebuildDraggableDataContainers();
   getOptionsForDraggable(table);
   document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
+  initializeDraggable();
+}
+
+function rebuildDraggableDataContainers() {
+  let dataContainerIds = ["#layout-builder-draggable-header-container1",
+    "#layout-builder-draggable-header-container2",
+    "#layout-builder-draggable-side-container",
+    "#layout-builder-draggable-main-container1",
+    "#layout-builder-draggable-main-container2",
+    "#layout-builder-draggable-main-container3"]
+
+  for (var i = 0; i < dataContainerIds.length; i++) {
+    let containerId = dataContainerIds[i];
+    let data = JSON.parse($(containerId)[0].dataset.fieldsForContainer);
+
+    if (data != "[]") {
+      let fieldsForContainer = Object.values(data);
+
+      for (var j = 0; j < fieldsForContainer.length; j++) {
+        let field = fieldsForContainer[j]
+        if (!containerContainsDraggableItem(containerId, field.title)) {
+          let draggableField = buildDraggableField(field);
+          $(containerId).append(draggableField);
+        }
+      }
+    }
+  }
+}
+
+function buildDraggableField(field) {
+  var icon = iconForFieldType(field.kind);
+  var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
+  "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+  "</div>"
+  return item
 }
 
 function getOptionsForDraggable(primaryTable) {
@@ -79,49 +132,74 @@ function getOptionsForDraggable(primaryTable) {
               alert("Failed: "+ errorTextStatus+" ;"+error);
            },
     success: function(data){
-      updateDraggableFields(data);
+      updateDraggableFieldsContainer(data);
     }
   })
 }
 
-function updateDraggableFields(data) {
+function updateDraggableFieldsContainer(data) {
   $('#layout-builder-draggable-fields-container').html('');
-  clearDroppableContainers();
-
   for (var i = 0; i < data.length; i++) {
-    var fieldName = data[i][0]
-    var fieldType = data[i][1]
-    var icon = iconForFieldType(fieldType);
-    var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source'>" +
-    "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + fieldName +
-    "</div>"
+    var field = {}
+    field["title"] = data[i][0]
+    field["kind"] = data[i][1]
+    field["table"] = data[i][2]
+    let draggableField = buildDraggableField(field);
 
-    if (containerIncludesField('layout-builder-draggable-header-container1', fieldName)) {
-      $('#layout-builder-draggable-header-container1').append(item);
-    } else if (containerIncludesField('layout-builder-draggable-header-container2', fieldName)) {
-      $('#layout-builder-draggable-header-container2').append(item);
-    } else if (containerIncludesField('layout-builder-draggable-side-container', fieldName)) {
-      $('#layout-builder-draggable-side-container').append(item);
-    } else if (containerIncludesField('layout-builder-draggable-main-container1', fieldName)) {
-      $('#layout-builder-draggable-main-container1').append(item);
-    } else if (containerIncludesField('layout-builder-draggable-main-container2', fieldName)) {
-      $('#layout-builder-draggable-main-container2').append(item);
-    } else if (containerIncludesField('layout-builder-draggable-main-container3', fieldName)) {
-      $('#layout-builder-draggable-main-container3').append(item);
+    //
+    // add field to draggable container if container data contains field AND
+    // contianer does not already inlcude a dragable item with the same field name.
+    //
+
+    if (containerDataContainsField('layout-builder-draggable-header-container1', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container1', field.title)) {
+        $('#layout-builder-draggable-header-container1').append(draggableField);
+      }
+    } else if (containerDataContainsField('layout-builder-draggable-header-container2', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container2', field.title)) {
+        $('#layout-builder-draggable-header-container2').append(draggableField);
+      }
+    } else if (containerDataContainsField('layout-builder-draggable-side-container', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-side-container', field.title)) {
+        $('#layout-builder-draggable-side-container').append(draggableField);
+      }
+    } else if (containerDataContainsField('layout-builder-draggable-main-container1', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container1', field.title)) {
+        $('#layout-builder-draggable-main-container1').append(draggableField);
+      }
+    } else if (containerDataContainsField('layout-builder-draggable-main-container2', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container2', field.title)) {
+        $('#layout-builder-draggable-main-container2').append(draggableField);
+      }
+    } else if (containerDataContainsField('layout-builder-draggable-main-container3', field.title)) {
+      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container3', field.title)) {
+        $('#layout-builder-draggable-main-container3').append(draggableField);
+      }
     } else {
-      $('#layout-builder-draggable-fields-container').append(item);
+      $('#layout-builder-draggable-fields-container').append(draggableField);
+    }
+  }
+}
+
+function containerDataContainsField(containerId, fieldName) {
+  let data = JSON.parse($('#' + containerId)[0].dataset.fieldsForContainer);
+
+  if (data != "[]") {
+    let fields = Object.values(data)
+
+    for (var i = 0; i < fields.length; i++) {
+      if (fields[i].title === fieldName ) {
+        return true
+      }
     }
   }
 
-  initializeDraggable();
+  return false
 }
 
-function clearDroppableContainers() {
-  const containers = document.querySelectorAll('#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3')
-
-  containers.forEach(function(container) {
-    container.innerHTML = ""
-  })
+function containerContainsDraggableItem(containerId, fieldName) {
+  let draggableItems = $(containerId + ' .layout-builder-draggable-item').text().trim().split(" ")
+  return draggableItems.includes(fieldName)
 }
 
 function initializeDraggable() {
@@ -132,7 +210,6 @@ function initializeDraggable() {
     draggable: '.layout-builder-draggable-item'
   });
 
-  const trashContainer = draggable.containers[1]
   const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
 
   draggable.on('drag:start', (dragEvent) => {
@@ -143,10 +220,12 @@ function initializeDraggable() {
     let currentContainer = dragEvent.source.parentNode;
     let destinationContainerId = currentContainer.id;
     let sourceContainerId = dragEvent.data.sourceContainer.id;
-    let currentContainerId = currentContainer.id
-    let currentFieldValue = dragEvent.source.innerText.trim()
+    let currentContainerId = currentContainer.id;
+    let currentFieldValue = dragEvent.source.innerText.trim();
 
-    if (currentContainer === trashContainer) {
+    hideTrashContainer();
+
+    if (destinationContainerId === 'layout-builder-draggable-trash-container') {
       fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
 
       setTimeout(function () {
@@ -158,7 +237,9 @@ function initializeDraggable() {
       }, 2000);
     }
 
-    hideTrashContainer();
+    if (sourceContainerId === destinationContainerId) {
+      return
+    }
 
     if (isDataContainer(sourceContainerId)) {
       saveDraggableContainer(dragEvent, sourceContainerId)
@@ -168,12 +249,6 @@ function initializeDraggable() {
       saveDraggableContainer(dragEvent, destinationContainerId)
     }
   });
-}
-
-function containerIncludesField(containerId, fieldName) {
-  let elementId = "#" + containerId;
-  let fields = $(elementId).data('fields-for-container');
-  return fields.includes(fieldName)
 }
 
 function iconForFieldType(fieldType) {
@@ -212,13 +287,16 @@ function isNotFieldsContainer(containerId) {
 
 function saveDraggableContainer(dragEvent, containerId) {
   let notification;
-  let field = dragEvent.source.innerText.trim();
   let queryId = "#" + containerId;
   let containerItems = getContainerItems(containerId);
   let containerItemsJSON = [];
 
   for (var i = 0; i < containerItems.length; i++) {
-    containerItemsJSON.push(containerItems[i].innerText.trim())
+    let field = {}
+    field["title"] = containerItems[i].innerText.trim()
+    field["table"] = containerItems[i].dataset.fieldTable
+    field["kind"] = containerItems[i].dataset.fieldType
+    containerItemsJSON.push(field)
   }
 
   updateLayoutBuilderContainer(containerId, containerItemsJSON)
@@ -257,8 +335,8 @@ function getContainerItems(containerId) {
 }
 
 function showTrashContainer() {
-  $('#layout-builder-draggable-trash-container').addClass('animated zoomIn');
   $('#layout-builder-draggable-trash-container').removeClass('hide');
+  $('#layout-builder-draggable-trash-container').addClass('animated zoomIn');
 }
 
 function hideTrashContainer() {
@@ -313,17 +391,6 @@ function saveLayout(name, primaryTable) {
   })
 }
 
-function removeActiveClass(elements) {
-  [].forEach.call(elements, function(el) {
-    el.classList.remove("active");
-  });
-}
-
-function hideSettingsForm() {
-  $('#layout_builder_general_settings_form').addClass('hide');
-  $('#layout_builder_field_settings_form').addClass('hide');
-}
-
 function goToNextScreen() {
   $('#layout-builder-modal-screen-1').toggleClass('hide');
   $('#layout-builder-modal-screen-2').toggleClass('hide');
@@ -334,10 +401,25 @@ function goToPreviousScreen() {
   $('#layout-builder-modal-screen-2').toggleClass('hide');
 }
 
-function hideFieldSettingsFormScreen1() {
-  $('#layout_builder_field_settings_form_screen_1').toggleClass('hide');
+function showFieldSettingsFormScreen2() {
+  $('#layout_builder_field_settings_form_screen_1').addClass('hide');
+  $('#layout_builder_field_settings_form_screen_2').removeClass('hide');
 }
 
-function showFieldSettingsFormScreen2() {
-  $('#layout_builder_field_settings_form_screen_2').toggleClass('hide');
+function showFieldSettingsFormScreen1() {
+  $('#layout_builder_field_settings_form_screen_2').addClass('hide');
+  $('#layout_builder_field_settings_form_screen_1').removeClass('hide');
+}
+
+function goToTab(tabName) {
+  var i, tabContent;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabContent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabContent.length; i++) {
+    tabContent[i].style.display = "none";
+  }
+
+  // Show the current tab
+  document.getElementById(tabName).style.display = "block";
 }

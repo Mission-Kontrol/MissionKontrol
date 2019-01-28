@@ -15,7 +15,7 @@ describe Kuwinda::Presenter::ListTableFieldsWithType do
 
   context 'listing connections' do
     it 'displays the available tables their types' do
-      expect(subject).to include(["id", "integer"], ["email", "string"])
+      expect(subject).to include(["id", "integer", "Users"], ["email", "string", "Users"])
     end
   end
 end

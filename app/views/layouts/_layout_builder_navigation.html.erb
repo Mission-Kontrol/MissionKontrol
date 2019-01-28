@@ -1,11 +1,11 @@
 <div class="row white-bg min-height-100vh">
   <div class="col-sm-3 min-height-100vh">
     <br>
-    <a class="layout-builder-nav-item active" href="/" data-tab-name="layout_builder_general_settings_form">
+    <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_general_settings_form" id="layout-builder-general-settings-tab">
       <i class="fa fa-wrench" aria-hidden="true"></i>
     </a>
 
-    <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_field_settings_form">
+    <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_field_settings_form" id="layout-builder-field-settings-tab">
       <i class="fa fa-database" aria-hidden="true"></i>
     </a>
   </div>
@@ -13,7 +13,7 @@
   <div class="col-sm-9 layout-builder-side-nav min-height-100vh">
     <br>
     <div class="m-t">
-      <div id="layout_builder_general_settings_form">
+      <div class="tab-content" id="layout_builder_general_settings_form">
         <h4>General settings</h4>
 
         <p class="hide">
@@ -25,34 +25,55 @@
         <%= render 'general_settings_form' %>
       </div>
 
-      <div class="hide" id="layout_builder_field_settings_form">
+      <div class="tab-content" id="layout_builder_field_settings_form">
 
         <div id="layout_builder_field_settings_form_screen_1">
           <h4>Fields</h4>
 
-          <p>Select the primary table that this layout will be based on.</p>
+          <p>Select a table to view related fields.</p>
 
           <div class="light-border-bottom"></div>
 
-          <% @available_tables.each do |table| %>
-            <div class="light-border-bottom layout-builder-side-nav-available-table">
-              <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= table %>>
-                <%= table %>
-                <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
-              </a>
-            </div>
+          <% if action_name == 'edit' %>
+            <% @relatable_tables.each do |table| %>
+              <div class="light-border-bottom layout-builder-side-nav-available-table">
+                <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= table %>>
+                  <%= table %>
+                  <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            <% end %>
           <% end %>
+
+          <% if action_name == 'new' %>
+            <% @available_tables.each do |table| %>
+              <div class="light-border-bottom layout-builder-side-nav-available-table">
+                <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= table %>>
+                  <%= table %>
+                  <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            <% end %>
+          <% end %>
+
+          <br>
+          <div class="divider">
+
+          </div>
+          <a href="#" id="back_to_current_table_link">
+            <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to current table
+          </a>
         </div>
 
         <div class="hide" id="layout_builder_field_settings_form_screen_2">
           <h4>
-            <a href="#" class="layout_builder_field_settings_form_back_btn hide">
+            <a href="#" class="layout_builder_field_settings_form_back_btn">
               <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
             </a>
             <span id="layout_builder_selected_table_name"></span>
           </h4>
 
-          <p>Select a table you would like to see fields for.</p>
+          <p>Drag fields to the containers on the right to update layout.</p>
 
           <div class="light-border-bottom"></div>
 

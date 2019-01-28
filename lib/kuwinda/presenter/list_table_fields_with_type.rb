@@ -9,7 +9,7 @@ module Kuwinda
       end
 
       def call
-        database.connection.columns(table.downcase).map{|f| [f.name, f.type.to_s]}
+        database.connection.columns(table.downcase).map{|f| [f.name, f.type.to_s, table]}
       end
 
       private
