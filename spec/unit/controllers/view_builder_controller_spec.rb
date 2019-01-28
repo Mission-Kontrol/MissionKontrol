@@ -11,7 +11,7 @@ describe ViewBuilderController, type: :controller do
       expect(response.status).to eq(200)
     end
 
-    it 'will assign the available tables' do
+    xit 'will assign the available tables' do
       expect(assigns(:available_tables)).to eq available_tables
     end
   end

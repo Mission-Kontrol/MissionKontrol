@@ -16,7 +16,7 @@
           <% end %>
 
           <td>
-            <%= link_to 'View Record', table_record_preview_url(@target_db_repo.table, r['id']) %>
+            <%= link_to 'View Record', table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>
           </td>
         </tr>
       <% end %>

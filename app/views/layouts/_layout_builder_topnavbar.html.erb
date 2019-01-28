@@ -6,6 +6,10 @@
       </li>
 
       <li>
+        <%= link_to "Layouts", layouts_path, :class => 'navbar-link'  %>
+      </li>
+
+      <li>
         <% if admin_user_signed_in? %>
           <%= link_to "Logout", destroy_admin_user_session_path, method: :delete, :class => 'navbar-link'  %>
         <% end %>

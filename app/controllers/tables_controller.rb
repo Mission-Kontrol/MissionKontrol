@@ -6,19 +6,22 @@ class TablesController < ApplicationController
                 :set_target_db_repo,
                 :set_activities
 
-  def show; end
+  def show
+    @table_name = params[:table]
+  end
 
   def preview
-    @target_db_repo.table = params[:table_name]
+    @target_db_repo.table = params[:table]
     @activity = Activity.new
     @row = @target_db_repo.find(params[:record_id])
+    @layout_builder = ViewBuilder.where(table_name: params[:table]).last
     set_activities_for_table
   end
 
   private
 
   def set_target_db_repo
-    @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:id])
+    @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
   end
 
   def set_activities

@@ -1,0 +1,67 @@
+<!-- header containers -->
+<div class="row white-bg">
+  <div class="col-sm-7">
+    <div class="row">
+      <div class="col-sm-12">
+        <%= render 'tables/layout/header_container1', layout_builder: layout_builder %>
+      </div>
+
+      <div class="col-sm-12">
+        <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="m-t text-align-right">
+          <p><b>Status</b> - Qualified</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- header containers -->
+
+<div class="row m-t">
+  <!-- side container -->
+  <div class="col-sm-5 col-lg-4 pad-left-none">
+    <div class="white-bg" id='layout-builder-draggable-side-container-wrapper'>
+      <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
+    </div>
+  </div>
+
+  <!-- main containers -->
+  <div class="col-sm-7 col-lg-8">
+    <div class="row white-bg">
+      <div class="col-sm-4">
+        <%= render 'tables/layout/main_container1', layout_builder: layout_builder %>
+      </div>
+
+      <div class="col-sm-4">
+        <%= render 'tables/layout/main_container2', layout_builder: layout_builder %>
+      </div>
+
+      <div class="col-sm-4">
+        <%= render 'tables/layout/main_container3', layout_builder: layout_builder %>
+      </div>
+    </div>
+
+    <% if @layout_builder.commentable %>
+      <div class="row m-t m-b white-bg">
+        <div class="col-sm-12">
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5>Activity history</h5>
+            </div>
+
+            <div class="ibox-content">
+              <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
