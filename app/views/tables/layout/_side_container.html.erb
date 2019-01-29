@@ -4,6 +4,8 @@
     <p><b><%= v["title"] %></b>: <%= @row[v["title"]] %></p>
   <% else %>
     <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
-    <p><b><%= v["title"] %></b>: <%= @related_row[v["title"]] %></p>
+    <% if @related_row %>
+      <p><b><%= v["title"] %></b>: <%= @related_row[v["title"]] %></p>
+    <% end %>
   <% end %>
 <% end  %>
