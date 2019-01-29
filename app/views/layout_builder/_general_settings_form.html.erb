@@ -14,15 +14,33 @@
   </div>
 
   <div class="form-group">
-    <strong>Show status</strong>
-    <p>Display a status in the header.</p>
-    <%= form.check_box :show_status, class: "form-control" %>
+    <div class="row">
+      <div class="col-md-8">
+        <strong>Show status</strong>
+        <p>Display a status in the header.</p>
+      </div>
+      <div class="col-md-4">
+        <label class="switch">
+          <input id="view_builder_show_status" class="form-control" name="view_builder[show_status]" type="checkbox" value="1">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
-    <strong>Commentable</strong>
-    <p>Users can add comments related to primary table.</p>
-    <%= form.check_box :commentable, class: "form-control" %>
+    <div class="row">
+      <div class="col-md-8">
+        <strong>Commentable</strong>
+        <p>Users can add comments related to primary table.</p>
+      </div>
+      <div class="col-md-4">
+        <label class="switch">
+          <input id="view_builder_commentable" class="form-control" name="view_builder[commentable]" type="checkbox" value="1">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
