@@ -30,39 +30,6 @@ RSpec.configure do |config|
   end
 
   config.include FactoryBot::Syntax::Methods
-
-  # config.before(:suite) do
-  #   DatabaseCleaner[:active_record,
-  #                   { connection: :test }].strategy = :transaction
-  #   DatabaseCleaner[:active_record,
-  #                   { connection: :test }].clean_with(:truncation)
-  # end
-  #
-  # config.around(:each) do |example|
-  #   # DatabaseCleaner.clean
-  #   DatabaseCleaner.cleaning do
-  #     example.run
-  #   end
-  # end
-  #
-  # config.after do
-  #   DatabaseCleaner.clean
-  # end
-
-  # Clear/clean test DB every test
-  config.before(:suite) do
-    # DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.strategy = :truncation, { except: %w[users events attending_events] }
-    # DatabaseCleaner.clean_with(:transaction)
-  end
-
-  # config.before(:each) do
-  #   DatabaseCleaner.start
-  # end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
 end
 
 Capybara.register_driver :chrome do |app|
