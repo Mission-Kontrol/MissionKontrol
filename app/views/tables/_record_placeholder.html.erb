@@ -24,37 +24,41 @@
   </div>
 </div>
 
-<div class="row white-bg m-t">
-  <div class="col-sm-4">
-    <div class="table-record-placeholder">
-      <%= render 'tables/layout/main_container1', layout_builder: layout_builder %>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="table-record-placeholder">
-      <%= render 'tables/layout/main_container2', layout_builder: layout_builder %>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="table-record-placeholder">
-      <%= render 'tables/layout/main_container3', layout_builder: layout_builder %>
-    </div>
-  </div>
-</div>
-
-<div class="row m-t m-b">
-  <div class="col-sm-5 p-none">
-    <div class="m-r white-bg p-xs">
+<div class="wrapper">
+  <div class="row m-t white-bg">
+    <div class="col-sm-4">
       <div class="table-record-placeholder">
-        <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
+        <%= render 'tables/layout/main_container1', layout_builder: layout_builder %>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="table-record-placeholder">
+        <%= render 'tables/layout/main_container2', layout_builder: layout_builder %>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="table-record-placeholder">
+        <%= render 'tables/layout/main_container3', layout_builder: layout_builder %>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-7">
-    <div class="row white-bg">
-      <div class="p-sm">
-        <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
+  <div class="row m-t m-b">
+    <div class="col-sm-5 p-none">
+      <div class="m-r white-bg p-xs">
+        <div class="table-record-placeholder">
+          <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-7">
+      <div class="row white-bg">
+        <div class="p-sm">
+          <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
+        </div>
       </div>
     </div>
   </div>
