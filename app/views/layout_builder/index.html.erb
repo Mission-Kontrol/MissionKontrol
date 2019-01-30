@@ -25,7 +25,7 @@
             <thead>
               <tr>
                 <th>Layout name</th>
-                <th>Layout status</th>
+                <th>Layout table</th>
                 <th></th>
               </tr>
             </thead>
@@ -33,11 +33,8 @@
               <% @view_builders.each do |view_builder| %>
                 <tr>
                   <td><%= view_builder.view_name %></td>
+                  <td><%= view_builder.table_name %></td>
                   <td>
-                    <button type="button" class="btn btn-<%= view_builder.status %>"><%= view_builder.status.capitalize %>
-                  </td>
-                  <td>
-                    <%= link_to('View', layout_path(view_builder), html_options = { class: "btn btn-info" }) %>
                     <%= link_to('Settings', edit_layout_path(view_builder.id), html_options = { class: "btn btn-info" }) %>
                   </td>
                 </tr>
