@@ -32,23 +32,6 @@
         <% end %>
       </li>
 
-      <li class="<%= active_controller?('users') || active_controller?('companies') %>">
-        <a href="">
-          <i class="fa fa-users"></i>
-          <span class="nav-label" data-i18n="nav.dashboard">Customers</span> <span class="fa arrow"></span>
-        </a>
-
-        <ul class="nav nav-second-level collapse">
-          <li class="">
-            <%= link_to "Users", users_path %>
-          </li>
-
-          <li class="">
-            <%= link_to "Companies", companies_path %>
-          </li>
-        </ul>
-      </li>
-
       <li class="<%= active_controller?('tables') && active_action?('show') %>">
         <a href="">
           <i class="fa fa-table" aria-hidden="true"></i>
