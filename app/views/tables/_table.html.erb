@@ -11,20 +11,22 @@
     <tbody>
       <% @target_db_repo.all.each do |r|%>
         <tr class="">
-          <% r.each do |k, v|%>
-            <td><%= v %></td>
+          <% r.each_with_index do |(k, v), i| %>
+            <% if i == 0 %>
+              <td>
+                <%= link_to v, table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>
+              </td>
+            <% else %>
+              <td><%= v %></td>
+            <% end %>
           <% end %>
-
-          <td>
-            <%= link_to 'View Record', table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>
-          </td>
         </tr>
       <% end %>
     </tbody>
 
     <tfoot>
       <tr>
-        <td colspan=<%= @target_db_repo.all.columns.size + 1 %>>
+        <td colspan=<%= @target_db_repo.all.columns.size %>>
           <ul class="pagination pull-right"></ul>
         </td>
       </tr>
