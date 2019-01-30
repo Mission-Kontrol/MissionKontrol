@@ -1,4 +1,11 @@
 <% @header_container1_items = items_for_container(layout_builder, 'draggable_fields_header_container1')%>
 <% @header_container1_items.each do |k, v|  %>
-  <h3><%= @row[v["title"]] %></h3>
+  <% if v["table"] == @table_name %>
+    <h3><%= @row[v["title"]] %></h3>
+  <% else %>
+    <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+    <% if @related_row %>
+      <h3><%= @related_row[v["title"]] %></h3>
+    <% end %>
+  <% end %>
 <% end  %>

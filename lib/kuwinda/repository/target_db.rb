@@ -21,6 +21,12 @@ module Kuwinda
         result = conn.exec_query(sql)
         result.nil? ? result : result.first
       end
+
+      def find_related(foreign_key, relatable_id)
+        sql = "select * from #{table} where #{foreign_key}=#{relatable_id};"
+        result = conn.exec_query(sql)
+        result.nil? ? result : result.first
+      end
     end
   end
 end

@@ -11,6 +11,7 @@ class TablesController < ApplicationController
   end
 
   def preview
+    @table_name = params[:table]
     @target_db_repo.table = params[:table]
     @activity = Activity.new
     @row = @target_db_repo.find(params[:record_id])

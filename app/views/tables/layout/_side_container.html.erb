@@ -1,4 +1,11 @@
 <% @side_container_items = items_for_container(layout_builder, 'draggable_fields_side_container') %>
 <% @side_container_items.each do |k, v|  %>
-  <p><b><%= v["title"] %></b> - <%= @row[v["title"]] %></p>
+  <% if v["table"] == @table_name %>
+    <p><b><%= v["title"] %></b>: <%= @row[v["title"]] %></p>
+  <% else %>
+    <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+    <% if @related_row %>
+      <p><b><%= v["title"] %></b>: <%= @related_row[v["title"]] %></p>
+    <% end %>
+  <% end %>
 <% end  %>

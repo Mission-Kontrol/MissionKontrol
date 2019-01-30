@@ -10,4 +10,21 @@ module TableHelper
       items
     end
   end
+
+  def get_related_row(primary_table, relatable_table, relatable_id)
+    repo = Kuwinda::Repository::TargetDB.new
+    repo.table = relatable_table
+    foreign_key = "#{convert_table_name(primary_table)}_id"
+    repo.find_related(foreign_key , relatable_id)
+  end
+
+  private
+
+  def convert_table_name(table)
+    ies = table.end_with?('ies')
+    pluralization = ies ? 'ies' : 's'
+    table = table.chomp(pluralization)
+    table = ies ? table + 'y' : table
+    table.downcase
+  end
 end
