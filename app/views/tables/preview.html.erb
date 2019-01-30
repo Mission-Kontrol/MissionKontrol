@@ -12,7 +12,7 @@
       </li>
 
       <li class="">
-        <span><%= @target_db_repo.table.capitalize %></span>
+        <%= link_to @target_db_repo.table.capitalize, table_path(table: @target_db_repo.table, id: @target_db_repo.table.downcase) %>
       </li>
 
       <li class="active">
@@ -23,7 +23,7 @@
 </div>
 
 <% if @layout_builder %>
-  <div class="wrapper wrapper-content animated fadeInRight">
+  <div class="m-t">
     <%= render 'record_placeholder', layout_builder: @layout_builder %>
   </div>
 <% else %>
