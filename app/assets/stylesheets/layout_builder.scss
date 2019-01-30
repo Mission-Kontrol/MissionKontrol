@@ -78,6 +78,18 @@
   border-radius: 3px;
 }
 
+.draggable-container--over {
+  p > span {
+    display: none;
+  }
+}
+
+#layout-builder-draggable-trash-container {
+  .fa.fa-times {
+    font-size: 25px;
+  }
+}
+
 .layout-builder-layout {
   cursor: pointer;
 }
@@ -182,4 +194,28 @@ input:checked + .slider:before {
   strong, p {
     font-size: 10px;
   }
+}
+
+.layouts-layout_builder_topnavbar-breadcrumb {
+   background-color: transparent;
+}
+
+.layouts-navbar {
+  margin-bottom: 0;
+}
+
+.navbar-link.left-layout-link {
+  padding: 2px 20px 2px 37px;
+  margin-top: 14px;
+  border-right: 1px solid gray;
+  min-height: 24px;
+  color: gray;
+
+  .fa.fa-star {
+    font-size: 25px;
+  }
+}
+
+.draggable--original {
+  min-width: 196px;
 }
