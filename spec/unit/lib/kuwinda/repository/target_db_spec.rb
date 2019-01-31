@@ -24,6 +24,10 @@ module Kuwinda
         expect(a_target_db_repo).to respond_to(:find_related)
       end
 
+      it 'responds to #update_row' do
+        expect(a_target_db_repo).to respond_to(:update_row)
+      end
+
       describe '#all' do
         it 'returns all records' do
           expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table};")
@@ -45,6 +49,22 @@ module Kuwinda
           foreign_key = "user_id"
           expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} where #{foreign_key}=#{id};")
           a_target_db_repo.find_related(foreign_key, id)
+        end
+      end
+
+      describe '#update_row' do
+        it 'updates the given row with the new value' do
+          row = {}
+          row['id'] = 1
+          table = 'users'
+          column = "email"
+          value = "jknnlkm@fnjnfk"
+
+          foreign_key = "user_id"
+          expect(a_target_db_repo.conn).to receive(:exec_query).with(
+            "UPDATE #{table} SET #{column} = #{value}, WHERE id=#{row['id']};"
+          )
+          a_target_db_repo.update_row(row, value)
         end
       end
     end
