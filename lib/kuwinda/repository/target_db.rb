@@ -27,6 +27,11 @@ module Kuwinda
         result = conn.exec_query(sql)
         result.nil? ? result : result.first
       end
+
+      def update_row(row, value)
+        sql = "UPDATE #{table} SET #{column} = #{value}, WHERE id=#{row['id']};"
+        conn.exec_query(sql)
+      end
     end
   end
 end
