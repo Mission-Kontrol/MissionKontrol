@@ -62,6 +62,14 @@ $(document).ready(function() {
       keyboard: false
     });
 
+
+
+    $(document).on('change', '.layout-builder-editable-toggle-input', function() {
+        if(this.checked) {
+          $('#layout-builder-editable-warning-modal').modal({});
+        }
+    });
+
     let currentTable = $('#view_builder_table_name').data('table-name');
 
     if (currentTable) {
@@ -114,8 +122,24 @@ function rebuildDraggableDataContainers() {
 function buildDraggableField(field) {
   var icon = iconForFieldType(field.kind);
   var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
-  "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+  "<div class='row m-l-none m-r-none'>" +
+    "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
+      "<div class = ''>" +
+        "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+      "</div>" +
+    "</div>" +
+
+    "<div class='col-sm-3'>"+
+      "<div class = 'layout-builder-field-editable-toggle'>" +
+        "<label class='switch'>" +
+          "<input class='form-control layout-builder-editable-toggle-input' type='checkbox' value='1'>" +
+          "<span class='slider round'></span>" +
+        "</label>" +
+        "</div>" +
+      "</div>" +
+    "</div>"+
   "</div>"
+
   return item
 }
 
@@ -207,7 +231,8 @@ function initializeDraggable() {
   const dataContainers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
 
   draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
-    draggable: '.layout-builder-draggable-item'
+    draggable: '.layout-builder-draggable-item',
+    handle: '.layout-builder-draggable-item-handle'
   });
 
   const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
