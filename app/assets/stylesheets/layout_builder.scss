@@ -28,6 +28,24 @@
   margin-bottom: 10px;
   z-index: 1;
   background-color: white;
+
+  .layout-builder-field-editable-toggle {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .layout-builder-draggable-item-handle {
+    display: inline-block;
+  }
+}
+
+.draggable-mirror {
+  width: 250px;
 }
 
 #layout-builder-draggable-trash-container {
@@ -39,6 +57,16 @@
 
   p {
     margin-top: 10px;
+  }
+}
+
+#layout-builder-draggable-fields-container {
+  .layout-builder-field-editable-toggle {
+    display: none;
+  }
+
+  .layout-builder-draggable-item-handle {
+    width: 100%;
   }
 }
 
