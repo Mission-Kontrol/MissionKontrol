@@ -1,0 +1,52 @@
+<div id="layout-builder-editable-warning-modal-screen-1">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">
+        <span style="color: #ff0000">WARNING:</span> You are about to make [field name] editable for your users
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <p>
+        Not to alarm you and you probably want to do this as it’s one of the core features. However, we wanted to make sure you were sure.
+      </p>
+
+      <p>Making this field editable will mean that:</p>
+
+      <ul>
+        <li>Your users will be able to edit the field</li>
+        <li>Any changes will be done directly on the source data</li>
+        <li>The DB will have been updated so please make sure you keep backups</li>
+      </ul>
+
+      <p>You probably should not make fields editable if:</p>
+
+      <p>
+        <ul>
+          <li>
+            They are primary or secondary keys
+          </li>
+
+          <li>
+            They are fields that are calculated by your system (and so will be soon overwritten)
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        <b>If you are unsure, ask a/your developer.</b>
+      </p>
+
+      <p>
+        <label>
+          <input type="checkbox" value=""> Do not show this warning again
+        </label>
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <a class="btn btn-success" id="layout-builder-modal-next-button">Yes please make editable</a>
+      <a class="btn btn-default" id="layout-builder-modal-next-button">No keep field read-only</a>
+    </div>
+  </div>
+</div>
