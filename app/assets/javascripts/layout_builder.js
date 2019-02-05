@@ -62,13 +62,90 @@ $(document).ready(function() {
       keyboard: false
     });
 
+    // $('#layout-builder-editable-warning-modal-cancel-button').on('click', function(evt) {
+    //   // if user cancels making field editable, reset slider to false
+    //   debugger
+    //   let editableToggle = evt.currentTarget;
+    //   $(editableToggle).prop("checked", false);
+    // })
+
+    // $(".checkbox").change(function() {
+    //   if(this.checked) {
+    //       //Do stuff
+    //   }
+    // });
+
+    // $(document).on('change', '.layout-builder-editable-toggle-input', function(evt) {
+    // $(".layout-builder-editable-toggle-input").change(function(evt) {
+
+    $(document).on('change', '.layout-builder-editable-toggle-input:checkbox', function(evt) {
+      // if user sets field to editable
+        // if field editable warning disabled is false
+          // show editable warning for field
+
+          let editableToggle = $(this);
+          // let editableToggle = evt.originalEvent.target;
+          // let editableToggle = evt.currentTarget;
+
+          // debugger
+
+          if (editableToggle.is(":checked")) {
+              // do the confirmation thing here
+              let r = confirm('are you sure');
+
+              if (r != true) {
+                $(editableToggle).prop("checked", false);
+              }
+
+              // let makeEditable = false;
 
 
-    $(document).on('change', '.layout-builder-editable-toggle-input', function() {
-        if(this.checked) {
-          $('#layout-builder-editable-warning-modal').modal({});
-        }
+              // $('#layout-builder-editable-warning-modal').modal({
+              //   backdrop: 'static',
+              //   keyboard: false
+              // });
+
+              // dialog('Are you sure you want to do this?',
+              //   function() {
+              //     continueSetEditable(editableToggle)
+              //   },
+              //   function() {
+              //     cancelSetEditable(editableToggle);
+              //   }
+              // );
+          }
+
+
+
+        // if(this.checked) {
+        //   // cancel editable
+        //
+          // $('#layout-builder-editable-warning-modal-next-button').on('click', function() {
+          //   // if user contines after warning, set data-editable to true and update container
+          //   // $(editableToggle).prop("checked", false);
+          // })
+        //
+        //   $('#layout-builder-editable-warning-modal-ignore-checkbox').on('change', function() {
+        //     if(this.checked) {
+        //       // if user chooses to ignore this warning pop up next time, then set data attr and update container
+        //       console.log("ignoring this field");
+        //     }
+        //   })
+        //
+        //   // show warning modal
+          // $('#layout-builder-editable-warning-modal').modal({
+          //   backdrop: 'static',
+          //   keyboard: false
+          // });
+        // } else {
+        //   console.log("uncheking")
+        // }
     });
+
+    // $('#layout-builder-editable-warning-modal').on('hidden.bs.modal', function() {
+      // if editable is false, reset slider to false
+      // $(this).prop("checked", false);
+    // })
 
     let currentTable = $('#view_builder_table_name').data('table-name');
 
@@ -81,6 +158,39 @@ $(document).ready(function() {
     }
   }
 })
+
+
+function dialog(message, yesCallback, noCallback) {
+    // $('.title').html(message);
+    // var dialog = $('#modal_dialog').dialog();
+
+    $('#layout-builder-editable-warning-modal').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    $('#layout-builder-editable-warning-modal-next-button').click(function() {
+        // dialog.dialog('close');
+        yesCallback();
+    });
+    $('#layout-builder-editable-warning-modal-cancel-button').click(function() {
+        // dialog.dialog('close');
+        noCallback();
+    });
+}
+
+function cancelSetEditable(editableToggle) {
+  editableToggle.prop("checked", false);
+}
+
+function continueSetEditable(editableToggle) {
+  // editableToggle.prop("checked", false);
+}
+
+
+
+
+
 
 function rebuildDraggable(table) {
   if (draggable) {
@@ -132,7 +242,7 @@ function buildDraggableField(field) {
     "<div class='col-sm-3'>"+
       "<div class = 'layout-builder-field-editable-toggle'>" +
         "<label class='switch'>" +
-          "<input class='form-control layout-builder-editable-toggle-input' type='checkbox' value='1'>" +
+          "<input class='form-control layout-builder-editable-toggle-input' type='checkbox'>" +
           "<span class='slider round'></span>" +
         "</label>" +
         "</div>" +
