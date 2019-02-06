@@ -75,106 +75,41 @@ $(document).ready(function() {
   }
 })
 
-// $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
-//
-//
-//   let _this = this;
-//
-//   // update field editable to true
-//   function accept() {
-//     // _this.checked = true;
-//     evt.currentTarget.checked = false;
-//     $('#layout-builder-editable-warning-modal').modal('hide');
-//   }
-//
-//   function decline() {
-//     console.log("edit modal confirmation declined.")
-//     _this.checked = false;
-//     $('#layout-builder-editable-warning-modal').modal('hide');
-//   }
-//
-//   if (_this.checked) {
-//     _this.checked = false;
-//     evt.preventDefault();
-//     evt.stopPropagation();
-//     showWarningModalDialog(accept, decline);
-//   } else {
-//     // update field and container by setting editable to false
-//   }
-//
-//   // evt.stopPropagation();
-//   // evt.preventDefault();
-//   // console.log('stopping')
-//   // return false;
-// })
-
-// $(document).on('change', '.layout-builder-editable-toggle-input:checkbox', function(evt) {
-//   // evt.preventDefault();
-//   evt.stopPropagation();
-//   // update field editable to true
-//   function accept() {
-//     $('#layout-builder-editable-warning-modal').modal('hide');
-//     return true
-//   }
-//
-//   // update field editable to false
-//   // why is this unchecking all editable toggles instead of just one?!?!
-//   //
-//   // This should only uncheck the checkbox that resulted in this event, yet it
-//   // seems to uncheck all checked checkboxes.
-//   //
-//   function decline() {
-//     console.log("edit modal confirmation declined.")
-//     // $(evt.currentTarget).prop("checked", false);
-//     evt.currentTarget.checked = false;
-//     $('#layout-builder-editable-warning-modal').modal('hide');
-//     return false
-//   }
-//
-//   if (this.checked) {
-//       let r = showWarningModalDialog(accept, decline);
-//       console.log(r);
-//       // update field and container by setting editable to true
-//   } else {
-//     // update field and container by setting editable to false
-//   }
-// });
-
 $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
-  // evt.preventDefault();
-  // evt.stopPropagation();
-  // update field editable to true
-  let _this = this;
+  evt.preventDefault();
+  const _this = this;
+  const currentField = this.parentElement.parentElement.parentElement.parentElement.parentElement;
+  const currentFieldContainerId = currentField.parentElement.id;
+  const currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
 
-  function accept() {
-    console.log("edit modal confirmation accepted.")
-    evt.currentTarget.checked = true;
-    $('#layout-builder-editable-warning-modal').modal('hide');
-    return true
-  }
+  if (_this.checked) {
+    let confirmationText = "" +
+    "Not to alarm you and you probably want to do this as it’s one of the core features. However, we wanted to make sure you were sure." +
+    "\n\nMaking this field editable will mean that:" +
+    "\n - Your users will be able to edit the field" +
+    "\n - Any changes will be done directly on the source data" +
+    "\n - The DB will have been updated so please make sure you keep backups" +
+    "\n\nYou probably should not make fields editable if:" +
+    "\n - They are primary or secondary keys" +
+    "\n - They are fields that are calculated by your system (and so will be soon overwritten)" +
+    "\n\nIf you are unsure, ask a/your developer.";
 
-  // update field editable to false
-  // why is this unchecking all editable toggles instead of just one?!?!
-  //
-  // This should only uncheck the checkbox that resulted in this event, yet it
-  // seems to uncheck all checked checkboxes.
-  //
-  function decline() {
-    console.log("edit modal confirmation declined.")
-    // evt.currentTarget.checked = false;
-    $('#layout-builder-editable-warning-modal').modal('hide');
-    return false
-  }
+    let confirmation = confirm(confirmationText);
 
-  if (this.checked) {
-     _this.checked = false;
-      let r = showWarningModalDialog(accept, decline);
-      console.log(r);
-      // update field and container by setting editable to true
+    if (confirmation) {
+      currentField.dataset['editable'] = true
+    } else {
+      _this.checked = false
+      currentField.dataset['editable'] = false
+    }
+
+    updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems)
   } else {
-    // update field and container by setting editable to false
+    // ONLY DO THIS if data-editable is not false for current field 
+    currentField.dataset['editable'] = false
+    updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems)
   }
-});
+})
 
 $(document).on('click', '#layout-builder-editable-warning-modal-ignore-checkbox', function(evt) {
   // debugger
@@ -251,9 +186,12 @@ function buildDraggableField(field) {
     "</div>" +
 
     "<div class='col-sm-3'>"+
-      "<div class = ''>" +
-        "<input class='form-control layout-builder-editable-toggle' type='checkbox' id='layout-builder-editable-toggle-for-" + field.title + "'>" +
-      "</div>" +
+      "<div class = 'layout-builder-field-editable-toggle'>" +
+        "<label class='switch'>" +
+          "<input class='form-control layout-builder-editable-toggle' type='checkbox' value='1'>" +
+          "<span class='slider round'></span>" +
+        "</label>" +
+        "</div>" +
       "</div>" +
     "</div>"+
   "</div>"
@@ -286,6 +224,7 @@ function updateDraggableFieldsContainer(data) {
     field["title"] = data[i][0]
     field["kind"] = data[i][1]
     field["table"] = data[i][2]
+    field["editable"] = data[i][3]
     let draggableField = buildDraggableField(field);
 
     //
@@ -429,19 +368,7 @@ function isNotFieldsContainer(containerId) {
 }
 
 function saveDraggableContainer(dragEvent, containerId) {
-  let notification;
-  let queryId = "#" + containerId;
-  let containerItems = getContainerItems(containerId);
-  let containerItemsJSON = [];
-
-  for (var i = 0; i < containerItems.length; i++) {
-    let field = {}
-    field["title"] = containerItems[i].innerText.trim()
-    field["table"] = containerItems[i].dataset.fieldTable
-    field["kind"] = containerItems[i].dataset.fieldType
-    containerItemsJSON.push(field)
-  }
-
+  let containerItemsJSON = getContainerItemsJSON(containerId);
   updateLayoutBuilderContainer(containerId, containerItemsJSON)
 }
 
@@ -475,6 +402,22 @@ function getContainerItems(containerId) {
   let query;
   query = "#" + containerId + " " + ".layout-builder-draggable-field:not(.draggable--original):not(.draggable-mirror)"
   return document.querySelectorAll(query);
+}
+
+function getContainerItemsJSON(containerId) {
+  let containerItems = getContainerItems(containerId);
+  let containerItemsJSON = [];
+
+  for (var i = 0; i < containerItems.length; i++) {
+    let field = {}
+    field["title"] = containerItems[i].innerText.trim()
+    field["table"] = containerItems[i].dataset.fieldTable
+    field["kind"] = containerItems[i].dataset.fieldType
+    field["editable"] = containerItems[i].dataset.fieldEditable
+    containerItemsJSON.push(field)
+  }
+
+  return containerItemsJSON
 }
 
 function showTrashContainer() {
