@@ -80,7 +80,10 @@ $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(ev
   const _this = this;
   const currentField = this.parentElement.parentElement.parentElement.parentElement.parentElement;
   const currentFieldContainerId = currentField.parentElement.id;
-  const currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+  const currentFieldEditable = currentField.dataset['fieldEditable'] === 'true'
+  let currentFieldContainerItems;
+
+  // debugger
 
   if (_this.checked) {
     let confirmationText = "" +
@@ -97,31 +100,39 @@ $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(ev
     let confirmation = confirm(confirmationText);
 
     if (confirmation) {
-      currentField.dataset['editable'] = true
+      checkEditable(_this, currentField);
+      currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+      updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
     } else {
-      _this.checked = false
-      currentField.dataset['editable'] = false
+      // if (currentFieldEditable) {
+        uncheckEditable(_this, currentField)
+        currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+        updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
+      // }
     }
-
-    updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems)
   } else {
-    // ONLY DO THIS if data-editable is not false for current field 
-    currentField.dataset['editable'] = false
-    updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems)
+    // if (currentFieldEditable) {
+      uncheckEditable(_this, currentField);
+      currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+      updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
+    // }
   }
+
+  // currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+  // updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems)
 })
 
-$(document).on('click', '#layout-builder-editable-warning-modal-ignore-checkbox', function(evt) {
-  // debugger
-  if (this.checked) {
-      // let r = showWarningModalDialog(accept, decline);
-      console.log('will ignore this warning next time you try to make me editable');
-      // update field and container by setting editable to true
-  } else {
-    // update field and container by setting editable to false
-    console.log('will not ignore this warning next time you try to make me editable');
-  }
-})
+function uncheckEditable(target, currentField) {
+  target.checked = false
+  currentField.dataset["fieldEditable"] = false
+  console.log(currentField.dataset)
+}
+
+function checkEditable(target, currentField) {
+  target.checked = true
+  currentField.dataset["fieldEditable"] = true
+  console.log(currentField.dataset)
+}
 
 function showWarningModalDialog(yesCallback, noCallback) {
     $('#layout-builder-editable-warning-modal').modal({
@@ -177,24 +188,47 @@ function rebuildDraggableDataContainers() {
 
 function buildDraggableField(field) {
   var icon = iconForFieldType(field.kind);
-  var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
-  "<div class='row m-l-none m-r-none'>" +
-    "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
-      "<div class = ''>" +
-        "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
-      "</div>" +
-    "</div>" +
+  var item;
 
-    "<div class='col-sm-3'>"+
-      "<div class = 'layout-builder-field-editable-toggle'>" +
-        "<label class='switch'>" +
-          "<input class='form-control layout-builder-editable-toggle' type='checkbox' value='1'>" +
-          "<span class='slider round'></span>" +
-        "</label>" +
+  if (field.editable === 'true') {
+    item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
+      "<div class='row m-l-none m-r-none'>" +
+        "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
+          "<div class = ''>" +
+            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+          "</div>" +
         "</div>" +
-      "</div>" +
-    "</div>"+
-  "</div>"
+
+        "<div class='col-sm-3'>"+
+          "<div class = 'layout-builder-field-editable-toggle'>" +
+            "<label class='switch'>" +
+              "<input class='form-control layout-builder-editable-toggle' type='checkbox' checked='" + field.editable + "'>" +
+              "<span class='slider round'></span>" +
+            "</label>" +
+            "</div>" +
+          "</div>" +
+        "</div>"+
+      "</div>"
+    } else {
+      item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
+        "<div class='row m-l-none m-r-none'>" +
+          "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
+            "<div class = ''>" +
+              "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+            "</div>" +
+          "</div>" +
+
+          "<div class='col-sm-3'>"+
+            "<div class = 'layout-builder-field-editable-toggle'>" +
+              "<label class='switch'>" +
+                "<input class='form-control layout-builder-editable-toggle' type='checkbox'>" +
+                "<span class='slider round'></span>" +
+              "</label>" +
+              "</div>" +
+            "</div>" +
+          "</div>"+
+        "</div>"
+    }
 
   return item
 }
@@ -218,13 +252,17 @@ function getOptionsForDraggable(primaryTable) {
 }
 
 function updateDraggableFieldsContainer(data) {
+  // console.log(data)
   $('#layout-builder-draggable-fields-container').html('');
   for (var i = 0; i < data.length; i++) {
     var field = {}
     field["title"] = data[i][0]
     field["kind"] = data[i][1]
     field["table"] = data[i][2]
-    field["editable"] = data[i][3]
+    // field["editable"] = data[i][3]
+
+    // console.log(data[i])
+
     let draggableField = buildDraggableField(field);
 
     //
@@ -409,6 +447,7 @@ function getContainerItemsJSON(containerId) {
   let containerItemsJSON = [];
 
   for (var i = 0; i < containerItems.length; i++) {
+    // debugger
     let field = {}
     field["title"] = containerItems[i].innerText.trim()
     field["table"] = containerItems[i].dataset.fieldTable
