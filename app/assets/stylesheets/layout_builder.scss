@@ -259,3 +259,11 @@ input:checked + .slider:before {
 .draggable--original {
   min-width: 196px;
 }
+
+.editable-input {
+  display: none;
+}
+
+.editable-actions-wrapper {
+  display: none;
+}
