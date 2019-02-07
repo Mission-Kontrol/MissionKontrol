@@ -28,8 +28,8 @@ module Kuwinda
         result.nil? ? result : result.first
       end
 
-      def update_row(row, value)
-        sql = "UPDATE #{table} SET #{column} = #{value}, WHERE id=#{row['id']};"
+      def update_record(table, field, value, id)
+        sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
         conn.exec_query(sql)
       end
     end
