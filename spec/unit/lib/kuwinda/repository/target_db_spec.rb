@@ -24,8 +24,8 @@ module Kuwinda
         expect(a_target_db_repo).to respond_to(:find_related)
       end
 
-      it 'responds to #update_row' do
-        expect(a_target_db_repo).to respond_to(:update_row)
+      it 'responds to #update_record' do
+        expect(a_target_db_repo).to respond_to(:update_record)
       end
 
       describe '#all' do
@@ -52,19 +52,17 @@ module Kuwinda
         end
       end
 
-      describe '#update_row' do
-        xit 'updates the given row with the new value' do
-          row = {}
-          row['id'] = 1
+      describe '#update_record' do
+        it 'updates the given record with the new value' do
+          id = 1
           table = 'users'
-          column = "email"
-          value = "jknnlkm@fnjnfk"
+          field = "email"
+          value = "jknnlkm@fnjnfk.jfknnfk"
 
-          foreign_key = "user_id"
           expect(a_target_db_repo.conn).to receive(:exec_query).with(
-            "UPDATE #{table} SET #{column} = #{value}, WHERE id=#{row['id']};"
+            "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
           )
-          a_target_db_repo.update_row(row, value)
+          a_target_db_repo.update_record(table, field, value, id)
         end
       end
     end
