@@ -1,32 +1,34 @@
 <% @header_container1_items = items_for_container(layout_builder, 'draggable_fields_header_container1')%>
 <% @header_container1_items.each do |k, v|  %>
+  <% if v["table"] == @table_name %>
+    <% @current_row = @row %>
+  <% else %>
+    <% @current_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+  <% end %>
+
   <% if v["editable"] == "true" %>
-    <div class="row">
-      <div class="col-xs-10 showme">
-        <% if v["table"] == @table_name %>
-          <h3><%= @row[v["title"]] %></h3>
-        <% else %>
-          <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
-          <% if @related_row %>
-            <h3><%= @related_row[v["title"]] %></h3>
+    <div class="row editable-row">
+      <div class="col-xs-9">
+        <div class="editable-content-wrapper">
+          <h3 class="editable-content"><%= @current_row[v["title"]] %></h3>
+        </div>
+
+        <div class="editable-input">
+          <% if v["kind"] == 'integer' %>
+            <input type="number" class="form-control" value="<%= @current_row[v["title"]] %>">
+          <% else %>
+            <input type="text" class="form-control" value="<%= @current_row[v["title"]] %>">
           <% end %>
-        <% end %>
+        </div>
       </div>
 
-      <div class="col-xs-2" style="text-align:right; margin:5px auto 0px auto">
-        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+      <div class="col-xs-3 text-right">
+        <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
       </div>
     </div>
   <% else %>
     <div class="">
-      <% if v["table"] == @table_name %>
-        <h3><%= @row[v["title"]] %></h3>
-      <% else %>
-        <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
-        <% if @related_row %>
-          <h3><%= @related_row[v["title"]] %></h3>
-        <% end %>
-      <% end %>
+      <h3><%= @current_row[v["title"]] %></h3>
     </div>
   <% end %>
 <% end  %>
