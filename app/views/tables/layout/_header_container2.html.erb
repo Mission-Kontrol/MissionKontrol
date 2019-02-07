@@ -1,11 +1,32 @@
 <% @header_container2_items = items_for_container(layout_builder, 'draggable_fields_header_container2') %>
 <% @header_container2_items.each do |k, v|  %>
-  <% if v["table"] == @table_name %>
-    <p><%= @row[v["title"]] %></p>
+  <% if v["editable"] == "true" %>
+    <div class="row">
+      <div class="col-xs-10 showme">
+        <% if v["table"] == @table_name %>
+          <p><%= @row[v["title"]] %></p>
+        <% else %>
+          <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+          <% if @related_row %>
+            <p><%= @related_row[v["title"]] %></p>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="col-xs-2" style="text-align:right; margin:5px auto 0px auto">
+        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+      </div>
+    </div>
   <% else %>
-    <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
-    <% if @related_row %>
-      <p><%= @related_row[v["title"]] %></p>
-    <% end %>
-  <% end %>
+    <div class="">
+      <% if v["table"] == @table_name %>
+        <p><%= @row[v["title"]] %></p>
+      <% else %>
+        <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+        <% if @related_row %>
+          <p><%= @related_row[v["title"]] %></p>
+        <% end %>
+      <% end %>
+    </div>
+  <% end  %>
 <% end  %>
