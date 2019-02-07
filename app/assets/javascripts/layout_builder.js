@@ -253,16 +253,12 @@ function getOptionsForDraggable(primaryTable) {
 }
 
 function updateDraggableFieldsContainer(data) {
-  // console.log(data)
   $('#layout-builder-draggable-fields-container').html('');
   for (var i = 0; i < data.length; i++) {
     var field = {}
     field["title"] = data[i][0]
     field["kind"] = data[i][1]
     field["table"] = data[i][2]
-    // field["editable"] = data[i][3]
-
-    // console.log(data[i])
 
     let draggableField = buildDraggableField(field);
 
@@ -448,7 +444,6 @@ function getContainerItemsJSON(containerId) {
   let containerItemsJSON = [];
 
   for (var i = 0; i < containerItems.length; i++) {
-    // debugger
     let field = {}
     field["title"] = containerItems[i].innerText.trim()
     field["table"] = containerItems[i].dataset.fieldTable
@@ -597,7 +592,7 @@ function hideEditable(editableRow) {
 
 function updateTableField(evt, table, field, id) {
   evt.preventDefault();
-  
+
   let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
   let editableContent = editableRow.getElementsByClassName("editable-content")[0];
   let editableInput = editableRow.getElementsByClassName("editable-input")[0];
