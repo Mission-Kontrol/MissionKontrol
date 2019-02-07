@@ -6,6 +6,15 @@ $(document).ready(function() {
   let isCurrentActionNew = metaTag.attr('action') == 'new';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
 
+  toastr.options = {
+      closeButton: true,
+      progressBar: true,
+      showMethod: 'slideDown',
+      timeOut: 5000,
+      positionClass: "toast-bottom-right"
+  };
+
+
   if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
     $('.layout-builder-nav-item').click(function(evt) {
       evt.preventDefault();
@@ -75,6 +84,7 @@ $(document).ready(function() {
   }
 })
 
+// TODO: Try to achieve this from the HTTML template instead
 $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
   evt.preventDefault();
   const _this = this;
@@ -82,8 +92,6 @@ $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(ev
   const currentFieldContainerId = currentField.parentElement.id;
   const currentFieldEditable = currentField.dataset['fieldEditable'] === 'true'
   let currentFieldContainerItems;
-
-  // debugger
 
   if (_this.checked) {
     let confirmationText = "" +
@@ -104,22 +112,15 @@ $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(ev
       currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
       updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
     } else {
-      // if (currentFieldEditable) {
-        uncheckEditable(_this, currentField)
-        currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
-        updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
-      // }
-    }
-  } else {
-    // if (currentFieldEditable) {
-      uncheckEditable(_this, currentField);
+      uncheckEditable(_this, currentField)
       currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
       updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
-    // }
+    }
+  } else {
+    uncheckEditable(_this, currentField);
+    currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+    updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
   }
-
-  // currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
-  // updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems)
 })
 
 function uncheckEditable(target, currentField) {
@@ -547,4 +548,89 @@ function goToTab(tabName) {
 
   // Show the current tab
   document.getElementById(tabName).style.display = "block";
+}
+
+function showEditable(evt) {
+  evt.preventDefault()
+
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
+  // let editableContent = editableRow.getElementsByClassName("editable-content")[0]
+  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0]
+  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0]
+
+  editableContentWrapper.style.display = 'none'
+  editableToggle.style.display = 'none'
+  editableInput.style.display = 'block'
+  editableActionsWrapper.style.display = 'block'
+
+  return true
+}
+
+function cancelEditable(evt) {
+  evt.preventDefault();
+
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
+  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0];
+
+  editableContentWrapper.style.display = 'block';
+  editableToggle.style.display = 'block';
+  editableInput.style.display = 'none';
+  editableActionsWrapper.style.display = 'none';
+}
+
+function hideEditable(editableRow) {
+  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
+  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0];
+
+  editableContentWrapper.style.display = 'block';
+  editableToggle.style.display = 'block';
+  editableInput.style.display = 'none';
+  editableActionsWrapper.style.display = 'none';
+}
+
+function updateTableField(evt, table, field, id) {
+  evt.preventDefault();
+  
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableContent = editableRow.getElementsByClassName("editable-content")[0];
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let currentValue = editableContent.innerText.trim();
+  let newValue = editableInput.children[0].value;
+
+  if (currentValue === newValue) {
+    cancelEditable(evt)
+    return
+  }
+
+  let data = {};
+  data['table_field'] = {}
+  data['table_field']['table'] = table
+  data['table_field']['id'] = id
+  data['table_field']['field'] = field
+  data['table_field']['value'] = newValue
+
+  $.ajax({
+    url: "/table_field",
+    type: 'PATCH',
+    data: data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      console.error("PATCH /table_field Failed: "+ errorTextStatus+" ;"+error);
+    },
+    success: function(response, status, request){
+      refreshEditableContent(editableContent, newValue);
+      hideEditable(editableRow);
+      toastr.info('Table field successfully updated.');
+    }
+  })
+}
+
+function refreshEditableContent(editableContent, newValue) {
+  editableContent.innerText = newValue;
 }
