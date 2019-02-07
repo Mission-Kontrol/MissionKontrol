@@ -223,3 +223,11 @@ input:checked + .slider:before {
     font-size: 10px;
   }
 }
+
+.editable-input {
+  display: none;
+}
+
+.editable-actions-wrapper {
+  display: none;
+}
