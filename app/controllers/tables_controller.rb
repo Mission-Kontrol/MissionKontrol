@@ -24,6 +24,22 @@ class TablesController < ApplicationController
                                   table_field_params[:field],
                                   table_field_params[:value],
                                   table_field_params[:id])
+  rescue ActiveRecord::StatementInvalid => e
+    render json: {
+     error: e.to_s
+   }, status: 400
+  end
+
+  def update_related_table_field
+    @target_db_repo.update_related_record(related_table_field_params[:table],
+                                  related_table_field_params[:field],
+                                  related_table_field_params[:value],
+                                  related_table_field_params[:foreign_key_title],
+                                  related_table_field_params[:foreign_key_value])
+  rescue ActiveRecord::StatementInvalid => e
+    render json: {
+     error: e.to_s
+   }, status: 400
   end
 
   private
@@ -83,6 +99,14 @@ class TablesController < ApplicationController
 
   def table_field_params
     params.require(:table_field).permit(:id,
+                                     :field,
+                                     :table,
+                                     :value)
+  end
+
+  def related_table_field_params
+    params.require(:related_table_field).permit(:foreign_key_value,
+                                     :foreign_key_title,
                                      :field,
                                      :table,
                                      :value)
