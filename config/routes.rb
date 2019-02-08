@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'
 
   patch 'table_field', to: 'tables#update_table_field', as: 'update_table_field'
+  patch 'related_table_field', to: 'tables#update_related_table_field', as: 'update_related_table_field'
 
   get 'layouts/table_fields_with_type', to: 'layout_builder#table_fields_with_type'
   resources :layout_builder, as: "layouts", path: 'layouts'
