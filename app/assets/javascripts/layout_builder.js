@@ -5,15 +5,15 @@ $(document).ready(function() {
   let isCurrentControllerLayout = metaTag.attr('controller') == 'layout_builder';
   let isCurrentActionNew = metaTag.attr('action') == 'new';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+  prepareNormalToast();
 
-  toastr.options = {
-      closeButton: true,
-      progressBar: true,
-      showMethod: 'slideDown',
-      timeOut: 5000,
-      positionClass: "toast-bottom-right"
-  };
 
+  if (isCurrentControllerLayout && isCurrentActionNew) {
+    $('#layout-builder-modal').modal({
+      backdrop: 'static',
+      keyboard: false
+    })
+  }
 
   if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
     $('.layout-builder-nav-item').click(function(evt) {
@@ -66,12 +66,6 @@ $(document).ready(function() {
       saveLayout(layoutName, layoutPrimaryTable);
     })
 
-    // show this only on new route and not edit
-    $('#layout-builder-modal').modal({
-      backdrop: 'static',
-      keyboard: false
-    })
-
     let currentTable = $('#view_builder_table_name').data('table-name');
 
     if (currentTable) {
@@ -84,7 +78,6 @@ $(document).ready(function() {
   }
 })
 
-// TODO: Try to achieve this from the HTTML template instead
 $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
   evt.preventDefault();
   const _this = this;
@@ -550,7 +543,6 @@ function showEditable(evt) {
 
   let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
   let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
-  // let editableContent = editableRow.getElementsByClassName("editable-content")[0]
   let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
   let editableInput = editableRow.getElementsByClassName("editable-input")[0]
   let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0]
@@ -616,6 +608,11 @@ function updateTableField(evt, table, field, id) {
     type: 'PATCH',
     data: data,
     error: function(XMLHttpRequest, errorTextStatus, error){
+      if (XMLHttpRequest.status == 400) {
+        prepareLongToast()
+        toastr.error(XMLHttpRequest.responseJSON.error);
+      }
+
       console.error("PATCH /table_field Failed: "+ errorTextStatus+" ;"+error);
     },
     success: function(response, status, request){
@@ -626,6 +623,68 @@ function updateTableField(evt, table, field, id) {
   })
 }
 
+function updateRelatedTableField(evt, table, field, foreignKeyTitle, foreignKeyValue) {
+  evt.preventDefault();
+
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableContent = editableRow.getElementsByClassName("editable-content")[0];
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let currentValue = editableContent.innerText.trim();
+  let newValue = editableInput.children[0].value;
+
+  if (currentValue === newValue) {
+    cancelEditable(evt)
+    return
+  }
+
+  let data = {};
+  data['related_table_field'] = {}
+  data['related_table_field']['table'] = table
+  data['related_table_field']['foreign_key_value'] = foreignKeyValue
+  data['related_table_field']['foreign_key_title'] = foreignKeyTitle
+  data['related_table_field']['field'] = field
+  data['related_table_field']['value'] = newValue
+
+  $.ajax({
+    url: "/related_table_field",
+    type: 'PATCH',
+    data: data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      if (XMLHttpRequest.status == 400) {
+        prepareLongToast();
+        toastr.error(XMLHttpRequest.responseJSON.error);
+      }
+
+      console.error("PATCH /table_field Failed: "+ errorTextStatus+" ;"+error);
+    },
+    success: function(response, status, request){
+      refreshEditableContent(editableContent, newValue);
+      hideEditable(editableRow);
+      toastr.info('Related table field successfully updated.');
+    }
+  })
+}
+
 function refreshEditableContent(editableContent, newValue) {
   editableContent.innerText = newValue;
+}
+
+function prepareLongToast() {
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    showMethod: 'slideDown',
+    timeOut: 15000,
+    positionClass: "toast-bottom-right"
+  };
+}
+
+function prepareNormalToast() {
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    showMethod: 'slideDown',
+    timeOut: 5000,
+    positionClass: "toast-bottom-right"
+  };
 }
