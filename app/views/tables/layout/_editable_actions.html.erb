@@ -6,9 +6,16 @@
 
 <div class="editable-actions-wrapper">
   <a href="" class="btn btn-default" onclick="cancelEditable(event);">
-    cancel
+    <i class="fa fa-times" aria-hidden="true"></i>
   </a>
-  <a href="" class="btn btn-primary" onclick="updateTableField(event, '<%= v["table"] %>', '<%= v["title"] %>', '<%= params[:record_id] %>');">
-    update field
-  </a>
+
+  <% if v["table"] == @table_name %>
+    <a href="" class="btn btn-primary" onclick="updateTableField(event, '<%= v["table"] %>', '<%= v["title"] %>', '<%= params[:record_id] %>');">
+      <i class="fa fa-check" aria-hidden="true"></i>
+    </a>
+  <% else %>
+    <a href="" class="btn btn-primary" onclick="updateRelatedTableField(event, '<%= v["table"] %>', '<%= v["title"] %>', '<%= get_foreign_key(@table_name) %>' ,'<%= params[:record_id] %>');">
+      <i class="fa fa-check" aria-hidden="true"></i>
+    </a>
+  <% end %>
 </div>
