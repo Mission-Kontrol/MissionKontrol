@@ -8,9 +8,9 @@
 
   <% if v["editable"] == "true" %>
     <div class="row editable-row">
-      <div class="col-xs-9">
+      <div class="col-xs-8">
         <div class="editable-content-wrapper">
-          <p class="editable-content"><b><%= v["title"] %></b>: <%= @current_row[v["title"]] %></p>
+          <p class=""><b><%= v["title"] %></b>: <span class="editable-content"><%= @current_row[v["title"]] %></span></p>
         </div>
 
         <div class="editable-input">
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="col-xs-3 text-right">
+      <div class="col-xs-4 text-right">
         <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
       </div>
     </div>
