@@ -14,8 +14,12 @@ module TableHelper
   def get_related_row(primary_table, relatable_table, relatable_id)
     repo = Kuwinda::Repository::TargetDB.new
     repo.table = relatable_table
-    foreign_key = "#{convert_table_name(primary_table)}_id"
+    foreign_key = get_foreign_key(primary_table)
     repo.find_related(foreign_key , relatable_id)
+  end
+
+  def get_foreign_key(primary_table)
+    "#{convert_table_name(primary_table)}_id"
   end
 
   def table_has_layout?(table)
