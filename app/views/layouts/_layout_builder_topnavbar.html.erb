@@ -1,17 +1,33 @@
 <div class="row border-bottom">
-  <nav class="navbar navbar-static-top" role="navigation">
+  <nav class="navbar navbar-static-top layouts-navbar" role="navigation">
+    <ul class="nav navbar-top-links navbar-left">
+      <li>
+        <%= link_to dashboard_path, :class => 'navbar-link left-layout-link' do %>
+          <span><i class="fa fa-star" aria-hidden="true"></i></span>
+        <% end %>
+      </li>
+      <li>
+        <ol class="breadcrumb layouts-layout_builder_topnavbar-breadcrumb">
+          <li>
+            <%= link_to 'Database', dashboard_path %>
+          </li>
+
+          <li>
+            <%= link_to "Table: #{@view_builder.table_name}", dashboard_path %>
+          </li>
+
+          <li>
+            <%= link_to "Layout name: #{@view_builder.view_name}", dashboard_path %>
+          </li>
+        </ol>
+      </li>
+    </ul>
     <ul class="nav navbar-top-links navbar-right">
       <li>
-        <%= link_to "Dashboard", dashboard_path, :class => 'navbar-link'  %>
-      </li>
-
-      <li>
-        <%= link_to "Layouts", layouts_path, :class => 'navbar-link'  %>
-      </li>
-
-      <li>
         <% if admin_user_signed_in? %>
-          <%= link_to "Logout", destroy_admin_user_session_path, method: :delete, :class => 'navbar-link'  %>
+          <%= link_to destroy_admin_user_session_path, method: :delete, :class => 'navbar-link' do %>
+            <span><i class="fa fa-sign-out" aria-hidden="true"></i>Log out</span>
+          <% end %>
         <% end %>
       </li>
     </ul>
