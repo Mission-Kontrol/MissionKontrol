@@ -11,8 +11,6 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   resources :admin_users, only: :index
-  resources :users, only: %i[index show]
-  resources :companies, only: %i[index show]
   resources :work_lists, only: %i[index show new create edit update]
 
   resources :tables, only: %i[show]
