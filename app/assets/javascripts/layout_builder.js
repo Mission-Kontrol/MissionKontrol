@@ -5,6 +5,15 @@ $(document).ready(function() {
   let isCurrentControllerLayout = metaTag.attr('controller') == 'layout_builder';
   let isCurrentActionNew = metaTag.attr('action') == 'new';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+  prepareNormalToast();
+
+
+  if (isCurrentControllerLayout && isCurrentActionNew) {
+    $('#layout-builder-modal').modal({
+      backdrop: 'static',
+      keyboard: false
+    })
+  }
 
   if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
     $('.layout-builder-nav-item').click(function(evt) {
@@ -57,11 +66,6 @@ $(document).ready(function() {
       saveLayout(layoutName, layoutPrimaryTable);
     })
 
-    $('#layout-builder-modal').modal({
-      backdrop: 'static',
-      keyboard: false
-    });
-
     let currentTable = $('#view_builder_table_name').data('table-name');
 
     if (currentTable) {
@@ -73,6 +77,71 @@ $(document).ready(function() {
     }
   }
 })
+
+$(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
+  evt.preventDefault();
+  const _this = this;
+  const currentField = this.parentElement.parentElement.parentElement.parentElement.parentElement;
+  const currentFieldContainerId = currentField.parentElement.id;
+  const currentFieldEditable = currentField.dataset['fieldEditable'] === 'true'
+  let currentFieldContainerItems;
+
+  if (_this.checked) {
+    let confirmationText = "" +
+    "Not to alarm you and you probably want to do this as it’s one of the core features. However, we wanted to make sure you were sure." +
+    "\n\nMaking this field editable will mean that:" +
+    "\n - Your users will be able to edit the field" +
+    "\n - Any changes will be done directly on the source data" +
+    "\n - The DB will have been updated so please make sure you keep backups" +
+    "\n\nYou probably should not make fields editable if:" +
+    "\n - They are primary or secondary keys" +
+    "\n - They are fields that are calculated by your system (and so will be soon overwritten)" +
+    "\n\nIf you are unsure, ask a/your developer.";
+
+    let confirmation = confirm(confirmationText);
+
+    if (confirmation) {
+      checkEditable(_this, currentField);
+      currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+      updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
+    } else {
+      uncheckEditable(_this, currentField)
+      currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+      updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
+    }
+  } else {
+    uncheckEditable(_this, currentField);
+    currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+    updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
+  }
+})
+
+function uncheckEditable(target, currentField) {
+  target.checked = false
+  currentField.dataset["fieldEditable"] = false
+  console.log(currentField.dataset)
+}
+
+function checkEditable(target, currentField) {
+  target.checked = true
+  currentField.dataset["fieldEditable"] = true
+  console.log(currentField.dataset)
+}
+
+function showWarningModalDialog(yesCallback, noCallback) {
+    $('#layout-builder-editable-warning-modal').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    $('#layout-builder-editable-warning-modal-next-button').click(function() {
+        yesCallback();
+    });
+
+    $('#layout-builder-editable-warning-modal-cancel-button').click(function() {
+        noCallback();
+    });
+}
 
 function rebuildDraggable(table) {
   if (draggable) {
@@ -113,9 +182,48 @@ function rebuildDraggableDataContainers() {
 
 function buildDraggableField(field) {
   var icon = iconForFieldType(field.kind);
-  var item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
-  "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
-  "</div>"
+  var item;
+
+  if (field.editable === 'true') {
+    item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
+      "<div class='row m-l-none m-r-none'>" +
+        "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
+          "<div class = ''>" +
+            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+          "</div>" +
+        "</div>" +
+
+        "<div class='col-sm-3'>"+
+          "<div class = 'layout-builder-field-editable-toggle'>" +
+            "<label class='switch'>" +
+              "<input class='form-control layout-builder-editable-toggle' type='checkbox' checked='" + field.editable + "'>" +
+              "<span class='slider round'></span>" +
+            "</label>" +
+            "</div>" +
+          "</div>" +
+        "</div>"+
+      "</div>"
+    } else {
+      item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
+        "<div class='row m-l-none m-r-none'>" +
+          "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
+            "<div class = ''>" +
+              "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+            "</div>" +
+          "</div>" +
+
+          "<div class='col-sm-3'>"+
+            "<div class = 'layout-builder-field-editable-toggle'>" +
+              "<label class='switch'>" +
+                "<input class='form-control layout-builder-editable-toggle' type='checkbox'>" +
+                "<span class='slider round'></span>" +
+              "</label>" +
+              "</div>" +
+            "</div>" +
+          "</div>"+
+        "</div>"
+    }
+
   return item
 }
 
@@ -144,6 +252,7 @@ function updateDraggableFieldsContainer(data) {
     field["title"] = data[i][0]
     field["kind"] = data[i][1]
     field["table"] = data[i][2]
+
     let draggableField = buildDraggableField(field);
 
     //
@@ -207,7 +316,8 @@ function initializeDraggable() {
   const dataContainers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
 
   draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
-    draggable: '.layout-builder-draggable-item'
+    draggable: '.layout-builder-draggable-item',
+    handle: '.layout-builder-draggable-item-handle'
   });
 
   const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
@@ -286,19 +396,7 @@ function isNotFieldsContainer(containerId) {
 }
 
 function saveDraggableContainer(dragEvent, containerId) {
-  let notification;
-  let queryId = "#" + containerId;
-  let containerItems = getContainerItems(containerId);
-  let containerItemsJSON = [];
-
-  for (var i = 0; i < containerItems.length; i++) {
-    let field = {}
-    field["title"] = containerItems[i].innerText.trim()
-    field["table"] = containerItems[i].dataset.fieldTable
-    field["kind"] = containerItems[i].dataset.fieldType
-    containerItemsJSON.push(field)
-  }
-
+  let containerItemsJSON = getContainerItemsJSON(containerId);
   updateLayoutBuilderContainer(containerId, containerItemsJSON)
 }
 
@@ -332,6 +430,22 @@ function getContainerItems(containerId) {
   let query;
   query = "#" + containerId + " " + ".layout-builder-draggable-field:not(.draggable--original):not(.draggable-mirror)"
   return document.querySelectorAll(query);
+}
+
+function getContainerItemsJSON(containerId) {
+  let containerItems = getContainerItems(containerId);
+  let containerItemsJSON = [];
+
+  for (var i = 0; i < containerItems.length; i++) {
+    let field = {}
+    field["title"] = containerItems[i].innerText.trim()
+    field["table"] = containerItems[i].dataset.fieldTable
+    field["kind"] = containerItems[i].dataset.fieldType
+    field["editable"] = containerItems[i].dataset.fieldEditable
+    containerItemsJSON.push(field)
+  }
+
+  return containerItemsJSON
 }
 
 function showTrashContainer() {
@@ -422,4 +536,155 @@ function goToTab(tabName) {
 
   // Show the current tab
   document.getElementById(tabName).style.display = "block";
+}
+
+function showEditable(evt) {
+  evt.preventDefault()
+
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
+  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0]
+  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0]
+
+  editableContentWrapper.style.display = 'none'
+  editableToggle.style.display = 'none'
+  editableInput.style.display = 'block'
+  editableActionsWrapper.style.display = 'block'
+
+  return true
+}
+
+function cancelEditable(evt) {
+  evt.preventDefault();
+
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
+  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0];
+
+  editableContentWrapper.style.display = 'block';
+  editableToggle.style.display = 'block';
+  editableInput.style.display = 'none';
+  editableActionsWrapper.style.display = 'none';
+}
+
+function hideEditable(editableRow) {
+  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
+  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0];
+
+  editableContentWrapper.style.display = 'block';
+  editableToggle.style.display = 'block';
+  editableInput.style.display = 'none';
+  editableActionsWrapper.style.display = 'none';
+}
+
+function updateTableField(evt, table, field, id) {
+  evt.preventDefault();
+
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableContent = editableRow.getElementsByClassName("editable-content")[0];
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let currentValue = editableContent.innerText.trim();
+  let newValue = editableInput.children[0].value;
+
+  if (currentValue === newValue) {
+    cancelEditable(evt)
+    return
+  }
+
+  let data = {};
+  data['table_field'] = {}
+  data['table_field']['table'] = table
+  data['table_field']['id'] = id
+  data['table_field']['field'] = field
+  data['table_field']['value'] = newValue
+
+  $.ajax({
+    url: "/table_field",
+    type: 'PATCH',
+    data: data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      if (XMLHttpRequest.status == 400) {
+        prepareLongToast()
+        toastr.error(XMLHttpRequest.responseJSON.error);
+      }
+
+      console.error("PATCH /table_field Failed: "+ errorTextStatus+" ;"+error);
+    },
+    success: function(response, status, request){
+      refreshEditableContent(editableContent, newValue);
+      hideEditable(editableRow);
+      toastr.info('Table field successfully updated.');
+    }
+  })
+}
+
+function updateRelatedTableField(evt, table, field, foreignKeyTitle, foreignKeyValue) {
+  evt.preventDefault();
+
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableContent = editableRow.getElementsByClassName("editable-content")[0];
+  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let currentValue = editableContent.innerText.trim();
+  let newValue = editableInput.children[0].value;
+
+  if (currentValue === newValue) {
+    cancelEditable(evt)
+    return
+  }
+
+  let data = {};
+  data['related_table_field'] = {}
+  data['related_table_field']['table'] = table
+  data['related_table_field']['foreign_key_value'] = foreignKeyValue
+  data['related_table_field']['foreign_key_title'] = foreignKeyTitle
+  data['related_table_field']['field'] = field
+  data['related_table_field']['value'] = newValue
+
+  $.ajax({
+    url: "/related_table_field",
+    type: 'PATCH',
+    data: data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      if (XMLHttpRequest.status == 400) {
+        prepareLongToast();
+        toastr.error(XMLHttpRequest.responseJSON.error);
+      }
+
+      console.error("PATCH /table_field Failed: "+ errorTextStatus+" ;"+error);
+    },
+    success: function(response, status, request){
+      refreshEditableContent(editableContent, newValue);
+      hideEditable(editableRow);
+      toastr.info('Related table field successfully updated.');
+    }
+  })
+}
+
+function refreshEditableContent(editableContent, newValue) {
+  editableContent.innerText = newValue;
+}
+
+function prepareLongToast() {
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    showMethod: 'slideDown',
+    timeOut: 15000,
+    positionClass: "toast-bottom-right"
+  };
+}
+
+function prepareNormalToast() {
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    showMethod: 'slideDown',
+    timeOut: 5000,
+    positionClass: "toast-bottom-right"
+  };
 }

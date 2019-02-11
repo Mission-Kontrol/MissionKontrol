@@ -1,11 +1,34 @@
 <% @main_container2_items = items_for_container(layout_builder, 'draggable_fields_main_container2') %>
 <% @main_container2_items.each do |k, v|  %>
   <% if v["table"] == @table_name %>
-    <p><b><%= v["title"] %></b>: <%= @row[v["title"]] %></p>
+    <% @current_row = @row %>
   <% else %>
-    <% @related_row = get_related_row(@table_name, v["table"], @row["id"]) %>
-    <% if @related_row %>
-      <p><b><%= v["title"] %></b>: <%= @related_row[v["title"]] %></p>
-    <% end %>
+    <% @current_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+  <% end %>
+
+  <% if v["editable"] == "true" %>
+    <div class="row editable-row">
+      <div class="col-xs-8">
+        <div class="editable-content-wrapper">
+          <p><b><%= v["title"] %></b>: <span class="editable-content"><%= @current_row[v["title"]] %></span></p>
+        </div>
+
+        <div class="editable-input">
+          <% if v["kind"] == 'integer' %>
+            <input type="number" class="form-control" value="<%= @current_row[v["title"]] %>">
+          <% else %>
+            <input type="text" class="form-control" value="<%= @current_row[v["title"]] %>">
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-xs-4 text-right">
+        <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
+      </div>
+    </div>
+  <% else %>
+    <div class="">
+      <p><b><%= v["title"] %></b>: <%= @current_row[v["title"]] %></p>
+    </div>
   <% end %>
 <% end  %>
