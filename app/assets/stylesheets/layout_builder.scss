@@ -28,6 +28,24 @@
   margin-bottom: 10px;
   z-index: 1;
   background-color: white;
+
+  .layout-builder-field-editable-toggle {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .layout-builder-draggable-item-handle {
+    display: inline-block;
+  }
+}
+
+.draggable-mirror {
+  width: 300px;
 }
 
 #layout-builder-draggable-trash-container {
@@ -39,6 +57,16 @@
 
   p {
     margin-top: 10px;
+  }
+}
+
+#layout-builder-draggable-fields-container {
+  .layout-builder-field-editable-toggle {
+    display: none;
+  }
+
+  .layout-builder-draggable-item-handle {
+    width: 100%;
   }
 }
 
@@ -118,6 +146,10 @@
 
 .table-record-placeholder-header {
   padding: 5px 15px;
+
+  h3  {
+    margin: 10px auto 5px auto;
+  }
 }
 
 .p-none {
@@ -226,4 +258,12 @@ input:checked + .slider:before {
 
 .draggable--original {
   min-width: 196px;
+}
+
+.editable-input {
+  display: none;
+}
+
+.editable-actions-wrapper {
+  display: none;
 }
