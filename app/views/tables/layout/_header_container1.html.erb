@@ -38,6 +38,8 @@
     <div class="">
       <% if @current_row %>
         <h3><%= @current_row[v["title"]] %></h3>
+      <% else %>
+        <p>--</p>
       <% end %>
     </div>
   <% end %>
