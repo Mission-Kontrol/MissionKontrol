@@ -9,6 +9,7 @@ def admin_db_credentials_getters
     admin_database_password
     admin_database_host
     admin_database_port
+    admin_database_type
   ]
 end
 
@@ -19,6 +20,7 @@ def admin_db_credentials_setters
     admin_database_password=
     admin_database_host=
     admin_database_port=
+    admin_database_type=
   ]
 end
 
@@ -29,6 +31,7 @@ def target_db_credentials_getters
     target_database_password
     target_database_host
     target_database_port
+    target_database_type
   ]
 end
 
@@ -38,7 +41,7 @@ def target_db_credentials_setters
     target_database_username=
     target_database_password=
     target_database_host=
-    target_database_port=
+    target_database_type=
   ]
 end
 

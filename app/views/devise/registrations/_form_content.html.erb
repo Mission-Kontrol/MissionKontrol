@@ -38,7 +38,9 @@
 
 <div class="form-group">
   <label for="">Database type</label>
-  <input type="text" class="form-control" placeholder="PostgreSQL" required="" value="PostgreSQL" disabled="true">
+  <%= f.select(:admin_database_type, AdminUser::DATABASE_TYPES,
+                                      {selected: current_admin_user.admin_database_type, prompt: "Select your database type"},
+                                      {class: 'form-control'}) %>
 </div>
 
 <div class="form-group">
@@ -73,7 +75,9 @@
 
 <div class="form-group">
   <label for="">Database type</label>
-  <input type="text" class="form-control" required="" value="PostgreSQL" disabled="true">
+  <%= f.select(:target_database_type, AdminUser::DATABASE_TYPES,
+                                      {selected: current_admin_user.target_database_type, prompt: "Select your database type"},
+                                      {class: 'form-control'}) %>
 </div>
 
 <div class="form-group">
