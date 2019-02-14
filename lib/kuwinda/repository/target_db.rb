@@ -23,7 +23,6 @@ module Kuwinda
       end
 
       def find_related(foreign_key_title, foreign_key_value)
-      # def find_related(foreign_key, relatable_id)
         sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
         result = conn.exec_query(sql)
         result.nil? ? result : result.first
@@ -37,7 +36,6 @@ module Kuwinda
       def update_related_record(table, field, value, foreign_key_title, foreign_key_value)
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
-        
       end
     end
   end
