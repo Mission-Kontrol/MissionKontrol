@@ -4,7 +4,7 @@ module Kuwinda
   module Gateway
     class DatabaseConnectionGateway
       def connect
-        ActiveRecord::Base.establish_connection(client_db)
+        ActiveRecord::Base.establish_connection(client_db) if client_db_is_valid?
       end
 
       private
@@ -42,6 +42,27 @@ module Kuwinda
             database: SensitiveData.get_target_database_credential(:database_name)
           }
         end
+      end
+
+      def client_db_is_valid?
+        return true if Rails.env == 'test'
+
+        credentials = %i[database_type
+                          database_username
+                          database_port database_host
+                          database_name
+                          database_password]
+
+
+
+        credentials.each do |credential|
+          if SensitiveData.get_target_database_credential(credential).blank?
+            return false
+            break
+          end
+        end
+
+        true  
       end
     end
   end
