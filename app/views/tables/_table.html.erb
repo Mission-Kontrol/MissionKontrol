@@ -32,14 +32,6 @@
                 <td><%= v %></td>
               <% end %>
             <% end %>
-
-            <td>
-              <% if r['id'] %>
-                <%= link_to r['id'], table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>
-              <% else %>
-                --
-              <% end %>
-            </td>
           </tr>
         <% end %>
       <% else %>
@@ -58,14 +50,6 @@
                 <td><%= v %></td>
               <% end %>
             <% end %>
-
-            <td>
-              <% if r['id'] %>
-                <%= link_to r['id'], table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>
-              <% else %>
-                --
-              <% end %>
-            </td>
           </tr>
         <% end %>
       <% end %>
