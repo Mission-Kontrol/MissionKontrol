@@ -3,7 +3,7 @@
 class AdminUser < ApplicationRecord
   DATABASE_TYPES = [
     ['PostgreSQL', 'postgresql'],
-    ['MySQL', 'mysql']
+    ['MySQL', 'mysql2']
   ].freeze
 
   # Include default devise modules. Others available are:
