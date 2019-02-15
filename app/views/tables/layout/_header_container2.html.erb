@@ -10,10 +10,10 @@
     <div class="row editable-row">
       <div class="col-xs-9">
         <div class="editable-content-wrapper">
-          <% if @current_row %>
-            <p class="editable-content"><%= @current_row[v["title"]] %></p>
+          <% if @current_row &&  !@current_row[v["title"]].blank? %>
+            <h3 class="editable-content"><%= @current_row[v["title"]] %></h3>
             <% else %>
-            <h3>--</h3>
+            <h3 class="editable-content">--</h3>
           <% end %>
         </div>
 
