@@ -41,6 +41,7 @@ def target_db_credentials_setters
     target_database_username=
     target_database_password=
     target_database_host=
+    target_database_port=
     target_database_type=
   ]
 end
