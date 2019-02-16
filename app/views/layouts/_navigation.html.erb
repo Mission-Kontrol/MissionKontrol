@@ -39,7 +39,7 @@
         </a>
 
         <ul class="nav nav-second-level collapse">
-          <% available_tables.each do |t| %>
+          <% @available_tables.each do |t| %>
             <li class="">
               <%= link_to t, table_path(table: t, id: t.downcase) %>
             </li>
