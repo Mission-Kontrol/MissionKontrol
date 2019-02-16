@@ -2,9 +2,15 @@
 
 module Kuwinda
   module Gateway
+    class InvalidClientDatabaseError < StandardError; end
+
     class DatabaseConnectionGateway
       def connect
-        ActiveRecord::Base.establish_connection(client_db) if client_db_is_valid?
+        unless client_db_is_valid?
+          raise InvalidClientDatabaseError.new("invalid client database, please review credentials.")
+        end
+
+        ActiveRecord::Base.establish_connection(client_db)
       end
 
       private
@@ -62,7 +68,7 @@ module Kuwinda
           end
         end
 
-        true  
+        true
       end
     end
   end
