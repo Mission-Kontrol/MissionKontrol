@@ -237,7 +237,7 @@ function getOptionsForDraggable(primaryTable) {
     async: true,
     dataType: "json",
     error: function(XMLHttpRequest, errorTextStatus, error){
-              alert("Failed: "+ errorTextStatus+" ;"+error);
+              toastr.error("Invalid target database, please review credentials.")
            },
     success: function(data){
       updateDraggableFieldsContainer(data);
