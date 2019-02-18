@@ -8,12 +8,6 @@
   <div class="col-sm-12">
     <div>
       <h2>Layout - <%= @view_builder.view_name %></h2>
-
-      <div>
-      <% if @view_builder %>
-        <button type="button" class="pull-right btn btn-<%= @view_builder.status %>"><%= @view_builder.status.capitalize %></button>
-      <% end %>
-      </div>
     </div>
 
     <ol class="breadcrumb">
