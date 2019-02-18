@@ -2,5 +2,5 @@
 
 class ClientRecord < ActiveRecord::Base
   self.abstract_class = true
-  Kuwinda::UseCase::DatabaseConnection.new.execute
+  # Kuwinda::UseCase::DatabaseConnection.new.execute
 end
