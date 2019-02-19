@@ -23,9 +23,15 @@
         <%= link_to @layout_builder.table_name.capitalize, table_path(table: @layout_builder.table_name, id: @layout_builder.table_name.downcase) %>
       </li>
 
-      <li class="">
-        <span><%= @row["id"] %></span>
-      </li>
+      <% if @row %>
+        <li class="">
+          <span><%= @row["id"] %></span>
+        </li>
+      <% else %>
+        <li class="">
+          <span>--</span>
+        </li>
+      <% end %>
 
       <li class="active">
         <span>Preview</span>
