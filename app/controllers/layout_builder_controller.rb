@@ -3,7 +3,6 @@
 class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
   layout 'dashboard', only: [:index, :preview]
-  # layout 'application', only: [:preview]
   skip_before_action :verify_authenticity_token
 
   def new

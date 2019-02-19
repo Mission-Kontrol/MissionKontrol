@@ -6,10 +6,6 @@ module Kuwinda
 
     class DatabaseConnectionGateway
       def connect
-        # unless client_db_is_valid?
-        #   raise InvalidClientDatabaseError.new("invalid client database, please review credentials.")
-        # end
-
         if client_db_is_valid?
           ActiveRecord::Base.establish_connection(client_db)
         else
