@@ -37,6 +37,12 @@ module Kuwinda
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
       end
+
+      def find_first
+        sql = "select * from #{table} limit 1;"
+        result = conn.exec_query(sql)
+        result.nil? ? result : result.first
+      end
     end
   end
 end
