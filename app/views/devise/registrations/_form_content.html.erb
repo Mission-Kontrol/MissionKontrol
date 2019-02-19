@@ -31,43 +31,44 @@
   <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
 </div>
 
-<div class="m-t-lg m-b-lg">
-  <h3>Admin panel database</h3>
-  <p>This is the database for that the admin panel will use to store its own data.</p>
-</div>
+<div class='hide'>
+  <div class="m-t-lg m-b-lg">
+    <h3>Admin panel database</h3>
+    <p>This is the database for that the admin panel will use to store its own data.</p>
+  </div>
 
-<div class="form-group">
-  <label for="">Database type</label>
-  <%= f.select(:admin_database_type, AdminUser::DATABASE_TYPES,
-                                      {selected: current_admin_user.admin_database_type, prompt: "Select your database type"},
-                                      {class: 'form-control'}) %>
-</div>
+  <div class="form-group">
+    <label for="">Database type</label>
+    <%= f.select(:admin_database_type, AdminUser::DATABASE_TYPES,
+                                        {prompt: "Select your database type"},
+                                        {class: 'form-control'}) %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :admin_database_name %>
-  <%= f.text_field :admin_database_name, autofocus: true, class: "form-control" %>
-</div>
+  <div class="form-group">
+    <%= f.label :admin_database_name %>
+    <%= f.text_field :admin_database_name, autofocus: true, class: "form-control" %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :admin_database_username %>
-  <%= f.text_field :admin_database_username, autofocus: true, class: "form-control" %>
-</div>
+  <div class="form-group">
+    <%= f.label :admin_database_username %>
+    <%= f.text_field :admin_database_username, autofocus: true, class: "form-control" %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :admin_database_password %>
-  <%= f.text_field :admin_database_password, autofocus: true, class: "form-control" %>
-</div>
+  <div class="form-group">
+    <%= f.label :admin_database_password %>
+    <%= f.text_field :admin_database_password, autofocus: true, class: "form-control" %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :admin_database_host %>
-  <%= f.text_field :admin_database_host, autofocus: true, class: "form-control" %>
-</div>
+  <div class="form-group">
+    <%= f.label :admin_database_host %>
+    <%= f.text_field :admin_database_host, autofocus: true, class: "form-control" %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :admin_database_port %>
-  <%= f.text_field :admin_database_port, autofocus: true, class: "form-control" %>
+  <div class="form-group">
+    <%= f.label :admin_database_port %>
+    <%= f.text_field :admin_database_port, autofocus: true, class: "form-control" %>
+  </div>
 </div>
-
 <div class="m-t-lg m-b-lg">
   <h3>Target application database</h3>
   <p>This is the your applications database.</p>
@@ -76,7 +77,7 @@
 <div class="form-group">
   <label for="">Database type</label>
   <%= f.select(:target_database_type, AdminUser::DATABASE_TYPES,
-                                      {selected: current_admin_user.target_database_type, prompt: "Select your database type"},
+                                      {prompt: "Select your database type"},
                                       {class: 'form-control'}) %>
 </div>
 
