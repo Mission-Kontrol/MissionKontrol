@@ -1,0 +1,52 @@
+<% @main_container1_items = items_for_container(layout_builder, 'draggable_fields_main_container1') %>
+<% @main_container1_items.each do |k, v|  %>
+  <% if v["table"] == layout_builder.table_name %>
+    <% @current_row = @row %>
+  <% else %>
+    <% @current_row = get_related_row(layout_builder.table_name, v["table"], @row["id"]) %>
+  <% end %>
+
+  <% if v["editable"] == "true" %>
+    <div class="row editable-row">
+      <div class="col-xs-8">
+        <div class="editable-content-wrapper">
+          <p>
+            <b><%= v["title"] %></b>:
+
+            <span class="editable-content">
+              <% if @current_row %>
+                <%= @current_row[v["title"]] %>
+                <% else %>
+                  --
+              <% end %>
+            </span>
+          </p>
+        </div>
+
+        <div class="editable-input">
+          <% if @current_row %>
+            <% if v["kind"] == 'integer' %>
+              <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[v["title"]] %>">
+            <% else %>
+              <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[v["title"]] %>">
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="">
+      <p>
+        <b><%= v["title"] %></b>:
+
+        <span class="">
+          <% if @current_row %>
+            <%= @current_row[v["title"]] %>
+          <% else %>
+              --
+          <% end %>
+        </span>
+      </p>
+    </div>
+  <% end %>
+<% end  %>
