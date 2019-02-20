@@ -91,7 +91,7 @@ module Kuwinda
 
       describe '#find_first' do
         it 'selects the first row of a given table' do
-          expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} limit 1;")
+          expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} limit 5;")
           a_target_db_repo.find_first
         end
       end

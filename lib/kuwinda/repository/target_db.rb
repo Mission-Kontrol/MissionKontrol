@@ -39,7 +39,7 @@ module Kuwinda
       end
 
       def find_first
-        sql = "select * from #{table} limit 1;"
+        sql = "select * from #{table} limit 5;"
         result = conn.exec_query(sql)
         result.nil? ? result : result.first
       end
