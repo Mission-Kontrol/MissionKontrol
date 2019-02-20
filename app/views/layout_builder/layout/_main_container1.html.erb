@@ -1,9 +1,9 @@
 <% @main_container1_items = items_for_container(layout_builder, 'draggable_fields_main_container1') %>
 <% @main_container1_items.each do |k, v|  %>
-  <% if v["table"] == @table_name %>
+  <% if v["table"] == layout_builder.table_name %>
     <% @current_row = @row %>
   <% else %>
-    <% @current_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+    <% @current_row = get_related_row(layout_builder.table_name, v["table"], @row["id"]) %>
   <% end %>
 
   <% if v["editable"] == "true" %>
@@ -32,12 +32,6 @@
             <% end %>
           <% end %>
         </div>
-      </div>
-
-      <div class="col-xs-4 text-right">
-        <% if @current_row %>
-          <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
-        <% end %>
       </div>
     </div>
   <% else %>

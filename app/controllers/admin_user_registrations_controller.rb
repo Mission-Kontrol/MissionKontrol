@@ -8,6 +8,8 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   def update_resource(resource, params)
     resource.update_without_password(params)
+    Kuwinda::UseCase::DatabaseConnection.new.execute
+    resource
   end
 
   def permitted_admin_db_params
@@ -17,6 +19,7 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
       admin_database_password
       admin_database_host
       admin_database_port
+      admin_database_type
     ]
   end
 
@@ -27,6 +30,7 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
       target_database_password
       target_database_host
       target_database_port
+      target_database_type
     ]
   end
 

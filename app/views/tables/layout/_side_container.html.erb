@@ -10,25 +10,51 @@
     <div class="row editable-row">
       <div class="col-xs-8">
         <div class="editable-content-wrapper">
-          <p class=""><b><%= v["title"] %></b>: <span class="editable-content"><%= @current_row[v["title"]] %></span></p>
+          <p>
+            <b><%= v["title"] %></b>:
+
+            <span class="editable-content">
+              <% if @current_row %>
+                <%= @current_row[v["title"]] %>
+                <% else %>
+                  --
+              <% end %>
+            </span>
+          </p>
         </div>
 
         <div class="editable-input">
-          <% if v["kind"] == 'integer' %>
-            <input type="number" class="form-control" value="<%= @current_row[v["title"]] %>">
-          <% else %>
-            <input type="text" class="form-control" value="<%= @current_row[v["title"]] %>">
+          <% if @current_row %>
+            <% if v["kind"] == 'integer' %>
+              <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[v["title"]] %>">
+            <% else %>
+              <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[v["title"]] %>">
+            <% end %>
           <% end %>
         </div>
       </div>
 
       <div class="col-xs-4 text-right">
-        <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
+        <% if @current_row %>
+          <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
+        <% end %>
       </div>
     </div>
   <% else %>
     <div class="">
-      <p><b><%= v["title"] %></b>: <%= @current_row[v["title"]] %></p>
+      <p>
+        <b><%= v["title"] %></b>:
+
+        <% if @current_row %>
+        <span class="">
+          <% if @current_row %>
+            <%= @current_row[v["title"]] %>
+          <% else %>
+            --
+          <% end %>
+        </span>
+        <% end %>
+      </p>
     </div>
   <% end %>
 <% end  %>

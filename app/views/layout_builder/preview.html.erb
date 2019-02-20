@@ -1,0 +1,39 @@
+<div class="row border-bottom white-bg m-b">
+  <div class="col-sm-12">
+    <div class="text-right p-h-xs" style="">
+      <%= link_to 'Back to layout', edit_layout_path(params[:id]) %>
+    </div>
+  </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2><%= @layout_builder.table_name.capitalize %></h2>
+
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to 'Home', dashboard_path %>
+      </li>
+
+      <li class="">
+        <span>Tables</span>
+      </li>
+
+      <li class="">
+        <%= link_to @layout_builder.table_name.capitalize, table_path(table: @layout_builder.table_name, id: @layout_builder.table_name.downcase) %>
+      </li>
+
+      <li class="">
+        <span><%= @row["id"] %></span>
+      </li>
+
+      <li class="active">
+        <span>Preview</span>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="m-t">
+  <%= render 'record_placeholder', layout_builder: @layout_builder %>
+</div>

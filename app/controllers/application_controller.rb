@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :load_view_builders,
-                :load_target_db_tables
+                :load_available_tables
 
   private
 
@@ -13,8 +13,10 @@ class ApplicationController < ActionController::Base
     @view_builders = ViewBuilder.where(status: 'active')
   end
 
-  def load_target_db_tables
-    @target_db_tables ||= Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  def load_available_tables
+    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  rescue Kuwinda::Gateway::InvalidClientDatabaseError => e
+    @available_tables = []
   end
 
   protected

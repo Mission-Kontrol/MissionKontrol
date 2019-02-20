@@ -2,7 +2,7 @@
 
 class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
-  layout 'dashboard', only: [:index]
+  layout 'dashboard', only: [:index, :preview]
   skip_before_action :verify_authenticity_token
 
   def new
@@ -51,6 +51,12 @@ class LayoutBuilderController < ApplicationController
     @view_builder = ViewBuilder.find(params[:id])
     @available_tables = available_tables
     @relatable_tables = relatable_tables(@view_builder.table_name)
+  end
+
+  def preview
+    @layout_builder = ViewBuilder.find(params[:id])
+    @target_db_repo = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
+    @row = @target_db_repo.find_first
   end
 
   private

@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class AdminUser < ApplicationRecord
+  DATABASE_TYPES = [
+    ['PostgreSQL', 'postgresql'],
+    ['MySQL', 'mysql2']
+  ].freeze
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -52,6 +57,14 @@ class AdminUser < ApplicationRecord
     SensitiveData.set_admin_database_credential(:database_port, port)
   end
 
+  def admin_database_type
+    SensitiveData.get_admin_database_credential(:database_type)
+  end
+
+  def admin_database_type=(type)
+    SensitiveData.set_admin_database_credential(:database_type, type)
+  end
+
   def target_database_name
     SensitiveData.get_target_database_credential(:database_name)
   end
@@ -90,5 +103,13 @@ class AdminUser < ApplicationRecord
 
   def target_database_port=(port)
     SensitiveData.set_target_database_credential(:database_port, port)
+  end
+
+  def target_database_type
+    SensitiveData.get_target_database_credential(:database_type)
+  end
+
+  def target_database_type=(type)
+    SensitiveData.set_target_database_credential(:database_type, type)
   end
 end

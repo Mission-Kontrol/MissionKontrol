@@ -141,6 +141,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     multi_json (1.13.1)
+    mysql2 (0.3.21)
     nenv (0.3.0)
     nio4r (2.3.1)
     nokogiri (1.10.1)
@@ -333,6 +334,7 @@ DEPENDENCIES
   jbuilder (~> 2.7.0)
   jquery-rails (~> 4.3)
   listen
+  mysql2 (~> 0.3.18)
   pg (~> 0.18)
   pry-byebug
   pry-rails
