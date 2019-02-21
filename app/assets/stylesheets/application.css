@@ -45,3 +45,7 @@
 .alert ul {
   list-style-type: none;
 }
+
+.p-w-xxs {
+  padding: 0 5px;
+}
