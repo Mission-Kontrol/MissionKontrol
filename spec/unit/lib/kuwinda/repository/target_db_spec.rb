@@ -32,14 +32,19 @@ module Kuwinda
         expect(a_target_db_repo).to respond_to(:update_related_record)
       end
 
-      it 'responds to #find_first' do
-        expect(a_target_db_repo).to respond_to(:find_first)
-      end
-
       describe '#all' do
-        it 'returns all records' do
-          expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table};")
-          a_target_db_repo.all
+        context "when limit is present" do
+          it 'returns all records' do
+            expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} limit 5;")
+            a_target_db_repo.all(5)
+          end
+        end
+
+        context "when limit is not present" do
+          it 'returns all records' do
+            expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table};")
+            a_target_db_repo.all
+          end
         end
       end
 
@@ -86,13 +91,6 @@ module Kuwinda
             "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
           )
           a_target_db_repo.update_related_record(table, field, value, foreign_key_title, foreign_key_value)
-        end
-      end
-
-      describe '#find_first' do
-        it 'selects the first row of a given table' do
-          expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} limit 5;")
-          a_target_db_repo.find_first
         end
       end
     end

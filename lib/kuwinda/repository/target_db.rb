@@ -11,8 +11,13 @@ module Kuwinda
         @conn = conn
       end
 
-      def all
-        sql = "select * from #{table};"
+      def all(limit = nil)
+        if limit
+          sql = "select * from #{table} limit #{limit};"
+        else
+          sql = "select * from #{table};"
+        end
+
         conn.exec_query(sql)
       end
 
@@ -36,12 +41,6 @@ module Kuwinda
       def update_related_record(table, field, value, foreign_key_title, foreign_key_value)
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
-      end
-
-      def find_first
-        sql = "select * from #{table} limit 5;"
-        result = conn.exec_query(sql)
-        result.nil? ? result : result.first
       end
     end
   end
