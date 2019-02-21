@@ -56,7 +56,7 @@ class LayoutBuilderController < ApplicationController
   def preview
     @layout_builder = ViewBuilder.find(params[:id])
     @target_db_repo = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
-    @row = @target_db_repo.find_first
+    @rows = @target_db_repo.all(5)
   end
 
   private
