@@ -7,6 +7,7 @@ $(document).ready(function() {
   let isCurrentActionNew = metaTag.attr('action') == 'new';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
   let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
+  let isCurrentActionPreview = metaTag.attr('action') == 'preview';
 
   prepareNormalToast();
   addPaddingToDraggableItems(containers);
