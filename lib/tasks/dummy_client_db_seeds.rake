@@ -1,63 +1,39 @@
 # frozen_string_literal: true
-
 namespace :dummy_client_database do
-  desc 'Seed client database'
-  task all_seeds: :environment do
-    case adapter
-    when 'mysql2'
-      run_seeds_mysql
-    when 'postgresql', 'postgres'
-      run_seeds_postgresql
-    else
-      raise "don't know how to run seeds for adapter #{adapter}"
+  desc 'Reset dummy databases'
+  task reset: :environment do
+    tables = ["users", "companies", "attending_events", "events", "welcomes"]
+
+    # clear demo dbs for PG
+    url = ENV['DEMO_DATABASE_PG']
+    conn = ActiveRecord::Base.establish_connection(url).connection
+    tables.each do |table|
+      query = "DELETE FROM #{table};"
+      conn.exec_query(query);
     end
+
+    # seed PG
+    conn.exec_query(users_query)
+    conn.exec_query(events_query)
+    conn.exec_query(companies_query)
+    conn.exec_query(attending_events_query)
+
+    # clear demo dbs for MySQL
+    url = ENV['DEMO_DATABASE_MYSQL']
+    conn = ActiveRecord::Base.establish_connection(url).connection
+    tables.each do |table|
+      query = "DELETE FROM #{table};"
+      conn.exec_query(query);
+    end
+
+    # seed MySQL
+    conn.exec_query(users_query_mysql)
+    conn.exec_query(events_query_mysql)
+    conn.exec_query(companies_query_mysql)
+    conn.exec_query(attending_events_query_mysql)
+
+    clear_target_db_credentials
   end
-
-  task user_seeds: :environment do
-    run_single_seeds(users_query)
-  end
-
-  task events_seeds: :environment do
-    run_single_seeds(events_query)
-  end
-
-  task attending_events_seeds: :environment do
-    run_single_seeds(attending_events_query)
-  end
-end
-
-def run_seeds_postgresql
-  run_single_seeds(users_query)
-  run_single_seeds(events_query)
-  run_single_seeds(attending_events_query)
-  run_single_seeds(companies_query)
-end
-
-def run_seeds_mysql
-  clear_tables_mysql
-  run_single_seeds(users_query_mysql)
-  run_single_seeds(events_query_mysql)
-  run_single_seeds(attending_events_query_mysql)
-  run_single_seeds(companies_query_mysql)
-end
-
-def clear_tables_mysql
-  client_database.connection.exec_query("TRUNCATE TABLE users;")
-  client_database.connection.exec_query("TRUNCATE TABLE events;")
-  client_database.connection.exec_query("TRUNCATE TABLE attending_events;")
-  client_database.connection.exec_query("TRUNCATE TABLE companies;")
-end
-
-def client_database
-  Kuwinda::UseCase::DatabaseConnection.new.execute
-end
-
-def run_single_seeds(query)
-  client_database.connection.exec_query(query)
-end
-
-def adapter
-  ClientRecord.connection_config[:adapter]
 end
 
 def events_query
@@ -130,4 +106,9 @@ def companies_query_mysql
     (3, 'Schneider, Mante and Robel', 'http://kuhlman.name/malcolm.schimmel', 'Public Company' ,'Government Relations', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '611.882.5173' ,'2016-06-01', '2016-06-01'),
     (4, 'Roberts, Schmeler and Waters', 'http://kuhlman.name/malcolm.schimmel', 'Educational Institution' ,'Telecommunications', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '(696) 181-7743' ,'2016-06-01', '2016-06-01'),
     (5, 'Waters, Simonis and Nienow', 'http://kuhlman.name/malcolm.schimmel', 'Privately Held' ,'Judiciary', 'active', '7073 Truman Plains, Rudolfbury, NJ 77888-6693', '1-402-090-3611' , '2016-06-01', '2016-06-01');"
+end
+
+def clear_target_db_credentials
+  credentials = "config/target_db_credentials_#{Rails.env}.txt"
+  rm_rf credentials
 end
