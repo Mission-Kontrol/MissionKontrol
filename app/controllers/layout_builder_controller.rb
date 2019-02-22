@@ -57,6 +57,18 @@ class LayoutBuilderController < ApplicationController
     @layout_builder = ViewBuilder.find(params[:id])
     @target_db_repo = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
     @rows = @target_db_repo.all(5)
+
+    respond_to do |format|
+      format.js { render action: 'edit/success' }
+      format.html { render action: 'preview' }
+    end
+
+  rescue ActiveRecord::StatementInvalid => e
+    @rows = []
+
+    respond_to do |format|
+      format.js { render action: 'edit/error' }
+    end
   end
 
   private
