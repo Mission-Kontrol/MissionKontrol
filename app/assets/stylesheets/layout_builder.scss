@@ -276,3 +276,7 @@ input:checked + .slider:before {
 .layout-preview-slider-item {
   width:100%;
 }
+
+.clickable-row {
+  cursor: pointer;
+}
