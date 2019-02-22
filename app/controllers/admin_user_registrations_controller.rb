@@ -6,14 +6,17 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   layout 'application', only: [:new]
 
   def create
-    if target_db_connection_is_valid?
-      super
-    else
-      flash[:error] = "Invalid target database, please review credentials."
-      build_resource
-      clean_up_passwords(resource)
-      render(action: :new, status:422) and return
-    end
+    test_target_db_connection
+    super
+
+  rescue Mysql2::Error,
+         PG::ConnectionBad,
+         Kuwinda::Gateway::InvalidClientDatabaseError => e
+
+   flash[:error] = "Invalid target database, please review credentials."
+   build_resource
+   clean_up_passwords(resource)
+   render(action: :new, status:422) and return
   end
 
   protected
@@ -62,7 +65,7 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
     dashboard_path
   end
 
-  def target_db_connection_is_valid?
+  def test_target_db_connection
     ActiveRecord::Base.establish_connection(
       :adapter  => adapter(params["admin_user"]["target_database_type"]),
       :host     => params["admin_user"]["target_database_host"],
@@ -70,9 +73,6 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
       :password => params["admin_user"]["target_database_password"],
       :database => params["admin_user"]["target_database_name"]
     ).connection
-
-  rescue Mysql2::Error, Kuwinda::Gateway::InvalidClientDatabaseError => e
-    false
   end
 
   def adapter(scheme)
