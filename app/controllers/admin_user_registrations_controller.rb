@@ -2,7 +2,19 @@
 
 class AdminUserRegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
+
   layout 'application', only: [:new]
+
+  def create
+    if target_db_connection_is_valid?
+      super
+    else
+      flash[:error] = "Invalid target database, please review credentials."
+      build_resource
+      clean_up_passwords(resource)
+      render(action: :new, status:422) and return
+    end
+  end
 
   protected
 
@@ -48,5 +60,29 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   def after_update_path_for(_resource)
     dashboard_path
+  end
+
+  def target_db_connection_is_valid?
+    ActiveRecord::Base.establish_connection(
+      :adapter  => adapter(params["admin_user"]["target_database_type"]),
+      :host     => params["admin_user"]["target_database_host"],
+      :username => params["admin_user"]["target_database_username"],
+      :password => params["admin_user"]["target_database_password"],
+      :database => params["admin_user"]["target_database_name"]
+    ).connection
+
+  rescue Mysql2::Error, Kuwinda::Gateway::InvalidClientDatabaseError => e
+    false
+  end
+
+  def adapter(scheme)
+    case scheme
+    when 'postgresql', 'postgres'
+      return 'postgresql'
+    when 'mysql', 'mysql2'
+      return 'mysql2'
+    else
+      raise Kuwinda::Gateway::InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
+    end
   end
 end
