@@ -7,7 +7,19 @@ class TablesController < ApplicationController
                 :set_activities
 
   def show
-    @table_name = params[:table]
+    @current_table = params[:table]
+    sql_result = @target_db_repo.all
+
+    if table_has_layout?(@current_table)
+      @headers = sql_result ? sql_result.columns : []
+      @rows = sql_result ? sql_result.rows : []
+    else
+      @headers = sql_result ? sql_result.columns.first(5) : []
+      @rows = sql_result ? sql_result.rows.first(5) : []
+    end
+
+  rescue ActiveRecord::StatementInvalid
+    render 'bad_connection'
   end
 
   def preview
@@ -110,5 +122,9 @@ class TablesController < ApplicationController
                                      :field,
                                      :table,
                                      :value)
+  end
+
+  def table_has_layout?(table)
+    ViewBuilder.where(table_name: table).size > 0
   end
 end
