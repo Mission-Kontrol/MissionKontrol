@@ -1,0 +1,9 @@
+<% r.each_with_index do |(k, v), i| %>
+  <td>
+    <% if v %>
+      <%= v %>
+    <% else %>
+      --
+    <% end %>
+  </td>
+<% end %>

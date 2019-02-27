@@ -10,15 +10,11 @@
 
     <tbody>
       <% @rows.each do |r|%>
-        <tr class="">
-          <% r.each_with_index do |(k, v), i| %>
-            <td class="clickable-row" data-href='<%= table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>'>
-              <% if r['id'] %>
-                <%= v %>
-              <% else %>
-                --
-              <% end %>
-            </td>
+        <tr class="clickable-row" data-href='<%= table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>'>
+          <% if table_has_layout?(@current_table) %>
+            <%= render 'table_with_layout', r: r %>
+          <% else %>
+            <%= render 'table_without_layout', r: r %>
           <% end %>
         </tr>
       <% end %>
