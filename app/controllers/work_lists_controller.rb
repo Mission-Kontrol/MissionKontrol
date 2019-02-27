@@ -4,6 +4,7 @@ class WorkListsController < ApplicationController
   layout 'dashboard'
   before_action :set_db_tables, only: %i[new create add_sql_filter edit]
   before_action :set_db_columns, only: %i[new create add_sql_filter edit]
+  before_action :load_available_tables
 
   def index
     @work_lists = WorkList.order(created_at: :desc)
@@ -126,5 +127,12 @@ class WorkListsController < ApplicationController
   def handle_success(action:, js_func:, notice:)
     flash[:notice] = notice
     render(action: action, js: js_func)
+  end
+
+  def load_available_tables
+    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  rescue Kuwinda::Gateway::InvalidClientDatabaseError => e
+    @available_tables = []
+    render '/tables/bad_connection'
   end
 end

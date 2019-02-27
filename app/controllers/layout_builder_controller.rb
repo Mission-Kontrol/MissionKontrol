@@ -4,6 +4,7 @@ class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
   layout 'dashboard', only: [:index, :preview]
   skip_before_action :verify_authenticity_token
+  before_action :load_available_tables
 
   def new
     @available_tables = available_tables
@@ -106,5 +107,12 @@ class LayoutBuilderController < ApplicationController
     view_builder.draggable_fields_main_container1 = params[:view_builder][:draggable_fields_main_container1] if params[:view_builder][:draggable_fields_main_container1]
     view_builder.draggable_fields_main_container2 = params[:view_builder][:draggable_fields_main_container2] if params[:view_builder][:draggable_fields_main_container2]
     view_builder.draggable_fields_main_container3 = params[:view_builder][:draggable_fields_main_container3] if params[:view_builder][:draggable_fields_main_container3]
+  end
+
+  def load_available_tables
+    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  rescue Kuwinda::Gateway::InvalidClientDatabaseError => e
+    @available_tables = []
+    render '/tables/bad_connection'
   end
 end

@@ -4,7 +4,8 @@ class TablesController < ApplicationController
   layout 'dashboard'
   before_action :authenticate_admin_user!,
                 :set_target_db_repo,
-                :set_activities
+                :set_activities,
+                :load_available_tables
 
   def show
     @current_table = params[:table]
@@ -12,11 +13,11 @@ class TablesController < ApplicationController
 
     if table_has_layout?(@current_table)
       @headers = sql_result ? sql_result.columns : []
-      @rows = sql_result ? sql_result.rows : []
     else
       @headers = sql_result ? sql_result.columns.first(5) : []
-      @rows = sql_result ? sql_result.rows.first(5) : []
     end
+
+    @rows = sql_result ? sql_result.to_hash : []
 
   rescue ActiveRecord::StatementInvalid
     render 'bad_connection'
@@ -126,5 +127,12 @@ class TablesController < ApplicationController
 
   def table_has_layout?(table)
     ViewBuilder.where(table_name: table).size > 0
+  end
+
+  def load_available_tables
+    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  rescue Kuwinda::Gateway::InvalidClientDatabaseError => e
+    @available_tables = []
+    render '/tables/bad_connection'
   end
 end
