@@ -50,7 +50,6 @@ class LayoutBuilderController < ApplicationController
 
   def edit
     @view_builder = ViewBuilder.find(params[:id])
-    @available_tables = available_tables
     @relatable_tables = relatable_tables(@view_builder.table_name)
   end
 
@@ -111,8 +110,5 @@ class LayoutBuilderController < ApplicationController
 
   def load_available_tables
     @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  rescue Kuwinda::Gateway::InvalidClientDatabaseError => e
-    @available_tables = []
-    render '/tables/bad_connection'
   end
 end

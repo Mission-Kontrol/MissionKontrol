@@ -20,6 +20,7 @@ class TablesController < ApplicationController
     @rows = sql_result ? sql_result.to_hash : []
 
   rescue ActiveRecord::StatementInvalid
+    @available_tables = []
     render 'bad_connection'
   end
 
@@ -131,8 +132,5 @@ class TablesController < ApplicationController
 
   def load_available_tables
     @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  rescue Kuwinda::Gateway::InvalidClientDatabaseError => e
-    @available_tables = []
-    render '/tables/bad_connection'
   end
 end

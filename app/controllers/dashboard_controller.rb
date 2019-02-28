@@ -11,8 +11,5 @@ class DashboardController < ApplicationController
 
   def load_available_tables
     @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  rescue Kuwinda::Gateway::InvalidClientDatabaseError => e
-    @available_tables = []
-    render '/tables/bad_connection'
   end
 end
