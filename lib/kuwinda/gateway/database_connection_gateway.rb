@@ -2,8 +2,6 @@
 
 module Kuwinda
   module Gateway
-    class InvalidClientDatabaseError < StandardError; end
-
     class DatabaseConnectionGateway
       def connect
         unless client_db_is_valid?
