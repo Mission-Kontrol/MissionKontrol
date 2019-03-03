@@ -1,9 +1,13 @@
 <% r.each_with_index do |(k, v), i| %>
-  <td>
-    <% if v %>
-      <%= v %>
-    <% else %>
-      --
-    <% end %>
-  </td>
+  <% @column_is_hidden = @hidden_columns.include?(k) %>
+
+  <% if @column_is_hidden %>
+    <td data-column='<%= k %>' class='column-<%= k %> hide'>
+      <%= render 'table_cell_data', v: v %>
+    </td>
+  <% else %>
+    <td data-column='<%= k %>' class='column-<%= k %>'>
+      <%= render 'table_cell_data', v: v %>
+    </td>
+  <% end %>
 <% end %>
