@@ -5,18 +5,19 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Column settings</h4>
       </div>
+
       <div class="modal-body">
-        <div class="">
-          <input type="checkbox" name="" value=""> id
-        </div>
+        <p>Only select the columns that you want to make visible.</p>
 
-        <div class="">
-          <input type="checkbox" name="" value=""> email
-        </div>
-
-        <div class="">
-          <input type="checkbox" name="" value=""> name
-        </div>
+        <% columns.each do |c| %>
+          <div class="">
+            <% if hidden_columns.include?(c) %>
+              <input class="hidden-column-checkbox" type="checkbox" name="" value='<%= c %>' checked> <%= c %>
+            <% else %>
+              <input class="hidden-column-checkbox" type="checkbox" name="" value='<%= c %>'> <%= c %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
 
       <div class="modal-footer hide">
