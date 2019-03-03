@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190115204330) do
+ActiveRecord::Schema.define(version: 20190303142916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,15 +45,6 @@ ActiveRecord::Schema.define(version: 20190115204330) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "layout_settings", force: :cascade do |t|
-    t.integer "layout_id", null: false
-    t.string "primary_table"
-    t.boolean "show_status", default: false, null: false
-    t.boolean "commentable", default: false, null: false
-    t.string "parent_comments_table"
-    t.jsonb "visible_columns", default: []
-  end
-
   create_table "view_builders", force: :cascade do |t|
     t.string "table_name", null: false
     t.jsonb "table_attributes", default: "{}", null: false
@@ -68,6 +59,7 @@ ActiveRecord::Schema.define(version: 20190115204330) do
     t.jsonb "draggable_fields_main_container1", default: []
     t.jsonb "draggable_fields_main_container2", default: []
     t.jsonb "draggable_fields_main_container3", default: []
+    t.jsonb "hidden_columns", default: []
   end
 
   create_table "work_lists", force: :cascade do |t|
