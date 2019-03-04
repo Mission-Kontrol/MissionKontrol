@@ -28,13 +28,25 @@
 
         <div class="ibox-content">
           <% if table_has_layout?(@current_table) %>
-            <p>
-              <a href="#" data-toggle="modal" data-target="#myModal">Column settings</a>
-            </p>
+            <div class="row">
+              <div class="col-sm-10">
+                <input type="text" class="form-control input-sm m-b-xs" id="filter"
+                placeholder="Search in table">
+              </div>
+
+              <div class="col-sm-2 text-right">
+                  <div class="" style='padding: 10px 10px 0 0'>
+                    <a href="#" data-toggle="modal" data-target="#myModal">
+                      <i class="fa fa-columns" aria-hidden="true"></i> Columns
+                    </a>
+                  </div>
+              </div>
+            </div>
+          <% else %>
+            <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search in table">
           <% end %>
 
-          <input type="text" class="form-control input-sm m-b-xs" id="filter"
-          placeholder="Search in table">
+          <br>
 
           <%= render 'table', hidden_columns: @hidden_columns, current_table: @current_table %>
         </div>
