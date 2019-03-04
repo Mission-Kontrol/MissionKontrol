@@ -5,10 +5,10 @@ class TablesController < ApplicationController
   before_action :authenticate_admin_user!,
                 :set_target_db_repo,
                 :set_activities,
+                :set_current_table,
                 :load_available_tables
 
   def show
-    @current_table = params[:table]
     sql_result = @target_db_repo.all
 
     if table_has_layout?(@current_table)
@@ -28,11 +28,12 @@ class TablesController < ApplicationController
   end
 
   def preview
-    @table_name = params[:table]
-    @target_db_repo.table = params[:table]
+    redirect_to new_layout_path unless table_has_layout?(@current_table)
+    
+    @target_db_repo.table = @current_table
     @activity = Activity.new
     @row = @target_db_repo.find(params[:record_id])
-    @layout_builder = ViewBuilder.where(table_name: params[:table]).last
+    @layout_builder = ViewBuilder.where(table_name: @current_table).last
     set_activities_for_table
   end
 
@@ -163,5 +164,9 @@ class TablesController < ApplicationController
 
   def load_available_tables
     @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  end
+
+  def set_current_table
+    @current_table = params[:table]
   end
 end
