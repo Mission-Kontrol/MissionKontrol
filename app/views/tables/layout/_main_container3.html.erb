@@ -1,9 +1,9 @@
 <% @main_container3_items = items_for_container(layout_builder, 'draggable_fields_main_container3') %>
 <% @main_container3_items.each do |k, v|  %>
-  <% if v["table"] == @table_name %>
+  <% if v["table"] == @current_table %>
     <% @current_row = @row %>
   <% else %>
-    <% @current_row = get_related_row(@table_name, v["table"], @row["id"]) %>
+    <% @current_row = get_related_row(@current_table, v["table"], @row["id"]) %>
   <% end %>
 
   <% if v["editable"] == "true" %>
