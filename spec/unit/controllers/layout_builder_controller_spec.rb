@@ -165,21 +165,6 @@ describe LayoutBuilderController, type: :controller do
     end
   end
 
-  describe '#index' do
-    subject { get :index }
-    let!(:view_builder) { create(:view_builder) }
-
-    it 'will render the page' do
-      subject
-      expect(response.status).to eq(200)
-    end
-
-    it 'will assign the view_builders' do
-      subject
-      expect(assigns[:view_builders]).to include view_builder
-    end
-  end
-
   describe '#get_data' do
     subject { get :retrieve_data, params: params }
     # let(:user) { create(:user) }
