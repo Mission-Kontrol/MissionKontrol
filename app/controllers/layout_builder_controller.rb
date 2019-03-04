@@ -4,7 +4,9 @@ class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
   layout 'dashboard', only: [:index, :preview]
   skip_before_action :verify_authenticity_token
-  before_action :load_available_tables
+  before_action :load_available_tables, 
+                :authenticate_admin_user!
+
 
   def new
     @available_tables = available_tables
