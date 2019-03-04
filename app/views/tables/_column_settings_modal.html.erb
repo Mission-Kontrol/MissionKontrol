@@ -7,14 +7,14 @@
       </div>
 
       <div class="modal-body">
-        <p>Only select the columns that you want to make invisible.</p>
+        <p>Only select the columns that you want to make visible.</p>
 
         <% columns.each do |c| %>
           <div class="">
             <% if hidden_columns.include?(c) %>
-              <input class="hidden-column-checkbox" type="checkbox" name="" value='<%= c %>' checked> <%= c %>
-            <% else %>
               <input class="hidden-column-checkbox" type="checkbox" name="" value='<%= c %>'> <%= c %>
+            <% else %>
+              <input class="hidden-column-checkbox" type="checkbox" name="" value='<%= c %>' checked> <%= c %>
             <% end %>
           </div>
         <% end %>
