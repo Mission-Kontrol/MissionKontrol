@@ -10,6 +10,7 @@ class LayoutBuilderController < ApplicationController
 
   def new
     @available_tables = available_tables
+    @tables_with_layouts = tables_with_layouts
     @view_builder = ViewBuilder.new
   end
 
@@ -75,6 +76,14 @@ class LayoutBuilderController < ApplicationController
 
   def list_table_fields_with_type(table)
     Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
+  end
+
+  def tables_with_layouts
+    tables_with_layouts = []
+    available_tables.select do |table|
+      tables_with_layouts << table if ViewBuilder.find_by(table_name: table).present?
+    end
+    tables_with_layouts
   end
 
   def available_tables

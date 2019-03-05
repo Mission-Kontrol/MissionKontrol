@@ -11,8 +11,13 @@
       <div class="col-xs-9">
         <div class="editable-content-wrapper">
           <% if @current_row &&  !@current_row[v["title"]].blank? %>
-            <h3 class="editable-content"><%= @current_row[v["title"]] %></h3>
-            <% else %>
+            <h3 class="editable-content" onclick="showEditable(event);">
+              <%= @current_row[v["title"]] %>
+              <span class='display-inline editable-actions'>
+                <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
+              </span>
+            </h3>
+          <% else %>
             <h3 class="editable-content">--</h3>
           <% end %>
         </div>
@@ -26,12 +31,6 @@
             <% end %>
           <% end %>
         </div>
-      </div>
-
-      <div class="col-xs-3 text-right">
-        <% if @current_row %>
-          <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
-        <% end %>
       </div>
     </div>
   <% else %>
