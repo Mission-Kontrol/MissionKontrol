@@ -24,13 +24,14 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(user)
     test_target_db_connection
     dashboard_path
-    
+
   rescue Mysql2::Error,
          PG::ConnectionBad,
          InvalidClientDatabaseError => e
 
    flash.discard
    flash[:error] = "Invalid target database, please review credentials."
+   @available_tables = []
    dashboard_path
   end
 
