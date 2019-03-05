@@ -4,10 +4,24 @@ class TablesController < ApplicationController
   layout 'dashboard'
   before_action :authenticate_admin_user!,
                 :set_target_db_repo,
-                :set_activities
+                :set_activities,
+                :load_available_tables
 
   def show
-    @table_name = params[:table]
+    @current_table = params[:table]
+    sql_result = @target_db_repo.all
+
+    if table_has_layout?(@current_table)
+      @headers = sql_result ? sql_result.columns : []
+    else
+      @headers = sql_result ? sql_result.columns.first(5) : []
+    end
+
+    @rows = sql_result ? sql_result.to_hash : []
+
+  rescue ActiveRecord::StatementInvalid
+    @available_tables = []
+    render 'bad_connection'
   end
 
   def preview
@@ -110,5 +124,13 @@ class TablesController < ApplicationController
                                      :field,
                                      :table,
                                      :value)
+  end
+
+  def table_has_layout?(table)
+    ViewBuilder.where(table_name: table).size > 0
+  end
+
+  def load_available_tables
+    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
 end

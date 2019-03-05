@@ -2,15 +2,13 @@
 
 module Kuwinda
   module Gateway
-    class InvalidClientDatabaseError < StandardError; end
-
     class DatabaseConnectionGateway
       def connect
-        if client_db_is_valid?
-          ActiveRecord::Base.establish_connection(client_db)
-        else
-          ActiveRecord::Base.establish_connection
+        unless client_db_is_valid?
+          raise InvalidClientDatabaseError.new("Client database is invalid")
         end
+
+        ActiveRecord::Base.establish_connection(client_db)
       end
 
       private
