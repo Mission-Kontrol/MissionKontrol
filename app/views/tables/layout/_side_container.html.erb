@@ -45,7 +45,6 @@
       <p>
         <b><%= v["title"] %></b>:
 
-        <% if @current_row %>
         <span class="">
           <% if @current_row %>
             <%= @current_row[v["title"]] %>
@@ -53,7 +52,6 @@
             --
           <% end %>
         </span>
-        <% end %>
       </p>
     </div>
   <% end %>

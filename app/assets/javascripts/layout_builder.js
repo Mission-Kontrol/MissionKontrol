@@ -1,12 +1,29 @@
 var draggable;
+var slider;
 
 $(document).ready(function() {
   let metaTag = $('meta[name=psj]');
   let isCurrentControllerLayout = metaTag.attr('controller') == 'layout_builder';
   let isCurrentActionNew = metaTag.attr('action') == 'new';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+  let isCurrentActionPreview = metaTag.attr('action') == 'preview';
   prepareNormalToast();
 
+  if (isCurrentControllerLayout && isCurrentActionPreview) {
+    slider = simpleslider.getSlider({
+      paused: true,
+      prop: 'right',
+      onChangeEnd: updateSliderCurrentIndex
+    });
+
+    var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
+    $('#layout-preview-row-id').text(currentRowId);
+
+    function updateSliderCurrentIndex() {
+      var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
+      $('#layout-preview-row-id').text(currentRowId);
+    }
+  }
 
   if (isCurrentControllerLayout && isCurrentActionNew) {
     $('#layout-builder-modal').modal({

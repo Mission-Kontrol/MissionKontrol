@@ -267,3 +267,12 @@ input:checked + .slider:before {
 .editable-actions-wrapper {
   display: none;
 }
+
+#layout-preview-slider-container {
+  width:100%;
+  height:100vh;
+}
+
+.layout-preview-slider-item {
+  width:100%;
+}

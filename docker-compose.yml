@@ -27,6 +27,8 @@ services:
       CLIENT_DATABASE_PASSWORD: postgres
       CLIENT_DATABASE_DEVELOPMENT: client_database_development
       CLIENT_DATABASE_URL: postgres://fmubmupymxawnt:278d5db10a01380f9437b9ad2e3ba7bc94952f3ac6530f1e470e69e61eef9863@ec2-50-19-86-17.compute-1.amazonaws.com:5432/d5aftrkne5t1cm
+      DEMO_DATABASE_PG: postgres://fmubmupymxawnt:278d5db10a01380f9437b9ad2e3ba7bc94952f3ac6530f1e470e69e61eef9863@ec2-50-19-86-17.compute-1.amazonaws.com:5432/d5aftrkne5t1cm
+      DEMO_DATABASE_MYSQL: mysql2://b035af0db18ef0:37fc0982@us-cdbr-iron-east-03.cleardb.net/heroku_6edb1e3f65cb0f1
     depends_on:
       - db
 
