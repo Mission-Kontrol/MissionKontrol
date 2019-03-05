@@ -4,12 +4,16 @@ require 'rails_helper'
 
 describe LayoutBuilderController, type: :controller do
   let(:table) { 'Users' }
+
   let(:admin) do
     AdminUser.first_or_create(email: 'test@test.com', password: '123456', password_confirmation: '123456')
   end
 
-  describe '#new' do
-    before { get :new }
+  describe 'GET new' do
+    before do
+      sign_in admin
+      get :new
+    end
 
     it 'will render the page' do
       expect(response.status).to eq(200)
@@ -20,20 +24,7 @@ describe LayoutBuilderController, type: :controller do
     end
   end
 
-  describe '#table_fields' do
-    before { get :table_fields, params: params }
-    let(:params) { { table: table } }
-
-    xit 'will assign the available fields for the table' do
-      expect(assigns(:fields)).to eq list_table_fields(table)
-    end
-
-    xit 'will render json' do
-      expect(response.body).to eq list_table_fields(table).to_json
-    end
-  end
-
-  describe '#create' do
+  describe 'POST create' do
     before { post :create, params: params }
     let(:view_name) { 'View name' }
     let(:params) do
@@ -71,7 +62,7 @@ describe LayoutBuilderController, type: :controller do
     end
   end
 
-  describe '#update' do
+  describe 'PATCH update' do
     before do
       put :update, params: params
       view_builder.reload
@@ -115,7 +106,7 @@ describe LayoutBuilderController, type: :controller do
     end
   end
 
-  describe '#show' do
+  describe 'GET show' do
     context "when client database is valid" do
       before { get :show, params: params }
       let(:params) { { id: view_builder.id } }
@@ -164,27 +155,6 @@ describe LayoutBuilderController, type: :controller do
       end
     end
   end
-
-  describe '#get_data' do
-    subject { get :retrieve_data, params: params }
-    # let(:user) { create(:user) }
-    let(:view_builder) { create(:view_builder) }
-    let(:params) do
-      {
-        userId: 1,
-        viewBuilderId: view_builder.id
-      }
-    end
-
-    xit 'will return the data as a json' do
-      subject
-      expect(response.body).to eq '{}'
-    end
-  end
-end
-
-def list_table_fields(table)
-  Kuwinda::Presenter::ListTableFields.new(ClientRecord, table).call
 end
 
 def available_tables
