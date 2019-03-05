@@ -4,8 +4,8 @@ RUN apt-get update -qq && apt-get install -yq \
   build-essential \
   libpq-dev \
   nodejs \
-  firefox-esr=60.3.0esr-1~deb9u1 \
-  chromium=71.0.3578.80-1~deb9u1 \
+  firefox-esr=60.5.0esr-1~deb9u1 \
+  chromium=72.0.3626.96-1~deb9u2 \
   unzip
 
 # GeckoDriver v0.19.1
