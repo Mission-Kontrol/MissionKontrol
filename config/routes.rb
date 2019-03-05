@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     }
   )
 
-  root to: 'home#index'
+  devise_scope :admin_user do
+    root to: "devise/sessions#new"
+  end
+
 
   resources :admin_users, only: :index
   resources :work_lists, only: %i[index show new create edit update]
