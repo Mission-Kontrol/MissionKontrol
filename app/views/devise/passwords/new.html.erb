@@ -1,16 +1,35 @@
-<h2>Forgot your password?</h2>
+<div class="middle-box text-center loginscreen animated fadeInDown">
+  <div>
+    <div>
+      <div class="logo-wrapper">
+        <img src="/assets/images/Kuwinda_logo_full-blue-260.png" alt="">
+      </div>
+    </div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+    <h2>Forgot your password?</h2>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= devise_error_messages! %>
+
+      <div class="field form-group">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Send me reset password instructions", class: 'btn btn-primary block full-width m-b' %>
+      </div>
+    <% end %>
+
+    <%- if controller_name != 'sessions' %>
+    <small>
+      <%= link_to "Log in", new_session_path(resource_name) %><br />
+    </small>
+    <% end -%>
+
+    <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+    <small>
+      <%= link_to "Sign up", new_registration_path(resource_name) %><br />
+    </small>
+    <% end -%>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

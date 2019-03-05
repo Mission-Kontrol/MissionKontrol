@@ -10,23 +10,23 @@
 
     <p>Login in. To see it in action.</p>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: ''}) do |f| %>
-      <div class="field">
-        <%= f.label :email %><br />
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'm-t'}) do |f| %>
+      <div class="field form-group">
         <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, class: 'form-control' %>
       </div>
 
-      <div class="field">
-        <%= f.label :password %><br />
+      <div class="field form-group">
         <%= f.password_field :password, autocomplete: "off", required: true, class: 'form-control' %>
       </div>
 
-      <% if devise_mapping.rememberable? -%>
-        <div class="field">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
-        </div>
-      <% end -%>
+      <div class="hide">
+        <% if devise_mapping.rememberable? -%>
+          <div class="field">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end -%>
+      </div>
 
       <div class="actions">
         <%= f.submit "Log in", class: 'btn btn-primary block full-width m-b' %>
@@ -35,13 +35,9 @@
 
     <div class="">
       <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+      <small>
         <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-      <% end -%>
-
-      <p class="text-muted text-center"><small>Do not have an account?</small></p>
-
-      <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-        <%= link_to "Create an account", new_registration_path(resource_name), class: 'btn btn-sm btn-white btn-block' %><br />
+      </small>
       <% end -%>
     </div>
   </div>
