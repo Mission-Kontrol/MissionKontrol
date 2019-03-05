@@ -8,14 +8,17 @@
 
   <% if v["editable"] == "true" %>
     <div class="row editable-row">
-      <div class="col-xs-8">
+      <div class="col-xs-12">
         <div class="editable-content-wrapper">
           <p>
             <b><%= v["title"] %></b>:
 
-            <span class="editable-content">
+            <span class="editable-content" onclick="showEditable(event);">
               <% if @current_row %>
                 <%= @current_row[v["title"]] %>
+                <span class='display-inline editable-actions'>
+                  <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
+                </span>
                 <% else %>
                   --
               <% end %>
@@ -32,12 +35,6 @@
             <% end %>
           <% end %>
         </div>
-      </div>
-
-      <div class="col-xs-4 text-right">
-        <% if @current_row %>
-          <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
-        <% end %>
       </div>
     </div>
   <% else %>
