@@ -4,7 +4,7 @@ class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
   layout 'dashboard', only: [:index, :preview]
   skip_before_action :verify_authenticity_token
-  before_action :load_available_tables, 
+  before_action :load_available_tables,
                 :authenticate_admin_user!
 
 
@@ -15,10 +15,6 @@ class LayoutBuilderController < ApplicationController
 
   def show
     @view_builder = ViewBuilder.find(params[:id])
-  end
-
-  def index
-    @view_builders = ViewBuilder.all.sort
   end
 
   def table_fields_with_type
@@ -47,8 +43,6 @@ class LayoutBuilderController < ApplicationController
       end
     end
   end
-
-  def view_page; end
 
   def edit
     @view_builder = ViewBuilder.find(params[:id])
