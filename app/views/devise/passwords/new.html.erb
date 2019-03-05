@@ -12,6 +12,7 @@
       <%= devise_error_messages! %>
 
       <div class="field form-group">
+        <%= f.label :email, "Email" %><br />
         <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>
       </div>
 
