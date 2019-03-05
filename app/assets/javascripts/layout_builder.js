@@ -9,6 +9,10 @@ $(document).ready(function() {
   let isCurrentActionPreview = metaTag.attr('action') == 'preview';
   prepareNormalToast();
 
+  $(".clickable-row").click(function() {
+      window.location = $(this).data("href");
+  });
+
   if (isCurrentControllerLayout && isCurrentActionPreview) {
     slider = simpleslider.getSlider({
       paused: true,

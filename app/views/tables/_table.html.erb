@@ -20,17 +20,13 @@
         <% @target_db_repo.all.each do |r|%>
           <tr class="">
             <% r.each_with_index do |(k, v), i| %>
-              <% if i == 0 %>
-                <td>
-                  <% if r['id'] %>
-                    <%= link_to v, table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>
-                  <% else %>
-                    --
-                  <% end %>
-                </td>
-              <% else %>
-                <td><%= v %></td>
-              <% end %>
+              <td class="clickable-row" data-href='<%= table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>'>
+                <% if r['id'] %>
+                  <%= v %>
+                <% else %>
+                  --
+                <% end %>
+              </td>
             <% end %>
           </tr>
         <% end %>
@@ -38,17 +34,13 @@
         <% @target_db_repo.all.each do |r|%>
           <tr class="">
             <% r.first(5).each_with_index do |(k, v), i| %>
-              <% if i == 0 %>
-                <td>
-                  <% if r['id'] %>
-                    <%= link_to v, table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>
-                  <% else %>
-                    --
-                  <% end %>
-                </td>
-              <% else %>
-                <td><%= v %></td>
-              <% end %>
+              <td class="clickable-row" data-href='<%= table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>'>
+                <% if r['id'] %>
+                  <%= v %>
+                <% else %>
+                  --
+                <% end %>
+              </td>
             <% end %>
           </tr>
         <% end %>
