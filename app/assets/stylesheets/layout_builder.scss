@@ -245,14 +245,14 @@ input:checked + .slider:before {
 }
 
 .navbar-link.left-layout-link {
-  padding: 2px 20px 2px 37px;
-  margin-top: 14px;
+  padding: 2px 20px 2px 23px;
+  margin-top: 10px;
   border-right: 1px solid gray;
   min-height: 24px;
   color: gray;
 
-  .fa.fa-star {
-    font-size: 25px;
+  .logo-thumbnail {
+    max-height: 35px;
   }
 }
 
