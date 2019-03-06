@@ -34,6 +34,8 @@ namespace :dummy_client_database do
 
     clear_target_db_credentials
     delete_all_admin_users
+  rescue ActiveRecord::StatementInvalid => e
+    puts e.message
   end
 end
 
