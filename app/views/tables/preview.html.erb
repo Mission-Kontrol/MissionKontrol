@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2><%= @target_db_repo.table.capitalize %></h2>
+    <h2><%= @current_table.capitalize %></h2>
 
     <ol class="breadcrumb">
       <li>
@@ -12,7 +12,7 @@
       </li>
 
       <li class="">
-        <%= link_to @target_db_repo.table.capitalize, table_path(table: @target_db_repo.table, id: @target_db_repo.table.downcase) %>
+        <%= link_to @current_table.capitalize, table_path(table: @current_table, id: @current_table.downcase) %>
       </li>
 
       <li class="active">
@@ -20,6 +20,14 @@
       </li>
     </ol>
   </div>
+
+  <% if @layout_builder %>
+    <div class="col-lg-2">
+      <div class="text-right" style='padding: 30px 0 0 0'>
+        <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-outline btn-primary" }) %>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <% if @layout_builder %>

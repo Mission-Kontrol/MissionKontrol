@@ -47,7 +47,7 @@
         </ul>
       </li>
 
-      <li class="<%= active_controller?('work_lists') %>">
+      <li class="<%= active_controller?('work_lists') %> hide">
         <%= link_to work_lists_path do %>
           <i class="fa fa-list" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.work_lists">Work lists</span>
@@ -82,7 +82,7 @@
         <% end %>
       <% end %>
 
-      <li class="<%= active_controller?('layout_builder') %>">
+      <li class="<%= active_controller?('layout_builder') %> hide">
         <%= link_to layouts_path do %>
           <i class="fa fa-th"></i>
           <span class="nav-label" data-i18n="nav.layouts">Layouts</span>

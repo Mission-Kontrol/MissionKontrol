@@ -4,9 +4,9 @@ $(document).ready(function() {
     let hiddenColumns = [];
 
     if(this.checked) {
-      hideColumn(columnName);
-    } else {
       showColumn(columnName);
+    } else {
+      hideColumn(columnName);
     }
 
     $( ".hidden-column-checkbox" ).each(function( index ) {
