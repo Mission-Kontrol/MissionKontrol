@@ -12,8 +12,6 @@ module Kuwinda
         # Kuwinda::UseCase::DatabaseConnection.new.execute
         tables = database.connection.tables - ['schema_migrations']
         tables.map
-      rescue Kuwinda::Gateway::InvalidClientDatabaseError
-        []
       end
 
       private
