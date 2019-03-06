@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :load_view_builders
   rescue_from InvalidClientDatabaseError, :with => :handle_invalid_client_db_error
+  rescue_from ActiveRecord::NoDatabaseError, :with => :handle_no_database_error
 
   private
 
@@ -18,7 +19,16 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_up_path_for(resource)
+    test_target_db_connection
     new_layout_path
+
+  rescue Mysql2::Error,
+         PG::ConnectionBad,
+         InvalidClientDatabaseError => e
+   flash.discard
+   flash[:error] = "Invalid target database, please review credentials."
+   flash[:error] = e.message
+   @available_tables = []
   end
 
   def after_sign_in_path_for(user)
@@ -28,9 +38,9 @@ class ApplicationController < ActionController::Base
   rescue Mysql2::Error,
          PG::ConnectionBad,
          InvalidClientDatabaseError => e
-
    flash.discard
    flash[:error] = "Invalid target database, please review credentials."
+   flash[:error] = e.message
    @available_tables = []
    dashboard_path
   end
@@ -61,5 +71,10 @@ class ApplicationController < ActionController::Base
   def handle_invalid_client_db_error
     @available_tables = []
     render '/tables/bad_connection'
+  end
+
+  def handle_no_database_error
+    flash[:error] = "Invalid target database, please review credentials."
+    redirect_to dashboard_path
   end
 end
