@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   resources :tables, only: %i[show]
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'
+  patch 'tables/:table_name/hide-column', to: 'tables#hide_column', as: 'table_hide_column'
+  patch 'tables/:table_name/show-column', to: 'tables#show_column', as: 'table_show_column'
 
   patch 'table_field', to: 'tables#update_table_field', as: 'update_table_field'
   patch 'related_table_field', to: 'tables#update_related_table_field', as: 'update_related_table_field'
@@ -23,14 +25,11 @@ Rails.application.routes.draw do
   resources :layout_builder, as: "layouts", path: 'layouts'
   get 'layouts/:id/preview', to: 'layout_builder#preview', as: 'layout_builder_preview'
 
-  resources :layout_settings, only: %i[create update]
-
   get 'view_builder/table_fields', to: 'view_builder#table_fields'
   get 'view_builder/view', to: 'view_builder#view_page'
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
   resources :view_builder
-
   resources :reports, only: %i[index]
   resources :activities, only: :create
 

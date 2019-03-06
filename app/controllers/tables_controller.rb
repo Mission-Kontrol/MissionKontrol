@@ -12,9 +12,12 @@ class TablesController < ApplicationController
     sql_result = @target_db_repo.all
 
     if table_has_layout?(@current_table)
+      @layout = ViewBuilder.find_by_table_name(@current_table)
       @headers = sql_result ? sql_result.columns : []
+      @hidden_columns = @layout.hidden_columns
     else
       @headers = sql_result ? sql_result.columns.first(5) : []
+      @hidden_columns = []
     end
 
     @rows = sql_result ? sql_result.to_hash : []
@@ -54,6 +57,34 @@ class TablesController < ApplicationController
     render json: {
      error: e.to_s
    }, status: 400
+  end
+
+  def hide_column
+    view_builder = ViewBuilder.find_by_table_name(params[:table_name])
+
+    view_builder.hidden_columns = view_builder.hidden_columns | [params[:view_builder][:hidden_columns][:column]]
+
+    respond_to do |format|
+      if view_builder.save
+        format.js { render action: 'show/success' }
+      else
+        format.js { render action: 'show/failure', status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def show_column
+    view_builder = ViewBuilder.find_by_table_name(params[:table_name])
+
+    view_builder.hidden_columns =  view_builder.hidden_columns - [params[:view_builder][:hidden_columns][:column]]
+
+    respond_to do |format|
+      if view_builder.save
+        format.js { render action: 'show/success' }
+      else
+        format.js { render action: 'show/failure', status: :unprocessable_entity }
+      end
+    end
   end
 
   private

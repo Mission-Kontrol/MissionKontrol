@@ -4,7 +4,9 @@ class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
   layout 'dashboard', only: [:index, :preview]
   skip_before_action :verify_authenticity_token
-  before_action :load_available_tables
+  before_action :load_available_tables,
+                :authenticate_admin_user!
+
 
   def new
     @available_tables = available_tables
@@ -13,10 +15,6 @@ class LayoutBuilderController < ApplicationController
 
   def show
     @view_builder = ViewBuilder.find(params[:id])
-  end
-
-  def index
-    @view_builders = ViewBuilder.all.sort
   end
 
   def table_fields_with_type
@@ -45,8 +43,6 @@ class LayoutBuilderController < ApplicationController
       end
     end
   end
-
-  def view_page; end
 
   def edit
     @view_builder = ViewBuilder.find(params[:id])
@@ -106,6 +102,7 @@ class LayoutBuilderController < ApplicationController
     view_builder.draggable_fields_main_container1 = params[:view_builder][:draggable_fields_main_container1] if params[:view_builder][:draggable_fields_main_container1]
     view_builder.draggable_fields_main_container2 = params[:view_builder][:draggable_fields_main_container2] if params[:view_builder][:draggable_fields_main_container2]
     view_builder.draggable_fields_main_container3 = params[:view_builder][:draggable_fields_main_container3] if params[:view_builder][:draggable_fields_main_container3]
+    view_builder.hidden_columns = params[:view_builder][:hidden_columns] if params[:view_builder][:hidden_columns]
   end
 
   def load_available_tables
