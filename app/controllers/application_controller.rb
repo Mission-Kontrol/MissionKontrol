@@ -7,8 +7,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :load_view_builders
-  rescue_from InvalidClientDatabaseError, :with => :handle_invalid_client_db_error
-  rescue_from ActiveRecord::NoDatabaseError, :with => :handle_no_database_error
+  rescue_from InvalidClientDatabaseError, ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
   private
 
@@ -71,10 +70,5 @@ class ApplicationController < ActionController::Base
   def handle_invalid_client_db_error
     @available_tables = []
     render '/tables/bad_connection'
-  end
-
-  def handle_no_database_error
-    flash[:error] = "Invalid target database, please review credentials."
-    redirect_to dashboard_path
   end
 end
