@@ -38,7 +38,6 @@ class ApplicationController < ActionController::Base
          InvalidClientDatabaseError => e
    flash.discard
    flash[:error] = "Invalid target database, please review credentials."
-   flash[:error] = e.message
    @available_tables = []
    dashboard_path
   end
