@@ -2,7 +2,7 @@
 namespace :dummy_client_database do
   desc 'Reset dummy databases'
   task reset: :environment do
-    tables = ["users", "companies", "attending_events", "events", "welcomes"]
+    tables = ["events", "users", "companies", "attending_events", "welcomes"]
 
     # clear demo dbs for PG
     url = ENV['DEMO_DATABASE_PG']
@@ -33,6 +33,7 @@ namespace :dummy_client_database do
     conn.exec_query(attending_events_query_mysql)
 
     clear_target_db_credentials
+    delete_all_admin_users
   end
 end
 
@@ -111,4 +112,8 @@ end
 def clear_target_db_credentials
   credentials = "config/target_db_credentials_#{Rails.env}.txt"
   rm_rf credentials
+end
+
+def delete_all_admin_users
+  AdminUser.delete_all
 end
