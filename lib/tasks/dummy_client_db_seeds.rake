@@ -2,12 +2,20 @@
 namespace :dummy_client_database do
   desc 'Reset dummy databases'
   task reset: :environment do
-    tables = ["events", "users", "companies", "attending_events", "welcomes"]
+    internal_tables = ["view_builders", "activities", "work_lists"]
+    client_tables = ["events", "users", "companies", "attending_events", "welcomes"]
+
+    # clear kuwinda db
+    conn = ActiveRecord::Base.establish_connection.connection
+    internal_tables.each do |table|
+      query = "DELETE FROM #{table};"
+      conn.exec_query(query);
+    end
 
     # clear demo dbs for PG
     url = ENV['DEMO_DATABASE_PG']
     conn1 = ActiveRecord::Base.establish_connection(url).connection
-    tables.each do |table|
+    client_tables.each do |table|
       query = "DELETE FROM #{table};"
       conn1.exec_query(query);
     end
@@ -21,7 +29,7 @@ namespace :dummy_client_database do
     # clear demo dbs for MySQL
     url = ENV['DEMO_DATABASE_MYSQL']
     conn2 = ActiveRecord::Base.establish_connection(url).connection
-    tables.each do |table|
+    client_tables.each do |table|
       query = "DELETE FROM #{table};"
       conn2.exec_query(query);
     end
@@ -33,7 +41,7 @@ namespace :dummy_client_database do
     conn2.exec_query(attending_events_query_mysql)
 
     clear_target_db_credentials
-    delete_all_admin_users
+    setup_demo_admin_user
   end
 end
 
@@ -114,6 +122,19 @@ def clear_target_db_credentials
   rm_rf credentials
 end
 
-def delete_all_admin_users
-  AdminUser.delete_all
+def setup_demo_admin_user
+  AdminUser.find_by_email("demo@kuwinda.io").delete
+
+  uri = URI.parse(ENV['DEMO_DATABASE_PG'])
+  admin = AdminUser.new
+  admin.email = ENV['DEMO_ADMIN_USER_EMAIL']
+  admin.password = ENV['DEMO_ADMIN_USER_PASSWORD']
+  admin.password_confirmation = ENV['DEMO_ADMIN_USER_PASSWORD']
+  admin.target_database_host = uri.host
+  admin.target_database_name = uri.path.from(1)
+  admin.target_database_username = uri.user
+  admin.target_database_password = uri.password
+  admin.target_database_port = uri.port
+  admin.target_database_type = 'postgres'
+  admin.save!
 end
