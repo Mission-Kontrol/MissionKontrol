@@ -123,9 +123,11 @@ def clear_target_db_credentials
 end
 
 def setup_demo_admin_user
-  AdminUser.find_by_email("demo@kuwinda.io").delete
-
   uri = URI.parse(ENV['DEMO_DATABASE_PG'])
+  admin = AdminUser.find_by_email("demo@kuwinda.io")
+
+  admin.delete if admin
+
   admin = AdminUser.new
   admin.email = ENV['DEMO_ADMIN_USER_EMAIL']
   admin.password = ENV['DEMO_ADMIN_USER_PASSWORD']
