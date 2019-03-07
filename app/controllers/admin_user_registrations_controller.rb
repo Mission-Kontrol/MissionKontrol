@@ -5,30 +5,6 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   layout 'application', only: [:new]
 
-  def new
-    build_resource
-
-    yield resource if block_given?
-
-    unless resource.target_database_host &&
-                  resource.target_database_name &&
-                  resource.target_database_username &&
-                  resource.target_database_password &&
-                  resource.target_database_port &&
-                  resource.target_database_type
-
-      uri = URI.parse(ENV['DEMO_DATABASE_PG'])
-      resource.target_database_host = uri.host
-      resource.target_database_name = uri.path.from(1)
-      resource.target_database_username = uri.user
-      resource.target_database_password = uri.password
-      resource.target_database_port = uri.port
-      resource.target_database_type = 'postgres'
-    end
-
-    respond_with resource
-  end
-
   protected
 
   def update_resource(resource, params)
