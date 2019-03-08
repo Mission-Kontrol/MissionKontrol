@@ -6,14 +6,47 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :load_view_builders
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
   private
 
-  def load_view_builders
-    @view_builders = ViewBuilder.where(status: 'active')
+  def load_available_tables
+    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  end
+
+  def test_target_db_connection
+    ActiveRecord::Base.establish_connection(
+      :adapter  => adapter(current_admin_user.target_database_type),
+      :host     => current_admin_user.target_database_host,
+      :username => current_admin_user.target_database_username,
+      :password => current_admin_user.target_database_password,
+      :database => current_admin_user.target_database_name
+    ).connection
+  rescue Exception => e
+    setup_demo_target_database
+    load_available_tables
+  end
+
+  def setup_demo_target_database
+    unless is_demo_target_database_valid?
+      uri = URI.parse(ENV['DEMO_DATABASE_PG'])
+      current_admin_user.target_database_host = uri.host
+      current_admin_user.target_database_name = uri.path.from(1)
+      current_admin_user.target_database_username = uri.user
+      current_admin_user.target_database_password = uri.password
+      current_admin_user.target_database_port = uri.port
+      current_admin_user.target_database_type = 'postgres'
+    end
+  end
+
+  def is_demo_target_database_valid?
+    !current_admin_user.target_database_host.blank? &&
+    !current_admin_user.target_database_name.blank? &&
+    !current_admin_user.target_database_username.blank? &&
+    !current_admin_user.target_database_password.blank? &&
+    !current_admin_user.target_database_port.blank? &&
+    !current_admin_user.target_database_type.blank?
   end
 
   protected
@@ -31,6 +64,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(user)
+    setup_demo_target_database
     test_target_db_connection
     dashboard_path
 

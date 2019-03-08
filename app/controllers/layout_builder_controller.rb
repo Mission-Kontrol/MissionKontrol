@@ -104,8 +104,4 @@ class LayoutBuilderController < ApplicationController
     view_builder.draggable_fields_main_container3 = params[:view_builder][:draggable_fields_main_container3] if params[:view_builder][:draggable_fields_main_container3]
     view_builder.hidden_columns = params[:view_builder][:hidden_columns] if params[:view_builder][:hidden_columns]
   end
-
-  def load_available_tables
-    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  end
 end
