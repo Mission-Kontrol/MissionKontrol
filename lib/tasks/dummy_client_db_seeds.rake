@@ -134,6 +134,11 @@ def setup_demo_admin_user
     admin.save!
   end
 
+  #
+  # NOTE: This does not work on heroku becuse this task is run in a one off dyno
+  # meaning that the encryted target db config is always lost as soon as the
+  # task is complete
+  #
   admin.target_database_host = uri.host
   admin.target_database_name = uri.path.from(1)
   admin.target_database_username = uri.user
