@@ -42,6 +42,7 @@ namespace :dummy_client_database do
 
     # clear_target_db_credentials
     setup_demo_admin_user
+    puts "Kuwinda: App reset complete."
   end
 end
 
@@ -123,10 +124,9 @@ def clear_target_db_credentials
 end
 
 def setup_demo_admin_user
-  AdminUser.where(email: "demo@kuwinda.io").first_or_create do |admin|
+  AdminUser.where(email: ENV['DEMO_ADMIN_USER_EMAIL']).first_or_create do |admin|
     admin.email = ENV['DEMO_ADMIN_USER_EMAIL']
     admin.password = ENV['DEMO_ADMIN_USER_PASSWORD']
     admin.password_confirmation = ENV['DEMO_ADMIN_USER_PASSWORD']
-    admin.save!
   end
 end
