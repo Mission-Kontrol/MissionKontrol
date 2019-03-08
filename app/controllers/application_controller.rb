@@ -68,6 +68,7 @@ class ApplicationController < ActionController::Base
   def handle_invalid_client_db_error
     if ENV['APP_ENV'] == 'demo'
       set_default_target_db
+      redirect_to 'dashboard_path'
     else
       @available_tables = []
       render '/tables/bad_connection'
