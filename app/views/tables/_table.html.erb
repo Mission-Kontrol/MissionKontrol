@@ -1,3 +1,5 @@
+<p>Showing <%= total_row_count(@rows) %> of <%= @rows.size %> entries</p>
+
 <div class="table-responsive">
   <table class="footable table table-stripped" data-page-size="8" data-filter=#filter data-table-name='<%= current_table %>'>
     <thead>
@@ -25,13 +27,9 @@
         </tr>
       <% end %>
     </tbody>
-
-    <tfoot>
-      <tr>
-        <td colspan=<%= @headers.size + 1 %>>
-          <ul class="pagination pull-right"></ul>
-        </td>
-      </tr>
-    </tfoot>
   </table>
+
+  <div class="text-center">
+    <ul class="pagination"></ul>
+  </div>
 </div>
