@@ -5,7 +5,10 @@ class DashboardController < ApplicationController
   before_action :load_view_builders,
                 :load_available_tables
 
-  def show; end
+
+  def show
+    test_target_db_connection
+  end
 
   private
 

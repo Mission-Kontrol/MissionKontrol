@@ -134,17 +134,10 @@ def setup_demo_admin_user
     admin.save!
   end
 
-  # admin.target_database_host = uri.host
-  # admin.target_database_name = uri.path.from(1)
-  # admin.target_database_username = uri.user
-  # admin.target_database_password = uri.password
-  # admin.target_database_port = uri.port
-  # admin.target_database_type = 'postgres'
-
-  admin.target_database_host = ENV['DEMO_TARGET_DB_HOST']
-  admin.target_database_name = ENV['DEMO_TARGET_DB_NAME']
-  admin.target_database_username = ENV['DEMO_TARGET_DB_USERNAME']
-  admin.target_database_password = ENV['DEMO_TARGET_DB_PASSWORD']
-  admin.target_database_port = ENV['DEMO_TARGET_DB_PORT']
+  admin.target_database_host = uri.host
+  admin.target_database_name = uri.path.from(1)
+  admin.target_database_username = uri.user
+  admin.target_database_password = uri.password
+  admin.target_database_port = uri.port
   admin.target_database_type = 'postgres'
 end
