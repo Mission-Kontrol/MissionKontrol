@@ -19,7 +19,7 @@ describe DashboardController, :type => :controller do
     end
 
     context "when client database connection is valid" do
-      it "renders the show template" do
+      xit "renders the show template" do
         sign_in admin
         get :show
         expect(response).to render_template("show")
