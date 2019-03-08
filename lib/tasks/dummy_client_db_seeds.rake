@@ -127,5 +127,6 @@ def setup_demo_admin_user
     admin.email = ENV['DEMO_ADMIN_USER_EMAIL']
     admin.password = ENV['DEMO_ADMIN_USER_PASSWORD']
     admin.password_confirmation = ENV['DEMO_ADMIN_USER_PASSWORD']
+    admin.save!
   end
 end
