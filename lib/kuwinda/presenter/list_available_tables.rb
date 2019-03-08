@@ -9,9 +9,12 @@ module Kuwinda
       end
 
       def call
-        # Kuwinda::UseCase::DatabaseConnection.new.execute
-        tables = database.connection.tables - ['schema_migrations']
-        tables.map
+        if database.connected? 
+          tables = database.connection.tables - ['schema_migrations']
+          tables.map
+        else
+          []
+        end
       end
 
       private
