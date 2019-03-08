@@ -35,4 +35,12 @@ module TableHelper
     table = ies ? table + 'y' : table
     table.downcase
   end
+
+  def total_row_count(rows, default=8)
+    if rows.size < default
+      rows.size
+    else
+      default
+    end
+  end
 end
