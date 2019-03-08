@@ -66,7 +66,21 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_invalid_client_db_error
-    @available_tables = []
-    render '/tables/bad_connection'
+    if ENV['APP_ENV'] == 'demo'
+      set_default_target_db
+    else
+      @available_tables = []
+      render '/tables/bad_connection'
+    end
+  end
+
+  def set_default_target_db
+    uri = URI.parse(ENV['DEMO_DATABASE_PG'])
+    current_admin_user.target_database_host = uri.host
+    current_admin_user.target_database_name = uri.path.from(1)
+    current_admin_user.target_database_username = uri.user
+    current_admin_user.target_database_password = uri.password
+    current_admin_user.target_database_port = uri.port
+    current_admin_user.target_database_type = 'postgres'
   end
 end
