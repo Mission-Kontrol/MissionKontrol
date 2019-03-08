@@ -41,11 +41,11 @@ module SensitiveData
   private_class_method
 
   def self.admin_db_credentials_file_path
-    "./tmp/admin_db_credentials_#{Rails.env}.txt"
+    "./config/admin_db_credentials_#{Rails.env}.txt"
   end
 
   def self.target_db_credentials_file_path
-    "./tmp/target_db_credentials_#{Rails.env}.txt"
+    "./config/target_db_credentials_#{Rails.env}.txt"
   end
 
   def self.save_admin_db_credentials(admin_db_credentials)
