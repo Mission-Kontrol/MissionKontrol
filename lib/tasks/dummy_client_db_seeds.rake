@@ -123,7 +123,6 @@ def clear_target_db_credentials
 end
 
 def setup_demo_admin_user
-  uri = URI.parse(ENV['DEMO_DATABASE_PG'])
   admin = AdminUser.find_by_email("demo@kuwinda.io")
 
   unless admin
@@ -133,16 +132,4 @@ def setup_demo_admin_user
     admin.password_confirmation = ENV['DEMO_ADMIN_USER_PASSWORD']
     admin.save!
   end
-
-  #
-  # NOTE: This does not work on heroku becuse this task is run in a one off dyno
-  # meaning that the encryted target db config is always lost as soon as the
-  # task is complete
-  #
-  admin.target_database_host = uri.host
-  admin.target_database_name = uri.path.from(1)
-  admin.target_database_username = uri.user
-  admin.target_database_password = uri.password
-  admin.target_database_port = uri.port
-  admin.target_database_type = 'postgres'
 end

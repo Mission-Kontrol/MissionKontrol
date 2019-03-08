@@ -9,12 +9,8 @@ module Kuwinda
       end
 
       def call
-        if database.connected? 
-          tables = database.connection.tables - ['schema_migrations']
-          tables.map
-        else
-          []
-        end
+        tables = database.connection.tables - ['schema_migrations']
+        tables.map
       end
 
       private

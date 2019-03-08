@@ -7,7 +7,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :load_view_builders
-  rescue_from InvalidClientDatabaseError, ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
+  rescue_from InvalidClientDatabaseError,
+              ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
   private
 
@@ -66,22 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_invalid_client_db_error
-    if ENV['APP_ENV'] == 'demo'
-      set_default_target_db
-      redirect_to dashboard_path
-    else
-      @available_tables = []
-      render '/tables/bad_connection'
-    end
-  end
-
-  def set_default_target_db
-    uri = URI.parse(ENV['DEMO_DATABASE_PG'])
-    current_admin_user.target_database_host = uri.host
-    current_admin_user.target_database_name = uri.path.from(1)
-    current_admin_user.target_database_username = uri.user
-    current_admin_user.target_database_password = uri.password
-    current_admin_user.target_database_port = uri.port
-    current_admin_user.target_database_type = 'postgres'
+    @available_tables = []
+    render '/tables/bad_connection'
   end
 end
