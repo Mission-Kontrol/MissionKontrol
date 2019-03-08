@@ -126,17 +126,18 @@ def setup_demo_admin_user
   uri = URI.parse(ENV['DEMO_DATABASE_PG'])
   admin = AdminUser.find_by_email("demo@kuwinda.io")
 
-  admin.delete if admin
+  unless admin
+    admin = AdminUser.new
+    admin.email = ENV['DEMO_ADMIN_USER_EMAIL']
+    admin.password = ENV['DEMO_ADMIN_USER_PASSWORD']
+    admin.password_confirmation = ENV['DEMO_ADMIN_USER_PASSWORD']
+    admin.save!
+  end 
 
-  admin = AdminUser.new
-  admin.email = ENV['DEMO_ADMIN_USER_EMAIL']
-  admin.password = ENV['DEMO_ADMIN_USER_PASSWORD']
-  admin.password_confirmation = ENV['DEMO_ADMIN_USER_PASSWORD']
   admin.target_database_host = uri.host
   admin.target_database_name = uri.path.from(1)
   admin.target_database_username = uri.user
   admin.target_database_password = uri.password
   admin.target_database_port = uri.port
   admin.target_database_type = 'postgres'
-  admin.save!
 end
