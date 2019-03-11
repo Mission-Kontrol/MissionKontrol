@@ -38,20 +38,24 @@
   </div>
 
   <div class="row m-t m-b">
-    <div class="col-sm-5 p-none">
-      <div class="m-r white-bg p-xs">
-        <div class="table-record-placeholder">
-          <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
+    <% unless draggable_fields_side_container_is_empty?(layout_builder.draggable_fields_side_container) %>
+      <div class="col-sm-5 p-none">
+        <div class="m-r white-bg p-xs">
+          <div class="table-record-placeholder">
+            <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
 
-    <div class="col-sm-7">
+    <div class="col-sm-7 pull-right">
       <div class="row white-bg">
         <div class="p-sm">
           <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
         </div>
       </div>
     </div>
+
+    <div class="clearfix"></div>
   </div>
 </div>
