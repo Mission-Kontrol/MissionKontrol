@@ -3,6 +3,7 @@
 class TablesController < ApplicationController
   layout 'dashboard'
   before_action :authenticate_admin_user!,
+                :setup_demo_target_database,
                 :set_target_db_repo,
                 :set_activities,
                 :set_current_table,
@@ -29,7 +30,7 @@ class TablesController < ApplicationController
 
   def preview
     redirect_to new_layout_path unless table_has_layout?(@current_table)
-    
+
     @target_db_repo.table = @current_table
     @activity = Activity.new
     @row = @target_db_repo.find(params[:record_id])
