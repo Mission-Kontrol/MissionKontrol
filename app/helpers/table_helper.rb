@@ -26,7 +26,7 @@ module TableHelper
     ViewBuilder.where(table_name: table).size > 0
   end
 
-  def draggable_fields_side_container_is_empty?(container)
+  def draggable_fields_container_is_empty?(container)
     if container.class == Array
        container.empty?
      elsif container.class == String
