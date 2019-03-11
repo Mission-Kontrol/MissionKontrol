@@ -26,6 +26,16 @@ module TableHelper
     ViewBuilder.where(table_name: table).size > 0
   end
 
+  def draggable_fields_side_container_is_empty?(container)
+    if container.class == Array
+       container.empty?
+     elsif container.class == String
+       JSON.parse(container).empty?
+     else
+       false
+    end
+  end
+
   private
 
   def convert_table_name(table)
