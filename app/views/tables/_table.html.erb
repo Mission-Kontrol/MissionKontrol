@@ -1,5 +1,15 @@
 <p class="hide">Showing <%= total_row_count(@rows) %> of <%= @rows.size %> entries</p>
 
+<% if table_has_layout?(@current_table) %>
+  <div class="text-right">
+      <div class="" style='padding: 10px 10px 0 0'>
+        <a href="#" data-toggle="modal" data-target="#column-visibility-settings-modal">
+          <i class="fa fa-columns" aria-hidden="true"></i> Columns
+        </a>
+      </div>
+  </div>
+<% end %>
+
 <table class="footable table" data-filtering="true"  data-sorting="true" data-paging="true" data-table-name='<%= current_table %>'>
   <thead>
     <tr>
