@@ -1,7 +1,19 @@
+var enjoyhint;
+
 $(document).ready(function() {
+  let metaTag = $('meta[name=psj]');
+  let isCurrentControllerDashboard = metaTag.attr('controller') == 'dashboard';
+  let isCurrentActionShow = metaTag.attr('action') == 'show';
+
   loadFlotChart();
   loadFooTable();
   loadToastr();
+  loadEnjoyhint();
+
+  //run Enjoyhint script only on dashboard
+  if (isCurrentControllerDashboard && isCurrentActionShow) {
+    enjoyhint.run();
+  }
 });
 
 function loadFooTable () {
@@ -64,4 +76,25 @@ function loadToastr() {
       preventDuplicates: true,
       timeOut: 2000
   };
+}
+
+function loadEnjoyhint() {
+  enjoyhint = new EnjoyHint({});
+
+  var enjoyhint_script_steps = [
+    {
+      'click #nav-link-for-tables' : 'Click on tables to show tables available on database',
+    },
+
+    {
+      'click #nav-link-for-users-table' : 'Click on users',
+    },
+
+    {
+      'click #column-visibility-settings-modal-trigger' : 'You can change number of columns visible in the table here',
+    },
+  ];
+
+  //set script config
+  enjoyhint.set(enjoyhint_script_steps);
 }
