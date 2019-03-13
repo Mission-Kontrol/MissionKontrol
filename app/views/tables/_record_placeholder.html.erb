@@ -52,13 +52,15 @@
       </div>
     <% end %>
 
-    <div class="col-sm-7 pull-right">
-      <div class="row white-bg">
-        <div class="p-sm">
-          <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
+    <% if @activities %>
+      <div class="col-sm-7 pull-right">
+        <div class="row white-bg">
+          <div class="p-sm">
+            <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
 
     <div class="clearfix"></div>
   </div>
