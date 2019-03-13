@@ -13,8 +13,8 @@ describe Kuwinda::Presenter::RetrieveData do
   let(:query_limiter) { 'WHERE user_id = 3' }
   let(:expected_result) do
     {
-      0 => ['Morzine', 'beginner', 'silver', 2],
-      1 => ['London', 'pro', 'gold', 6],
+      0 => ['London', 'pro', 'gold', 6],
+      1 => ['Morzine', 'beginner', 'silver', 2] 
     }
   end
 
