@@ -3,15 +3,33 @@ var enjoyhint;
 $(document).ready(function() {
   let metaTag = $('meta[name=psj]');
   let isCurrentControllerDashboard = metaTag.attr('controller') == 'dashboard';
+  let isCurrentControllerTables = metaTag.attr('controller') == 'tables';
+  let isCurrentControllerLayoutBuilder = metaTag.attr('controller') == 'layout_builder';
   let isCurrentActionShow = metaTag.attr('action') == 'show';
+  let isCurrentActionPreview = metaTag.attr('action') == 'preview';
+  let isCurrentActionEdit = metaTag.attr('action') == 'edit';
 
   loadFlotChart();
   loadFooTable();
   loadToastr();
-  loadEnjoyhint();
 
-  //run Enjoyhint script only on dashboard
   if (isCurrentControllerDashboard && isCurrentActionShow) {
+    loadEnjoyhint1();
+    enjoyhint.run();
+  }
+
+  if (isCurrentControllerTables && isCurrentActionShow) {
+    loadEnjoyhint2();
+    enjoyhint.run();
+  }
+
+  if (isCurrentControllerTables && isCurrentActionPreview) {
+    loadEnjoyhint3();
+    enjoyhint.run();
+  }
+
+  if (isCurrentControllerLayoutBuilder && isCurrentActionEdit) {
+    loadEnjoyhint4();
     enjoyhint.run();
   }
 });
@@ -78,7 +96,7 @@ function loadToastr() {
   };
 }
 
-function loadEnjoyhint() {
+function loadEnjoyhint1() {
   enjoyhint = new EnjoyHint({});
 
   var enjoyhint_script_steps = [
@@ -88,11 +106,53 @@ function loadEnjoyhint() {
 
     {
       'click #nav-link-for-users-table' : 'Click on users',
-    },
+    }
+  ];
 
+  //set script config
+  enjoyhint.set(enjoyhint_script_steps);
+}
+
+function loadEnjoyhint2() {
+  enjoyhint = new EnjoyHint({});
+
+  var enjoyhint_script_steps = [
     {
       'click #column-visibility-settings-modal-trigger' : 'You can change number of columns visible in the table here',
     },
+    {
+      'click .clickable-row:first' : 'Click on first user',
+    }
+  ];
+
+  //set script config
+  enjoyhint.set(enjoyhint_script_steps);
+}
+
+function loadEnjoyhint3() {
+  enjoyhint = new EnjoyHint({});
+
+  var enjoyhint_script_steps = [
+    {
+      'click .edit-layout-btn' : 'Click on Edit Layout to change what is visible on the page',
+    }
+  ];
+
+  //set script config
+  enjoyhint.set(enjoyhint_script_steps);
+}
+
+function loadEnjoyhint4() {
+  enjoyhint = new EnjoyHint({});
+
+  var enjoyhint_script_steps = [
+    {
+      'click .layout-builder-side-nav-available-table:first a' : 'Select a table to view available fields',
+      // timeout: 500
+    },
+    {
+      'click #layout-builder-draggable-fields-container' : 'Drag fields from here onto the page',
+    }
   ];
 
   //set script config
