@@ -247,15 +247,12 @@ input:checked + .slider:before {
   margin-bottom: 0;
 }
 
-.navbar-link.left-layout-link {
-  padding: 2px 20px 2px 23px;
-  margin-top: 10px;
-  border-right: 1px solid gray;
-  min-height: 24px;
+.left-layout-link {
   color: gray;
 
   .logo-thumbnail {
-    max-height: 35px;
+    height: 35px;
+    margin: 0 17px 0 16px;
   }
 }
 
