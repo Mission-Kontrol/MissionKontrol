@@ -14,7 +14,7 @@ describe Kuwinda::Presenter::RetrieveData do
   let(:expected_result) do
     {
       0 => ['London', 'pro', 'gold', 6],
-      1 => ['Morzine', 'beginner', 'silver', 2] 
+      1 => ['Morzine', 'beginner', 'silver', 2]
     }
   end
 
