@@ -7,7 +7,10 @@ $(document).ready(function() {
   let isCurrentActionNew = metaTag.attr('action') == 'new';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
   let isCurrentActionPreview = metaTag.attr('action') == 'preview';
+  let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
+
   prepareNormalToast();
+  addPaddingToDraggableItems(containers);
 
   $(".clickable-row").click(function() {
       window.location = $(this).data("href");
@@ -91,7 +94,13 @@ $(document).ready(function() {
 
     if (currentTable) {
       document.getElementById("layout-builder-field-settings-tab").click();
-      showFieldSettingsFormScreen2();
+
+      if (window.location.pathname.indexOf('edit') > -1) {
+        showFieldSettingsFormScreen1();
+      } else {
+        showFieldSettingsFormScreen2();
+      }
+
       rebuildDraggable(currentTable)
     } else {
       document.getElementById("layout-builder-general-settings-tab").click();
@@ -171,6 +180,10 @@ function rebuildDraggable(table) {
 
   rebuildDraggableDataContainers();
   getOptionsForDraggable(table);
+  let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
+
+  addPaddingToDraggableItems(containers);
+
   document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
   initializeDraggable();
 }
@@ -422,6 +435,7 @@ function saveDraggableContainer(dragEvent, containerId) {
 }
 
 function updateLayoutBuilderContainer(containerId, containerItems) {
+  let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
   var url = window.location.href;
   var id = url.split("/")[4];
   var containerParam = getContainerParam(containerId);
@@ -443,6 +457,7 @@ function updateLayoutBuilderContainer(containerId, containerItems) {
     },
     success: function(response, status, request){
       console.log("PATCH /layouts/:id Success")
+      addPaddingToDraggableItems(containers)
     }
   })
 }
@@ -562,7 +577,7 @@ function goToTab(tabName) {
 function showEditable(evt) {
   evt.preventDefault()
 
-  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement;
   let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
   let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
   let editableInput = editableRow.getElementsByClassName("editable-input")[0]
@@ -708,4 +723,38 @@ function prepareNormalToast() {
     timeOut: 5000,
     positionClass: "toast-bottom-right"
   };
+}
+
+function addPaddingToDraggableItems(containers) {
+  var containerArray = containers.split(' ')
+  let withoutLastContainer = containerArray.pop()
+  $(containerArray).each(function () {
+    var container = this.slice(0, -1)
+    var draggedItems = $(container).children('.layout-builder-draggable-field')
+    if (draggedItems.length > 1) {
+      addPaddingToContainer(draggedItems)
+    } else {
+      $(draggedItems).each(function () {
+        $(this).css({'margin': '-2px'})
+      })
+    }
+  })
+
+  var lastContainer = $('#layout-builder-draggable-main-container3')
+  var draggedItemsFinal = lastContainer.children('.layout-builder-draggable-field')
+  if (draggedItemsFinal.length > 1) {
+    addPaddingToContainer(draggedItemsFinal)
+  } else {
+    $(draggedItemsFinal).each(function () {
+      $(this).css({'margin': '-2px'})
+    })
+  }
+}
+
+function addPaddingToContainer(draggedItems) {
+  $(draggedItems).each(function () {
+    $(this).css({'margin': '10px -2px'})
+  })
+  $(draggedItems.first()).css({'margin-top': '-2px'})
+  $(draggedItems.last()).css({'margin-bottom': '-2px'})
 }
