@@ -20,7 +20,7 @@
   <% if @layout_builder %>
     <div class="col-lg-2">
       <div class="text-right" style='padding: 30px 0 0 0'>
-        <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-outline btn-primary" }) %>
+        <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-outline btn-primary edit-layout-btn" }) %>
       </div>
     </div>
   <% end %>
