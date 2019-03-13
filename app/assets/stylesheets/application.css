@@ -52,3 +52,10 @@
 .p-w-xxs {
   padding: 0 5px;
 }
+
+.logo-element {
+  padding: 10px;
+}
+.logo-element .thumbnail {
+  width: 100%;
+}
