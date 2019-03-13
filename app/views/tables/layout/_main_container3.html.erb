@@ -10,7 +10,7 @@
     <div class="row editable-row">
       <div class="col-xs-8">
         <div class="editable-content-wrapper">
-          <p>
+          <p class="main-container-content">
             <b><%= v["title"] %></b>:
 
             <span class="editable-content">
@@ -42,8 +42,8 @@
     </div>
   <% else %>
     <div class="">
-      <p>
-        <b><%= v["title"] %></b>:
+      <p class="main-container-content">
+        <b><%= v["title"].humanize %></b>:
 
         <span class="">
           <% if @current_row %>
