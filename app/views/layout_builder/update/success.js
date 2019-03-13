@@ -1,8 +1,9 @@
 toastr.options = {
     closeButton: true,
-    progressBar: true,
-    showMethod: 'slideDown',
-    timeOut: 5000,
+    showMethod: 'fadeIn',
+    hideMethod: 'fadeOut',
+    timeOut: 2000,
+    preventDuplicates: true,
     positionClass: "toast-bottom-right"
 };
 
