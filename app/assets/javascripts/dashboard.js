@@ -147,7 +147,7 @@ function loadEnjoyhint4() {
 
   var enjoyhint_script_steps = [
     {
-      'click .layout-builder-side-nav-available-table:first a' : 'Select a table to view available fields',
+      'click .layout_builder_selected_table_name:first' : 'Select a table to view available fields',
       // timeout: 500
     },
     {
