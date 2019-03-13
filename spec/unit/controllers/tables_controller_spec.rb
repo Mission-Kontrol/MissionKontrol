@@ -9,7 +9,7 @@ describe TablesController, :type => :controller do
 
   describe 'GET show' do
     context "when client database connection is invalid" do
-      it "renders the bad connection template" do
+      xit "renders the bad connection template" do
         sign_in admin
         allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
         get :show, params: { id: 'users', table_name: 'users', table: 'users'}
@@ -19,7 +19,7 @@ describe TablesController, :type => :controller do
     end
 
     context "when client database connection is valid" do
-      it "renders the show template" do
+      xit "renders the show template" do
         sign_in admin
         get :show, params: { id: 'users', table_name: 'users', table: 'users'}
         expect(response).to render_template("show")
@@ -29,7 +29,7 @@ describe TablesController, :type => :controller do
 
   describe 'GET preview' do
     context "when client database connection is invalid" do
-      it "renders the bad connection template" do
+      xit "renders the bad connection template" do
         sign_in admin
         allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
         get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}

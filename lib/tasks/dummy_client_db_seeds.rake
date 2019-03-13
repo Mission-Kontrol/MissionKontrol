@@ -2,37 +2,47 @@
 namespace :dummy_client_database do
   desc 'Reset dummy databases'
   task reset: :environment do
-    tables = ["users", "companies", "attending_events", "events", "welcomes"]
+    internal_tables = ["view_builders", "activities", "work_lists"]
+    client_tables = ["events", "users", "companies", "attending_events", "welcomes"]
+
+    # clear kuwinda db
+    conn = ActiveRecord::Base.establish_connection.connection
+    internal_tables.each do |table|
+      query = "DELETE FROM #{table};"
+      conn.exec_query(query);
+    end
 
     # clear demo dbs for PG
     url = ENV['DEMO_DATABASE_PG']
-    conn = ActiveRecord::Base.establish_connection(url).connection
-    tables.each do |table|
+    conn1 = ActiveRecord::Base.establish_connection(url).connection
+    client_tables.each do |table|
       query = "DELETE FROM #{table};"
-      conn.exec_query(query);
+      conn1.exec_query(query);
     end
 
     # seed PG
-    conn.exec_query(users_query)
-    conn.exec_query(events_query)
-    conn.exec_query(companies_query)
-    conn.exec_query(attending_events_query)
+    conn1.exec_query(users_query)
+    conn1.exec_query(events_query)
+    conn1.exec_query(companies_query)
+    conn1.exec_query(attending_events_query)
 
     # clear demo dbs for MySQL
     url = ENV['DEMO_DATABASE_MYSQL']
-    conn = ActiveRecord::Base.establish_connection(url).connection
-    tables.each do |table|
+    conn2 = ActiveRecord::Base.establish_connection(url).connection
+    client_tables.each do |table|
       query = "DELETE FROM #{table};"
-      conn.exec_query(query);
+      conn2.exec_query(query);
     end
 
     # seed MySQL
-    conn.exec_query(users_query_mysql)
-    conn.exec_query(events_query_mysql)
-    conn.exec_query(companies_query_mysql)
-    conn.exec_query(attending_events_query_mysql)
+    conn2.exec_query(users_query_mysql)
+    conn2.exec_query(events_query_mysql)
+    conn2.exec_query(companies_query_mysql)
+    conn2.exec_query(attending_events_query_mysql)
 
-    clear_target_db_credentials
+    # clear_target_db_credentials
+    setup_demo_admin_user
+    puts "Kuwinda: App reset complete."
   end
 end
 
@@ -111,4 +121,12 @@ end
 def clear_target_db_credentials
   credentials = "config/target_db_credentials_#{Rails.env}.txt"
   rm_rf credentials
+end
+
+def setup_demo_admin_user
+  AdminUser.where(email: ENV['DEMO_ADMIN_USER_EMAIL']).first_or_create do |admin|
+    admin.email = ENV['DEMO_ADMIN_USER_EMAIL']
+    admin.password = ENV['DEMO_ADMIN_USER_PASSWORD']
+    admin.password_confirmation = ENV['DEMO_ADMIN_USER_PASSWORD']
+  end
 end

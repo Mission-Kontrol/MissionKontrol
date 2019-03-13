@@ -20,6 +20,7 @@ gem 'turbolinks', '~> 5.1.0'
 gem 'uglifier', '~> 4.1.5'
 gem 'pg', '~> 0.18'
 gem 'mysql2', '~> 0.3.18'
+gem 'clockwork', '~> 2.0', '>= 2.0.3'
 
 group :development, :test do
   gem 'byebug'

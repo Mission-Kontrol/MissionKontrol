@@ -128,8 +128,4 @@ class WorkListsController < ApplicationController
     flash[:notice] = notice
     render(action: action, js: js_func)
   end
-
-  def load_available_tables
-    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  end
 end

@@ -63,6 +63,8 @@ GEM
       selenium-webdriver
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
+    clockwork (2.0.3)
+      tzinfo
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -324,6 +326,7 @@ DEPENDENCIES
   byebug
   capybara (~> 2.17.0)
   capybara-selenium
+  clockwork (~> 2.0, >= 2.0.3)
   coffee-rails
   devise (~> 4.4.3)
   dotenv-rails

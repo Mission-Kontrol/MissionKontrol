@@ -1,14 +1,26 @@
+<p class="hide">Showing <%= total_row_count(@rows) %> of <%= @rows.size %> entries</p>
+
+<% if table_has_layout?(@current_table) %>
+  <div class="text-right">
+      <div class="" style='padding: 10px 10px 0 0'>
+        <a href="#" data-toggle="modal" data-target="#column-visibility-settings-modal">
+          <i class="fa fa-columns" aria-hidden="true"></i> Columns
+        </a>
+      </div>
+  </div>
+<% end %>
+
 <div class="table-responsive">
-  <table class="footable table table-stripped" data-page-size="8" data-filter=#filter data-table-name='<%= current_table %>'>
+  <table class="footable table" data-filtering="true"  data-sorting="true" data-paging="true" data-table-name='<%= current_table %>'>
     <thead>
       <tr>
         <% @headers.each do |header|%>
           <% @column_is_hidden = @hidden_columns.include?(header) %>
 
           <% if @column_is_hidden %>
-            <th class='column-<%= header %> hide'><%= header %></th>
+            <th class='column-<%= header %> hide'><%= header.humanize %></th>
           <% else %>
-            <th class='column-<%= header %>'><%= header %></th>
+            <th class='column-<%= header %>'><%= header.humanize %></th>
           <% end %>
         <% end %>
       </tr>
@@ -25,13 +37,5 @@
         </tr>
       <% end %>
     </tbody>
-
-    <tfoot>
-      <tr>
-        <td colspan=<%= @headers.size + 1 %>>
-          <ul class="pagination pull-right"></ul>
-        </td>
-      </tr>
-    </tfoot>
   </table>
 </div>

@@ -4,7 +4,7 @@
       <li class="nav-header ">
         <div class="dropdown profile-element">
           <span>
-            <img alt="image" class="img-circle" src="<%= image_url 'profile_small.jpg' %>"/>
+            <img alt="image" class="" src="<%= image_url '/assets/images/Kuwinda_logo_full-blue-260.png' %>" style="width: 100px"/>
           </span>
 
           <a>
@@ -54,34 +54,6 @@
         <% end %>
       </li>
 
-      <li class="<%= active_action?('view_page') %> hide">
-        <a href="">
-          <i class="fa fa-cogs" aria-hidden="true"></i>
-          <span class="nav-label" data-i18n="nav.dashboard">ViewBuilder</span> <span class="fa arrow"></span>
-        </a>
-
-        <ul class="nav nav-second-level collapse">
-          <li class="">
-            <%= link_to "View all", view_builder_index_path %>
-          </li>
-
-          <li class="">
-            <%= link_to "Add new", new_view_builder_path %>
-          </li>
-        </ul>
-      </li>
-
-      <% if @view_builders.any? %>
-        <% @view_builders.each do |view_builder| %>
-          <li class="<%= active_controller?('view_builder') %> hide">
-            <%= link_to view_builder_view_path(id: view_builder) do %>
-            <i class="fa fa-anchor"></i>
-            <span class="nav-label" data-i18n="nav.layouts"><%= view_builder.view_name %></span>
-            <% end %>
-          </li>
-        <% end %>
-      <% end %>
-
       <li class="<%= active_controller?('layout_builder') %> hide">
         <%= link_to layouts_path do %>
           <i class="fa fa-th"></i>
@@ -89,7 +61,7 @@
         <% end %>
       </li>
 
-      <li class="<%= active_controller?('admin_user_registrations') || active_controller?('edit')%>">
+      <li class="<%= active_controller?('admin_user_registrations') || active_controller?('edit')%> hide">
         <%= link_to edit_admin_user_registration_path do %>
           <i class="fa fa-sliders"></i>
           <span class="nav-label" data-i18n="nav.layouts">Settings</span>

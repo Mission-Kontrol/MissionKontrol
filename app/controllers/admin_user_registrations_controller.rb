@@ -5,26 +5,11 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   layout 'application', only: [:new]
 
-  def create
-    test_target_db_connection
-    super
-
-  rescue Mysql2::Error,
-         PG::ConnectionBad,
-         Kuwinda::Gateway::InvalidClientDatabaseError => e
-
-   flash[:error] = "Invalid target database, please review credentials."
-   build_resource
-   clean_up_passwords(resource)
-   render(action: :new, status:422) and return
-  end
-
   protected
 
   def update_resource(resource, params)
+    test_target_db_connection
     resource.update_without_password(params)
-    Kuwinda::UseCase::DatabaseConnection.new.execute
-    resource
   end
 
   def permitted_admin_db_params
@@ -51,14 +36,14 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   def configure_permitted_parameters
     db_params = permitted_admin_db_params + permitted_target_db_params
-    devise_parameter_sanitizer.permit(
-      :account_update,
-      keys: %w[
-        first_name
-        last_name
-        company_name
-      ] + permitted_admin_db_params + permitted_target_db_params
-    )
+    keys = %w[
+      first_name
+      last_name
+      company_name
+    ] + db_params
+
+    devise_parameter_sanitizer.permit(:account_update, keys: keys)
+    devise_parameter_sanitizer.permit(:sign_up, keys: keys)
   end
 
   def after_update_path_for(_resource)
@@ -82,7 +67,7 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
     when 'mysql', 'mysql2'
       return 'mysql2'
     else
-      raise Kuwinda::Gateway::InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
+      raise InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
     end
   end
 end

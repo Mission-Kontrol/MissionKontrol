@@ -1,1 +1,2 @@
-//= require footable/footable.all.min.js
+//= require moment/moment.js
+//= require footable-bootstrap/footable.min.js

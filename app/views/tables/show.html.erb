@@ -1,18 +1,14 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2><%= @current_table %></h2>
+    <h2><%= @current_table.capitalize %></h2>
 
     <ol class="breadcrumb">
-      <li>
-        <%= link_to 'Home', dashboard_path %>
-      </li>
-
       <li>
         <span>Tables</span>
       </li>
 
       <li class="active">
-        <strong><%= @current_table %></strong>
+        <strong><%= @current_table.capitalize %></strong>
       </li>
     </ol>
   </div>
@@ -22,29 +18,7 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5><%= @current_table %></h5>
-        </div>
-
         <div class="ibox-content">
-          <% if table_has_layout?(@current_table) %>
-            <div class="row">
-              <div class="col-sm-10">
-                <input type="text" class="form-control input-sm m-b-xs" id="filter"
-                placeholder="Search in table">
-              </div>
-
-              <div class="col-sm-2 text-right">
-                  <div class="" style='padding: 10px 10px 0 0'>
-                    <a href="#" data-toggle="modal" data-target="#myModal">
-                      <i class="fa fa-columns" aria-hidden="true"></i> Columns
-                    </a>
-                  </div>
-              </div>
-            </div>
-          <% else %>
-            <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search in table">
-          <% end %>
 
           <br>
 

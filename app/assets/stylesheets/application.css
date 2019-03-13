@@ -10,12 +10,14 @@
  *
 
  *= require toastr/toastr.min.css
+ *= require footable-bootstrap/footable.bootstrap.min.css
  *= require dualListbox/bootstrap-duallistbox.min.css
  *= require font-awesome
  *= require site
  *= require devise
  *= require view_builder
  *= require layout_builder
+ *= require table
  *= require_self
  */
 

@@ -26,6 +26,16 @@ module TableHelper
     ViewBuilder.where(table_name: table).size > 0
   end
 
+  def draggable_fields_container_is_empty?(container)
+    if container.class == Array
+       container.empty?
+     elsif container.class == String
+       JSON.parse(container).empty?
+     else
+       false
+    end
+  end
+
   private
 
   def convert_table_name(table)
@@ -34,5 +44,13 @@ module TableHelper
     table = table.chomp(pluralization)
     table = ies ? table + 'y' : table
     table.downcase
+  end
+
+  def total_row_count(rows, default=8)
+    if rows.size < default
+      rows.size
+    else
+      default
+    end
   end
 end
