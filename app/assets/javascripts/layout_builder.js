@@ -111,12 +111,13 @@ $(document).ready(function() {
 $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
   evt.preventDefault();
   const _this = this;
-  const currentField = this.parentElement.parentElement.parentElement.parentElement.parentElement;
+  const currentField = this.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
   const currentFieldContainerId = currentField.parentElement.id;
   const currentFieldEditable = currentField.dataset['fieldEditable'] === 'true'
   let currentFieldContainerItems;
 
   if (_this.checked) {
+    let confirmationTitle = `Warning: You are about to make [editable] editable for your users`
     let confirmationText = "" +
     "Not to alarm you and you probably want to do this as it’s one of the core features. However, we wanted to make sure you were sure." +
     "\n\nMaking this field editable will mean that:" +
@@ -128,17 +129,20 @@ $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(ev
     "\n - They are fields that are calculated by your system (and so will be soon overwritten)" +
     "\n\nIf you are unsure, ask a/your developer.";
 
-    let confirmation = confirm(confirmationText);
-
-    if (confirmation) {
-      checkEditable(_this, currentField);
-      currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
-      updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
-    } else {
-      uncheckEditable(_this, currentField)
-      currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
-      updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
-    }
+    swal(confirmationTitle, confirmationText, {
+      buttons: {
+        cancel: 'No keep field read only',
+        confirm: 'Yes please make editable'
+      }
+    }).then((value) => {
+      if (value === null) {
+        uncheckEditable(_this, currentField)
+      } else {
+        checkEditable(_this, currentField);
+        currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
+        updateLayoutBuilderContainer(currentFieldContainerId, currentFieldContainerItems);
+      }
+    })
   } else {
     uncheckEditable(_this, currentField);
     currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);
@@ -230,8 +234,13 @@ function buildDraggableField(field) {
         "<div class='col-sm-3'>"+
           "<div class = 'layout-builder-field-editable-toggle'>" +
             "<label class='switch'>" +
-              "<input class='form-control layout-builder-editable-toggle' type='checkbox' checked='" + field.editable + "'>" +
-              "<span class='slider round'></span>" +
+                "<div class='toggle'>" +
+                  "<input class='layout-builder-editable-toggle toggle-state' type='checkbox' checked='" + field.editable + "'/>" +
+                  "<div class='toggle-inner'>" +
+                     "<div class='indicator'></div>" +
+                  "</div>" +
+                  "<div class='active-bg'></div>" +
+                "</div>" +
             "</label>" +
             "</div>" +
           "</div>" +
@@ -249,8 +258,13 @@ function buildDraggableField(field) {
           "<div class='col-sm-3'>"+
             "<div class = 'layout-builder-field-editable-toggle'>" +
               "<label class='switch'>" +
-                "<input class='form-control layout-builder-editable-toggle' type='checkbox'>" +
-                "<span class='slider round'></span>" +
+                "<div class='toggle'>" +
+                  "<input class='layout-builder-editable-toggle toggle-state' type='checkbox' />" +
+                  "<div class='toggle-inner'>" +
+                     "<div class='indicator'></div>" +
+                  "</div>" +
+                  "<div class='active-bg'></div>" +
+                "</div>" +
               "</label>" +
               "</div>" +
             "</div>" +
@@ -554,6 +568,7 @@ function goToPreviousScreen() {
 function showFieldSettingsFormScreen2() {
   $('#layout_builder_field_settings_form_screen_1').addClass('hide');
   $('#layout_builder_field_settings_form_screen_2').removeClass('hide');
+  $('.layout-builder-side-nav').css({ 'background-color': '#efefef' })
 }
 
 function showFieldSettingsFormScreen1() {
@@ -708,9 +723,10 @@ function refreshEditableContent(editableContent, newValue) {
 function prepareLongToast() {
   toastr.options = {
     closeButton: true,
-    progressBar: true,
-    showMethod: 'slideDown',
+    howMethod: 'fadeIn',
+    hideMethod: 'fadeOut',
     timeOut: 15000,
+    preventDuplicates: true,
     positionClass: "toast-bottom-right"
   };
 }
@@ -718,9 +734,10 @@ function prepareLongToast() {
 function prepareNormalToast() {
   toastr.options = {
     closeButton: true,
-    progressBar: true,
-    showMethod: 'slideDown',
-    timeOut: 5000,
+    howMethod: 'fadeIn',
+    hideMethod: 'fadeOut',
+    timeOut: 2000,
+    preventDuplicates: true,
     positionClass: "toast-bottom-right"
   };
 }

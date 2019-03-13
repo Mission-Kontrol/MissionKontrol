@@ -59,8 +59,9 @@ function loadFlotChart() {
 function loadToastr() {
   toastr.options = {
       closeButton: true,
-      progressBar: true,
-      showMethod: 'slideDown',
-      timeOut: 5000
+      howMethod: 'fadeIn',
+      hideMethod: 'fadeOut',
+      preventDuplicates: true,
+      timeOut: 2000
   };
 }
