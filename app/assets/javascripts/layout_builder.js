@@ -117,7 +117,7 @@ $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(ev
   let currentFieldContainerItems;
 
   if (_this.checked) {
-    let confirmationTitle = `Warning: You are about to make [editable] editable for your users`
+    let confirmationTitle = `Warning: You are about to make ${currentField.innerText.trim()} editable for your users`
     let confirmationText = "" +
     "Not to alarm you and you probably want to do this as it’s one of the core features. However, we wanted to make sure you were sure." +
     "\n\nMaking this field editable will mean that:" +
