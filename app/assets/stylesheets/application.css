@@ -59,3 +59,19 @@
 .logo-element .thumbnail {
   width: 100%;
 }
+
+.footable-filtering-search {
+  width: 100%;
+}
+
+.footable-filtering-search input {
+  margin-right: 20px
+}
+
+.footable-filtering-search .input-group {
+  width: 100% !important;
+}
+
+.footable-filtering-search .dropdown-toggle {
+  display: none;
+}
