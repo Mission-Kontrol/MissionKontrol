@@ -109,7 +109,6 @@ function loadEnjoyhint1() {
     }
   ];
 
-  //set script config
   enjoyhint.set(enjoyhint_script_steps);
 }
 
@@ -125,7 +124,6 @@ function loadEnjoyhint2() {
     }
   ];
 
-  //set script config
   enjoyhint.set(enjoyhint_script_steps);
 }
 
@@ -138,7 +136,6 @@ function loadEnjoyhint3() {
     }
   ];
 
-  //set script config
   enjoyhint.set(enjoyhint_script_steps);
 }
 
@@ -147,14 +144,20 @@ function loadEnjoyhint4() {
 
   var enjoyhint_script_steps = [
     {
-      'click .layout_builder_selected_table_name:first' : 'Select a table to view available fields',
-      // timeout: 500
+      'click .layout_builder_selected_table_name:first' : 'Click here to get tables with related fields to the current table',
     },
     {
       'click #layout-builder-draggable-fields-container' : 'Drag fields from here onto the page',
-    }
+    },
+    {
+      event: 'click',
+      selector: '.wrapper-content .layout-builder-field-editable-toggle:first',
+      description: 'Select this to make this field editable on the page'
+    },
+    {
+      'click .preview-layout' : 'Click here to preview your changes',
+    },
   ];
 
-  //set script config
   enjoyhint.set(enjoyhint_script_steps);
 }
