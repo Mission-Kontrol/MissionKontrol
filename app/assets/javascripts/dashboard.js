@@ -98,14 +98,41 @@ function loadToastr() {
 
 function loadEnjoyhint1() {
   enjoyhint = new EnjoyHint({});
+  let description = "Welcome to Kuwinda \n\n" +
+  "We’d love to show you around quickly. \n\n" +
+  "We have the app connected to a dummy database for a very basic events app. \n\n" +
+  "Click on the tables to show tables available from the database.";
 
   var enjoyhint_script_steps = [
     {
-      'click #nav-link-for-tables' : 'Click on tables to show tables available on database',
+      description: "Welcome to Kuwinda",
+      selector: '#enjoyhint-welcome-handler',
+      showNext: true,
     },
 
     {
-      'click #nav-link-for-users-table' : 'Click on users',
+      description: "We’d love to show you around quickly.",
+      selector: '#enjoyhint-welcome-handler',
+      showNext: true,
+    },
+
+    {
+      description: "We have the app connected to a dummy database for a very basic events app.",
+      selector: '#enjoyhint-welcome-handler',
+      showNext: true,
+    },
+
+    {
+      'click #nav-link-for-tables' : 'Click on the tables to show tables available from the database.',
+    },
+
+    {
+      'click .nav-second-level' : 'When first setting up Kuwinda, it automatically finds all the tables available to it in your database and presents them here.',
+      showNext: true,
+    },
+
+    {
+      'click .nav-second-level' : 'Click on users to see the users table.',
     }
   ];
 
@@ -117,10 +144,13 @@ function loadEnjoyhint2() {
 
   var enjoyhint_script_steps = [
     {
-      'click #column-visibility-settings-modal-trigger' : 'You can change number of columns visible in the table here',
+      'click .footable-header' : 'By default Kuwinda will show all of the fields that it can find in the table.',
+      timeout: 800,
+      showNext: true
     },
+
     {
-      'click .clickable-row:first' : 'Click on first user',
+      'click .clickable-row:first' : 'Click on the first user to look at that user in a bit more detail.',
     }
   ];
 
@@ -132,7 +162,11 @@ function loadEnjoyhint3() {
 
   var enjoyhint_script_steps = [
     {
-      'click .edit-layout-btn' : 'Click on Edit Layout to change what is visible on the page',
+      'click .enjoyhint-table-detail-handler' : 'A layout is built using the fields from a table. It can also show fields from related tables. We have included the ability to comment on records and will be adding more here soon.',
+      showNext: true,
+    },
+    {
+      'click .edit-layout-btn' : 'Click on Edit layout to see how a layout is built',
     }
   ];
 
@@ -144,19 +178,17 @@ function loadEnjoyhint4() {
 
   var enjoyhint_script_steps = [
     {
-      'click .layout_builder_selected_table_name:first' : 'Click here to get tables with related fields to the current table',
+      'click .logo-thumbnail' : 'Welcome to the layout editor. Here you can build your layouts using our drag and drop editor. You can add fields from the main table or fields from related tables.',
+      showNext: true
     },
+
     {
-      'click #layout-builder-draggable-fields-container' : 'Drag fields from here onto the page',
+      'click .layout-builder-side-nav' : 'Click into users and try adding some fields',
     },
+
     {
-      event: 'click',
-      selector: '.wrapper-content .layout-builder-field-editable-toggle:first',
-      description: 'Select this to make this field editable on the page'
-    },
-    {
-      'click .preview-layout' : 'Click here to preview your changes',
-    },
+      'click .logo-thumbnail' : 'Finish tour',
+    }
   ];
 
   enjoyhint.set(enjoyhint_script_steps);
