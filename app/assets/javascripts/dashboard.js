@@ -111,30 +111,15 @@ function loadEnjoyhint1() {
       completeTour();
     }
   });
-  let description = "Welcome to Kuwinda \n\n" +
-  "We’d love to show you around quickly. \n\n" +
-  "We have the app connected to a dummy database for a very basic events app. \n\n" +
-  "Click on the tables to show tables available from the database.";
+  let description = "Welcome to Kuwinda. " +
+  "We’d love to show you around quickly. " +
+  "We have the app connected to a dummy database for a very basic events app.";
 
   var enjoyhint_script_steps = [
     {
-      description: "Welcome to Kuwinda",
+      description: description,
       selector: '#enjoyhint-welcome-handler',
       showNext: true
-    },
-
-    {
-      description: "We’d love to show you around quickly.",
-      selector: '#enjoyhint-welcome-handler',
-      showNext: true,
-      showSkip: false,
-    },
-
-    {
-      description: "We have the app connected to a dummy database for a very basic events app.",
-      selector: '#enjoyhint-welcome-handler',
-      showNext: true,
-      showSkip: false,
     },
 
     {
