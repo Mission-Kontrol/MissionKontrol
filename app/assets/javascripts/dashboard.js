@@ -207,6 +207,9 @@ function loadEnjoyhint4() {
   enjoyhint = new EnjoyHint({
     onSkip: function() {
       completeTour();
+    },
+    onEnd: function() {
+      completeTour();
     }
   });
 
