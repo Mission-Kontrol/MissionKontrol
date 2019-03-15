@@ -114,25 +114,30 @@ function loadEnjoyhint1() {
       description: "We’d love to show you around quickly.",
       selector: '#enjoyhint-welcome-handler',
       showNext: true,
+      showSkip: false,
     },
 
     {
       description: "We have the app connected to a dummy database for a very basic events app.",
       selector: '#enjoyhint-welcome-handler',
       showNext: true,
+      showSkip: false,
     },
 
     {
       'click #nav-link-for-tables' : 'Click on the tables to show tables available from the database.',
+      showSkip: false,
     },
 
     {
       'click .nav-second-level' : 'When first setting up Kuwinda, it automatically finds all the tables available to it in your database and presents them here.',
       showNext: true,
+      showSkip: false,
     },
 
     {
       'click .nav-second-level' : 'Click on users to see the users table.',
+      showSkip: false,
     }
   ];
 
@@ -146,11 +151,13 @@ function loadEnjoyhint2() {
     {
       'click .footable-header' : 'By default Kuwinda will show all of the fields that it can find in the table.',
       timeout: 800,
-      showNext: true
+      showNext: true,
+      showSkip: false,
     },
 
     {
       'click .clickable-row:first' : 'Click on the first user to look at that user in a bit more detail.',
+      showSkip: false,
     }
   ];
 
@@ -164,9 +171,11 @@ function loadEnjoyhint3() {
     {
       'click .enjoyhint-table-detail-handler' : 'A layout is built using the fields from a table. It can also show fields from related tables. We have included the ability to comment on records and will be adding more here soon.',
       showNext: true,
+      showSkip: false,
     },
     {
       'click .edit-layout-btn' : 'Click on Edit layout to see how a layout is built',
+      showSkip: false,
     }
   ];
 
@@ -179,15 +188,19 @@ function loadEnjoyhint4() {
   var enjoyhint_script_steps = [
     {
       'click .logo-thumbnail' : 'Welcome to the layout editor. Here you can build your layouts using our drag and drop editor. You can add fields from the main table or fields from related tables.',
-      showNext: true
+      showNext: true,
+      showSkip: false,
     },
 
     {
       'click .layout-builder-side-nav' : 'Click into users and try adding some fields',
+      showSkip: false,
     },
 
     {
       'click .logo-thumbnail' : 'Finish tour',
+      showSkip: false,
+      showNext: true,
     }
   ];
 
