@@ -8,29 +8,38 @@ $(document).ready(function() {
   let isCurrentActionShow = metaTag.attr('action') == 'show';
   let isCurrentActionPreview = metaTag.attr('action') == 'preview';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+  let tourComplete = (sessionStorage.tourCompleted === 'true');
 
   loadFlotChart();
   loadFooTable();
   loadToastr();
 
   if (isCurrentControllerDashboard && isCurrentActionShow) {
-    loadEnjoyhint1();
-    enjoyhint.run();
+    if (!tourComplete) {
+      loadEnjoyhint1();
+      enjoyhint.run();
+    }
   }
 
   if (isCurrentControllerTables && isCurrentActionShow) {
-    loadEnjoyhint2();
-    enjoyhint.run();
+    if (!tourComplete) {
+      loadEnjoyhint2();
+      enjoyhint.run();
+    }
   }
 
   if (isCurrentControllerTables && isCurrentActionPreview) {
-    loadEnjoyhint3();
-    enjoyhint.run();
+    if (!tourComplete) {
+      loadEnjoyhint3();
+      enjoyhint.run();
+    }
   }
 
   if (isCurrentControllerLayoutBuilder && isCurrentActionEdit) {
-    loadEnjoyhint4();
-    enjoyhint.run();
+    if (!tourComplete) {
+      loadEnjoyhint4();
+      enjoyhint.run();
+    }
   }
 });
 
@@ -97,7 +106,11 @@ function loadToastr() {
 }
 
 function loadEnjoyhint1() {
-  enjoyhint = new EnjoyHint({});
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    }
+  });
   let description = "Welcome to Kuwinda \n\n" +
   "We’d love to show you around quickly. \n\n" +
   "We have the app connected to a dummy database for a very basic events app. \n\n" +
@@ -107,7 +120,7 @@ function loadEnjoyhint1() {
     {
       description: "Welcome to Kuwinda",
       selector: '#enjoyhint-welcome-handler',
-      showNext: true,
+      showNext: true
     },
 
     {
@@ -145,7 +158,11 @@ function loadEnjoyhint1() {
 }
 
 function loadEnjoyhint2() {
-  enjoyhint = new EnjoyHint({});
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    }
+  });
 
   var enjoyhint_script_steps = [
     {
@@ -165,7 +182,11 @@ function loadEnjoyhint2() {
 }
 
 function loadEnjoyhint3() {
-  enjoyhint = new EnjoyHint({});
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    }
+  });
 
   var enjoyhint_script_steps = [
     {
@@ -183,7 +204,11 @@ function loadEnjoyhint3() {
 }
 
 function loadEnjoyhint4() {
-  enjoyhint = new EnjoyHint({});
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    }
+  });
 
   var enjoyhint_script_steps = [
     {
@@ -205,4 +230,8 @@ function loadEnjoyhint4() {
   ];
 
   enjoyhint.set(enjoyhint_script_steps);
+}
+
+function completeTour() {
+  sessionStorage.setItem('tourCompleted', true);
 }
