@@ -61,17 +61,18 @@
 }
 
 .footable-filtering-search {
-  width: 75vw;
-}
-
-.footable-filtering-search input {
-  margin-right: 20px
+  width: 100%;
 }
 
 .footable-filtering-search .input-group {
   width: 100% !important;
+  display: flex;
 }
 
 .footable-filtering-search .dropdown-toggle {
   display: none;
+}
+
+.footable-filtering-search button {
+  margin-bottom: 0 !important;
 }
