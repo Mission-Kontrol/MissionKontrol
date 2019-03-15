@@ -33,8 +33,6 @@
 
   .layout-builder-field-editable-toggle {
     display: inline-block;
-    float: right;
-    margin-left: 5px;
 
     label {
       margin-bottom: 0;
@@ -43,6 +41,10 @@
 
   .layout-builder-draggable-item-handle {
     display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 

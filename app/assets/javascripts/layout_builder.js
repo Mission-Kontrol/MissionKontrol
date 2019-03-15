@@ -224,14 +224,15 @@ function buildDraggableField(field) {
 
   if (field.editable === 'true') {
     item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
-      "<div class='row m-l-none m-r-none'>" +
-        "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
-          "<div class = ''>" +
-            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+      "<div class='row'>" +
+        "<div class='col-sm-7'>" +
+          "<div class = 'layout-builder-draggable-item-handle'>" +
+            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
+            "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
           "</div>" +
         "</div>" +
 
-        "<div class='col-sm-3'>"+
+        "<div class='col-sm-5 text-right'>"+
           "<div class = 'layout-builder-field-editable-toggle'>" +
             "<label class='switch'>" +
                 "<div class='toggle'>" +
@@ -248,14 +249,15 @@ function buildDraggableField(field) {
       "</div>"
     } else {
       item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
-        "<div class='row m-l-none m-r-none'>" +
-          "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
-            "<div class = ''>" +
-              "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+        "<div class='row'>" +
+          "<div class='col-sm-7'>" +
+            "<div class = 'layout-builder-draggable-item-handle'>" +
+              "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
+              "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
             "</div>" +
           "</div>" +
 
-          "<div class='col-sm-3'>"+
+          "<div class='col-sm-5 text-right'>"+
             "<div class = 'layout-builder-field-editable-toggle'>" +
               "<label class='switch'>" +
                 "<div class='toggle'>" +
