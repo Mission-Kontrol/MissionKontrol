@@ -594,16 +594,12 @@ function goToTab(tabName) {
 function showEditable(evt) {
   evt.preventDefault()
 
-  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement;
-  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
+  let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
   let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
   let editableInput = editableRow.getElementsByClassName("editable-input")[0]
-  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0]
 
   editableContentWrapper.style.display = 'none'
-  editableToggle.style.display = 'none'
   editableInput.style.display = 'block'
-  editableActionsWrapper.style.display = 'block'
 
   return true
 }
@@ -612,27 +608,19 @@ function cancelEditable(evt) {
   evt.preventDefault();
 
   let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
-  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
   let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
   let editableInput = editableRow.getElementsByClassName("editable-input")[0];
-  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0];
 
   editableContentWrapper.style.display = 'block';
-  editableToggle.style.display = 'block';
   editableInput.style.display = 'none';
-  editableActionsWrapper.style.display = 'none';
 }
 
 function hideEditable(editableRow) {
-  let editableToggle = editableRow.getElementsByClassName("editable-toggle")[0];
   let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
   let editableInput = editableRow.getElementsByClassName("editable-input")[0];
-  let editableActionsWrapper = editableRow.getElementsByClassName("editable-actions-wrapper")[0];
 
   editableContentWrapper.style.display = 'block';
-  editableToggle.style.display = 'block';
   editableInput.style.display = 'none';
-  editableActionsWrapper.style.display = 'none';
 }
 
 function updateTableField(evt, table, field, id) {
