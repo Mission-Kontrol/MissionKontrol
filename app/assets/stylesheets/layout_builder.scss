@@ -24,7 +24,7 @@
 }
 
 .layout-builder-draggable-field {
-  padding: 10px 5px;
+  padding: 10px 10px;
   border-radius: 2px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.23);
   margin-bottom: 10px;
@@ -33,8 +33,6 @@
 
   .layout-builder-field-editable-toggle {
     display: inline-block;
-    float: right;
-    margin-left: 5px;
 
     label {
       margin-bottom: 0;
@@ -43,6 +41,10 @@
 
   .layout-builder-draggable-item-handle {
     display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -247,15 +249,12 @@ input:checked + .slider:before {
   margin-bottom: 0;
 }
 
-.navbar-link.left-layout-link {
-  padding: 2px 20px 2px 23px;
-  margin-top: 10px;
-  border-right: 1px solid gray;
-  min-height: 24px;
+.left-layout-link {
   color: gray;
 
   .logo-thumbnail {
-    max-height: 35px;
+    height: 35px;
+    margin: 0 17px 0 16px;
   }
 }
 

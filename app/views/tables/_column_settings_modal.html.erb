@@ -7,7 +7,13 @@
       </div>
 
       <div class="modal-body">
-        <p>Only select the columns that you want to make visible.</p>
+        <p>
+          Below are all of the fields that are currently configured in the <%= @current_table %> table layout. Select the columns that you want to make visible.
+        </p>
+
+        <p>
+          Changes will be automatically saved.
+        </p>
 
         <% columns.each do |c| %>
           <div class="">

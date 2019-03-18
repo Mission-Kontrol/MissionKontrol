@@ -21,19 +21,19 @@
         </div>
 
         <div class="logo-element">
-          KW
+          <img src="/assets/logos/kuwinda_thumbnail.png" alt="" class="thumbnail">
         </div>
       </li>
 
       <li class="<%= active_controller?('dashboard') || active_controller?('show')%>">
         <%= link_to dashboard_path do %>
           <i class="fa fa-th-large"></i>
-          <span class="nav-label" data-i18n="nav.layouts">Dashboard</span>
+          <span class="nav-label dashboard-nav-link" data-i18n="nav.layouts">Dashboard</span>
         <% end %>
       </li>
 
       <li class="<%= active_controller?('tables') && active_action?('show') %>">
-        <a href="">
+        <a href="" id="nav-link-for-tables">
           <i class="fa fa-table" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.dashboard">Tables</span> <span class="fa arrow"></span>
         </a>
@@ -41,7 +41,7 @@
         <ul class="nav nav-second-level collapse">
           <% @available_tables.each do |t| %>
             <li class="">
-              <%= link_to t, table_path(table: t, id: t.downcase) %>
+              <%= link_to t, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
             </li>
           <% end %>
         </ul>

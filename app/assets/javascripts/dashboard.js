@@ -1,7 +1,46 @@
+var enjoyhint;
+
 $(document).ready(function() {
+  let metaTag = $('meta[name=psj]');
+  let isCurrentControllerDashboard = metaTag.attr('controller') == 'dashboard';
+  let isCurrentControllerTables = metaTag.attr('controller') == 'tables';
+  let isCurrentControllerLayoutBuilder = metaTag.attr('controller') == 'layout_builder';
+  let isCurrentActionShow = metaTag.attr('action') == 'show';
+  let isCurrentActionPreview = metaTag.attr('action') == 'preview';
+  let isCurrentActionEdit = metaTag.attr('action') == 'edit';
+  let tourComplete = (sessionStorage.tourCompleted === 'true');
+
   loadFlotChart();
   loadFooTable();
   loadToastr();
+
+  if (isCurrentControllerDashboard && isCurrentActionShow) {
+    if (!tourComplete) {
+      loadEnjoyhint1();
+      enjoyhint.run();
+    }
+  }
+
+  if (isCurrentControllerTables && isCurrentActionShow) {
+    if (!tourComplete) {
+      loadEnjoyhint2();
+      enjoyhint.run();
+    }
+  }
+
+  if (isCurrentControllerTables && isCurrentActionPreview) {
+    if (!tourComplete) {
+      loadEnjoyhint3();
+      enjoyhint.run();
+    }
+  }
+
+  if (isCurrentControllerLayoutBuilder && isCurrentActionEdit) {
+    if (!tourComplete) {
+      loadEnjoyhint4();
+      enjoyhint.run();
+    }
+  }
 });
 
 function loadFooTable () {
@@ -64,4 +103,123 @@ function loadToastr() {
       preventDuplicates: true,
       timeOut: 2000
   };
+}
+
+function loadEnjoyhint1() {
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    }
+  });
+  let description = "Welcome to Kuwinda. " +
+  "We’d love to show you around quickly. " +
+  "We have the app connected to a dummy database for a very basic events app.";
+
+  var enjoyhint_script_steps = [
+    {
+      description: description,
+      selector: '#enjoyhint-welcome-handler',
+      showNext: true
+    },
+
+    {
+      'click #nav-link-for-tables' : 'Click on the tables to show tables available from the database.',
+      showSkip: false,
+    },
+
+    {
+      'click .nav-second-level' : 'When first setting up Kuwinda, it automatically finds all the tables available to it in your database and presents them here.',
+      showNext: true,
+      showSkip: false,
+    },
+
+    {
+      'click .nav-second-level' : 'Click on users to see the users table.',
+      showSkip: false,
+    }
+  ];
+
+  enjoyhint.set(enjoyhint_script_steps);
+}
+
+function loadEnjoyhint2() {
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    }
+  });
+
+  var enjoyhint_script_steps = [
+    {
+      'click .footable-header' : 'By default Kuwinda will show all of the fields that it can find in the table.',
+      timeout: 800,
+      showNext: true,
+      showSkip: false,
+    },
+
+    {
+      'click .clickable-row:first' : 'Click on the first user to look at that user in a bit more detail.',
+      showSkip: false,
+    }
+  ];
+
+  enjoyhint.set(enjoyhint_script_steps);
+}
+
+function loadEnjoyhint3() {
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    }
+  });
+
+  var enjoyhint_script_steps = [
+    {
+      'click .enjoyhint-table-detail-handler' : 'A layout is built using the fields from a table. It can also show fields from related tables. We have included the ability to comment on records and will be adding more here soon.',
+      showNext: true,
+      showSkip: false,
+    },
+    {
+      'click .edit-layout-btn' : 'Click on Edit layout to see how a layout is built',
+      showSkip: false,
+    }
+  ];
+
+  enjoyhint.set(enjoyhint_script_steps);
+}
+
+function loadEnjoyhint4() {
+  enjoyhint = new EnjoyHint({
+    onSkip: function() {
+      completeTour();
+    },
+    onEnd: function() {
+      completeTour();
+    }
+  });
+
+  var enjoyhint_script_steps = [
+    {
+      'click .logo-thumbnail' : 'Welcome to the layout editor. Here you can build your layouts using our drag and drop editor. You can add fields from the main table or fields from related tables.',
+      showNext: true,
+      showSkip: false,
+    },
+
+    {
+      'click .layout-builder-side-nav' : 'Click into users and try adding some fields',
+      showSkip: false,
+    },
+
+    {
+      'click .logo-thumbnail' : 'Finish tour',
+      showSkip: false,
+      showNext: true,
+    }
+  ];
+
+  enjoyhint.set(enjoyhint_script_steps);
+}
+
+function completeTour() {
+  sessionStorage.setItem('tourCompleted', true);
 }

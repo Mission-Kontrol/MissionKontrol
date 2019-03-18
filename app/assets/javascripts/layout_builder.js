@@ -8,8 +8,6 @@ $(document).ready(function() {
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
   let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
   let isCurrentActionPreview = metaTag.attr('action') == 'preview';
-  let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
-  let isCurrentActionPreview = metaTag.attr('action') == 'preview';
 
   prepareNormalToast();
   addPaddingToDraggableItems(containers);
@@ -119,7 +117,7 @@ $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(ev
   let currentFieldContainerItems;
 
   if (_this.checked) {
-    let confirmationTitle = `Warning: You are about to make [editable] editable for your users`
+    let confirmationTitle = `Warning: You are about to make ${currentField.innerText.trim()} editable for your users`
     let confirmationText = "" +
     "Not to alarm you and you probably want to do this as it’s one of the core features. However, we wanted to make sure you were sure." +
     "\n\nMaking this field editable will mean that:" +
@@ -226,14 +224,15 @@ function buildDraggableField(field) {
 
   if (field.editable === 'true') {
     item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
-      "<div class='row m-l-none m-r-none'>" +
-        "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
-          "<div class = ''>" +
-            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+      "<div class='row'>" +
+        "<div class='col-sm-7'>" +
+          "<div class = 'layout-builder-draggable-item-handle'>" +
+            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
+            "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
           "</div>" +
         "</div>" +
 
-        "<div class='col-sm-3'>"+
+        "<div class='col-sm-5 text-right'>"+
           "<div class = 'layout-builder-field-editable-toggle'>" +
             "<label class='switch'>" +
                 "<div class='toggle'>" +
@@ -250,14 +249,15 @@ function buildDraggableField(field) {
       "</div>"
     } else {
       item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
-        "<div class='row m-l-none m-r-none'>" +
-          "<div class='col-sm-9 layout-builder-draggable-item-handle'>" +
-            "<div class = ''>" +
-              "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " + field.title +
+        "<div class='row'>" +
+          "<div class='col-sm-7'>" +
+            "<div class = 'layout-builder-draggable-item-handle'>" +
+              "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
+              "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
             "</div>" +
           "</div>" +
 
-          "<div class='col-sm-3'>"+
+          "<div class='col-sm-5 text-right'>"+
             "<div class = 'layout-builder-field-editable-toggle'>" +
               "<label class='switch'>" +
                 "<div class='toggle'>" +

@@ -14,4 +14,5 @@
 //= require dualListbox/jquery.bootstrap-duallistbox.js
 //= require html5sortable/html5sortable.js
 //= require sweetAlert/sweetalert.min.js
+//= require enjoyhint/enjoyhint.js
 //= require_tree .

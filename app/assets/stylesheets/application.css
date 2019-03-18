@@ -11,6 +11,7 @@
 
  *= require toastr/toastr.min.css
  *= require footable-bootstrap/footable.bootstrap.min.css
+ *= require enjoyhint/enjoyhint.css
  *= require dualListbox/bootstrap-duallistbox.min.css
  *= require font-awesome
  *= require site
@@ -50,4 +51,28 @@
 
 .p-w-xxs {
   padding: 0 5px;
+}
+
+.logo-element {
+  padding: 10px;
+}
+.logo-element .thumbnail {
+  width: 100%;
+}
+
+.footable-filtering-search {
+  width: 100%;
+}
+
+.footable-filtering-search .input-group {
+  width: 100% !important;
+  display: flex;
+}
+
+.footable-filtering-search .dropdown-toggle {
+  display: none;
+}
+
+.footable-filtering-search button {
+  margin-bottom: 0 !important;
 }
