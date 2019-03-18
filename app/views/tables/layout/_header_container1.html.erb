@@ -9,7 +9,7 @@
     <div class="row editable-row">
       <div class="col-xs-12">
         <div class="editable-content-wrapper">
-          <% if @current_row &&  !@current_row[field["title"]].blank? %>
+          <% if current_row_valid?(@current_row, field) %>
             <p class="editable-content header-container1-content" onclick="showEditable(event);">
               <%= @current_row[field["title"]] %>
             </p>
@@ -18,24 +18,7 @@
           <% end %>
         </div>
 
-        <div class="editable-input">
-          <% if @current_row %>
-
-            <% if field["table"] == @current_table %>
-              <% if field["kind"] == 'integer' %>
-                <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>">
-              <% else %>
-                <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>">
-              <% end %>
-            <% else %>
-              <% if field["kind"] == 'integer' %>
-                <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>" data-foreign-key-title="<%= get_foreign_key(@current_table) %>" data-foreign-key-value="<%= params[:record_id] %>">
-              <% else %>
-                <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-foreign-key-title="<%= get_foreign_key(@current_table) %>" data-foreign-key-value="<%= params[:record_id] %>">
-              <% end %>
-            <% end %>
-          <% end %>
-        </div>
+        <%= render partial: 'tables/layout/editable_input', locals: { field: field } %>
       </div>
     </div>
   <% else %>
