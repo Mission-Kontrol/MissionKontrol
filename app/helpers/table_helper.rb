@@ -36,6 +36,34 @@ module TableHelper
     end
   end
 
+  def fields_for_header_container1(layout_builder)
+    items_for_container(layout_builder, 'draggable_fields_header_container1')
+  end
+
+  def fields_for_header_container2(layout_builder)
+    items_for_container(layout_builder, 'draggable_fields_header_container2')
+  end
+
+  def fields_for_main_container1(layout_builder)
+    items_for_container(layout_builder, 'draggable_fields_main_container1')
+  end
+
+  def fields_for_main_container2(layout_builder)
+    items_for_container(layout_builder, 'draggable_fields_main_container2')
+  end
+
+  def fields_for_main_container3(layout_builder)
+    items_for_container(layout_builder, 'draggable_fields_main_container3')
+  end
+
+  def fields_for_side_container(layout_builder)
+    items_for_container(layout_builder, 'draggable_fields_side_container')
+  end
+
+  def current_row_valid?(current_row, field)
+    current_row &&  !current_row[field["title"]].blank?
+  end
+
   private
 
   def convert_table_name(table)
