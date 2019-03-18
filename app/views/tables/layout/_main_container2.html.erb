@@ -45,11 +45,11 @@
   <% else %>
     <div class="">
       <p class="main-container-content">
-        <b><%= v["title"].humanize %></b>:
+        <b><%= field["title"].humanize %></b>:
 
         <span class="">
           <% if @current_row &&  !@current_row[field["title"]].blank? %>
-            <%= @current_row[v["title"]] %>
+            <%= @current_row[field["title"]] %>
           <% else %>
               --
           <% end %>
