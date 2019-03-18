@@ -600,6 +600,7 @@ function showEditable(evt) {
 
   editableContentWrapper.style.display = 'none'
   editableInput.style.display = 'block'
+  editableInput.children[0].focus();
 
   return true
 }
