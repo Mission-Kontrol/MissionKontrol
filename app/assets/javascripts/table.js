@@ -15,6 +15,20 @@ $(document).ready(function() {
       }
     });
   });
+
+  $('.editable-input input').blur(function(event) {
+    const table = event.target.dataset.table
+    const field = event.target.dataset.field
+    const id = event.target.dataset.id
+    const foreignKeyTitle = event.target.dataset.foreignKeyTitle
+    const foreignKeyValue = event.target.dataset.foreignKeyValue
+
+    if (foreignKeyTitle) {
+      updateRelatedTableField(event, table, field, foreignKeyTitle, foreignKeyValue)
+    } else {
+      updateTableField(event, table, field, id)
+    }
+  })
 })
 
 function hideColumn(columnName) {

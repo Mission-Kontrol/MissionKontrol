@@ -1,50 +1,38 @@
-<% @main_container3_items = items_for_container(layout_builder, 'draggable_fields_main_container3') %>
-<% @main_container3_items.each do |k, v|  %>
-  <% if v["table"] == @current_table %>
+<% fields_for_main_container3(layout_builder).each do |index, field| %>
+  <% if field["table"] == @current_table %>
     <% @current_row = @row %>
   <% else %>
-    <% @current_row = get_related_row(@current_table, v["table"], @row["id"]) %>
+    <% @current_row = get_related_row(@current_table, field["table"], @row["id"]) %>
   <% end %>
 
-  <% if v["editable"] == "true" %>
+  <% if field["editable"] == "true" %>
     <div class="row editable-row">
       <div class="col-xs-12">
         <div class="editable-content-wrapper">
           <p class="main-container-content">
-            <b><%= v["title"] %></b>:
+            <b><%= field["title"] %></b>:
 
             <span class="editable-content" onclick="showEditable(event);">
-              <% if @current_row %>
-                <%= @current_row[v["title"]] %>
-                <span class='display-inline editable-actions'>
-                  <%= render partial: 'tables/layout/editable_actions', locals: {v: v, params: params} %>
-                </span>
-                <% else %>
-                  --
+              <% if current_row_valid?(@current_row, field) %>
+                <%= @current_row[field["title"]] %>
+              <% else %>
+                --
               <% end %>
             </span>
           </p>
         </div>
 
-        <div class="editable-input">
-          <% if @current_row %>
-            <% if v["kind"] == 'integer' %>
-              <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[v["title"]] %>">
-            <% else %>
-              <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[v["title"]] %>">
-            <% end %>
-          <% end %>
-        </div>
+        <%= render partial: 'tables/layout/editable_input', locals: { field: field } %>
       </div>
     </div>
   <% else %>
     <div class="">
       <p class="main-container-content">
-        <b><%= v["title"].humanize %></b>:
+        <b><%= field["title"].humanize %></b>:
 
         <span class="">
-          <% if @current_row %>
-            <%= @current_row[v["title"]] %>
+          <% if @current_row &&  !@current_row[field["title"]].blank? %>
+            <%= @current_row[field["title"]] %>
           <% else %>
               --
           <% end %>
