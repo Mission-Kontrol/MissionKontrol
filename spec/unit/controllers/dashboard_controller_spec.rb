@@ -9,7 +9,7 @@ describe DashboardController, :type => :controller do
 
   describe 'GET show' do
     context "when client database connection is invalid" do
-      xit "renders the bad connection template" do
+      it "renders the bad connection template" do
         sign_in admin
         allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
         get :show
@@ -19,7 +19,7 @@ describe DashboardController, :type => :controller do
     end
 
     context "when client database connection is valid" do
-      xit "renders the show template" do
+      it "renders the show template" do
         sign_in admin
         get :show
         expect(response).to render_template("show")
