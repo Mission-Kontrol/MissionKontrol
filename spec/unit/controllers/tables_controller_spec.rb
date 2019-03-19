@@ -9,7 +9,7 @@ describe TablesController, :type => :controller do
 
   describe 'GET show' do
     context "when client database connection is invalid" do
-      xit "renders the bad connection template" do
+      it "renders the bad connection template" do
         sign_in admin
         allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
         get :show, params: { id: 'users', table_name: 'users', table: 'users'}
@@ -19,7 +19,7 @@ describe TablesController, :type => :controller do
     end
 
     context "when client database connection is valid" do
-      xit "renders the show template" do
+      it "renders the show template" do
         sign_in admin
         get :show, params: { id: 'users', table_name: 'users', table: 'users'}
         expect(response).to render_template("show")
@@ -29,7 +29,7 @@ describe TablesController, :type => :controller do
 
   describe 'GET preview' do
     context "when client database connection is invalid" do
-      xit "renders the bad connection template" do
+      it "renders the bad connection template" do
         sign_in admin
         allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
         get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
@@ -39,10 +39,22 @@ describe TablesController, :type => :controller do
     end
 
     context "when client database connection is valid" do
-      xit "renders the preview template" do
-        sign_in admin
-        get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
-        expect(response).to render_template("preview")
+      context "when layout exists for table" do
+        it "renders the preview template" do
+          create(:view_builder, table_name: "users")
+          sign_in admin
+          get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
+          expect(response).to render_template("preview")
+        end
+      end
+
+      context "when layout does not exist for table" do
+        it "redirects to the new layout template" do
+          ViewBuilder.where(table_name: 'users').delete_all
+          sign_in admin
+          get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
+          expect(response).to redirect_to(new_layout_url)
+        end
       end
     end
   end
