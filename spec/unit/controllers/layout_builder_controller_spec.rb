@@ -19,8 +19,8 @@ describe LayoutBuilderController, type: :controller do
       expect(response.status).to eq(200)
     end
 
-    xit 'will assign the available tables' do
-      expect(assigns(:available_tables)).to eq available_tables
+    it 'will assign the available tables' do
+      expect(assigns(:available_tables)).to match_array available_tables
     end
   end
 
@@ -107,16 +107,21 @@ describe LayoutBuilderController, type: :controller do
   end
 
   describe 'GET show' do
+    before do
+      sign_in admin
+      get :new
+    end
+
     context "when client database is valid" do
       before { get :show, params: params }
       let(:params) { { id: view_builder.id } }
       let(:view_builder) { create(:view_builder) }
 
-      xit 'will render the page' do
+      it 'will render the page' do
         expect(response.status).to eq(200)
       end
 
-      xit 'will assign the view_builder' do
+      it 'will assign the view_builder' do
         expect(assigns[:view_builder]).to eq view_builder
       end
     end
