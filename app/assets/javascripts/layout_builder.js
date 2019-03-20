@@ -456,12 +456,11 @@ function updateLayoutBuilderContainer(containerId, containerItems) {
   var id = url.split("/")[4];
   var containerParam = getContainerParam(containerId);
   var data = {};
-  data["view_builder"] = {};
 
   if (containerItems.length === 0) {
-    data["view_builder"][containerParam] = JSON.stringify(containerItems)
+    data[containerParam] = JSON.stringify(containerItems)
   } else {
-    data["view_builder"][containerParam] = containerItems
+    data[containerParam] = containerItems
   }
 
   $.ajax({
