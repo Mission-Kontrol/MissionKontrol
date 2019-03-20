@@ -34,7 +34,6 @@ class LayoutBuilderController < ApplicationController
 
   def update
     @view_builder = ViewBuilder.find(params[:id])
-
     update_attributes(@view_builder, params)
 
     if @view_builder.save!
@@ -99,6 +98,22 @@ class LayoutBuilderController < ApplicationController
   end
 
   def update_attributes(view_builder, params)
+    view_builder.status = params[:status] if params[:status]
+    view_builder.view_name = params[:name] if params[:name]
+    view_builder.commentable = params[:commentable] if params[:commentable]
+    view_builder.show_status = params[:show_status] if params[:show_status]
+    view_builder.table_name = params[:table_name] if params[:table_name]
+    view_builder.parent_comment_table = params[:parent_comment_table] if params[:parent_comment_table]
+    view_builder.draggable_fields_header_container1 = params[:draggable_fields_header_container1] if params[:draggable_fields_header_container1]
+    view_builder.draggable_fields_header_container2 = params[:draggable_fields_header_container2] if params[:draggable_fields_header_container2]
+    view_builder.draggable_fields_side_container = params[:draggable_fields_side_container] if params[:draggable_fields_side_container]
+    view_builder.draggable_fields_main_container1 = params[:draggable_fields_main_container1] if params[:draggable_fields_main_container1]
+    view_builder.draggable_fields_main_container2 = params[:draggable_fields_main_container2] if params[:draggable_fields_main_container2]
+    view_builder.draggable_fields_main_container3 = params[:draggable_fields_main_container3] if params[:draggable_fields_main_container3]
+    view_builder.hidden_columns = params[:hidden_columns] if params[:hidden_columns]
+  end
+
+  def update_attributes_old(view_builder, params)
     view_builder.status = params[:status] if params[:status]
     view_builder.view_name = params[:name] if params[:name]
     view_builder.commentable = params[:view_builder][:commentable] if params[:view_builder][:commentable]
