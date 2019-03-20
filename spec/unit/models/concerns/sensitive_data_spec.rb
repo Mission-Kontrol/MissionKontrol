@@ -12,6 +12,11 @@ def clear_target_db_credentials
   File.delete(SensitiveData.target_db_credentials_file_path)
 end
 
+def clear_twilio_api_key
+  return unless File.exist?(SensitiveData.twilio_api_key_file_path)
+  File.delete(SensitiveData.twilio_api_key_file_path)
+end
+
 describe SensitiveData do
   let(:sensitive_data) { described_class }
   let(:admin_user) { build(:admin_user) }
@@ -128,6 +133,34 @@ describe SensitiveData do
 
       actual = described_class.set_target_database_credential(credential, name)
 
+      expect(actual).to eq(true)
+    end
+  end
+
+  describe '.get_twilio_api_key' do
+    context 'when set' do
+      it 'returns twilio api key' do
+        clear_twilio_api_key
+        key = 'demo_twilio_api_key'
+        described_class.set_twilio_api_key(key)
+        actual = described_class.get_twilio_api_key
+        expect(actual).to eq(key)
+      end
+    end
+
+    context 'when not set' do
+      it 'returns nil' do
+        clear_twilio_api_key
+        actual = admin_user.twilio_api_key
+        expect(actual).to eq(nil)
+      end
+    end
+  end
+
+  describe '.set_twilio_api_key' do
+    it 'sets twilio api key correctly' do
+      key = 'demo_twilio_api_key'
+      actual = described_class.set_twilio_api_key(key)
       expect(actual).to eq(true)
     end
   end
