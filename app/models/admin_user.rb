@@ -13,6 +13,14 @@ class AdminUser < ApplicationRecord
 
   include SensitiveData
 
+  def twilio_api_key
+    SensitiveData.get_twilio_api_key
+  end
+
+  def twilio_api_key=(key)
+    SensitiveData.set_twilio_api_key(key)
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end
