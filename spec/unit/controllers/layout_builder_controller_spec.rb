@@ -25,57 +25,41 @@ describe LayoutBuilderController, type: :controller do
   end
 
   describe 'POST create' do
-    before { post :create, params: params }
+    before do
+      sign_in admin
+      post :create, params: params
+    end
     let(:view_name) { 'View name' }
     let(:params) do
       {
         view_name: view_name,
         table: table,
-        selectedOptions: %w[id name email]
-      }
-    end
-    let(:table_attributes) do
-      {
-        'visible_fields' => {
-          '0' => 'id',
-          '1' => 'name',
-          '2' => 'email'
-        }
       }
     end
 
-    xit 'will create the view builder' do
+    it 'will create the view builder' do
       expect(assigns(:view_builder).view_name).to eq view_name
       expect(assigns(:view_builder).table_name).to eq table
     end
 
-    xit 'will create the view_builders visible_fields' do
-      expect(assigns(:view_builder).table_attributes).to eq table_attributes
-    end
-
-    xit 'will save the view builder' do
+    it 'will save the view builder' do
       expect(assigns(:view_builder)).to be_a ViewBuilder
-    end
-
-    xit 'will render the configure_table_order template' do
-      expect(response).to render_template(:configure_table_order)
     end
   end
 
   describe 'PATCH update' do
     before do
-      put :update, params: params
+      sign_in admin
+      put :update, params: params, format: :js
       view_builder.reload
     end
     let(:params) do
       {
         id: view_builder.id,
         tableConfigurations: table_configurations,
-        defaultRows: default_rows
       }
     end
     let(:view_builder) { create(:view_builder) }
-    let(:default_rows) { '2' }
     let(:table_configurations) do
       {
         '1' => { 'Field' => 'area', 'Position' => '1' },
@@ -93,16 +77,12 @@ describe LayoutBuilderController, type: :controller do
       }
     end
 
-    xit 'will update the view builder with the default rows' do
-      expect(view_builder.table_attributes['default_rows']).to eq default_rows
-    end
-
-    xit 'will update the positions of the visible fields' do
+    it 'will update the positions of the visible fields' do
       expect(view_builder.table_attributes['visible_fields']).to eq expected_positions
     end
 
-    xit 'will redirect to view the configuration' do
-      expect(response).to redirect_to(view_builder_url(view_builder))
+    it 'will redirect to view the configuration' do
+      expect(response).to redirect_to(layout_url(view_builder))
     end
   end
 
