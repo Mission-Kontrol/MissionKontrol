@@ -40,6 +40,7 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
       first_name
       last_name
       company_name
+      twilio_api_key
     ] + db_params
 
     devise_parameter_sanitizer.permit(:account_update, keys: keys)
