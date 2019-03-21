@@ -1,93 +1,57 @@
-<div class="row  border-bottom white-bg dashboard-header">
-  <div class="col-sm-4">
-    <h2>
-      <span id="enjoyhint-welcome-handler">Welcome</span> 
-    </h2>
-
-    <small>There are 52 open work lists items.</small>
-
-    <ul class="list-group clear-list m-t">
-      <li class="list-group-item fist-item">
-        <span class="label label-success">1</span> Accounts without demos
-      </li>
-
-      <li class="list-group-item">
-        <span class="label label-info">2</span> Clients slipping away
-      </li>
-
-      <li class="list-group-item">
-        <span class="label label-primary">3</span> End of trial calls
-      </li>
-
-      <li class="list-group-item">
-        <span class="label label-default">4</span> Raised a request
-      </li>
-    </ul>
-
-    <div class="text-right">
-      <%= link_to "View all", work_lists_path %>
-    </div>
-  </div>
-
-  <div class="col-sm-8">
-    <div class="flot-chart dashboard-chart">
-      <div class="flot-chart-content" id="flot-dashboard-chart"></div>
-    </div>
-
-    <div class="row text-left">
-      <div class="col-sm-12 col-md-4">
-        <div class=" m-l-md">
-          <span class="h4 font-bold m-t block">$ 406,100</span>
-          <small class="text-muted m-b block">MRR Pipeline total</small>
-        </div>
-      </div>
-
-      <div class="col-sm-12 col-md-4">
-        <div class=" m-l-md">
-          <span class="h4 font-bold m-t block">$ 150,401</span>
-          <small class="text-muted m-b block">MRR in trial</small>
-        </div>
-      </div>
-
-      <div class="col-sm-12 col-md-4">
-        <div class=" m-l-md">
-          <span class="h4 font-bold m-t block">$ 16,822</span>
-          <small class="text-muted m-b block">MRR in trial</small>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <h2>Welcome to Kuwinda</h2>
 </div>
 
-<div class="wrapper wrapper-content animated fadeIn">
-  <div class="row" style="">
-    <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>Acquisition & Activation</h5>
-        </div>
+<div class="row wrapper border-bottom white-bg page-heading m-t p-h-xs">
 
-        <div class="ibox-content">
-          <input type="text" class="form-control input-sm m-b-xs" id="filter"
-          placeholder="Search in table">
+  <div class="col-sm-4">
+    <h2>Kuwinda</h2>
 
-          <%= render 'aquisitions_and_activations_table' %>
-        </div>
-      </div>
-    </div>
+    <ul>
+      <li>
+        Current version: 0.1.1
+      </li>
+
+      <li>
+        Documentation
+      </li>
+
+      <li>
+        <a href="https://kuwinda.io">Official homepage</a>
+      </li>
+
+      <li>
+        <a href="https://www.kuwinda.io/support/en/knowledgebase">Get support</a>
+      </li>
+
+      <li>List of changes</li>
+      <li>Request a feature</li>
+    </ul>
   </div>
 
-  <div class="row" style="">
-    <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>Engagement</h5>
-        </div>
+  <div class="col-sm-4">
+    <h2>Kuwinda database</h2>
 
-        <div class="ibox-content">
-          <%= render 'engagement_chart' %>
-        </div>
-      </div>
-    </div>
+    <ul>
+      <li>Database host: <%= @admin_database.host %></li>
+      <li>Database type: <%= @admin_database.type %></li>
+      <li>Database port: <%= @admin_database.port %></li>
+      <li>Database name: <%= @admin_database.database %></li>
+      <li>Database username: <%= @admin_database.username %></li>
+      <li>Database password: <%= @admin_database.password %></li>
+    </ul>
+  </div>
+
+  <div class="col-sm-4">
+    <h2>Target database</h2>
+
+    <ul>
+      <li>Database host: <%= current_admin_user.target_database_host %></li>
+      <li>Database type: <%= current_admin_user.target_database_type %></li>
+      <li>Database port: <%= current_admin_user.target_database_port %></li>
+      <li>Database name: <%= current_admin_user.target_database_name %></li>
+      <li>Database username: <%= current_admin_user.target_database_username %></li>
+      <li>Database password: <%= current_admin_user.target_database_password %></li>
+    </ul>
   </div>
 </div>
