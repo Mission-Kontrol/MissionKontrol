@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Admin views a table without a layout', type: :feature do
+RSpec.feature 'Admin views a table', type: :feature do
   let(:admin) do
     AdminUser.first_or_create(email: 'test@test.com', password: '123456', password_confirmation: '123456')
   end
