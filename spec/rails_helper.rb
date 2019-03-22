@@ -8,6 +8,7 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is in production mode!') if Rails.env.production?
 require 'rspec/rails'
 require 'selenium/webdriver'
+require 'capybara-screenshot/rspec'
 
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
