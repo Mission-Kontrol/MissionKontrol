@@ -8,8 +8,12 @@
       <%= csrf_meta_tags %>
     </head>
   </head>
-  
+
   <body class="gray-bg">
     <%= yield %>
+
+    <div id="natterly-container"></div>
+
+    <%= render 'layouts/natterly' %>
   </body>
 </html>

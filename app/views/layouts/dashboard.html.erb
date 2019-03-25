@@ -42,8 +42,10 @@
     </div>
     <!-- End wrapper-->
 
+    <div id="natterly-container"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-slider/1.0.0/simpleslider.min.js"></script>
-    <script src="https://cdn.natterly.com/chatbox.js"></script>
+
     <script type="text/javascript">
       window._mfq = window._mfq || [];
       (function() {
@@ -53,10 +55,7 @@
           document.getElementsByTagName("head")[0].appendChild(mf);
       })();
     </script>
-    <script>
-      chatbox = new NatterlyChatbox("092eb593-d9e2-4b6a-ad70-ef6f0a14c6a2");
-      chatbox.render();
-    </script>
-  </body>
 
+    <%= render 'layouts/natterly' %>
+  </body>
 </html>
