@@ -76,3 +76,10 @@
 .footable-filtering-search button {
   margin-bottom: 0 !important;
 }
+
+.text-truncate {
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  width: 200px
+}
