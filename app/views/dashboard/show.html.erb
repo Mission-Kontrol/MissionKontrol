@@ -33,12 +33,18 @@
     <h2>Kuwinda database</h2>
 
     <ul>
-      <li>Database host: <%= @admin_database.host %></li>
+      <li>
+        <div data-toggle='tooltip' data-placement='top' title ='<%= current_admin_user.target_database_host %>' class="text-truncate">
+          Database host:
+          <%= @admin_database.host %>
+        </div>
+      </li>
+
       <li>Database type: <%= @admin_database.type %></li>
       <li>Database port: <%= @admin_database.port %></li>
       <li>Database name: <%= @admin_database.database %></li>
       <li>Database username: <%= @admin_database.username %></li>
-      <li>Database password: <%= @admin_database.password %></li>
+      <li>Database password: **********</li>
     </ul>
   </div>
 
@@ -46,12 +52,17 @@
     <h2>Target database</h2>
 
     <ul>
-      <li>Database host: <%= current_admin_user.target_database_host %></li>
+      <li>
+        <div data-toggle='tooltip' data-placement='top' title ='<%= current_admin_user.target_database_host %>' class="text-truncate">
+          Database host:
+          <%= current_admin_user.target_database_host %>
+        </div>
+      </li>
       <li>Database type: <%= current_admin_user.target_database_type %></li>
       <li>Database port: <%= current_admin_user.target_database_port %></li>
       <li>Database name: <%= current_admin_user.target_database_name %></li>
       <li>Database username: <%= current_admin_user.target_database_username %></li>
-      <li>Database password: <%= current_admin_user.target_database_password %></li>
+      <li>Database password: **********</li>
     </ul>
   </div>
 </div>
