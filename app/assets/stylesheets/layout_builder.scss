@@ -336,3 +336,18 @@ input:checked ~ .active-bg {
 input:checked ~ .toggle-inner .indicator {
    transform: translate3d(25%, 0, 0);
 }
+
+.layout-builder--main-container {
+  .col-md-4:first-child {
+    padding-right: 7.5px;
+  }
+
+  .col-md-4:nth-child(2) {
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+  }
+
+  .col-md-4:last-child {
+    padding-left: 7.5px;
+  }
+}
