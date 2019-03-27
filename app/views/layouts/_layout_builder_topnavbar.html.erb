@@ -6,22 +6,30 @@
           <span><img src="/assets/logos/kuwinda_thumbnail.png" alt="" class="logo-thumbnail"></span>
         <% end %>
       </li>
+      
       <li>
         <ol class="breadcrumb layouts-layout_builder_topnavbar-breadcrumb">
           <li>
             <%= link_to 'Dashboard', dashboard_path %>
           </li>
 
-          <li>
-            <%= link_to "Table: #{@view_builder.table_name}", dashboard_path %>
-          </li>
+          <% if @view_builder.table_name.blank? %>
+            <li>
+              new layout
+            </li>
+          <% else %>
+            <li>
+              <%= link_to "Table: #{@view_builder.table_name}", table_path(@view_builder.table_name, table: @view_builder.table_name) %>
+            </li>
 
-          <li>
-            <%= link_to "Layout name: #{@view_builder.view_name}", dashboard_path %>
-          </li>
+            <li>
+              <%= "Layout name: #{@view_builder.view_name}" %>
+            </li>
+          <% end %>
         </ol>
       </li>
     </ul>
+
     <ul class="nav navbar-top-links navbar-right">
       <li>
         <% if admin_user_signed_in? %>
