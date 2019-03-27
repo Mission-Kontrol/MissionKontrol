@@ -106,6 +106,11 @@ $(document).ready(function() {
       document.getElementById("layout-builder-general-settings-tab").click();
     }
   }
+
+  setTimeout(() => {
+    console.log('scrolling to top');
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }, 300)
 })
 
 $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
