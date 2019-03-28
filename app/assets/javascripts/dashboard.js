@@ -36,10 +36,8 @@ $(document).ready(function() {
   }
 
   if (isCurrentControllerLayoutBuilder && isCurrentActionEdit) {
-    if (!tourComplete) {
-      loadEnjoyhint4();
-      enjoyhint.run();
-    }
+    loadEnjoyhint4();
+    enjoyhint.run();
   }
 });
 
