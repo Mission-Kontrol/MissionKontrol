@@ -21,6 +21,7 @@ gem 'uglifier', '~> 4.1.5'
 gem 'pg', '~> 0.18'
 gem 'mysql2', '~> 0.3.18'
 gem 'clockwork', '~> 2.0', '>= 2.0.3'
+gem 'twilio-ruby', '~> 5.17.0'
 
 group :development, :test do
   gem 'byebug'
