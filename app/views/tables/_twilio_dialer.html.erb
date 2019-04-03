@@ -1,0 +1,24 @@
+<div class="">
+  <div class="well well-sm hide" id="call-status">
+     Connecting to Twilio...
+   </div>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary call-customer-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+        <span>Call <%= layout_builder.table_name.singularize %></span>
+        <span class="caret"></span>
+      </button>
+
+      <ul class="dropdown-menu">
+        <% @fields_with_type.each do |f| %>
+          <% @field = f[0] %>
+          <% if layout_builder.callable_fields.include?(@field) %>
+            <li><a href="#" class="call-customer-buttonn" onclick="callCustomer('<%= @current_row[@field] %>')"><b><%= @field %></b>: <%= @current_row[@field] %></a></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+
+   <button class="btn btn-danger hangup-button" onclick="hangUp()" disabled>Hang up</button>
+</div>
