@@ -6,15 +6,19 @@
   <% end %>
 
   <% if field["editable"] == "true" %>
-    <div class="row editable-row">
+    <div class="row editable-row m-b">
       <div class="col-xs-12">
         <div class="editable-content-wrapper">
+          <b><%= field["title"] %></b>:
+
           <% if current_row_valid?(@current_row, field) %>
-            <p class="editable-content header-container2-content" onclick="showEditable(event);">
+            <span class="editable-content header-container2-content" onclick="showEditable(event);">
               <%= @current_row[field["title"]] %>
-            </p>
+            </span>
           <% else %>
-            <p class="editable-content header-container2-content" onclick="showEditable(event);">--</p>
+            <span class="editable-content header-container2-content" onclick="showEditable(event);">
+              --
+            </span>
           <% end %>
         </div>
 
@@ -22,13 +26,17 @@
       </div>
     </div>
   <% else %>
-    <div class="">
+    <div class="m-b">
+      <b><%= field["title"] %></b>:
+
       <% if @current_row &&  !@current_row[field["title"]].blank? %>
-        <p class="header-container2-content">
+        <span class="header-container2-content">
           <%= @current_row[field["title"]] %>
-        </p>
+        </span>
       <% else %>
-        <p class="header-container2-content">--</p>
+        <span class="header-container2-content">
+          --
+        </span>
       <% end %>
     </div>
   <% end %>
