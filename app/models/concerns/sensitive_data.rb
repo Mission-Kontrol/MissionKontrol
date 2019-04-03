@@ -3,14 +3,16 @@
 module SensitiveData
   include ActiveSupport::Concern
 
-  def self.get_twilio_api_key
-    return twilio_api_key if twilio_api_key
+  def self.get_twilio_credential(credential)
+    return twilio_credentials[credential] if twilio_credentials
 
     nil
   end
 
-  def self.set_twilio_api_key(key)
-    SensitiveData.save_twilio_api_key(key)
+  def self.set_twilio_credential(credential, value)
+    data = twilio_credentials || {}
+    data[credential] = value
+    SensitiveData.save_twilio_credentials(data)
   end
 
   def self.get_admin_database_credential(credential)
@@ -60,9 +62,9 @@ module SensitiveData
     "./config/sensitive_data/target_db_credentials_#{Rails.env}.txt"
   end
 
-  def self.twilio_api_key_file_path
+  def self.twilio_credentials_file_path
     verify_sensitive_data_location
-    "./config/sensitive_data/twilio_api_key_#{Rails.env}.txt"
+    "./config/sensitive_data/twilio_credentials_#{Rails.env}.txt"
   end
 
   def self.save_admin_db_credentials(admin_db_credentials)
@@ -77,9 +79,9 @@ module SensitiveData
     true
   end
 
-  def self.save_twilio_api_key(key)
-    token = SensitiveData.encrypt(key)
-    File.write(SensitiveData.twilio_api_key_file_path, token)
+  def self.save_twilio_credentials(twilio_credentials)
+    token = SensitiveData.encrypt(twilio_credentials)
+    File.write(SensitiveData.twilio_credentials_file_path, token)
     true
   end
 
@@ -101,9 +103,9 @@ module SensitiveData
     nil
   end
 
-  def self.twilio_api_key
-    if File.exist?(SensitiveData.twilio_api_key_file_path)
-      data = File.read(SensitiveData.twilio_api_key_file_path)
+  def self.twilio_credentials
+    if File.exist?(SensitiveData.twilio_credentials_file_path)
+      data = File.read(SensitiveData.twilio_credentials_file_path)
       return SensitiveData.decrypt(data) unless data.blank?
     end
 

@@ -12,9 +12,9 @@ def clear_target_db_credentials
   File.delete(SensitiveData.target_db_credentials_file_path)
 end
 
-def clear_twilio_api_key
-  return unless File.exist?(SensitiveData.twilio_api_key_file_path)
-  File.delete(SensitiveData.twilio_api_key_file_path)
+def clear_twilio_credentials
+  return unless File.exist?(SensitiveData.twilio_credentials_file_path)
+  File.delete(SensitiveData.twilio_credentials_file_path)
 end
 
 describe SensitiveData do
@@ -136,31 +136,41 @@ describe SensitiveData do
       expect(actual).to eq(true)
     end
   end
-
-  describe '.get_twilio_api_key' do
+  
+  describe '.get_twilio_credential' do
     context 'when set' do
-      it 'returns twilio api key' do
-        clear_twilio_api_key
-        key = 'demo_twilio_api_key'
-        described_class.set_twilio_api_key(key)
-        actual = described_class.get_twilio_api_key
-        expect(actual).to eq(key)
+      it 'returns credential' do
+        clear_twilio_credentials
+        caller_id = '+447448958786'
+        credential = :caller_id
+        described_class.set_twilio_credential(credential, caller_id)
+
+        actual = described_class.get_twilio_credential(credential)
+
+        expect(actual).to eq(caller_id)
       end
     end
 
     context 'when not set' do
       it 'returns nil' do
-        clear_twilio_api_key
-        actual = admin_user.twilio_api_key
+        clear_twilio_credentials
+        credential = :caller_id
+
+        actual = described_class.get_twilio_credential(credential)
+
         expect(actual).to eq(nil)
       end
     end
   end
 
-  describe '.set_twilio_api_key' do
-    it 'sets twilio api key correctly' do
-      key = 'demo_twilio_api_key'
-      actual = described_class.set_twilio_api_key(key)
+  describe '.set_twilio_caller_id' do
+    it 'sets twilio credential correctly' do
+      clear_twilio_credentials
+      caller_id = '+447448958786'
+      credential = :caller_id
+
+      actual = described_class.set_twilio_credential(credential, caller_id)
+
       expect(actual).to eq(true)
     end
   end
