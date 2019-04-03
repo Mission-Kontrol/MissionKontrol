@@ -1,15 +1,21 @@
-<div class="row white-bg">
-  <!-- Twilio call button -->
+<!-- Twilio call button -->
+<div class="row m-b">
   <div class="col-sm-12">
     <div class="text-right">
-     <button onclick="callCustomer('<%# ticket.phone_number %>')" type="button" class="btn btn-primary call-customer-button">
+    <div class="well well-sm hide" id="call-status">
+       Connecting to Twilio...
+     </div>
+     <button onclick="callCustomer('<%= @row["number"] %>')" type="button" class="btn btn-primary call-customer-button">
        <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-       Call customer
+       Call <%= layout_builder.table_name.singularize %>
      </button>
+     <button class="btn btn-danger hangup-button" onclick="hangUp()" disabled>Hang up</button>
    </div>
   </div>
+</div>
 <!-- Twilio call button -->
 
+<div class="row white-bg">
   <div class="col-sm-12">
     <div class="row">
       <div class="col-sm-12">
