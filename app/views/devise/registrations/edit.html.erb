@@ -20,10 +20,32 @@
             <!-- twilio settings -->
             <div class="">
               <div class="form-group">
-                <%= f.label :twilio_api_key %>
-                <%= f.text_field :twilio_api_key, autofocus: true, class: "form-control" %>
+                <%= f.label :twilio_caller_id, "Twilio caller ID" %>
+                <%= f.text_field :twilio_caller_id, autofocus: true, class: "form-control" %>
               </div>
             </div>
+
+            <div class="">
+              <div class="form-group">
+                <%= f.label :twilio_auth_token %>
+                <%= f.text_field :twilio_auth_token, autofocus: true, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="">
+              <div class="form-group">
+                <%= f.label :twilio_application_sid %>
+                <%= f.text_field :twilio_application_sid, autofocus: true, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="">
+              <div class="form-group">
+                <%= f.label :twilio_account_sid %>
+                <%= f.text_field :twilio_account_sid, autofocus: true, class: "form-control" %>
+              </div>
+            </div>
+            <!-- twilio settings -->
 
             <!-- target database settings -->
             <div class="hide">
