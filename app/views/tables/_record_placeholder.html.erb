@@ -1,32 +1,4 @@
-<!-- Twilio call button -->
-<div class="row m-b">
-  <div class="col-sm-12">
-    <div class="text-right">
-    <div class="well well-sm hide" id="call-status">
-       Connecting to Twilio...
-     </div>
-     <button onclick="callCustomer('<%= @row["number"] %>')" type="button" class="btn btn-primary call-customer-button">
-       <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-       Call <%= layout_builder.table_name.singularize %>
-     </button>
-     <button class="btn btn-danger hangup-button" onclick="hangUp()" disabled>Hang up</button>
-   </div>
-  </div>
-</div>
-<!-- Twilio call button -->
-
 <div class="row white-bg">
-  <!-- Twilio call button -->
-  <div class="col-sm-12">
-    <div class="text-right">
-     <button onclick="callCustomer('<%# ticket.phone_number %>')" type="button" class="btn btn-primary call-customer-button">
-       <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-       Call customer
-     </button>
-   </div>
-  </div>
-<!-- Twilio call button -->
-
   <div class="col-sm-12">
     <div class="row">
       <div class="col-sm-12">
@@ -39,6 +11,10 @@
         <div class="table-record-placeholder-header">
           <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
         </div>
+      </div>
+
+      <div class="col-sm-12 m-b">
+        <%= render '/tables/twilio_dialer', layout_builder: layout_builder %>
       </div>
     </div>
   </div>
