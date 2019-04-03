@@ -47,6 +47,7 @@ class LayoutBuilderController < ApplicationController
   def edit
     @view_builder = ViewBuilder.find(params[:id])
     @relatable_tables = relatable_tables(@view_builder.table_name)
+    @fields_with_type = list_table_fields_with_type(@view_builder.table_name)
   end
 
   def preview
@@ -113,6 +114,7 @@ class LayoutBuilderController < ApplicationController
       view_builder.draggable_fields_main_container2 = params[:view_builder][:draggable_fields_main_container2] if params[:view_builder][:draggable_fields_main_container2]
       view_builder.draggable_fields_main_container3 = params[:view_builder][:draggable_fields_main_container3] if params[:view_builder][:draggable_fields_main_container3]
       view_builder.hidden_columns = params[:view_builder][:hidden_columns] if params[:view_builder][:hidden_columns]
+      view_builder.callable_fields = params[:view_builder][:callable_fields] if params[:view_builder][:callable_fields]
     end
   end
 end
