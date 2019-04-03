@@ -9,9 +9,11 @@
       <i class="fa fa-wrench" aria-hidden="true"></i>
     </a>
 
-    <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_phone_settings_form" id="layout-builder-phone-settings-tab">
-      <i class="fa fa-phone" aria-hidden="true"></i>
-    </a>
+    <% if active_action?("edit") %>
+      <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_phone_settings_form" id="layout-builder-phone-settings-tab">
+        <i class="fa fa-phone" aria-hidden="true"></i>
+      </a>
+    <% end %>
   </div>
 
   <div class="col-sm-9 layout-builder-side-nav min-height-100vh">
@@ -90,25 +92,27 @@
         </div>
       </div>
 
-      <div class="tab-content" id="layout_builder_phone_settings_form">
+      <% if active_action?("edit") %>
+        <div class="tab-content" id="layout_builder_phone_settings_form">
 
-        <h4>Phone settings</h4>
+          <h4>Phone settings</h4>
 
-        <p>Select the fields that can be treated as phone numbers.</p>
+          <p>Select the fields that can be treated as phone numbers.</p>
 
-        <div id="callable-fields">
-          <% @fields_with_type.each do |f| %>
-            <% @field = f[0] %>
-            <div>
-              <% if @view_builder.callable_fields.include?(@field) %>
-                <input type="checkbox" checked name="<%= @field %>" value="<%= @field %>" class="callable-field" onchange="updateCallableFields()"> <%= @field %>
-              <% else %>
-                <input type="checkbox" name="<%= @field %>" value="<%= @field %>" class="callable-field" onchange="updateCallableFields()"> <%= @field %>
-              <% end %>
-            </div>
-          <% end %>
+          <div id="callable-fields">
+            <% @fields_with_type.each do |f| %>
+              <% @field = f[0] %>
+              <div>
+                <% if @view_builder.callable_fields.include?(@field) %>
+                  <input type="checkbox" checked name="<%= @field %>" value="<%= @field %>" class="callable-field" onchange="updateCallableFields()"> <%= @field %>
+                <% else %>
+                  <input type="checkbox" name="<%= @field %>" value="<%= @field %>" class="callable-field" onchange="updateCallableFields()"> <%= @field %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>
