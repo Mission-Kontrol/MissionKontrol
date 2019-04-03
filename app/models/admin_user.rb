@@ -13,12 +13,40 @@ class AdminUser < ApplicationRecord
 
   include SensitiveData
 
-  def twilio_api_key
-    SensitiveData.get_twilio_api_key
+  def role
+    "admin"
   end
 
-  def twilio_api_key=(key)
-    SensitiveData.set_twilio_api_key(key)
+  def twilio_auth_token
+    SensitiveData.get_twilio_credential(:auth_token)
+  end
+
+  def twilio_auth_token=(auth_token)
+    SensitiveData.set_twilio_credential(:auth_token, auth_token)
+  end
+
+  def twilio_account_sid
+    SensitiveData.get_twilio_credential(:account_sid)
+  end
+
+  def twilio_account_sid=(account_sid)
+    SensitiveData.set_twilio_credential(:account_sid, account_sid)
+  end
+
+  def twilio_application_sid
+    SensitiveData.get_twilio_credential(:application_sid)
+  end
+
+  def twilio_application_sid=(application_sid)
+    SensitiveData.set_twilio_credential(:application_sid, application_sid)
+  end
+
+  def twilio_caller_id
+    SensitiveData.get_twilio_credential(:caller_id)
+  end
+
+  def twilio_caller_id=(caller_id)
+    SensitiveData.set_twilio_credential(:caller_id, caller_id)
   end
 
   def full_name

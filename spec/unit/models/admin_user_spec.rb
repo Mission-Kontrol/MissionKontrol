@@ -46,6 +46,19 @@ def target_db_credentials_setters
   ]
 end
 
+def twilio_credentials
+  %w[
+    twilio_caller_id
+    twilio_auth_token
+    twilio_account_sid
+    twilio_application_sid
+    twilio_caller_id=
+    twilio_auth_token=
+    twilio_account_sid=
+    twilio_application_sid=
+  ]
+end
+
 describe AdminUser do
   let(:an_admin_user) { described_class.new }
 
@@ -70,6 +83,12 @@ describe AdminUser do
   target_db_credentials_setters.each do |credential|
     it "responds to ##{credential}" do
       expect(an_admin_user).to respond_to(credential.to_sym)
+    end
+  end
+
+  twilio_credentials.each do |credential|
+    it "responds to #{credential}" do
+      expect(an_admin_user).to respond_to(credential)
     end
   end
 end
