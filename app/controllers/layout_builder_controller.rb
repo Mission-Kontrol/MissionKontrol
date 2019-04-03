@@ -74,10 +74,6 @@ class LayoutBuilderController < ApplicationController
     @view_builder = ViewBuilder.find(params[:id])
   end
 
-  def list_table_fields_with_type(table)
-    Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
-  end
-
   def tables_with_layouts
     tables_with_layouts = []
     available_tables.select do |table|

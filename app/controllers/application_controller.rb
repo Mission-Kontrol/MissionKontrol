@@ -49,6 +49,32 @@ class ApplicationController < ActionController::Base
     !current_admin_user.target_database_type.blank?
   end
 
+  def test_target_db_connection
+    ActiveRecord::Base.establish_connection(
+      :adapter  => adapter(current_admin_user.target_database_type),
+      :host     => current_admin_user.target_database_host,
+      :username => current_admin_user.target_database_username,
+      :password => current_admin_user.target_database_password,
+      :database => current_admin_user.target_database_name
+    ).connection
+  end
+
+  def adapter(scheme)
+   case scheme
+   when 'postgresql', 'postgres'
+     return 'postgresql'
+   when 'mysql', 'mysql2'
+     return 'mysql2'
+   else
+     raise InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
+   end
+  end
+
+  def handle_invalid_client_db_error
+    @available_tables = []
+    render '/tables/bad_connection'
+  end
+
   protected
 
   def after_sign_up_path_for(resource)
@@ -77,31 +103,7 @@ class ApplicationController < ActionController::Base
    dashboard_path
   end
 
-  private
-
-  def test_target_db_connection
-    ActiveRecord::Base.establish_connection(
-      :adapter  => adapter(current_admin_user.target_database_type),
-      :host     => current_admin_user.target_database_host,
-      :username => current_admin_user.target_database_username,
-      :password => current_admin_user.target_database_password,
-      :database => current_admin_user.target_database_name
-    ).connection
-  end
-
-  def adapter(scheme)
-   case scheme
-   when 'postgresql', 'postgres'
-     return 'postgresql'
-   when 'mysql', 'mysql2'
-     return 'mysql2'
-   else
-     raise InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
-   end
-  end
-
-  def handle_invalid_client_db_error
-    @available_tables = []
-    render '/tables/bad_connection'
+  def list_table_fields_with_type(table)
+    Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
   end
 end
