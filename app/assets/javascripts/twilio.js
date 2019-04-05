@@ -23,18 +23,28 @@ $(document).ready(function() {
 
   /* Callback for when a call ends */
   Twilio.Device.disconnect(function(connection) {
+    const phoneNumber = connection.customParameters.get("phoneNumber")
+    const tableName = connection.customParameters.get("tableName")
+    const recordId = connection.customParameters.get("recordId")
+
     $("#call-status").addClass('hide');
     $(".hangup-button").prop("disabled", true);
     $(".call-customer-button").prop("disabled", false);
+
+    captureCallEvent(connection.parameters.CallSid, tableName, recordId, phoneNumber);
     updateCallStatus("Ready");
   });
 });
 
 /* Call a customer from a support ticket */
-function callCustomer(phoneNumber) {
+function callCustomer(phoneNumber, tableName, recordId) {
   updateCallStatus("Calling " + phoneNumber + "...");
 
-  var params = {"phoneNumber": phoneNumber};
+  var params = {};
+  params["phoneNumber"] = phoneNumber;
+  params["tableName"] = tableName;
+  params["recordId"] = recordId;
+
   Twilio.Device.connect(params);
 }
 
@@ -46,4 +56,27 @@ function updateCallStatus(status) {
 /* End a call */
 function hangUp() {
   Twilio.Device.disconnectAll();
+}
+
+function captureCallEvent(twilioCallSid, tableName, recordId, phoneNumber) {
+  const activityContent = "1 call to " + phoneNumber + " on " + moment().format("dddd, MMMM Do YYYY, h:mm:ss a") + ".";
+
+  // post to create activity
+  $.ajax({
+    url: "/activities",
+    type: 'POST',
+    data: {
+      'activity': {
+        'feedable_type': tableName,
+        'feedable_id': recordId,
+        'kind': 'call',
+        'content': activityContent,
+        'twilio_call_sid': twilioCallSid
+      }
+    },
+    async: true,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      console.log("Something went wrong, please try again.")
+     }
+  })
 }
