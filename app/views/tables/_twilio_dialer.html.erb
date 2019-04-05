@@ -14,7 +14,7 @@
         <% @fields_with_type.each do |f| %>
           <% @field = f[0] %>
           <% if layout_builder.callable_fields.include?(@field) %>
-            <li><a href="#" class="call-customer-button" onclick="callCustomer('<%= @current_row[@field] %>')"><b><%= @field %></b>: <%= @current_row[@field] %></a></li>
+            <li><a href="#" class="call-customer-button" onclick="callCustomer('<%= @current_row[@field] %>', '<%= @current_table %>', '<%= @current_row['id'] %>')"><b><%= @field %></b>: <%= @current_row[@field] %></a></li>
           <% end %>
         <% end %>
       </ul>
