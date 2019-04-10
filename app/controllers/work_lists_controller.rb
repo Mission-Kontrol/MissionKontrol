@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WorkListsController < ApplicationController
-  layout 'dashboard'
+  layout 'work_list'
   before_action :set_db_tables, only: %i[new create add_sql_filter edit]
   before_action :set_db_columns, only: %i[new create add_sql_filter edit]
   before_action :load_available_tables
