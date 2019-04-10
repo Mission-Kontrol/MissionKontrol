@@ -14,7 +14,16 @@
         <% @fields_with_type.each do |f| %>
           <% @field = f[0] %>
           <% if layout_builder.callable_fields.include?(@field) %>
-            <li><a href="#" class="call-customer-button" onclick="callCustomer('<%= @current_row[@field] %>', '<%= @current_table %>', '<%= @current_row['id'] %>')"><b><%= @field %></b>: <%= @current_row[@field] %></a></li>
+            <% if is_phone_number?(@current_row[@field]) %>
+              <li><a href="#" class="call-customer-button" onclick="callCustomer('<%= @current_row[@field] %>', '<%= @current_table %>', '<%= @current_row['id'] %>', '<%= @field %>')"><b><%= @field %></b>: <%= @current_row[@field] %></a></li>
+            <% else %>
+              <li>
+                <a href="#" class="call-customer-button disabled" disabled>
+                  <b><%= @field %></b>: <%= @current_row[@field] %> <br>
+                  <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> not a phone number</small>
+                </a>
+              </li>
+            <% end %>
           <% end %>
         <% end %>
       </ul>
