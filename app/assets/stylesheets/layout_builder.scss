@@ -31,6 +31,14 @@
   z-index: 1;
   background-color: white;
 
+  .row {
+    margin: 0 0;
+  }
+
+  .col-sm-7, .col-sm-5 {
+    padding: 0
+  }
+
   .layout-builder-field-editable-toggle {
     display: inline-block;
 
@@ -50,6 +58,21 @@
 
 .draggable-mirror {
   width: 300px;
+}
+
+#layout-builder-draggable-fields-container {
+  outline: none !important;
+}
+
+#layout-builder-draggable-header-container1,
+#layout-builder-draggable-header-container2,
+#layout-builder-draggable-main-container1,
+#layout-builder-draggable-main-container2,
+#layout-builder-draggable-main-container3,
+#layout-builder-draggable-side-container {
+  .layout-builder-draggable-field {
+    outline: none !important;
+  }
 }
 
 #layout-builder-draggable-trash-container {
@@ -335,4 +358,19 @@ input:checked ~ .active-bg {
 
 input:checked ~ .toggle-inner .indicator {
    transform: translate3d(25%, 0, 0);
+}
+
+.layout-builder--main-container {
+  .col-md-4:first-child {
+    padding-right: 7.5px;
+  }
+
+  .col-md-4:nth-child(2) {
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+  }
+
+  .col-md-4:last-child {
+    padding-left: 7.5px;
+  }
 }

@@ -6,11 +6,8 @@ namespace :dummy_client_database do
     client_tables = ["events", "users", "companies", "attending_events", "welcomes"]
 
     # clear kuwinda db
-    conn = ActiveRecord::Base.establish_connection.connection
-    internal_tables.each do |table|
-      query = "DELETE FROM #{table};"
-      conn.exec_query(query);
-    end
+    ViewBuilder.delete_all
+    Activity.delete_all
 
     # clear demo dbs for PG
     url = ENV['DEMO_DATABASE_PG']

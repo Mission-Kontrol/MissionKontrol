@@ -48,7 +48,7 @@ describe Activity do
   end
 
   Activity::KINDS.each do |kind|
-    xit "is valid with a known activity kind - #{kind}" do
+    it "is valid with a known activity kind - #{kind}" do
       activity = build(:activity, :user)
 
       activity.kind = kind
@@ -97,21 +97,5 @@ describe Activity do
     expect(activity).to_not be_valid
     expect(activity.errors.keys).to include(:feedable_type)
     expect(errors).to include('Feedable type is not included in the list')
-  end
-
-  #
-  # TODO: this needs a user or company record to exist, I am trying to stay away
-  # from creating or modifying records on the target DB as we don't own it and
-  # I feel it may be the wrong way to go about testing this usecase, discuss
-  # with team and come back to this
-  Activity::FEEDABLE_TYPES.each do |type|
-    xit "is valid with a known feedable_type - #{type}" do
-      activity = build(:activity)
-
-      activity.feedable_id = 1
-      activity.feedable_type = type
-
-      expect(activity).to be_valid
-    end
   end
 end

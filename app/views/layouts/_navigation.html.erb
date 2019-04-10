@@ -61,10 +61,17 @@
         <% end %>
       </li>
 
-      <li class="<%= active_controller?('admin_user_registrations') || active_controller?('edit')%> hide">
+      <li class="<%= active_controller?('admin_user_registrations') || active_controller?('edit')%>">
         <%= link_to edit_admin_user_registration_path do %>
           <i class="fa fa-sliders"></i>
           <span class="nav-label" data-i18n="nav.layouts">Settings</span>
+        <% end %>
+      </li>
+
+      <li class="<%= active_controller?('reports') %> hide">
+        <%= link_to reports_path do %>
+          <i class="fa fa-file-text-o"></i>
+          <span class="nav-label" data-i18n="nav.layouts">Reports</span>
         <% end %>
       </li>
     </ul>

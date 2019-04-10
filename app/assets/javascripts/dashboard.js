@@ -29,10 +29,8 @@ $(document).ready(function() {
   }
 
   if (isCurrentControllerTables && isCurrentActionPreview) {
-    if (!tourComplete) {
-      loadEnjoyhint3();
-      enjoyhint.run();
-    }
+    loadEnjoyhint3();
+    enjoyhint.run();
   }
 
   if (isCurrentControllerLayoutBuilder && isCurrentActionEdit) {

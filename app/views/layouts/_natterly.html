@@ -1,0 +1,12 @@
+<script src="https://cdn.natterly.com/chatbox.js"></script>
+
+<script>
+  chatbox = new NatterlyChatbox("092eb593-d9e2-4b6a-ad70-ef6f0a14c6a2");
+  chatbox.render();
+  var container = document.getElementById('natterly-container');
+  // render the chatbox passing in the mount component
+  // and specifying that the chatbox should be embedded
+  chatbox.render(container, {
+    embed: true
+  });
+</script>

@@ -21,6 +21,7 @@ gem 'uglifier', '~> 4.1.5'
 gem 'pg', '~> 0.18'
 gem 'mysql2', '~> 0.3.18'
 gem 'clockwork', '~> 2.0', '>= 2.0.3'
+gem 'twilio-ruby', '~> 5.17.0'
 
 group :development, :test do
   gem 'byebug'
@@ -41,6 +42,7 @@ end
 group :test do
   gem 'capybara', '~> 2.17.0'
   gem 'capybara-selenium'
+  gem 'capybara-screenshot', '~> 1.0', '>= 1.0.22'
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'ffaker'
   gem 'rails-controller-testing'

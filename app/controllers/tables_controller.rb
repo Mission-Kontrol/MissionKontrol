@@ -35,6 +35,7 @@ class TablesController < ApplicationController
     @activity = Activity.new
     @row = @target_db_repo.find(params[:record_id])
     @layout_builder = ViewBuilder.where(table_name: @current_table).last
+    @fields_with_type = list_table_fields_with_type(@layout_builder.table_name) if @layout_builder
     set_activities_for_table
   end
 

@@ -2,7 +2,7 @@
 
 class ActivitiesController < ApplicationController
   def create
-    @activity = Activity.new(activity_params)
+    @activity = Activity.new(activity_params.except(:twilio_call_sid))
 
     respond_to do |format|
       if @activity.save
@@ -19,6 +19,7 @@ class ActivitiesController < ApplicationController
     params.require(:activity).permit(:content,
                                      :kind,
                                      :feedable_type,
-                                     :feedable_id)
+                                     :feedable_id,
+                                     :twilio_call_sid)
   end
 end

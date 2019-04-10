@@ -7,7 +7,9 @@
         <div class="ibox-content">
           <div class="text-center">
             <div class="logo-wrapper">
-              <img src="/assets/images/Kuwinda_logo_full-blue-260.png" alt="">
+              <a href="/">
+                <img src="/assets/images/Kuwinda_logo_full-blue-260.png" alt="">
+              </a>
             </div>
           </div>
 
@@ -16,42 +18,75 @@
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "m-t" }) do |f| %>
 
             <%= devise_error_messages! %>
-            
-            <div class="m-t-lg m-b-lg">
-              <h3>Target application database</h3>
-              <p>This is the your applications database.</p>
+
+            <!-- twilio settings -->
+            <div class="">
+              <div class="form-group">
+                <%= f.label :twilio_caller_id, "Twilio caller ID" %>
+                <%= f.text_field :twilio_caller_id, autofocus: true, class: "form-control" %>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="">Database type</label>
-              <%= f.select(:target_database_type, AdminUser::DATABASE_TYPES,
-                                                  {prompt: "Select your database type"},
-                                                  {class: 'form-control'}) %>
+            <div class="">
+              <div class="form-group">
+                <%= f.label :twilio_auth_token %>
+                <%= f.text_field :twilio_auth_token, autofocus: true, class: "form-control" %>
+              </div>
             </div>
 
-            <div class="form-group">
-              <%= f.label :target_database_name %>
-              <%= f.text_field :target_database_name, autofocus: true, class: "form-control" %>
+            <div class="">
+              <div class="form-group">
+                <%= f.label :twilio_application_sid %>
+                <%= f.text_field :twilio_application_sid, autofocus: true, class: "form-control" %>
+              </div>
             </div>
 
-            <div class="form-group">
-              <%= f.label :target_database_username %>
-              <%= f.text_field :target_database_username, autofocus: true, class: "form-control" %>
+            <div class="">
+              <div class="form-group">
+                <%= f.label :twilio_account_sid %>
+                <%= f.text_field :twilio_account_sid, autofocus: true, class: "form-control" %>
+              </div>
             </div>
+            <!-- twilio settings -->
 
-            <div class="form-group">
-              <%= f.label :target_database_password %>
-              <%= f.text_field :target_database_password, autofocus: true, class: "form-control" %>
-            </div>
+            <!-- target database settings -->
+            <div class="hide">
+              <div class="m-t-lg m-b-lg">
+                <h3>Target application database</h3>
+                <p>This is the your applications database.</p>
+              </div>
 
-            <div class="form-group">
-              <%= f.label :target_database_host %>
-              <%= f.text_field :target_database_host, autofocus: true, class: "form-control" %>
-            </div>
+              <div class="form-group">
+                <label for="">Database type</label>
+                <%= f.select(:target_database_type, AdminUser::DATABASE_TYPES,
+                                                    {prompt: "Select your database type"},
+                                                    {class: 'form-control'}) %>
+              </div>
 
-            <div class="form-group">
-              <%= f.label :target_database_port %>
-              <%= f.text_field :target_database_port, autofocus: true, class: "form-control" %>
+              <div class="form-group">
+                <%= f.label :target_database_name %>
+                <%= f.text_field :target_database_name, autofocus: true, class: "form-control" %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :target_database_username %>
+                <%= f.text_field :target_database_username, autofocus: true, class: "form-control" %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :target_database_password %>
+                <%= f.text_field :target_database_password, autofocus: true, class: "form-control" %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :target_database_host %>
+                <%= f.text_field :target_database_host, autofocus: true, class: "form-control" %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :target_database_port %>
+                <%= f.text_field :target_database_port, autofocus: true, class: "form-control" %>
+              </div>
             </div>
 
             <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>

@@ -106,6 +106,10 @@ $(document).ready(function() {
       document.getElementById("layout-builder-general-settings-tab").click();
     }
   }
+
+  setTimeout(() => {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }, 300)
 })
 
 $(document).on('change', '.layout-builder-editable-toggle:checkbox', function(evt) {
@@ -765,4 +769,39 @@ function addPaddingToContainer(draggedItems) {
   })
   $(draggedItems.first()).css({'margin-top': '-2px'})
   $(draggedItems.last()).css({'margin-bottom': '-2px'})
+}
+
+function updateCallableFields() {
+  const url = window.location.href;
+  const id = url.split("/")[4];
+  const callableFields = document.getElementsByClassName("callable-field");
+  const newCallableFields = [];
+  const data = {};
+  data['view_builder'] = {};
+
+  for (var i = 0; i < callableFields.length; i++) {
+    let callableField = callableFields[i];
+
+    if (callableField.checked) {
+      newCallableFields.push(callableField.value)
+    }
+  }
+
+  if (newCallableFields.length === 0) {
+    data['view_builder']['callable_fields'] = JSON.stringify(newCallableFields)
+  } else {
+    data['view_builder']['callable_fields'] = newCallableFields
+  }
+
+  $.ajax({
+    url: "/layouts/" + id,
+    type: 'PATCH',
+    data: data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      console.error("PATCH /layouts/:id Failed: "+ errorTextStatus+" ;"+error);
+    },
+    success: function(response, status, request){
+      console.log("PATCH /layouts/:id Success")
+    }
+  })
 }

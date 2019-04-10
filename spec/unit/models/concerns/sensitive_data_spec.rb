@@ -12,6 +12,11 @@ def clear_target_db_credentials
   File.delete(SensitiveData.target_db_credentials_file_path)
 end
 
+def clear_twilio_credentials
+  return unless File.exist?(SensitiveData.twilio_credentials_file_path)
+  File.delete(SensitiveData.twilio_credentials_file_path)
+end
+
 describe SensitiveData do
   let(:sensitive_data) { described_class }
   let(:admin_user) { build(:admin_user) }
@@ -127,6 +132,44 @@ describe SensitiveData do
       credential = :database_name
 
       actual = described_class.set_target_database_credential(credential, name)
+
+      expect(actual).to eq(true)
+    end
+  end
+  
+  describe '.get_twilio_credential' do
+    context 'when set' do
+      it 'returns credential' do
+        clear_twilio_credentials
+        caller_id = '+447448958786'
+        credential = :caller_id
+        described_class.set_twilio_credential(credential, caller_id)
+
+        actual = described_class.get_twilio_credential(credential)
+
+        expect(actual).to eq(caller_id)
+      end
+    end
+
+    context 'when not set' do
+      it 'returns nil' do
+        clear_twilio_credentials
+        credential = :caller_id
+
+        actual = described_class.get_twilio_credential(credential)
+
+        expect(actual).to eq(nil)
+      end
+    end
+  end
+
+  describe '.set_twilio_caller_id' do
+    it 'sets twilio credential correctly' do
+      clear_twilio_credentials
+      caller_id = '+447448958786'
+      credential = :caller_id
+
+      actual = described_class.set_twilio_credential(credential, caller_id)
 
       expect(actual).to eq(true)
     end
