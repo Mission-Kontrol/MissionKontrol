@@ -1,0 +1,6 @@
+tmp/*
+log/*
+.git
+.bash_history
+docker-compose.yml
+Dockerfile
