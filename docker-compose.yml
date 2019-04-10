@@ -1,4 +1,5 @@
 version: '2'
+
 services:
   db:
     image: postgres:alpine
@@ -33,6 +34,7 @@ services:
       DEMO_ADMIN_USER_PASSWORD: demo1645
     depends_on:
       - db
+
   bundle:
     image: busybox
     volumes:
