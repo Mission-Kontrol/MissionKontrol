@@ -6,3 +6,4 @@ Dockerfile
 Makefile
 .bash_history
 docker-compose.yml
+.env
