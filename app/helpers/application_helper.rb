@@ -9,4 +9,10 @@ module ApplicationHelper
   def active_action?(action_name)
     params[:action] == action_name ? 'active' : nil
   end
+
+  def is_phone_number?(phone_number)
+    number_to_phone(phone_number, raise: true)
+  rescue
+    false
+  end
 end
