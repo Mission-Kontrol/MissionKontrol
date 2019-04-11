@@ -1,4 +1,4 @@
-FROM ruby:2.5.5
+FROM ruby:2.5.1
 
 ENV CHROMEDRIVER_VERSION=2.35 \
     CHROMIUM_VERSION=73.0.3683.75-1~deb9u1 \
@@ -17,11 +17,11 @@ RUN apt-get update -qq \
         chromium=$CHROMIUM_VERSION \
         unzip \
     \
-# GeckoDriver v0.19.1
+# GeckoDriver
     && wget -q "https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz" -O /tmp/geckodriver.tgz \
     && tar zxf /tmp/geckodriver.tgz -C /usr/bin/ \
     \
-# chromeDriver
+# ChromeDriver
     && wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" -O /tmp/chromedriver.zip \
     && unzip /tmp/chromedriver.zip -d /usr/bin/ \
     \
