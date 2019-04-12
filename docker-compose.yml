@@ -1,4 +1,5 @@
 version: '2'
+
 services:
   db:
     image: postgres:alpine
@@ -16,23 +17,17 @@ services:
       - bundle
     ports:
       - "3000:3000"
+    env_file:
+      - ./.env
     environment:
       BUNDLE_SILENCE_ROOT_WARNING: "true"
       HISTFILE: /app/.bash_history
       KUWINDA_DATABASE_HOST: db
       KUWINDA_DATABASE_USER: postgres
       KUWINDA_DATABASE_PASSWORD: postgres
-      CLIENT_DATABASE_HOST: db
-      CLIENT_DATABASE_USER: postgres
-      CLIENT_DATABASE_PASSWORD: postgres
-      CLIENT_DATABASE_DEVELOPMENT: client_database_development
-      CLIENT_DATABASE_URL: postgres://fmubmupymxawnt:278d5db10a01380f9437b9ad2e3ba7bc94952f3ac6530f1e470e69e61eef9863@ec2-50-19-86-17.compute-1.amazonaws.com:5432/d5aftrkne5t1cm
-      DEMO_DATABASE_PG: postgres://fmubmupymxawnt:278d5db10a01380f9437b9ad2e3ba7bc94952f3ac6530f1e470e69e61eef9863@ec2-50-19-86-17.compute-1.amazonaws.com:5432/d5aftrkne5t1cm
-      DEMO_DATABASE_MYSQL: mysql2://b035af0db18ef0:37fc0982@us-cdbr-iron-east-03.cleardb.net/heroku_6edb1e3f65cb0f1
-      DEMO_ADMIN_USER_EMAIL: demo@kuwinda.io
-      DEMO_ADMIN_USER_PASSWORD: demo1645
     depends_on:
       - db
+
   bundle:
     image: busybox
     volumes:
