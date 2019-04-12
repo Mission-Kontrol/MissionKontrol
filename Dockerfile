@@ -45,3 +45,4 @@ RUN bundle check || bundle install
 COPY [ ".", "/app/" ]
 
 EXPOSE 3000
+ENTRYPOINT [ "/app/bin/docker-entrypoint.sh" ]
