@@ -15,4 +15,7 @@
 //= require html5sortable/html5sortable.js
 //= require sweetAlert/sweetalert.min.js
 //= require enjoyhint/enjoyhint.js
+//= require extendext/jQuery.extendext.min.js
+//= require dotjs/doT.min.js
+//= require query-builder/query-builder.min.js
 //= require_tree .
