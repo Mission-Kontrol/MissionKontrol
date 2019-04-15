@@ -15,7 +15,7 @@ if [[ $? == 0 ]]; then
     echo "==> Running database migrations. <=="
     dockerize bundle exec rails db:migrate
 
-    if [[ $? != 0 ]]; then
+    if [[ $? != 0 && ${KUWINDA_DATABASE_SETUP:-true} == "true" ]]; then
         echo
         echo "==> Failed to migrate. Running setup first. <=="
         dockerize bundle exec rails db:setup
