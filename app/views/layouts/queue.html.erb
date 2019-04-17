@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kuwinda</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <%= tag :meta, name: :psj, action: action_name, controller: controller_name %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+  </head>
+
+  <body class="gray-bg">
+    <div class="container-fluid white-bg">
+      <div class="row border-bottom">
+        <div class='col-sm-12'>
+          <%= render 'layouts/queue_topnavbar' %>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="top-nav-for-queue-layout">
+            <a href="#" class="top-nav-item-for-queue-layout">Builder</a>
+            <a href="#" class="top-nav-item-for-queue-layout">Raw SQL</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid gray-bg">
+      <div class="tab-content">
+        <%= render 'layouts/queue_create_tab' %>
+        <%= render 'layouts/queue_define_tab' %>
+      </div>
+    </div>
+
+    <div id="natterly-container"></div>
+
+    <%= render 'layouts/natterly' %>
+    <%= render 'layouts/twilio' %>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.6/lib/draggable.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/sortable.js"></script>
+</html>
