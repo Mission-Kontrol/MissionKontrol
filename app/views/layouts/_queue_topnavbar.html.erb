@@ -1,0 +1,57 @@
+<div class="row border-bottom">
+
+
+  <div class="col-sm-5">
+    <nav class="navbar navbar-static-top layouts-navbar" role="navigation">
+      <ul class="nav navbar-top-links navbar-left">
+        <li>
+          <%= link_to dashboard_path, :class => 'navbar-link left-layout-link' do %>
+            <span><img src="/assets/logos/kuwinda_thumbnail.png" alt="" class="logo-thumbnail"></span>
+          <% end %>
+        </li>
+
+        <li>
+          <ol class="breadcrumb layouts-layout_builder_topnavbar-breadcrumb">
+            <li>
+              <%= link_to 'Dashboard', dashboard_path %>
+            </li>
+
+            <li>
+              <%= link_to 'Queues', queues_path %>
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="col-sm-2">
+    <div class="">
+      <div class="text-center top-tab-for-queue-layout">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="top-tab-item-for-queue-layout">Define</a>
+          </li>
+
+          <li role="presentation">
+            <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="top-tab-item-for-queue-layout">Create</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-5">
+    <nav class="navbar navbar-static-top layouts-navbar" role="navigation">
+      <ul class="nav navbar-top-links navbar-right">
+        <li>
+          <% if admin_user_signed_in? %>
+            <%= link_to destroy_admin_user_session_path, method: :delete, :class => 'navbar-link' do %>
+              <span><i class="fa fa-sign-out" aria-hidden="true"></i>Log out</span>
+            <% end %>
+          <% end %>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
