@@ -1,0 +1,87 @@
+<%= content_tag :div, class: "work_list_visible_columns", data: { columns: @work_list.visible_columns.to_json } do %>
+<% end %>
+
+<%= form_for(@work_list, html: {class: "m-t"}, remote: true) do |f| %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :details %>
+    <%= f.text_area :details, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="">Data</label> <br>
+    <%= select_tag("work_list[data_table_name]", options_for_select(@set_db_tables, :selected => @work_list.data_table_name), prompt: "Select a table to work on", class: 'form-control table-select') %>
+  </div>
+
+  <div class="tabs-container" style="margin-bottom: 20px">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#tab-1">Builder</a></li>
+      <li class=""><a data-toggle="tab" href="#tab-2">Raw SQL</a></li>
+      <li class="hide"><a data-toggle="tab" href="#tab-3">Preview</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="tab-1" class="tab-pane active">
+        <div class="panel-body">
+          <%= render 'work_lists/form/sql_filters', work_list_form: f %>
+        </div>
+      </div>
+
+      <div id="tab-2" class="tab-pane">
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="">Leave blank to use builder SQL</label>
+            <%= f.text_field :sql_query, placeholder: @work_list.to_sql, class: 'form-control'%>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-3" class="tab-pane">
+        <div class="panel-body">
+          <p>Nothing here yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="">Visible columns</label>
+    <p>Choose which columns will be visible on this work list</p>
+    <select class="" id="visible-column-select" name="work_list[visible_columns][]" multiple>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="">Define the possible outcomes</label> <br><br>
+
+    <div id="work-list-outcomes-container">
+      <% @work_list.outcomes.each do |outcome_attributes| %>
+        <%= render 'work_lists/form/outcome', outcome: WorkListOutcome.new(outcome_attributes['outcome']) %>
+      <% end %>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group" style="text-align: right">
+          <%= link_to "Add Outcome", add_work_list_outcome_path, remote: true, method: :post, class: "btn btn-default" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="">
+      On failure how long before the worklist item should re-appear?
+    </label>
+
+    <%= select_tag(:failure_timeout_interval, options_for_select(WorkList::FAILURE_TIMEOUT_INTERVALS), class: 'form-control') %>
+  </div>
+
+  <div class="actions" style="text-align: right">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+<% end %>
