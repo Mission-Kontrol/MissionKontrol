@@ -115,3 +115,23 @@ make bash
 bundle install
 bundle exec rails db:setup
 ```
+
+### Environment variables
+
+There are several environment variables that can be used to modify the operation of the application and its containers.
+
+* `KUWINDA_DATABASE_HOST` - specifies the address of the database server;
+* `KUWINDA_DATABASE_PORT` - specifies the database server port (default value: `5432`);
+* `KUWINDA_DATABASE_USER` - specifies the name of the database user;
+* `KUWINDA_DATABASE_PASSWORD` - specifies the password of the database user;
+* `KUWINDA_DATABASE_TIMEOUT` - configures the maximum waiting time for the database server to become available (default value: `42s`);
+* `KUWINDA_DATABASE_SETUP` - indicates whether database will be created from scratch (default value: `true`);
+
+* `PORT` - specifies the port of the application server (default value: `3000`);
+* `WEB_CONCURRENCY` - specifies the number of `workers` (forked webserver processes) to boot in clustered mode.
+* `RAILS_MAX_THREADS` - specifies the number of `threads` each of workers will use under the hood (default value: `5`);
+* `RAILS_ENV` - specifies the application `environment` (default value: `development`);
+
+* `RAILS_MASTER_KEY` - key used to decrypt encrypted `credentials.yml.enc` file;
+* `RAILS_SERVE_STATIC_FILES` - allows to offload serving static files to Apache or NGINX web server;
+* `RAILS_LOG_TO_STDOUT` - enables sending logs of the `production` environment to `STDOUT`.
