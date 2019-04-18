@@ -5,7 +5,7 @@ default: &default
   host: <%= ENV['KUWINDA_DATABASE_HOST'] %>
   username: <%= ENV['KUWINDA_DATABASE_USER'] %>
   password: <%= ENV['KUWINDA_DATABASE_PASSWORD'] %>
-
+  port: <%= ENV['KUWINDA_DATABASE_PORT'] { 5432 } %>
 
 development:
   <<: *default

@@ -6,7 +6,8 @@ ENV CHROMEDRIVER_VERSION=2.35 \
     GECKODRIVER_VERSION=0.19.1 \
     BUNDLE_PATH=/bundle \
     BUNDLE_GEMFILE=/app/Gemfile \
-    BUNDLE_APP_CONFIG=/usr/local/bundle
+    BUNDLE_APP_CONFIG=/usr/local/bundle \
+    DOCKERIZE_VERSION=v0.6.1
 
 RUN apt-get update -qq \
     && apt-get install -yq \
@@ -25,6 +26,10 @@ RUN apt-get update -qq \
     && wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" -O /tmp/chromedriver.zip \
     && unzip /tmp/chromedriver.zip -d /usr/bin/ \
     \
+# dockerize
+    && wget -q "https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz" -O /tmp/dockerize.tar.gz \
+    && tar -C /usr/local/bin -xzvf /tmp/dockerize.tar.gz \
+    \
 # Slim down image
     && apt-get clean -qy \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/man/?? /usr/share/man/??_* \
@@ -40,3 +45,4 @@ RUN bundle check || bundle install
 COPY [ ".", "/app/" ]
 
 EXPOSE 3000
+ENTRYPOINT [ "/app/bin/docker-entrypoint.sh" ]
