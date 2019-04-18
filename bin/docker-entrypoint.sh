@@ -15,6 +15,7 @@ if [[ $? == 0 ]]; then
     echo "==> Running database migrations. <=="
     dockerize bundle exec rails db:migrate
 
+    # TODO: Set KUWINDA_DATABASE_SETUP to false when we are production ready
     if [[ $? != 0 && ${KUWINDA_DATABASE_SETUP:-true} == "true" ]]; then
         echo
         echo "==> Failed to migrate. Running setup first. <=="
@@ -38,5 +39,6 @@ echo
 [[ "$3" = "rails" && ("$4" = "s" || "$4" = "server") ]] \
     && set -- "$@" -P /tmp/server.pid
 
-echo "==> Executing container start up command: \"$@\""
+echo "==> Executing container start up command: \"$@\" <=="
 exec "$@"
+
