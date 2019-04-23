@@ -20,6 +20,19 @@ function fulfill_dependencies() {
     #
     # Installs and configures dependencies: docker engine.
     #
+    local DOCKER_INSTALLED="false"
+    local DOCKER_RUNNING="false"
+    if [ -x "$(command -v docker)" ]; then
+        DOCKER_INSTALLED="true"
+        if docker ps >/dev/null 2>&1; then
+            echo -e " [\e[1;37mINFO\e[0m] :: Docker engine is already installed and configured."
+            return 0
+        fi
+    else
+        echo -e " [\e[1;37mINFO\e[0m] :: Installing required dependencies."
+        echo -e "           This may take a moment..."
+    fi
+
     if [ -f /etc/os-release ]; then
         . /etc/os-release
     elif [ -f /etc/centos-release ]; then
@@ -27,18 +40,9 @@ function fulfill_dependencies() {
         VERSION_ID="$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)"
     else
         echo -e " [\e[1;31mERRO\e[0m] :: Unsuported Linux distribution or version."
+        echo -e " [\e[1;33mWARN\e[0m] :: You must first install the docker engine manually."
         exit 3
     fi
-
-    local DOCKER_INSTALLED="false"
-    local DOCKER_RUNNING="false"
-    if [ -x "$(command -v docker)" ]; then
-        DOCKER_INSTALLED="true"
-        if docker ps >/dev/null 2>&1; then
-            DOCKER_RUNNING="true"
-        fi
-    fi
-
     case "$ID" in
         ubuntu|debian)
             if [ "$DOCKER_INSTALLED" != "true" ]; then
@@ -149,6 +153,7 @@ function configure_runtime() {
     #
     mkdir -p $CFG_DIR $LOG_DIR
 
+    echo -e " [\e[1;37mINFO\e[0m] :: Creating configuration files."
     # Create hidden files with env variables, if they do not exist.
     if [ ! -f $CFG_DIR/.db.env -o ! -f $CFG_DIR/.app.env ]; then
         local RANDOM_PASSWORD=$(gen_passwd 16)
@@ -261,10 +266,7 @@ if [ $# -gt 0 ]; then
     case "$1" in
         down)   docker_compose down -v ;;
         start)
-                echo -e " [\e[1;37mINFO\e[0m] :: Installing required dependencies."
-                echo -e "           This may take a moment..."
                 fulfill_dependencies
-                echo -e " [\e[1;37mINFO\e[0m] :: Creating required configuration files."
                 configure_runtime
                 # TODO: Remove "docker login" after making app image publicly available
                 docker login
@@ -278,10 +280,7 @@ if [ $# -gt 0 ]; then
         stop)   docker_compose stop ;;
         update)
                 if [ "$2" == "--force" ]; then
-                    echo -e " [\e[1;37mINFO\e[0m] :: Installing required dependencies."
-                    echo -e "           This may take a moment..."
                     fulfill_dependencies
-                    echo -e " [\e[1;37mINFO\e[0m] :: Re-creating required configuration files."
                     configure_runtime force
                 fi
                 # TODO: Remove "docker login" after making app image publicly available
@@ -291,6 +290,10 @@ if [ $# -gt 0 ]; then
                 docker_compose pull >/dev/null
                 if [ $? -eq 0 ]; then
                     docker_compose up -d
+                else
+                    echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
+                    echo -e " [\e[1;37mINFO\e[0m] :: Please try again."
+                    exit 4
                 fi
                 # TODO: Remove "docker logout" after making app image publicly available
                 docker logout >/dev/null
