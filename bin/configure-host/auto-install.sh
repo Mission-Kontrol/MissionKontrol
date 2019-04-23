@@ -298,35 +298,40 @@ if [ $(id -u) -ne 0 ]; then
     echo -e " [\e[1;31mERRO\e[0m] :: Script must be run with admin permission - as root user or with sudo\n"
     exit 2
 fi
-echo -e " [\e[1;37mINFO\e[0m] :: Executing '$CMD' command..."
-if [ "$CMD" == "run" -o "$CMD" == "update" ]; then
-    if [ "$CLEAN_START" == "yes" ] || [ "$CMD" == "update" -a "$FORCE_UPDATE" == "yes" ]; then
-        fulfill_dependencies
-        configure_runtime
+if [ -n "$CMD" ]; then
+    echo -e " [\e[1;37mINFO\e[0m] :: Executing '$CMD' command..."
+    if [ "$CMD" == "run" -o "$CMD" == "update" ]; then
+        if [ "$CLEAN_START" == "yes" ] || [ "$CMD" == "update" -a "$FORCE_UPDATE" == "yes" ]; then
+            fulfill_dependencies
+            configure_runtime
+        fi
+        echo -e " [\e[1;37mINFO\e[0m] :: Downloading and starting application containers."
+        if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
+            echo -e "           This may take a moment..."
+            # TODO: Remove "docker login" after making app image publicly available
+            docker login
+            docker_compose pull
+        fi
+        if [ $? -eq 0 ]; then
+            docker_compose up -d
+        else
+            echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
+            echo -e " [\e[1;37mINFO\e[0m] :: Please try again."
+            exit 4
+        fi
+        if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
+            # TODO: Remove "docker logout" after making app image publicly available
+            docker logout >/dev/null
+        fi
+    elif [ "$CMD" == "remove" ]; then
+        docker_compose down -v
+        rm -rf "$CFG_DIR"
+    elif [ "$CMD" == "stop" ]; then
+        docker_compose stop
     fi
-    echo -e " [\e[1;37mINFO\e[0m] :: Downloading and starting application containers."
-    if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
-        echo -e "           This may take a moment..."
-        # TODO: Remove "docker login" after making app image publicly available
-        docker login
-        docker_compose pull
-    fi
-    if [ $? -eq 0 ]; then
-        docker_compose up -d
-    else
-        echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
-        echo -e " [\e[1;37mINFO\e[0m] :: Please try again."
-        exit 4
-    fi
-    if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
-        # TODO: Remove "docker logout" after making app image publicly available
-        docker logout >/dev/null
-    fi
-elif [ "$CMD" == "remove" ]; then
-    docker_compose down -v
-    rm -rf "$CFG_DIR"
-elif [ "$CMD" == "stop" ]; then
-    docker_compose stop
+else
+    echo -e " [\e[1;31mERRO\e[0m] :: Undefined command. Check the parameters passed to the script.\n"
+    print_help
 fi
 echo -e " [\e[1;37mINFO\e[0m] :: Command has been executed successfully."
 echo
