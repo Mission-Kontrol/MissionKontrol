@@ -53,6 +53,8 @@ class QueryBuilderParser
     return '<=' if operator == 'less_or_equal'
     return '>' if operator == 'greater'
     return '>=' if operator == 'greater_or_equal'
+    return 'ILIKE'  if operator == 'begins_with' || operator == 'contains' || operator == 'ends_with'
+    return 'NOT ILIKE' if operator == 'not_begins_with' || operator == 'not_contains' || operator == 'not_ends_with'
     raise "unknown operator - #{operator}"
   end
 
@@ -78,6 +80,12 @@ class QueryBuilderParser
     else
       if args[:operator_string] == "is_null" || args[:operator_string] == "is_not_null"
         self.sql_literal += "#{args[:column_name]} #{args[:operator]} null"
+      elsif args[:operator_string] == "begins_with" || args[:operator_string] == "not_begins_with"
+        self.sql_literal += "#{args[:column_name]} #{args[:operator]} '#{args[:column_value]}%'"
+      elsif args[:operator_string] == "contains" || args[:operator_string] == "not_contains"
+        self.sql_literal += "#{args[:column_name]} #{args[:operator]} '%#{args[:column_value]}%'"
+      elsif args[:operator_string] == "ends_with" || args[:operator_string] == "not_ends_with"
+        self.sql_literal += "#{args[:column_name]} #{args[:operator]} '%#{args[:column_value]}'"
       else
         self.sql_literal += "#{args[:column_name]} #{args[:operator]} '#{args[:column_value]}'"
       end
@@ -382,6 +390,150 @@ describe QueryBuilderParser do
 
             query_builder = described_class.new(rules: rules[:rules])
             expect(query_builder.to_sql).to eq('where id >= 6;')
+          end
+        end
+      end
+
+      context "and the rule operator is 'begins_with'" do
+        context "and the data type is a string" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "input": "text",
+                  "operator": "begins_with",
+                  "value": "j"
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email ILIKE 'j%';")
+          end
+        end
+      end
+
+      context "and the rule operator is 'not_begins_with'" do
+        context "and the data type is a string" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "input": "text",
+                  "operator": "not_begins_with",
+                  "value": "j"
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email NOT ILIKE 'j%';")
+          end
+        end
+      end
+
+      context "and the rule operator is 'ends_with'" do
+        context "and the data type is a string" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "input": "text",
+                  "operator": "ends_with",
+                  "value": "j"
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email ILIKE '%j';")
+          end
+        end
+      end
+
+      context "and the rule operator is 'not_ends_with'" do
+        context "and the data type is a string" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "input": "text",
+                  "operator": "not_ends_with",
+                  "value": "j"
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email NOT ILIKE '%j';")
+          end
+        end
+      end
+
+      context "and the rule operator is 'contains'" do
+        context "and the data type is a string" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "input": "text",
+                  "operator": "contains",
+                  "value": "j"
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email ILIKE '%j%';")
+          end
+        end
+      end
+
+      context "and the rule operator is 'not_contains'" do
+        context "and the data type is a string" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "input": "text",
+                  "operator": "not_contains",
+                  "value": "j"
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email NOT ILIKE '%j%';")
           end
         end
       end
