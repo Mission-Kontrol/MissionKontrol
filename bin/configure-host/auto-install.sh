@@ -2,7 +2,7 @@
 #
 # set -x
 # set -o functrace
-# set -e
+set -e
 #
 # The basic directory structure:
 export CFG_DIR="/opt/kuwinda"
@@ -173,7 +173,7 @@ _EOF_
     fi
 
     # Create compose file, if it does not exist.
-    if [ ! -f "$CFG_DIR/$CMP_FILE" -o "$1" == "force" ]; then
+    if [ ! -f "$CFG_DIR/$CMP_FILE" -o "${FORCE_UPDATE:-no}" == "yes" ]; then
         cat<<_EOF_ >"$CFG_DIR/$CMP_FILE"
 version: '2'
 
@@ -202,7 +202,7 @@ services:
       - internal
     ports:
       # TODO: Configure some webserver (with HTTPS?) on front of the app server
-      - "3000:3000"
+      - "${EXPOSE_PORT:-3000}:3000"
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -242,15 +242,14 @@ function docker_compose() {
 }
 
 function print_help() {
-    echo -e "\n  $0 [command] [parameter]\n"
-    echo -e "    Commands:\n"
-    echo -e "       start                 : Starts application containers after verifying dependencies."
-    echo -e "       stop                  : Stops application containers deployed previously."
-    echo -e "       update                : Updates configuration and application containers."
-    echo -e "       down                  : Removes application containers from server.\n"
-    echo -e "    Parameters:\n"
-    echo -e "       --force               : Used with 'update' command to force update of the configuration and application contaienrs."
-    echo
+    echo -e "  sudo $0 --run --port 8080\n"
+    echo -e "       -r | --run                : Starts application containers after verifying dependencies."
+    echo -e "       -s | --stop               : Stops application containers deployed on the server.\n"
+    echo -e "       -p | --port               : Allows to specify custom port on which application will be exposed on host."
+    echo -e "       -u | --update             : Updates configuration and application containers."
+    echo -e "       -f | --force              : Used with '--update' option to force update of the configuration and application contaienrs.\n"
+    echo -e "       -d | --remove             : Removes application containers and configuration files from the server.\n"
+    echo -e "       -h | --help               : Prints this help message.\n"
     exit 1
 }
 
@@ -258,56 +257,70 @@ function print_help() {
 # Main part of script - command line options
 #
 echo
+shortOptions='dfhp:rsu'
+longOptions='force,help,port:,remove,run,stop,update'
+
+set +e
+getopt -T > /dev/null
+if [ $? -eq 4 ]; then
+    # GNU enhanced getopt is available
+    ARGS=$(getopt --name "${0##*/}" -o $shortOptions -l $longOptions -n 'parse-options' -- "$@" 2>/dev/null)
+else
+    # Original getopt is available (no long option names, no whitespace, no sorting)
+    ARGS=$(getopt $shortOptions "$@" 2>/dev/null)
+fi
+[ $? -ne 0 -o $# -eq 0 ] && print_help
+set -e
+
+eval set -- $ARGS
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -d | --remove)  CMD="remove" ;;
+        -f | --force)   export FORCE_UPDATE="yes" ;;
+        -h | --help)    print_help ;;
+        -p | --port)    export EXPOSE_PORT="$2" ;;
+        -r | --run)     CMD="run"; [ ! -d "$CFG_DIR" ] && export CLEAN_START="yes" ;;
+        -s | --stop)    CMD="stop" ;;
+        -u | --update)  CMD="update"; export SERVICE_UPDATE="yes" ;;
+        --)             shift; break ;;
+    esac
+    shift
+done
+
 if [ $(id -u) -ne 0 ]; then
     echo -e " [\e[1;31mERRO\e[0m] :: Script must be run with admin permission - as root user or with sudo\n"
     exit 2
 fi
-
-if [ $# -gt 0 ]; then
-    echo -e " [\e[1;37mINFO\e[0m] :: Running command: $*"
-    # Use one of the available options.
-    case "$1" in
-        down)   docker_compose down -v >/dev/null
-                rm -rf "$CFG_DIR"
-                ;;
-        start)
-                fulfill_dependencies
-                configure_runtime
-                # TODO: Remove "docker login" after making app image publicly available
-                docker login
-                echo -e " [\e[1;37mINFO\e[0m] :: Downloading and starting application containers."
-                echo -e "           This may take a moment..."
-                docker_compose pull >/dev/null
-                docker_compose up -d >/dev/null
-                # TODO: Remove "docker logout" after making app image publicly available
-                docker logout >/dev/null
-                ;;
-        stop)   docker_compose stop ;;
-        update)
-                if [ "$2" == "--force" ]; then
-                    fulfill_dependencies
-                    configure_runtime force
-                fi
-                # TODO: Remove "docker login" after making app image publicly available
-                docker login
-                echo -e " [\e[1;37mINFO\e[0m] :: Updating application containers."
-                echo -e "           This may take a moment..."
-                docker_compose pull >/dev/null
-                if [ $? -eq 0 ]; then
-                    docker_compose up -d
-                else
-                    echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
-                    echo -e " [\e[1;37mINFO\e[0m] :: Please try again."
-                    exit 4
-                fi
-                # TODO: Remove "docker logout" after making app image publicly available
-                docker logout >/dev/null
-                ;;
-        *)      echo -e " [\e[1;33mWARN\e[0m] :: Undefined command."
-    esac
-    echo -e " [\e[1;37mINFO\e[0m] :: Command has been executed successfully."
-else
-    echo -e " [\e[1;33mWARN\e[0m] :: You need to specify command: start|stop|down|update"
-    print_help
+echo -e " [\e[1;37mINFO\e[0m] :: Executing '$CMD' command..."
+if [ "$CMD" == "run" -o "$CMD" == "update" ]; then
+    if [ "$CLEAN_START" == "yes" ] || [ "$CMD" == "update" -a "$FORCE_UPDATE" == "yes" ]; then
+        fulfill_dependencies
+        configure_runtime
+    fi
+    echo -e " [\e[1;37mINFO\e[0m] :: Downloading and starting application containers."
+    if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
+        echo -e "           This may take a moment..."
+        # TODO: Remove "docker login" after making app image publicly available
+        docker login
+        docker_compose pull >/dev/null
+    fi
+    if [ $? -eq 0 ]; then
+        docker_compose up -d >/dev/null
+    else
+        echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
+        echo -e " [\e[1;37mINFO\e[0m] :: Please try again."
+        exit 4
+    fi
+    if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
+        # TODO: Remove "docker logout" after making app image publicly available
+        docker logout >/dev/null
+    fi
+elif [ "$CMD" == "remove" ]; then
+    docker_compose down -v >/dev/null
+    rm -rf "$CFG_DIR"
+elif [ "$CMD" == "stop" ]; then
+    docker_compose stop
 fi
+echo -e " [\e[1;37mINFO\e[0m] :: Command has been executed successfully."
 echo
