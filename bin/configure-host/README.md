@@ -4,7 +4,7 @@ Scripts that automate and simplify server configuration.
 
 ## Usage
 
-1. Download the `auto-instanll.sh` script into any directory.
+1. Download the `auto-install.sh` script into any directory.
 2. Give it executable permissions.
 ```bash
 chmod +x auto-install.sh
@@ -23,3 +23,4 @@ The `auto-install.sh` script has been tested for the following Linux distributio
 * CentOS 7
 * Fedora 28, 29
 * Amazon Linux OS 1 (2018.03), 2
+
