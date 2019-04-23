@@ -235,15 +235,21 @@ function docker_compose() {
     COMPOSE_OPT="-e COMPOSE_FILE=$CMP_FILE"
     VOLUMES="-v $HOME/.docker:/root/.docker:ro"
 
-    docker run \
-        $DOCKER_OPT $DOCKER_ADDR $COMPOSE_OPT $VOLUMES \
-        -v "$CFG_DIR":"$CFG_DIR" -w "$CFG_DIR" \
-        $CMP_IMAGE --log-level ERROR "$@"
+    if [ "$CLEAN_START" == "yes" -o -f "$CFG_DIR/$CMP_FILE" ]; then
+        docker run \
+            $DOCKER_OPT $DOCKER_ADDR $COMPOSE_OPT $VOLUMES \
+            -v "$CFG_DIR":"$CFG_DIR" -w "$CFG_DIR" \
+            $CMP_IMAGE --log-level ERROR "$@" >/dev/null
+    else
+        echo -e " [\e[1;33mWARN\e[0m] :: It seems that the configuration is missing."
+        echo -e " [\e[1;37mINFO\e[0m] :: Try to run setup first.\n"
+        exit 5
+    fi
 }
 
 function print_help() {
     echo -e "  sudo $0 --run --port 8080\n"
-    echo -e "       -r | --run                : Starts application containers after verifying dependencies."
+    echo -e "       -r | --run                : Runs setup of the server and application containers."
     echo -e "       -s | --stop               : Stops application containers deployed on the server.\n"
     echo -e "       -p | --port               : Allows to specify custom port on which application will be exposed on host."
     echo -e "       -u | --update             : Updates configuration and application containers."
@@ -280,7 +286,7 @@ while [ $# -gt 0 ]; do
         -f | --force)   export FORCE_UPDATE="yes" ;;
         -h | --help)    print_help ;;
         -p | --port)    export EXPOSE_PORT="$2" ;;
-        -r | --run)     CMD="run"; [ ! -d "$CFG_DIR" ] && export CLEAN_START="yes" ;;
+        -r | --run)     CMD="run"; [ ! -d "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
         -s | --stop)    CMD="stop" ;;
         -u | --update)  CMD="update"; export SERVICE_UPDATE="yes" ;;
         --)             shift; break ;;
@@ -303,10 +309,10 @@ if [ "$CMD" == "run" -o "$CMD" == "update" ]; then
         echo -e "           This may take a moment..."
         # TODO: Remove "docker login" after making app image publicly available
         docker login
-        docker_compose pull >/dev/null
+        docker_compose pull
     fi
     if [ $? -eq 0 ]; then
-        docker_compose up -d >/dev/null
+        docker_compose up -d
     else
         echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
         echo -e " [\e[1;37mINFO\e[0m] :: Please try again."
@@ -317,7 +323,7 @@ if [ "$CMD" == "run" -o "$CMD" == "update" ]; then
         docker logout >/dev/null
     fi
 elif [ "$CMD" == "remove" ]; then
-    docker_compose down -v >/dev/null
+    docker_compose down -v
     rm -rf "$CFG_DIR"
 elif [ "$CMD" == "stop" ]; then
     docker_compose stop

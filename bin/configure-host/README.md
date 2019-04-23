@@ -11,7 +11,7 @@ chmod +x auto-install.sh
 ```
 3. Run as `root` or with `sudo`.
 ```bash
-sudo ./auto-install.sh start
+sudo ./auto-install.sh --run
 ```
 
 ## Script Options
@@ -20,7 +20,7 @@ sudo ./auto-install.sh start
   sudo ./auto-install.sh --run --port 8080
 
        -r | --run                : Starts application containers after verifying dependencies.
-       -s | --stop               : Stops application containers deployed on the server.
+       -s | --stop               : Stops application containers deployed on the server temporarily.
 
        -p | --port               : Allows to specify custom port on application will be exposed on host.
        -u | --update             : Updates configuration and application containers.
