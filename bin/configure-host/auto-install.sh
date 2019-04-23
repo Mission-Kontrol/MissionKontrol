@@ -151,37 +151,37 @@ function configure_runtime() {
     #
     # Creates required configuration files.
     #
-    mkdir -p $CFG_DIR $LOG_DIR
+    mkdir -p "$CFG_DIR" "$LOG_DIR"
 
     echo -e " [\e[1;37mINFO\e[0m] :: Creating configuration files."
     # Create hidden files with env variables, if they do not exist.
-    if [ ! -f $CFG_DIR/.db.env -o ! -f $CFG_DIR/.app.env ]; then
+    if [ ! -f "$CFG_DIR/.db.env" -o ! -f "$CFG_DIR/.app.env" ]; then
         local RANDOM_PASSWORD=$(gen_passwd 16)
 
-        cat<<_EOF_ >$CFG_DIR/.db.env
+        cat<<_EOF_ >"$CFG_DIR/.db.env"
 POSTGRES_USER=kuwinda
 POSTGRES_PASSWORD=$RANDOM_PASSWORD
 _EOF_
-        cat<<_EOF_ >$CFG_DIR/.app.env
+        cat<<_EOF_ >"$CFG_DIR/.app.env"
 KUWINDA_DATABASE_USER=kuwinda
 KUWINDA_DATABASE_PASSWORD=$RANDOM_PASSWORD
 KUWINDA_DATABASE_PORT=5432
 KUWINDA_DATABASE_SETUP=true
 KUWINDA_DATABASE_TIMEOUT=90s
 _EOF_
-        chmod 0600 $CFG_DIR/.db.env $CFG_DIR/.app.env
+        chmod 0600 "$CFG_DIR/.db.env" "$CFG_DIR/.app.env"
     fi
 
     # Create compose file, if it does not exist.
-    if [ ! -f $CFG_DIR/$CMP_FILE -o "$1" == "force" ]; then
-        cat<<_EOF_ >$CFG_DIR/$CMP_FILE
+    if [ ! -f "$CFG_DIR/$CMP_FILE" -o "$1" == "force" ]; then
+        cat<<_EOF_ >"$CFG_DIR/$CMP_FILE"
 version: '2'
 
 services:
   db:
     image: $DB_IMAGE
     env_file:
-      - $CFG_DIR/.db.env
+      - "$CFG_DIR/.db.env"
     networks:
       - internal
     volumes:
@@ -195,7 +195,7 @@ services:
     depends_on:
       - db
     env_file:
-      - $CFG_DIR/.app.env
+      - "$CFG_DIR/.app.env"
     environment:
       KUWINDA_DATABASE_HOST: db
     networks:
@@ -233,9 +233,12 @@ function docker_compose() {
     DOCKER_ADDR="-v $DOCKER_HOST:$DOCKER_HOST -e DOCKER_HOST=unix://$DOCKER_HOST"
     DOCKER_OPT="--rm -it"
     COMPOSE_OPT="-e COMPOSE_FILE=$CMP_FILE"
-    VOLUMES="-v $CFG_DIR:$CFG_DIR -v $HOME/.docker:/root/.docker:ro"
+    VOLUMES="-v $HOME/.docker:/root/.docker:ro"
 
-    docker run $DOCKER_OPT $DOCKER_ADDR $COMPOSE_OPT $VOLUMES -w $CFG_DIR $CMP_IMAGE --log-level ERROR "$@"
+    docker run \
+        $DOCKER_OPT $DOCKER_ADDR $COMPOSE_OPT $VOLUMES \
+        -v "$CFG_DIR":"$CFG_DIR" -w "$CFG_DIR" \
+        $CMP_IMAGE --log-level ERROR "$@"
 }
 
 function print_help() {
@@ -264,7 +267,9 @@ if [ $# -gt 0 ]; then
     echo -e " [\e[1;37mINFO\e[0m] :: Running command: $*"
     # Use one of the available options.
     case "$1" in
-        down)   docker_compose down -v ;;
+        down)   docker_compose down -v >/dev/null
+                rm -rf "$CFG_DIR"
+                ;;
         start)
                 fulfill_dependencies
                 configure_runtime
@@ -273,7 +278,7 @@ if [ $# -gt 0 ]; then
                 echo -e " [\e[1;37mINFO\e[0m] :: Downloading and starting application containers."
                 echo -e "           This may take a moment..."
                 docker_compose pull >/dev/null
-                docker_compose up -d
+                docker_compose up -d >/dev/null
                 # TODO: Remove "docker logout" after making app image publicly available
                 docker logout >/dev/null
                 ;;
