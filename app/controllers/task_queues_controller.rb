@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-class QueuesController < ApplicationController
-  layout 'queue'
+class TaskQueuesController < ApplicationController
+  layout 'task_queue'
   before_action :set_db_tables, only: %i[new create add_sql_filter edit]
   before_action :set_db_columns, only: %i[new create add_sql_filter edit]
   before_action :load_available_tables
 
   def index
+    @task_queue = TaskQueue.new
     @work_lists = WorkList.order(created_at: :desc)
   end
 
@@ -26,7 +27,7 @@ class QueuesController < ApplicationController
   end
 
   def new
-    @work_list = WorkList.new
+    # @queue = WorkList.new
   end
 
   def create
