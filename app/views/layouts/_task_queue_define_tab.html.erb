@@ -1,17 +1,17 @@
 <div role="tabpanel" class="tab-pane active" id="home">
   <div class="row">
     <div class="col-sm-1">
-      <%= render 'layouts/queue_navigation' %>
+      <%= render 'layouts/task_queue_navigation' %>
     </div>
 
     <div class="col-sm-3 layout-builder-side-nav min-height-100vh">
       <br>
       <div class="m-t">
         <div class="tab-content" id="">
-          <h4>Define what records show in your Queue.</h4>
+          <h4>Define what records show in your Task Queue.</h4>
 
           <p>
-            Set the conditions under which records will appear in your Queue
+            Set the conditions under which records will appear in your Task Queue
           </p>
 
           <ul>
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="col-sm-8">
+    <div class="col-sm-8 white-bg min-height-100vh">
       <%= render 'shared/flash_message' %>
 
       <%= yield %>

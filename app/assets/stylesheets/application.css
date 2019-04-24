@@ -19,9 +19,14 @@
  *= require view_builder
  *= require layout_builder
  *= require table
- *= require queues
+ *= require task_queues
  *= require_self
  */
+
+ body {
+   min-width: 1269px;
+   overflow-x: scroll;
+ }
 
 
 /*

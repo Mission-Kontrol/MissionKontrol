@@ -2,7 +2,7 @@ var queryBuilderFilters;
 
 $(document).ready(() => {
   let metaTag = $('meta[name=psj]');
-  let isCurrentControllerQueues = metaTag.attr('controller') == 'queues';
+  let isCurrentControllerQueues = metaTag.attr('controller') == 'task_queues';
   let isCurrentActionIndex = metaTag.attr('action') == 'index';
 
   if (isCurrentControllerQueues && isCurrentActionIndex) {
@@ -72,6 +72,7 @@ function loadQueryBuider(data) {
   }
 
   $('#builder').queryBuilder({
-    filters: filters
+    filters: filters,
+    allow_groups: false
   });
 }
