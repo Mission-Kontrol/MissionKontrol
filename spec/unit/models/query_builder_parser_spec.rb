@@ -45,8 +45,8 @@ class QueryBuilderParser
   private
 
   def operator(operator)
-    return '=' if operator == 'equal'
-    return '<>' if operator == 'not_equal'
+    return '=' if operator == 'equal' || operator == 'is_empty'
+    return '<>' if operator == 'not_equal' || operator == 'is_not_empty'
     return 'IS' if operator == 'is_null'
     return 'IS NOT' if operator == 'is_not_null'
     return '<' if operator == 'less'
@@ -55,6 +55,8 @@ class QueryBuilderParser
     return '>=' if operator == 'greater_or_equal'
     return 'ILIKE'  if operator == 'begins_with' || operator == 'contains' || operator == 'ends_with'
     return 'NOT ILIKE' if operator == 'not_begins_with' || operator == 'not_contains' || operator == 'not_ends_with'
+    return 'BETWEEN' if operator == 'between'
+    return 'NOT BETWEEN' if operator == 'not_between'
     raise "unknown operator - #{operator}"
   end
 
@@ -63,33 +65,37 @@ class QueryBuilderParser
   end
 
   def build_sql_for_integer(args)
-    if args[:condition]
-      self.sql_literal += "#{args[:column_name]} #{args[:operator]} #{args[:column_value]} #{args[:condition].downcase} "
+    if args[:operator_string] == "is_null" || args[:operator_string] == "is_not_null"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} null"
+    elsif args[:operator_string] == "between"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} #{args[:column_value][0]} AND #{args[:column_value][1]}"
+    elsif args[:operator_string] == "not_between"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} #{args[:column_value][0]} AND #{args[:column_value][1]}"
     else
-      if args[:operator_string] == "is_null" || args[:operator_string] == "is_not_null"
-        self.sql_literal += "#{args[:column_name]} #{args[:operator]} null"
-      else
-        self.sql_literal += "#{args[:column_name]} #{args[:operator]} #{args[:column_value]}"
-      end
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} #{args[:column_value]}"
     end
+
+    self.sql_literal += " #{args[:condition].downcase} " if args[:condition]
+    sql_literal
   end
 
   def build_sql_for_string(args)
-    if args[:condition]
-      self.sql_literal += "#{args[:column_name]} #{args[:operator]} '#{args[:column_value]}' #{args[:condition].downcase} "
+    if args[:operator_string] == "is_null" || args[:operator_string] == "is_not_null"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} null"
+    elsif args[:operator_string] == "begins_with" || args[:operator_string] == "not_begins_with"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} '#{args[:column_value]}%'"
+    elsif args[:operator_string] == "contains" || args[:operator_string] == "not_contains"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} '%#{args[:column_value]}%'"
+    elsif args[:operator_string] == "ends_with" || args[:operator_string] == "not_ends_with"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} '%#{args[:column_value]}'"
+    elsif args[:operator_string] == "is_empty" || args[:operator_string] == "is_not_empty"
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} ''"
     else
-      if args[:operator_string] == "is_null" || args[:operator_string] == "is_not_null"
-        self.sql_literal += "#{args[:column_name]} #{args[:operator]} null"
-      elsif args[:operator_string] == "begins_with" || args[:operator_string] == "not_begins_with"
-        self.sql_literal += "#{args[:column_name]} #{args[:operator]} '#{args[:column_value]}%'"
-      elsif args[:operator_string] == "contains" || args[:operator_string] == "not_contains"
-        self.sql_literal += "#{args[:column_name]} #{args[:operator]} '%#{args[:column_value]}%'"
-      elsif args[:operator_string] == "ends_with" || args[:operator_string] == "not_ends_with"
-        self.sql_literal += "#{args[:column_name]} #{args[:operator]} '%#{args[:column_value]}'"
-      else
-        self.sql_literal += "#{args[:column_name]} #{args[:operator]} '#{args[:column_value]}'"
-      end
+      self.sql_literal += "#{args[:column_name]} #{args[:operator]} '#{args[:column_value]}'"
     end
+
+    self.sql_literal += " #{args[:condition].downcase} " if args[:condition]
+    sql_literal
   end
 end
 
@@ -537,38 +543,204 @@ describe QueryBuilderParser do
           end
         end
       end
-    end
 
-    context "when there are multiple rules" do
-      context "and they are joined by 'AND'" do
-        context "and the rule operator is 'equal'" do
+      context "and the rule operator is 'is_empty'" do
+        context "and the data type is a string" do
           it "returns correct sql" do
             rules = {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "sign_in_count",
-                  "field": "sign_in_count",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "equal",
-                  "value": 22
-                },
-                {
-                  "id": "reset_password_token",
-                  "field": "reset_password_token",
+                  "id": "email",
+                  "field": "email",
                   "type": "string",
                   "input": "text",
-                  "operator": "equal",
-                  "value": "9u5utojf89hh"
+                  "operator": "is_empty",
+                  "value": nil
                 }
               ],
               "valid": true
             }
 
-            query_builder = described_class.new(rules: rules[:rules], condition: rules[:condition])
-            expect(query_builder.to_sql).to eq("where sign_in_count = 22 and reset_password_token = '9u5utojf89hh';")
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email = '';")
           end
+        end
+      end
+
+      context "and the rule operator is 'is_not_empty'" do
+        context "and the data type is a string" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "input": "text",
+                  "operator": "is_not_empty",
+                  "value": nil
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where email <> '';")
+          end
+        end
+      end
+
+      context "and the rule operator is 'between'" do
+        context "and the data type is an integer" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "integer",
+                  "input": "number",
+                  "operator": "between",
+                  "value": [
+                    1,
+                    500
+                  ]
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where id BETWEEN 1 AND 500;")
+          end
+        end
+      end
+
+      context "and the rule operator is 'not_between'" do
+        context "and the data type is an integer" do
+          it "returns correct sql" do
+            rules = {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "integer",
+                  "input": "number",
+                  "operator": "not_between",
+                  "value": [
+                    1,
+                    500
+                  ]
+                }
+              ],
+              "valid": true
+            }
+
+            query_builder = described_class.new(rules: rules[:rules])
+            expect(query_builder.to_sql).to eq("where id NOT BETWEEN 1 AND 500;")
+          end
+        end
+      end
+    end
+
+    context "when there are multiple rules" do
+      context "and they are joined by 'AND'" do
+        it "returns correct sql" do
+          rules = {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "sign_in_count",
+                "field": "sign_in_count",
+                "type": "integer",
+                "input": "number",
+                "operator": "equal",
+                "value": 22
+              },
+              {
+                "id": "reset_password_token",
+                "field": "reset_password_token",
+                "type": "string",
+                "input": "text",
+                "operator": "equal",
+                "value": "9u5utojf89hh"
+              }
+            ],
+            "valid": true
+          }
+
+          query_builder = described_class.new(rules: rules[:rules], condition: rules[:condition])
+          expect(query_builder.to_sql).to eq("where sign_in_count = 22 and reset_password_token = '9u5utojf89hh';")
+        end
+
+        it "returns correct sql" do
+          rules = {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "email",
+                "field": "email",
+                "type": "string",
+                "input": "text",
+                "operator": "contains",
+                "value": "j"
+              },
+              {
+                "id": "id",
+                "field": "id",
+                "type": "integer",
+                "input": "number",
+                "operator": "less_or_equal",
+                "value": 500
+              },
+              {
+                "id": "sign_in_count",
+                "field": "sign_in_count",
+                "type": "integer",
+                "input": "number",
+                "operator": "equal",
+                "value": 30
+              }
+            ],
+            "valid": true
+          }
+
+          query_builder = described_class.new(rules: rules[:rules], condition: rules[:condition])
+          expect(query_builder.to_sql).to eq("where email ILIKE '%j%' and id <= 500 and sign_in_count = 30;")
+        end
+      end
+
+      context "and they are joined by 'OR'" do
+        it "returns correct sql" do
+          rules = {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "email",
+                "field": "email",
+                "type": "string",
+                "input": "text",
+                "operator": "contains",
+                "value": "j"
+              },
+              {
+                "id": "email",
+                "field": "email",
+                "type": "string",
+                "input": "text",
+                "operator": "contains",
+                "value": "K"
+              }
+            ],
+            "valid": true
+          }
+
+          query_builder = described_class.new(rules: rules[:rules], condition: rules[:condition])
+          expect(query_builder.to_sql).to eq("where email ILIKE '%j%' and email ILIKE '%K%';")
         end
       end
     end
