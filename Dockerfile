@@ -51,5 +51,8 @@ RUN bundle check || bundle install
 # Copy all of the required files into image
 COPY [ ".", "/app/" ]
 
+# Compile regular rails assets
+RUN DB_ADAPTER=nulldb bundle exec rake assets:precompile
+
 EXPOSE 3000
 ENTRYPOINT [ "/app/bin/docker-entrypoint.sh" ]
