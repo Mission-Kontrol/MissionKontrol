@@ -286,7 +286,7 @@ while [ $# -gt 0 ]; do
         -f | --force)   export FORCE_UPDATE="yes" ;;
         -h | --help)    print_help ;;
         -p | --port)    export EXPOSE_PORT="$2" ;;
-        -r | --run)     CMD="run"; [ ! -d "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
+        -r | --run)     CMD="run"; [ ! -f "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
         -s | --stop)    CMD="stop" ;;
         -u | --update)  CMD="update"; export SERVICE_UPDATE="yes" ;;
         --)             shift; break ;;
