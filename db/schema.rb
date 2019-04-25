@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190424163632) do
+ActiveRecord::Schema.define(version: 20190425152656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20190424163632) do
     t.string "table"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "query_builder_rules", default: []
   end
 
   create_table "view_builders", force: :cascade do |t|
