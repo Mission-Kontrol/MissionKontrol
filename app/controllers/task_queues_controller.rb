@@ -23,7 +23,7 @@ class TaskQueuesController < ApplicationController
   end
 
   def edit
-    @work_list = WorkList.find(params[:id])
+    @task_queue = TaskQueue.find(params[:id])
   end
 
   def new
@@ -31,26 +31,27 @@ class TaskQueuesController < ApplicationController
   end
 
   def create
-    respond_to :js
-    @work_list = WorkList.new(work_list_params)
+    @task_queue = TaskQueue.new(task_queue_params)
 
-    if @work_list.save
+    if @task_queue.save
       handle_success(action: 'create/success',
-                     js_func: "window.location='#{work_lists_path}'",
-                     notice: 'Work list was successfully created.')
+                     js_func: "window.location='#{edit_task_queue_path(@task_queue)}'",
+                     notice: 'Task queue was successfully created.')
     else
       render action: 'create/error'
     end
   end
 
   def update
-    respond_to :js
-    @work_list = WorkList.find(params[:id])
+    @task_queue = TaskQueue.find(params[:id])
+    @task_queue.query_builder_rules = params["task_queue"]["query_builder_rules"]
 
-    if @work_list.update(work_list_params)
-      handle_success(action: 'update/success',
-                     js_func: "window.location='#{work_lists_path}'",
-                     notice: 'Work list was successfully updated.')
+    if @task_queue.save
+      data = data_for_preview(@task_queue)
+      render action: 'update/success', json: {
+        rows: data[:rows],
+        columns: data[:columns]
+      }
     else
       render action: 'update/error'
     end
@@ -91,6 +92,12 @@ class TaskQueuesController < ApplicationController
                                       outcomes: outcome_params)
   end
 
+  def task_queue_params
+    params.require(:task_queue).permit(:name,
+                                        :details,
+                                        :table)
+  end
+
   def sql_filter_params
     [sql_filter: %i[operator
                     kind
@@ -128,5 +135,26 @@ class TaskQueuesController < ApplicationController
   def handle_success(action:, js_func:, notice:)
     flash[:notice] = notice
     render(action: action, js: js_func)
+  end
+
+  def data_for_preview(task_queue)
+    repo = Kuwinda::Repository::TargetDB.new(table: task_queue.table)
+    data = {}
+    rows = []
+    columns = []
+    query = repo.query(task_queue.to_sql)
+
+    query.to_hash.each do |row|
+      # binding.pry
+      rows << {options: {expanded: true}, value: row}
+    end
+
+    query.columns.each do |col|
+      columns << {'name': col, 'title': col}
+    end
+
+    data[:rows] = rows
+    data[:columns] = columns
+    data
   end
 end
