@@ -16,10 +16,17 @@
           <%= render 'layouts/task_queue_topnavbar' %>
         </div>
 
-        <div class="col-sm-12">
+        <div class="col-sm-12 hide">
           <div class="top-nav-for-queue-layout">
-            <a href="#" class="top-nav-item-for-queue-layout">Builder</a>
-            <a href="#" class="top-nav-item-for-queue-layout">Raw SQL</a>
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#task-queue-builder" aria-controls="task-queue-builder" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Builder</a>
+              </li>
+
+              <li role="presentation">
+                <a href="#task-queue-raw-sql" aria-controls="task-queue-raw-sql" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Raw SQL</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
