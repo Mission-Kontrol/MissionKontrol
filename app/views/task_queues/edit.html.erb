@@ -1,35 +1,31 @@
-<div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-lg-10">
-    <h2>Edit work list</h2>
+<div class="row">
+  <div class="col-sm-12">
+    <br>
+    <div id="builder" data-task-queue-table="<%= @task_queue.table %>" data-task-queue-id="<%= @task_queue.id %>"></div>
+    <div class="hide">
+      <br>
+      <h3>Query Builder Rules</h3>
+      <textarea name="" class="qb-rules form-control" id="myTextarea"></textarea>
+      <br>
+      <button id="btn-get" type="button" name="button" class="btn btn-success">Show rules</button>
+    </div>
 
-    <ol class="breadcrumb">
-      <li>
-        <%= link_to 'Home', dashboard_path %>
-      </li>
+    <br>
+    <button type="button" name="button" class="btn btn-primary" id="task-queue-update-button">Update Task Queue</button>
+  </div>
 
-      <li>
-        <%= link_to 'Work lists', work_lists_path %>
-      </li>
-
-      <li>
-        <%= link_to @work_list.name, work_list_path(@work_list) %>
-      </li>
-
-      <li class="active">
-        <strong>Edit</strong>
-      </li>
-    </ol>
+  <div class="col-sm-12" style="overflow-x: scroll">
+    <br>
+    <br>
+    <h4>Task Queue Preview</h4>
+    <hr>
+    <table class="task-queue-preview-table table" data-paging="true"></table>
   </div>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content">
-          <%= render 'form' %>
-        </div>
-      </div>
-    </div>
+<div class="modal fade" id="new-task-queue-modal" tabindex="-1" role="dialog" aria-labelledby="new-task-queue-modal">
+  <div class="modal-dialog" role="document">
+    <%= render partial: 'task_queues/new/new_queue_modal_screen_1' %>
+    <%= render partial: 'task_queues/new/new_queue_modal_screen_2' %>
   </div>
 </div>
