@@ -1,7 +1,7 @@
-var errors = <%= raw @work_list.errors.full_messages %>;
+var errors = <%= raw @task_queue.errors.full_messages %>;
 
 for (var i = 0; i < errors.length; i++) {
   toastr.error(errors[i]);
 }
 
-toastr.error('Failed to update worklist.');
+toastr.error('Failed to update task queue.');
