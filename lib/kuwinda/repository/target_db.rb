@@ -42,6 +42,11 @@ module Kuwinda
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
       end
+
+      def query(sql)
+        query_string = sql.split(";").join(" limit 5;")
+        conn.exec_query(query_string)
+      end
     end
   end
 end
