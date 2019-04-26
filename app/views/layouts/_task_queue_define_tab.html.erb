@@ -25,7 +25,13 @@
     <div class="col-sm-8 white-bg min-height-100vh">
       <%= render 'shared/flash_message' %>
 
-      <%= yield %>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="task-queue-builder">
+          <%= yield %>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="task-queue-raw-sql">raw sql</div>
+      </div>
 
       <% render 'layouts/footer' %>
     </div>
