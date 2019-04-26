@@ -17,21 +17,21 @@ class QueryBuilderParser
     if condition
       rules.each_with_index do |rule, index|
         args = {}
-        args[:column_type] = rule[:type]
-        args[:column_name] = rule[:id]
-        args[:column_value] = rule[:value]
-        args[:operator] = operator(rule[:operator])
-        args[:operator_string] = rule[:operator]
+        args[:column_type] = rule["type"]
+        args[:column_name] = rule["id"]
+        args[:column_value] = rule["value"]
+        args[:operator] = operator(rule["operator"])
+        args[:operator_string] = rule["operator"]
         args[:condition] = condition unless index == rules.size - 1
         self.sql_literal = build_sql(args: args)
       end
     else
       args = {}
-      args[:column_type] = rules[0][:type]
-      args[:column_name] = rules[0][:id]
-      args[:column_value] = rules[0][:value]
-      args[:operator] = operator(rules[0][:operator])
-      args[:operator_string] = rules[0][:operator]
+      args[:column_type] = rules[0]["type"]
+      args[:column_name] = rules[0]["id"]
+      args[:column_value] = rules[0]["value"]
+      args[:operator] = operator(rules[0]["operator"])
+      args[:operator_string] = rules[0]["operator"]
       self.sql_literal = build_sql(args: args)
     end
 
