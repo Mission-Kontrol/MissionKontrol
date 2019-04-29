@@ -15,14 +15,31 @@ upstream app_srv {
     server {{ default .Env.APP_SERVER_ADDR "127.0.0.1" }}:{{ default .Env.APP_SERVER_PORT "3000" }};
     keepalive 256;
 }
-
+{{ if isTrue (default .Env.WEB_SERVER_USE_HTTPS "false") }}
 server {
     listen {{ default .Env.WEB_SERVER_PORT "80" }} default_server deferred;
+    return 301 https://$host$request_uri;
+}
+{{ end }}
+server {
+    {{ if isTrue (default .Env.WEB_SERVER_USE_HTTPS "false") }}
+    listen {{ default .Env.WEB_SERVER_HTTPS_PORT "443" }} default_server ssl;
+    {{ else }}
+    listen {{ default .Env.WEB_SERVER_PORT "80" }} default_server deferred;
+    {{ end }}
+    {{ if isTrue (default .Env.WEB_SERVER_USE_HTTPS "false") }}
+    ssl_certificate /etc/nginx/ssl/certificate.pem;
+    ssl_certificate_key /etc/nginx/ssl/private.key;
 
+    ssl_session_timeout  5m;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers   on;
+    {{ end }}
     root {{ default .Env.APP_HOME "/app" }}/public;
     access_log {{ default .Env.APP_HOME "/app" }}/log/nginx.access.log;
     error_log {{ default .Env.APP_HOME "/app" }}/log/nginx.error.log info;
-
     {{ if isTrue (default .Env.RAILS_SERVE_STATIC_FILES "false") }}
     location ^~ /assets/ {
         gzip_static on;
@@ -30,7 +47,6 @@ server {
         add_header Cache-Control public;
     }
     {{ end }}
-
     location / {
         proxy_pass          http://app_srv;
         proxy_http_version  1.1;

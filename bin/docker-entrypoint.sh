@@ -25,10 +25,15 @@ fi
 echo
 
 # Run WebServer?
-if [[ "${WEB_SERVER_UP:-false}" = "true" ]]; then
-    export APP_SERVER_ADDR=127.0.0.1
-    export APP_SERVER_PORT=3001
-
+if [ "${WEB_SERVER_ENABLE:-false}" == "true" ]; then
+    if [ "${WEB_SERVER_USE_HTTPS:-false}" == "true" ] && [ ! -f /etc/nginx/ssl/certificate.pem ]; then
+        echo "==> Generating self-signed certificate. <=="
+        mkdir -p /etc/nginx/ssl
+        openssl req  -nodes -new -x509 \
+            -keyout /etc/nginx/ssl/private.key \
+            -out /etc/nginx/ssl/certificate.pem \
+            -subj "/C=UK/ST=London/L=London/O=kuwinda/OU=IT Department/CN=example.com"
+    fi
     echo "==> Starting nginx WebServer. <=="
     dockerize \
         -template /app/config/nginx_default.tmpl:/etc/nginx/conf.d/default.conf \
@@ -38,7 +43,7 @@ if [[ "${WEB_SERVER_UP:-false}" = "true" ]]; then
     echo
 
     # Run Puma as application server.
-    set -- bundle exec puma -b tcp://$APP_SERVER_ADDR:$APP_SERVER_PORT --pidfile /tmp/server.pid
+    set -- bundle exec puma -b tcp://${APP_SERVER_ADDR:-127.0.0.1}:${APP_SERVER_PORT:-3000} --pidfile /tmp/server.pid
 fi
 
 # If CMD starts with an option, prepend 'rails server'.
