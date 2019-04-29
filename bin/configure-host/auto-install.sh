@@ -7,6 +7,7 @@ set -e
 # The basic directory structure:
 export CFG_DIR="/opt/kuwinda"
 export LOG_DIR="$CFG_DIR/logs"
+export SSL_DIR="$CFG_DIR/ssl"
 export CMP_FILE="docker-compose.live.yml"
 # Used doker images:
 export CMP_IMAGE="docker/compose:1.24.0"
@@ -151,7 +152,11 @@ function configure_runtime() {
     #
     # Creates required configuration files.
     #
-    mkdir -p "$CFG_DIR" "$LOG_DIR"
+    mkdir -p "$CFG_DIR" "$LOG_DIR" "$SSL_DIR"
+
+    [[ -z "$EXPOSE_PORT" ]] && EXPOSE_PORT="80:443"
+    local HTTP_PORT=${EXPOSE_PORT%%:*}
+    local HTTPS_PORT=${EXPOSE_PORT##*:}
 
     echo -e " [\e[1;37mINFO\e[0m] :: Creating configuration files."
     # Create hidden files with env variables, if they do not exist.
@@ -198,15 +203,20 @@ services:
       - "$CFG_DIR/.app.env"
     environment:
       KUWINDA_DATABASE_HOST: db
+      WEB_SERVER_ENABLE: "true"
+      WEB_SERVER_PORT: $HTTP_PORT
+      WEB_SERVER_HTTPS_PORT: $HTTPS_PORT
+      WEB_SERVER_USE_HTTPS: "${WEB_SERVER_USE_HTTPS:-false}"
     networks:
       - internal
     ports:
-      # TODO: Configure some webserver (with HTTPS?) on front of the app server
-      - "${EXPOSE_PORT:-3000}:3000"
+      - "${HTTP_PORT}:${HTTP_PORT}"
+      - "${HTTPS_PORT}:${HTTPS_PORT}"
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - $LOG_DIR:/app/log
+      - $SSL_DIR:/etc/nginx/ssl
 
 volumes:
   postgres-data:
@@ -248,10 +258,11 @@ function docker_compose() {
 }
 
 function print_help() {
-    echo -e "  sudo $0 --run --port 8080\n"
+    echo -e "  sudo $0 --run --port 8080:8443\n"
     echo -e "       -r | --run                : Runs setup of the server and application containers."
     echo -e "       -s | --stop               : Stops application containers deployed on the server.\n"
-    echo -e "       -p | --port               : Allows to specify custom port on which application will be exposed on host."
+    echo -e "       -p | --ports              : Allows to specify custom ports (HTTP and HTTPS) on which application will be exposed on host."
+    echo -e "            --use_https          : Allows to enable and enforce HTTPS with Web Server."
     echo -e "       -u | --update             : Updates configuration and application containers."
     echo -e "       -f | --force              : Used with '--update' option to force update of the configuration and application contaienrs.\n"
     echo -e "       -d | --remove             : Removes application containers and configuration files from the server.\n"
@@ -264,7 +275,7 @@ function print_help() {
 #
 echo
 shortOptions='dfhp:rsu'
-longOptions='force,help,port:,remove,run,stop,update'
+longOptions='force,help,ports:,remove,run,stop,update,use_https'
 
 set +e
 getopt -T > /dev/null
@@ -282,14 +293,15 @@ eval set -- $ARGS
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        -d | --remove)  CMD="remove" ;;
-        -f | --force)   export FORCE_UPDATE="yes" ;;
-        -h | --help)    print_help ;;
-        -p | --port)    export EXPOSE_PORT="$2" ;;
-        -r | --run)     CMD="run"; [ ! -f "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
-        -s | --stop)    CMD="stop" ;;
-        -u | --update)  CMD="update"; export SERVICE_UPDATE="yes" ;;
-        --)             shift; break ;;
+        -d | --remove)      CMD="remove" ;;
+        -f | --force)       export FORCE_UPDATE="yes" ;;
+        -h | --help)        print_help ;;
+        -p | --ports)       export EXPOSE_PORT="$2" ;;
+        -r | --run)         CMD="run"; [ ! -f "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
+        -s | --stop)        CMD="stop" ;;
+        -u | --update)      CMD="update"; export SERVICE_UPDATE="yes" ;;
+             --use_https)   export WEB_SERVER_USE_HTTPS="true" ;;
+        --)                 shift; break ;;
     esac
     shift
 done
@@ -322,6 +334,7 @@ if [ -n "$CMD" ]; then
         if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
             # TODO: Remove "docker logout" after making app image publicly available
             docker logout >/dev/null
+            echo
         fi
     elif [ "$CMD" == "remove" ]; then
         docker_compose down -v
