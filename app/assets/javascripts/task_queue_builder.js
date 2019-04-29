@@ -4,8 +4,6 @@ let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
 
-
-
 $(document).ready(() => {
   metaTag = $('meta[name=psj]');
   isCurrentControllerTaskQueues = metaTag.attr('controller') == 'task_queues';
@@ -59,25 +57,13 @@ function loadEditPage() {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
 
-
-    // if (!$.isEmptyObject(queryBuilderRules)) {
-      // $('.qb-rules').val(JSON.stringify(queryBuilderRules, null, 2));
-    // }
-
     getFieldsWithType(taskQueueTable);
 
-    // let queryBuilderRules = ;
-
-
-    $('#task-queue-update-button').click(function() {
+    $('.task-queue-update-button').click(function() {
       var params = {};
       params["task_queue"] = {}
-      // params["task_queue"]["query_builder_rules"] = $('#builder').queryBuilder('getRules');
       params["task_queue"]["query_builder_rules"] = JSON.stringify($('#builder').queryBuilder('getRules'), null, 2);
-      // params["task_queue"]["details"] = document.getElementById('task_queue_details').value;
-      // params["task_queue"]["table"] = document.getElementById('task_queue_table').value;
-
-      // document.getElementById("queue-builder-modal-save-button").disabled = true;
+      params["task_queue"]["raw_sql"] = document.getElementById('task_queue_raw_sql').value;;
 
       $.ajax({
         url: "/task_queues/" + taskQueueId,
@@ -88,16 +74,12 @@ function loadEditPage() {
           console.log("Failed: "+ errorTextStatus+" ;"+error);
         },
         success: function(response, status, request) {
-          console.log("it worked");
-          // debugger
           let rows = response.rows
           let columns = response.columns
-
           loadTaskQueuePreview(columns, rows);
-          // $('#builder').queryBuilder('setRules', param_1, param_2);
+          toastr.info('Task queue updated.');
         }
       })
-      // updateTaskQueue(params);
     })
   }
 }
@@ -122,6 +104,7 @@ function getFieldsWithType(table) {
 
 function loadQueryBuider(data) {
   const filters = [];
+  let taskQueueRules;
 
   for (var i = 0; i < data.length; i++) {
     var type;
@@ -141,8 +124,32 @@ function loadQueryBuider(data) {
 
   $('#builder').queryBuilder({
     filters: filters,
-    allow_groups: false
+    allow_groups: false,
+    operators: ['equal',
+                'not_equal',
+                'contains',
+                'not_contains',
+                'between',
+                'not_between',
+                'is_null',
+                'is_not_null',
+                'begins_with',
+                'not_begins_with',
+                'is_empty',
+                'is_not_empty',
+                'less',
+                'less_or_equal',
+                'greater',
+                'greater_or_equal',
+                'ends_with',
+                'not_ends_with']
   });
+
+  taskQueueRules = $("#builder").data().taskQueueRules;
+
+  if (taskQueueRules) {
+    $("#builder").queryBuilder('setRules', taskQueueRules)
+  }
 }
 
 function saveTaskQueue(params) {
@@ -163,7 +170,6 @@ function saveTaskQueue(params) {
 }
 
 function loadTaskQueuePreview(columns, rows) {
-  // debugger
   $('.task-queue-preview-table').footable({
     "columns": columns,
     "rows": rows
