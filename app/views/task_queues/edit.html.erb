@@ -1,25 +1,19 @@
 <div class="row">
   <div class="col-sm-12">
     <br>
-    <div id="builder" data-task-queue-table="<%= @task_queue.table %>" data-task-queue-id="<%= @task_queue.id %>"></div>
-    <div class="hide">
-      <br>
-      <h3>Query Builder Rules</h3>
-      <textarea name="" class="qb-rules form-control" id="myTextarea"></textarea>
-      <br>
-      <button id="btn-get" type="button" name="button" class="btn btn-success">Show rules</button>
-    </div>
-
+    <div id="builder" data-task-queue-table="<%= @task_queue.table %>" data-task-queue-id="<%= @task_queue.id %>" data-task-queue-rules="<%= @task_queue.query_builder_rules %>"></div>
     <br>
-    <button type="button" name="button" class="btn btn-primary" id="task-queue-update-button">Update Task Queue</button>
+    <button type="button" name="button" class="btn btn-primary task-queue-update-button">Update Task Queue</button>
   </div>
 
-  <div class="col-sm-12" style="overflow-x: scroll">
+  <div class="col-sm-12" style="">
     <br>
     <br>
     <h4>Task Queue Preview</h4>
     <hr>
-    <table class="task-queue-preview-table table" data-paging="true"></table>
+    <div class="table-responsive">
+      <table class="task-queue-preview-table table" data-paging="true"></table>
+    </div>
   </div>
 </div>
 

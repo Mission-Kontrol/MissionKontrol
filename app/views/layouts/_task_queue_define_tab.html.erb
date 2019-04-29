@@ -1,3 +1,19 @@
+<div class="row white-bg border-bottom">
+  <div class="col-sm-12">
+    <div class="top-nav-for-queue-layout">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#task-queue-builder" aria-controls="task-queue-builder" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Builder</a>
+        </li>
+
+        <li role="presentation">
+          <a href="#task-queue-raw-sql" aria-controls="task-queue-raw-sql" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Raw SQL</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <div role="tabpanel" class="tab-pane active" id="home">
   <div class="row">
     <div class="col-sm-1">
@@ -30,7 +46,17 @@
           <%= yield %>
         </div>
 
-        <div role="tabpanel" class="tab-pane" id="task-queue-raw-sql">raw sql</div>
+        <div role="tabpanel" class="tab-pane" id="task-queue-raw-sql">
+          <br>
+          <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
+            <div class="form-group">
+              <%= f.label :raw_sql %>
+              <%= f.text_field :raw_sql, class: "form-control", placeholder: @task_queue.to_sql %>
+            </div>
+          <% end %>
+          <br>
+          <button type="button" name="button" class="btn btn-primary task-queue-update-button">Update Task Queue</button>
+        </div>
       </div>
 
       <% render 'layouts/footer' %>
