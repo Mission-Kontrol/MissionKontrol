@@ -154,7 +154,7 @@ function configure_runtime() {
     #
     mkdir -p "$CFG_DIR" "$LOG_DIR" "$SSL_DIR"
 
-    [[ -z "$EXPOSE_PORT" ]] && EXPOSE_PORT="80:443"
+    [[ "$EXPOSE_PORT" =~ ^(.*):(.*)$ ]] || EXPOSE_PORT="80:443"
     local HTTP_PORT=${EXPOSE_PORT%%:*}
     local HTTPS_PORT=${EXPOSE_PORT##*:}
 
