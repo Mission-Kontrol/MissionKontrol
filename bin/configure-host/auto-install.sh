@@ -153,6 +153,8 @@ function configure_runtime() {
     # Creates required configuration files.
     #
     mkdir -p "$CFG_DIR" "$LOG_DIR" "$SSL_DIR"
+    [[ -n "$SSL_CERT_FILE" ]] && { cp -af "$SSL_CERT_FILE" "$SSL_DIR/certificate.pem"; chmod 0400 "$SSL_DIR/certificate.pem"; }
+    [[ -n "$SSL_CERT_KEY" ]] && { cp -af "$SSL_CERT_KEY" "$SSL_DIR/private.key"; chmod 0400 "$SSL_DIR/private.key"; }
 
     [[ "$EXPOSE_PORT" =~ ^(.*):(.*)$ ]] || EXPOSE_PORT="80:443"
     local HTTP_PORT=${EXPOSE_PORT%%:*}
@@ -207,6 +209,7 @@ services:
       WEB_SERVER_PORT: $HTTP_PORT
       WEB_SERVER_HTTPS_PORT: $HTTPS_PORT
       WEB_SERVER_USE_HTTPS: "${WEB_SERVER_USE_HTTPS:-false}"
+      LAUNCH_TIMESTAMP: "$(date +%s)"
     networks:
       - internal
     ports:
@@ -263,6 +266,8 @@ function print_help() {
     echo -e "       -s | --stop               : Stops application containers deployed on the server.\n"
     echo -e "       -p | --ports              : Allows to specify custom ports (HTTP and HTTPS) on which application will be exposed on host."
     echo -e "            --use_https          : Allows to enable and enforce HTTPS with Web Server."
+    echo -e "            --ssl_cert           : Path to the SSL certificate file."
+    echo -e "            --ssl_cert_key       : Path to the SSL certificate key file.\n"
     echo -e "       -u | --update             : Updates configuration and application containers."
     echo -e "       -f | --force              : Used with '--update' option to force update of the configuration and application contaienrs.\n"
     echo -e "       -d | --remove             : Removes application containers and configuration files from the server.\n"
@@ -275,7 +280,7 @@ function print_help() {
 #
 echo
 shortOptions='dfhp:rsu'
-longOptions='force,help,ports:,remove,run,stop,update,use_https'
+longOptions='force,help,ports:,remove,run,ssl_cert:,ssl_cert_key:,stop,update,use_https'
 
 set +e
 getopt -T > /dev/null
@@ -293,15 +298,17 @@ eval set -- $ARGS
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        -d | --remove)      CMD="remove" ;;
-        -f | --force)       export FORCE_UPDATE="yes" ;;
-        -h | --help)        print_help ;;
-        -p | --ports)       export EXPOSE_PORT="$2" ;;
-        -r | --run)         CMD="run"; [ ! -f "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
-        -s | --stop)        CMD="stop" ;;
-        -u | --update)      CMD="update"; export SERVICE_UPDATE="yes" ;;
-             --use_https)   export WEB_SERVER_USE_HTTPS="true" ;;
-        --)                 shift; break ;;
+        -d | --remove)        CMD="remove" ;;
+        -f | --force)         export FORCE_UPDATE="yes" ;;
+        -h | --help)          print_help ;;
+        -p | --ports)         export EXPOSE_PORT="$2" ;;
+        -r | --run)           CMD="run"; [ ! -f "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
+             --ssl_cert)      export SSL_CERT_FILE=$(readlink -f "$2") ;;
+             --ssl_cert_key)  export SSL_CERT_KEY=$(readlink -f "$2") ;;
+        -s | --stop)          CMD="stop" ;;
+        -u | --update)        CMD="update"; export SERVICE_UPDATE="yes" ;;
+             --use_https)     export WEB_SERVER_USE_HTTPS="true" ;;
+        --)                   shift; break ;;
     esac
     shift
 done
