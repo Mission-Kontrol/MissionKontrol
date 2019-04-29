@@ -17,12 +17,13 @@ sudo ./auto-install.sh --run
 ## Script Options
 
 ```bash
-  sudo ./auto-install.sh --run --port 8080
+  sudo ./auto-install.sh --run --ports 8080:8443
 
        -r | --run                : Starts application containers after verifying dependencies.
        -s | --stop               : Stops application containers deployed on the server temporarily.
 
-       -p | --port               : Allows to specify custom port on application will be exposed on host.
+       -p | --ports              : Allows to specify custom ports (HTTP and HTTPS) on which application will be exposed on host.
+            --use_https          : Allows to enable and enforce HTTPS with Web Server.
        -u | --update             : Updates configuration and application containers.
        -f | --force              : Used with '--update' option to force update of the configuration and application contaienrs.
 
