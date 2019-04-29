@@ -45,6 +45,9 @@ class TaskQueuesController < ApplicationController
   def update
     @task_queue = TaskQueue.find(params[:id])
     @task_queue.query_builder_rules = params["task_queue"]["query_builder_rules"]
+    @task_queue.raw_sql = params["task_queue"]["raw_sql"]
+
+    binding.pry
 
     if @task_queue.save
       data = data_for_preview(@task_queue)
