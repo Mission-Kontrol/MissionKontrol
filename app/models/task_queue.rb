@@ -5,6 +5,7 @@ class TaskQueue < ApplicationRecord
 
   def to_sql
     result = ""
+    return result if query_builder_rules.blank?
     query_builder = JSON.parse(query_builder_rules)
 
     if query_builder["rules"].size > 1
