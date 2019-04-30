@@ -2,8 +2,8 @@
 
 class TaskQueuesController < ApplicationController
   layout 'task_queue'
-  before_action :set_db_tables, only: %i[new create add_sql_filter edit]
-  before_action :set_db_columns, only: %i[new create add_sql_filter edit]
+  # before_action :set_db_tables, only: %i[new create add_sql_filter edit]
+  # before_action :set_db_columns, only: %i[new create add_sql_filter edit]
   before_action :load_available_tables
 
   def index
@@ -11,24 +11,22 @@ class TaskQueuesController < ApplicationController
     @work_lists = WorkList.order(created_at: :desc)
   end
 
-  def show
-    @work_list = WorkList.find(params[:id])
-    @work_list_data = ClientRecord.connection.exec_query(@work_list.sql_to_run)
-
-    @activities = OpenStruct.new
-    @activities.all = []
-    @activities.calls = []
-    @activities.meetings = []
-    @activities.notes = []
-  end
+  # def show
+  #   @work_list = WorkList.find(params[:id])
+  #   @work_list_data = ClientRecord.connection.exec_query(@work_list.sql_to_run)
+  #
+  #   @activities = OpenStruct.new
+  #   @activities.all = []
+  #   @activities.calls = []
+  #   @activities.meetings = []
+  #   @activities.notes = []
+  # end
 
   def edit
     @task_queue = TaskQueue.find(params[:id])
   end
 
-  def new
-    # @queue = WorkList.new
-  end
+  def new; end
 
   def create
     @task_queue = TaskQueue.new(task_queue_params)
@@ -47,7 +45,23 @@ class TaskQueuesController < ApplicationController
     @task_queue.query_builder_rules = params["task_queue"]["query_builder_rules"]
     @task_queue.raw_sql = params["task_queue"]["raw_sql"]
 
-    binding.pry
+    if @task_queue.save
+      begin
+        data = data_for_preview(@task_queue)
+        render action: 'update/success', json: {
+          rows: data[:rows],
+          columns: data[:columns]
+        }
+      rescue Exception => e
+        render action: 'update/error', status: 422, json: {}
+      end
+    end
+  end
+
+  def updatee
+    @task_queue = TaskQueue.find(params[:id])
+    @task_queue.query_builder_rules = params["task_queue"]["query_builder_rules"]
+    @task_queue.raw_sql = params["task_queue"]["raw_sql"]
 
     if @task_queue.save
       data = data_for_preview(@task_queue)
@@ -56,83 +70,39 @@ class TaskQueuesController < ApplicationController
         columns: data[:columns]
       }
     else
-      render action: 'update/error'
+      render action: 'update/error', status: 422
     end
   end
 
-  def add_sql_filter
-    respond_to :js
-    operator = params[:sql_filter][:operator]
-    @sql_filter = SQLFilter::Equal.new(operator: operator)
-    render action: 'add_sql_filter/success'
-  end
-
-  def add_work_list_outcome
-    respond_to :js
-    @outcome = build_work_list_outcome
-    render action: 'add_work_list_outcome/success'
-  end
-
-  def remove_sql_filter
-    respond_to :js
-    render action: 'remove_sql_filter/success'
-  end
-
-  def remove_work_list_outcome
-    respond_to :js
-    render action: 'remove_work_list_outcome/success'
-  end
+  # def add_sql_filter
+  #   respond_to :js
+  #   operator = params[:sql_filter][:operator]
+  #   @sql_filter = SQLFilter::Equal.new(operator: operator)
+  #   render action: 'add_sql_filter/success'
+  # end
+  #
+  # def add_work_list_outcome
+  #   respond_to :js
+  #   @outcome = build_work_list_outcome
+  #   render action: 'add_work_list_outcome/success'
+  # end
+  #
+  # def remove_sql_filter
+  #   respond_to :js
+  #   render action: 'remove_sql_filter/success'
+  # end
+  #
+  # def remove_work_list_outcome
+  #   respond_to :js
+  #   render action: 'remove_work_list_outcome/success'
+  # end
 
   private
-
-  def work_list_params
-    params.require(:work_list).permit(:name,
-                                      :details,
-                                      :data_table_name,
-                                      :sql_query,
-                                      visible_columns: [],
-                                      sql_filters: sql_filter_params,
-                                      outcomes: outcome_params)
-  end
 
   def task_queue_params
     params.require(:task_queue).permit(:name,
                                         :details,
                                         :table)
-  end
-
-  def sql_filter_params
-    [sql_filter: %i[operator
-                    kind
-                    column
-                    value]]
-  end
-
-  def outcome_params
-    [outcome: %i[title
-                 detail]]
-  end
-
-  def build_work_list_outcome
-    WorkListOutcome.new
-  end
-
-  def set_worklist
-    @work_list = WorkList.new(work_list_params)
-  end
-
-  def set_db_tables
-    @set_db_tables ||= ClientRecord.connection.tables
-  end
-
-  def set_db_columns
-    @hash_of_tables_and_columns = {}
-    ClientRecord.connection.tables.each do |table|
-      @hash_of_tables_and_columns[table] = []
-      ClientRecord.connection.columns(table).each do |column|
-        @hash_of_tables_and_columns[table] << column.name
-      end
-    end
   end
 
   def handle_success(action:, js_func:, notice:)
@@ -145,10 +115,16 @@ class TaskQueuesController < ApplicationController
     data = {}
     rows = []
     columns = []
-    query = repo.query(task_queue.to_sql)
+
+    if !task_queue.raw_sql.blank?
+      query = repo.query(task_queue.raw_sql)
+    elsif !task_queue.to_sql.blank?
+      query = repo.query(task_queue.to_sql)
+    else
+      return data
+    end
 
     query.to_hash.each do |row|
-      # binding.pry
       rows << {options: {expanded: true}, value: row}
     end
 

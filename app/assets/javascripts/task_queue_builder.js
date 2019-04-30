@@ -70,8 +70,9 @@ function loadEditPage() {
         type: 'PATCH',
         data: params,
         dataType: "json",
-        error: function(XMLHttpRequest, errorTextStatus, error) {
-          console.log("Failed: "+ errorTextStatus+" ;"+error);
+        error: function(response, status, request) {
+          console.error(status);
+          toastr.error('Task queue preview failed, review SQL.');
         },
         success: function(response, status, request) {
           let rows = response.rows
@@ -160,8 +161,11 @@ function saveTaskQueue(params) {
     type: 'POST',
     data: params,
     dataType: "json",
-    error: function(XMLHttpRequest, errorTextStatus, error) {
-      console.log("Failed: "+ errorTextStatus+" ;"+error);
+    error: function(response, status, request) {
+      console.error(response);
+      console.error(status);
+      console.error(request);
+      // console.log("Failed: "+ errorTextStatus+" ;"+error);
     },
     success: function(response, status, request) {
       console.log("it worked");
