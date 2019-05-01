@@ -30,15 +30,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "sign_in_count",
-                  "field": "sign_in_count",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "equal",
-                  "value": 0
+                  "id" => "sign_in_count",
+                  "field" => "sign_in_count",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "equal",
+                  "value" => 0
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -52,15 +52,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "equal",
-                  "value": "foo@bar.com"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "equal",
+                  "value" => "foo@bar.com"
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -76,15 +76,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "not_equal",
-                  "value": 3
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "not_equal",
+                  "value" => 3
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -98,15 +98,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "not_equal",
-                  "value": "foo@bar.com"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "not_equal",
+                  "value" => "foo@bar.com"
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -122,15 +122,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "is_null",
-                  "value": nil
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "is_null",
+                  "value" => nil
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -144,15 +144,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "is_null",
-                  "value": nil
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "is_null",
+                  "value" => nil
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -168,15 +168,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "is_not_null",
-                  "value": nil
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "is_not_null",
+                  "value" => nil
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -190,15 +190,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "is_not_null",
-                  "value": nil
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "is_not_null",
+                  "value" => nil
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -214,15 +214,15 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "less",
-                  "value": 6
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "less",
+                  "value" => 6
                 }
               ],
-              "valid": true
+              "valid" => true
             }
 
             query_builder = described_class.new(rules: rules[:rules])
@@ -238,12 +238,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "less_or_equal",
-                  "value": 6
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "less_or_equal",
+                  "value" => 6
                 }
               ],
               "valid": true
@@ -262,12 +262,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "greater",
-                  "value": 6
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "greater",
+                  "value" => 6
                 }
               ],
               "valid": true
@@ -286,12 +286,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "greater_or_equal",
-                  "value": 6
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "greater_or_equal",
+                  "value" => 6
                 }
               ],
               "valid": true
@@ -310,12 +310,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "begins_with",
-                  "value": "j"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "begins_with",
+                  "value" => "j"
                 }
               ],
               "valid": true
@@ -334,12 +334,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "not_begins_with",
-                  "value": "j"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "not_begins_with",
+                  "value" => "j"
                 }
               ],
               "valid": true
@@ -358,12 +358,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "ends_with",
-                  "value": "j"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "ends_with",
+                  "value" => "j"
                 }
               ],
               "valid": true
@@ -382,12 +382,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "not_ends_with",
-                  "value": "j"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "not_ends_with",
+                  "value" => "j"
                 }
               ],
               "valid": true
@@ -406,12 +406,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "contains",
-                  "value": "j"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "contains",
+                  "value" => "j"
                 }
               ],
               "valid": true
@@ -430,12 +430,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "not_contains",
-                  "value": "j"
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "not_contains",
+                  "value" => "j"
                 }
               ],
               "valid": true
@@ -454,12 +454,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "is_empty",
-                  "value": nil
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "is_empty",
+                  "value" => nil
                 }
               ],
               "valid": true
@@ -478,12 +478,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "email",
-                  "field": "email",
-                  "type": "string",
-                  "input": "text",
-                  "operator": "is_not_empty",
-                  "value": nil
+                  "id" => "email",
+                  "field" => "email",
+                  "type" => "string",
+                  "input" => "text",
+                  "operator" => "is_not_empty",
+                  "value" => nil
                 }
               ],
               "valid": true
@@ -502,12 +502,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "between",
-                  "value": [
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "between",
+                  "value" => [
                     1,
                     500
                   ]
@@ -529,12 +529,12 @@ describe QueryBuilderParser do
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
-                  "type": "integer",
-                  "input": "number",
-                  "operator": "not_between",
-                  "value": [
+                  "id" => "id",
+                  "field" => "id",
+                  "type" => "integer",
+                  "input" => "number",
+                  "operator" => "not_between",
+                  "value" => [
                     1,
                     500
                   ]
@@ -557,20 +557,20 @@ describe QueryBuilderParser do
             "condition": "AND",
             "rules": [
               {
-                "id": "sign_in_count",
-                "field": "sign_in_count",
-                "type": "integer",
-                "input": "number",
-                "operator": "equal",
-                "value": 22
+                "id" => "sign_in_count",
+                "field" => "sign_in_count",
+                "type" => "integer",
+                "input" => "number",
+                "operator" => "equal",
+                "value" => 22
               },
               {
-                "id": "reset_password_token",
-                "field": "reset_password_token",
-                "type": "string",
-                "input": "text",
-                "operator": "equal",
-                "value": "9u5utojf89hh"
+                "id" => "reset_password_token",
+                "field" => "reset_password_token",
+                "type" => "string",
+                "input" => "text",
+                "operator" => "equal",
+                "value" => "9u5utojf89hh"
               }
             ],
             "valid": true
@@ -585,28 +585,28 @@ describe QueryBuilderParser do
             "condition": "AND",
             "rules": [
               {
-                "id": "email",
-                "field": "email",
-                "type": "string",
-                "input": "text",
-                "operator": "contains",
-                "value": "j"
+                "id" => "email",
+                "field" => "email",
+                "type" => "string",
+                "input" => "text",
+                "operator" => "contains",
+                "value" => "j"
               },
               {
-                "id": "id",
-                "field": "id",
-                "type": "integer",
-                "input": "number",
-                "operator": "less_or_equal",
-                "value": 500
+                "id" => "id",
+                "field" => "id",
+                "type" => "integer",
+                "input" => "number",
+                "operator" => "less_or_equal",
+                "value" => 500
               },
               {
-                "id": "sign_in_count",
-                "field": "sign_in_count",
-                "type": "integer",
-                "input": "number",
-                "operator": "equal",
-                "value": 30
+                "id" => "sign_in_count",
+                "field" => "sign_in_count",
+                "type" => "integer",
+                "input" => "number",
+                "operator" => "equal",
+                "value" => 30
               }
             ],
             "valid": true
@@ -623,20 +623,20 @@ describe QueryBuilderParser do
             "condition": "AND",
             "rules": [
               {
-                "id": "email",
-                "field": "email",
-                "type": "string",
-                "input": "text",
-                "operator": "contains",
-                "value": "j"
+                "id" => "email",
+                "field" => "email",
+                "type" => "string",
+                "input" => "text",
+                "operator" => "contains",
+                "value" => "j"
               },
               {
-                "id": "email",
-                "field": "email",
-                "type": "string",
-                "input": "text",
-                "operator": "contains",
-                "value": "K"
+                "id" => "email",
+                "field" => "email",
+                "type" => "string",
+                "input" => "text",
+                "operator" => "contains",
+                "value" => "K"
               }
             ],
             "valid": true
