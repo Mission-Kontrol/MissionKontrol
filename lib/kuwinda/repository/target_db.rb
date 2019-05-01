@@ -43,8 +43,8 @@ module Kuwinda
         conn.exec_query(sql)
       end
 
-      def query(sql)
-        query_string = sql.split(";").join(" limit 5;")
+      def query(sql, limit)
+        query_string = sql.split(";").join(" limit #{limit};") if limit
         conn.exec_query(query_string)
       end
     end

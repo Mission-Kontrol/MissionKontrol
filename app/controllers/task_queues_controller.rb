@@ -117,9 +117,9 @@ class TaskQueuesController < ApplicationController
     columns = []
 
     if !task_queue.raw_sql.blank?
-      query = repo.query(task_queue.raw_sql)
+      query = repo.query(task_queue.raw_sql, 5)
     elsif !task_queue.to_sql.blank?
-      query = repo.query(task_queue.to_sql)
+      query = repo.query(task_queue.to_sql, 5)
     else
       return data
     end
