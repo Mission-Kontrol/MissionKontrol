@@ -4,19 +4,22 @@
       <%= render 'layouts/task_queue_navigation' %>
     </div>
 
-    <div class="col-sm-3 layout-builder-side-nav min-height-100vh">
-      <br>
-      <div class="m-t">
-        <div class="tab-content" id="">
-          <h1>Create</h1>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-8">
+    <div class="col-sm-11">
       <%= render 'shared/flash_message' %>
 
-      <%# yield %>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="task-queue-general-settings">
+          <h1>General settings</h1>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="task-queue-field-settings">
+          <h1>Field settings</h1>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="task-queue-outcome-settings">
+          <h1>Outcome settings</h1>
+        </div>
+      </div>
 
       <% render 'layouts/footer' %>
     </div>
