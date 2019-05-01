@@ -4,6 +4,74 @@ let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
 
+function loadQueryBuider(data) {
+  const filters = [];
+  let taskQueueRules;
+
+  for (var i = 0; i < data.length; i++) {
+    var type;
+    var filter = {}
+    var id = data[i][0]
+    filter['id'] = id
+
+    if (data[i][1] === "inet" || data[i][1] === "text") {
+      type = "string"
+    } else {
+      type = data[i][1]
+    }
+
+    filter["type"] = type
+    filters.push(filter)
+  }
+
+  $("#builder").queryBuilder({
+    filters: filters,
+    allow_groups: false,
+    operators: ["equal",
+                "not_equal",
+                "contains",
+                "not_contains",
+                "between",
+                "not_between",
+                "is_null",
+                "is_not_null",
+                "begins_with",
+                "not_begins_with",
+                "is_empty",
+                "is_not_empty",
+                "less",
+                "less_or_equal",
+                "greater",
+                "greater_or_equal",
+                "ends_with",
+                "not_ends_with"]
+  });
+
+  taskQueueRules = $("#builder").data().taskQueueRules;
+
+  if (taskQueueRules) {
+    $("#builder").queryBuilder("setRules", taskQueueRules)
+  }
+}
+
+function getFieldsWithType(table) {
+  $.ajax({
+    url: "/layouts/table_fields_with_type",
+    type: "GET",
+    data: {
+      table: table
+    },
+    async: true,
+    dataType: "json",
+    error: function(XMLHttpRequest, errorTextStatus, error){
+              toastr.error("Invalid target database, please review credentials.")
+           },
+    success: function(data){
+      loadQueryBuider(data);
+    }
+  })
+}
+
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -72,74 +140,6 @@ function loadEditPage() {
         }
       })
     })
-  }
-}
-
-function getFieldsWithType(table) {
-  $.ajax({
-    url: "/layouts/table_fields_with_type",
-    type: "GET",
-    data: {
-      table: table
-    },
-    async: true,
-    dataType: "json",
-    error: function(XMLHttpRequest, errorTextStatus, error){
-              toastr.error("Invalid target database, please review credentials.")
-           },
-    success: function(data){
-      loadQueryBuider(data);
-    }
-  })
-}
-
-function loadQueryBuider(data) {
-  const filters = [];
-  let taskQueueRules;
-
-  for (var i = 0; i < data.length; i++) {
-    var type;
-    var filter = {}
-    var id = data[i][0]
-    filter['id'] = id
-
-    if (data[i][1] === "inet" || data[i][1] === "text") {
-      type = "string"
-    } else {
-      type = data[i][1]
-    }
-
-    filter["type"] = type
-    filters.push(filter)
-  }
-
-  $("#builder").queryBuilder({
-    filters: filters,
-    allow_groups: false,
-    operators: ["equal",
-                "not_equal",
-                "contains",
-                "not_contains",
-                "between",
-                "not_between",
-                "is_null",
-                "is_not_null",
-                "begins_with",
-                "not_begins_with",
-                "is_empty",
-                "is_not_empty",
-                "less",
-                "less_or_equal",
-                "greater",
-                "greater_or_equal",
-                "ends_with",
-                "not_ends_with"]
-  });
-
-  taskQueueRules = $("#builder").data().taskQueueRules;
-
-  if (taskQueueRules) {
-    $("#builder").queryBuilder("setRules", taskQueueRules)
   }
 }
 
