@@ -4,16 +4,6 @@ let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
 
-$(document).ready(() => {
-  metaTag = $("meta[name=psj]");
-  isCurrentControllerTaskQueues = metaTag.attr("controller") === "task_queues";
-  isCurrentActionIndex = metaTag.attr("action") === "index";
-  isCurrentActionEdit = metaTag.attr("action") === "edit";
-
-  loadIndexPage();
-  loadEditPage();
-})
-
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -36,9 +26,9 @@ function loadIndexPage() {
       $("#new-queue-modal-screen-2").toggleClass("hide");
     })
 
-    $('#queue-builder-modal-back-button').click(function() {
-      $('#new-queue-modal-screen-1').toggleClass('hide');
-      $('#new-queue-modal-screen-2').toggleClass('hide');
+    $("#queue-builder-modal-back-button").click(function() {
+      $("#new-queue-modal-screen-1").toggleClass("hide");
+      $("#new-queue-modal-screen-2").toggleClass("hide");
     })
 
     $('#queue-builder-modal-save-button').click(function() {
@@ -179,3 +169,13 @@ function loadTaskQueuePreview(columns, rows) {
     "rows": rows
   });
 }
+
+$(document).ready(() => {
+  metaTag = $("meta[name=psj]");
+  isCurrentControllerTaskQueues = metaTag.attr("controller") === "task_queues";
+  isCurrentActionIndex = metaTag.attr("action") === "index";
+  isCurrentActionEdit = metaTag.attr("action") === "edit";
+
+  loadIndexPage();
+  loadEditPage();
+})
