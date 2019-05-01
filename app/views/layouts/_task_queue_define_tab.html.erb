@@ -16,10 +16,6 @@
 
 <div role="tabpanel" class="tab-pane active" id="home">
   <div class="row">
-    <div class="col-sm-1">
-      <%= render 'layouts/task_queue_navigation' %>
-    </div>
-
     <div class="col-sm-3 layout-builder-side-nav min-height-100vh">
       <br>
       <div class="m-t">
@@ -38,7 +34,7 @@
       </div>
     </div>
 
-    <div class="col-sm-8 white-bg min-height-100vh">
+    <div class="col-sm-9 white-bg min-height-100vh">
       <%= render 'shared/flash_message' %>
 
       <div class="tab-content">
@@ -48,6 +44,8 @@
 
         <div role="tabpanel" class="tab-pane" id="task-queue-raw-sql">
           <br>
+          <div class="alert alert-warning" role="alert">WARNING. Raw SQL will override rules.</div>
+          
           <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
             <div class="form-group">
               <%= f.label :raw_sql %>
