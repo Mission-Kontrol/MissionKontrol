@@ -16,15 +16,15 @@ $(document).ready(() => {
 
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
-    $('#new-task-queue-modal').modal({
-      backdrop: 'static',
+    $("#new-task-queue-modal").modal({
+      backdrop: "static",
       keyboard: false
     })
 
     getFieldsWithType("users");
 
-    $('#btn-get').on('click', function() {
-      var result = $('#builder').queryBuilder('getRules');
+    $("#btn-get").on("click", function() {
+      var result = $("#builder").queryBuilder("#builder");
 
       if (!$.isEmptyObject(result)) {
         $('.qb-rules').val(JSON.stringify(result, null, 2));
