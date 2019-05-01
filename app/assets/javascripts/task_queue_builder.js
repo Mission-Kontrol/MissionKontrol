@@ -10,9 +10,9 @@ function loadQueryBuider(data) {
 
   for (var i = 0; i < data.length; i++) {
     var type;
-    var filter = {}
-    var id = data[i][0]
-    filter['id'] = id
+    var filter = {};
+    var id = data[i][0];
+    filter['id'] = id;
 
     if (data[i][1] === "inet" || data[i][1] === "text") {
       type = "string"
@@ -20,8 +20,8 @@ function loadQueryBuider(data) {
       type = data[i][1]
     }
 
-    filter["type"] = type
-    filters.push(filter)
+    filter["type"] = type;
+    filters.push(filter);
   }
 
   $("#builder").queryBuilder({
@@ -50,7 +50,7 @@ function loadQueryBuider(data) {
   taskQueueRules = $("#builder").data().taskQueueRules;
 
   if (taskQueueRules) {
-    $("#builder").queryBuilder("setRules", taskQueueRules)
+    $("#builder").queryBuilder("setRules", taskQueueRules);
   }
 }
 
