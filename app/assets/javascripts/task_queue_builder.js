@@ -5,10 +5,10 @@ let isCurrentActionIndex;
 let isCurrentActionEdit;
 
 $(document).ready(() => {
-  metaTag = $('meta[name=psj]');
-  isCurrentControllerTaskQueues = metaTag.attr('controller') == 'task_queues';
-  isCurrentActionIndex = metaTag.attr('action') == 'index';
-  isCurrentActionEdit = metaTag.attr('action') == 'edit';
+  metaTag = $("meta[name=psj]");
+  isCurrentControllerTaskQueues = metaTag.attr("controller") === "task_queues";
+  isCurrentActionIndex = metaTag.attr("action") === "index";
+  isCurrentActionEdit = metaTag.attr('action') === "edit";
 
   loadIndexPage();
   loadEditPage();
