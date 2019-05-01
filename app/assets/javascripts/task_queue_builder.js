@@ -8,7 +8,7 @@ $(document).ready(() => {
   metaTag = $("meta[name=psj]");
   isCurrentControllerTaskQueues = metaTag.attr("controller") === "task_queues";
   isCurrentActionIndex = metaTag.attr("action") === "index";
-  isCurrentActionEdit = metaTag.attr('action') === "edit";
+  isCurrentActionEdit = metaTag.attr("action") === "edit";
 
   loadIndexPage();
   loadEditPage();
@@ -27,13 +27,13 @@ function loadIndexPage() {
       var result = $("#builder").queryBuilder("#builder");
 
       if (!$.isEmptyObject(result)) {
-        $('.qb-rules').val(JSON.stringify(result, null, 2));
+        $(".qb-rules").val(JSON.stringify(result, null, 2));
       }
     });
 
-    $('#queue-builder-modal-next-button').click(function() {
-      $('#new-queue-modal-screen-1').toggleClass('hide');
-      $('#new-queue-modal-screen-2').toggleClass('hide');
+    $("#queue-builder-modal-next-button").click(function() {
+      $("#new-queue-modal-screen-1").toggleClass("hide");
+      $("#new-queue-modal-screen-2").toggleClass("hide");
     })
 
     $('#queue-builder-modal-back-button').click(function() {
