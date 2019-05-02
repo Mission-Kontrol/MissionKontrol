@@ -2,8 +2,6 @@
 
 class TaskQueuesController < ApplicationController
   layout 'task_queue'
-  # before_action :set_db_tables, only: %i[new create add_sql_filter edit]
-  # before_action :set_db_columns, only: %i[new create add_sql_filter edit]
   before_action :load_available_tables
 
   def index
@@ -32,11 +30,9 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.new(task_queue_params)
 
     if @task_queue.save
-      handle_success(action: 'create/success',
-                     js_func: "window.location='#{edit_task_queue_path(@task_queue)}'",
-                     notice: 'Task queue was successfully created.')
+      render status: 201, json: @task_queue
     else
-      render action: 'create/error'
+      render 'create/error', status: 422, json: @task_queue.errors.full_messages
     end
   end
 
@@ -73,29 +69,6 @@ class TaskQueuesController < ApplicationController
       render action: 'update/error', status: 422
     end
   end
-
-  # def add_sql_filter
-  #   respond_to :js
-  #   operator = params[:sql_filter][:operator]
-  #   @sql_filter = SQLFilter::Equal.new(operator: operator)
-  #   render action: 'add_sql_filter/success'
-  # end
-  #
-  # def add_work_list_outcome
-  #   respond_to :js
-  #   @outcome = build_work_list_outcome
-  #   render action: 'add_work_list_outcome/success'
-  # end
-  #
-  # def remove_sql_filter
-  #   respond_to :js
-  #   render action: 'remove_sql_filter/success'
-  # end
-  #
-  # def remove_work_list_outcome
-  #   respond_to :js
-  #   render action: 'remove_work_list_outcome/success'
-  # end
 
   private
 
