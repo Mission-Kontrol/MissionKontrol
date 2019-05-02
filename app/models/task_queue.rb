@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TaskQueue < ApplicationRecord
-  validates :name, presence: true
+  validates :name, :table, presence: true
 
   def to_sql
     result = ""
