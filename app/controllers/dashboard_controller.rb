@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
                 :test_target_db_connection,
                 :load_available_tables, only: [:show]
   before_action :load_admin_db_config, only: [:show]
+  before_action :load_task_queues, only: [:show]
 
   def show; end
 
