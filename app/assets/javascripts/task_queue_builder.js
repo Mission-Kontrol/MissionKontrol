@@ -9,10 +9,10 @@ function loadQueryBuider(data) {
   let taskQueueRules;
 
   for (var i = 0; i < data.length; i++) {
-    var type
-    var filter = {}
-    var id = data[i][0]
-    filter['id'] = id
+    var type;
+    var filter = {};
+    var id = data[i][0];
+    filter['id'] = id;
 
     if (data[i][1] === "inet" || data[i][1] === "text") {
       type = "string"
@@ -20,8 +20,8 @@ function loadQueryBuider(data) {
       type = data[i][1]
     }
 
-    filter["type"] = type
-    filters.push(filter)
+    filter["type"] = type;
+    filters.push(filter);
   }
 
   $("#builder").queryBuilder({
@@ -158,7 +158,7 @@ function saveTaskQueue(params) {
       for (var i = 0; i < responseJson.length; i++) {
         toastr.error(responseJson[i]);
       }
-      toastr.error('Failed to save task queue.');
+      toastr.error("Failed to save task queue.");
       $("#queue-builder-modal-save-button").attr("disabled", false);
       $("#queue-builder-modal-back-button").attr("disabled", false);
     },
