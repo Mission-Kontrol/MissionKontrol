@@ -143,10 +143,13 @@ function loadEditPage() {
   }
 }
 
+function disableElementbyId(id) {
+  $("#" + id).attr("disabled", true);
+}
+
 function saveTaskQueue(params) {
-  // document.getElementById("queue-builder-modal-save-button").disabled = true;
-  $("#queue-builder-modal-save-button").attr("disabled", true);
-  $("#queue-builder-modal-back-button").attr("disabled", true);
+  disableElementbyId('queue-builder-modal-save-button')
+  disableElementbyId('queue-builder-modal-back-button')
 
   $.ajax({
     url: "/task_queues",
@@ -159,8 +162,8 @@ function saveTaskQueue(params) {
         toastr.error(responseJson[i]);
       }
       toastr.error("Failed to save task queue.");
-      $("#queue-builder-modal-save-button").attr("disabled", false);
-      $("#queue-builder-modal-back-button").attr("disabled", false);
+      disableElementbyId('queue-builder-modal-save-button')
+      disableElementbyId('queue-builder-modal-back-button')
     },
     success: function(response, status, request) {
       toastr.info("Task queue saved.");
