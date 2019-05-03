@@ -40,20 +40,34 @@ describe TaskQueue do
   describe 'to_sql' do
     it "is empty by default"
 
-    xit 'returns correct sql when query builder rules are present' do
-      expected = "SELECT * FROM users where name = 'dave' or name = 'david' ;"
-      task_queue = build(:task_queue)
-      task_queue.data_table_name = 'users'
-      filter = task_queue.sql_filters.first['sql_filter']
-      filter['value'] = 'dave'
-      filter['column'] = 'name'
-      filter1 = {
-        'kind' => 'equal',
-        'column' => 'name',
-        'operator' => 'or',
-        'value' => 'david'
+    it 'returns correct sql when query builder rules are present' do
+      rules = {
+        "condition": "AND",
+        "rules": [
+          {
+            "id" => "sign_in_count",
+            "field" => "sign_in_count",
+            "type" => "integer",
+            "input" => "number",
+            "operator" => "equal",
+            "value" => 22
+          },
+          {
+            "id" => "reset_password_token",
+            "field" => "reset_password_token",
+            "type" => "string",
+            "input" => "text",
+            "operator" => "equal",
+            "value" => "9u5utojf89hh"
+          }
+        ],
+        "valid": true
       }
-      task_queue.sql_filters << { 'sql_filter' => filter1 }
+
+      task_queue = described_class.new
+      task_queue.query_builder_rules = rules.to_json
+      task_queue.table = "users"
+      expected = "select * from users where sign_in_count = 22 and reset_password_token = '9u5utojf89hh';"
 
       actual = task_queue.to_sql
 
