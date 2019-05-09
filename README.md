@@ -135,3 +135,11 @@ There are several environment variables that can be used to modify the operation
 * `RAILS_MASTER_KEY` - key used to decrypt encrypted `credentials.yml.enc` file;
 * `RAILS_SERVE_STATIC_FILES` - allows to offload serving static files to Apache or NGINX web server;
 * `RAILS_LOG_TO_STDOUT` - enables sending logs of the `production` environment to `STDOUT`.
+
+NGINX Web Server configuration:
+
+* `WEB_SERVER_ENABLE` - enables and runs the nginx when the containers is started;
+* `WEB_SERVER_USE_HTTPS` - enables HTTPS port on the web server;
+* `WEB_SERVER_PORT` - allows to override the default HTTP port - `80/tcp`;
+* `WEB_SERVER_HTTPS_PORT` - allows to override the default HTTPS port - `443/tcp`;
+* `WEB_SERVER_STATIC_FILES` - enables serving static files by web server - should be used in combination with `RAILS_ENV=production` and `RAILS_SERVE_STATIC_FILES=true`.

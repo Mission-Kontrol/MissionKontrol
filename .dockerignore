@@ -1,5 +1,6 @@
-tmp/*
 log/*
+ssl/*
+tmp/*
 .git
 
 Dockerfile
