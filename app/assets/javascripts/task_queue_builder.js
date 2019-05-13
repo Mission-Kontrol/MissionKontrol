@@ -4,6 +4,13 @@ let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
 
+function loadTaskQueuePreview(columns, rows) {
+  $(".task-queue-preview-table").footable({
+    "columns": columns,
+    "rows": rows
+  });
+}
+
 function loadQueryBuider(data) {
   const filters = [];
   let taskQueueRules;
@@ -72,13 +79,6 @@ function getFieldsWithType(table) {
   })
 }
 
-function loadTaskQueuePreview(columns, rows) {
-  $(".task-queue-preview-table").footable({
-    "columns": columns,
-    "rows": rows
-  });
-}
-
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -87,14 +87,6 @@ function loadIndexPage() {
     })
 
     getFieldsWithType("users");
-
-    // $("#btn-get").on("click", function() {
-    //   var result = $("#builder").queryBuilder("#builder");
-    //
-    //   if (!$.isEmptyObject(result)) {
-    //     $(".qb-rules").val(JSON.stringify(result, null, 2));
-    //   }
-    // });
 
     $("#queue-builder-modal-next-button").click(function() {
       $("#new-queue-modal-screen-1").toggleClass("hide");
@@ -141,8 +133,8 @@ function loadEditPage() {
           window.toastr.error("Task queue preview failed, review SQL.");
         },
         success: function(response, status, request) {
-          let rows = response.rows
-          let columns = response.columns
+          let rows = response.rows;
+          let columns = response.columns;
           loadTaskQueuePreview(columns, rows);
           window.toastr.info("Task queue updated.");
         }
