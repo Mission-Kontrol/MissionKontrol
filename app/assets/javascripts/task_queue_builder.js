@@ -64,7 +64,7 @@ function getFieldsWithType(table) {
     async: true,
     dataType: "json",
     error: function(XMLHttpRequest, errorTextStatus, error){
-              toastr.error("Invalid target database, please review credentials.")
+              window.toastr.error("Invalid target database, please review credentials.")
            },
     success: function(data){
       loadQueryBuider(data);
@@ -138,13 +138,13 @@ function loadEditPage() {
         dataType: "json",
         error: function(response, status, request) {
           console.error(status);
-          toastr.error("Task queue preview failed, review SQL.");
+          window.toastr.error("Task queue preview failed, review SQL.");
         },
         success: function(response, status, request) {
           let rows = response.rows
           let columns = response.columns
           loadTaskQueuePreview(columns, rows);
-          toastr.info("Task queue updated.");
+          window.toastr.info("Task queue updated.");
         }
       })
     })
@@ -167,14 +167,14 @@ function saveTaskQueue(params) {
     error: function(response, status, request) {
       let responseJson = response.responseJSON;
       for (var i = 0; i < responseJson.length; i++) {
-        toastr.error(responseJson[i]);
+        window.toastr.error(responseJson[i]);
       }
-      toastr.error("Failed to save task queue.");
+      window.toastr.error("Failed to save task queue.");
       disableElementbyId("queue-builder-modal-save-button")
       disableElementbyId("queue-builder-modal-back-button")
     },
     success: function(response, status, request) {
-      toastr.info("Task queue saved.");
+      window.toastr.info("Task queue saved.");
       let redirectURL = "/task_queues/" + response.id + "/edit";
       window.location.replace(redirectURL);
     }
