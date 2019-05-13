@@ -72,6 +72,13 @@ function getFieldsWithType(table) {
   })
 }
 
+function loadTaskQueuePreview(columns, rows) {
+  $(".task-queue-preview-table").footable({
+    "columns": columns,
+    "rows": rows
+  });
+}
+
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -172,13 +179,6 @@ function saveTaskQueue(params) {
       window.location.replace(redirectURL);
     }
   })
-}
-
-function loadTaskQueuePreview(columns, rows) {
-  $(".task-queue-preview-table").footable({
-    "columns": columns,
-    "rows": rows
-  });
 }
 
 $(document).ready(() => {
