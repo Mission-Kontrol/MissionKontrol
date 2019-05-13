@@ -81,13 +81,13 @@ function loadIndexPage() {
 
     getFieldsWithType("users");
 
-    $("#btn-get").on("click", function() {
-      var result = $("#builder").queryBuilder("#builder");
-
-      if (!$.isEmptyObject(result)) {
-        $(".qb-rules").val(JSON.stringify(result, null, 2));
-      }
-    });
+    // $("#btn-get").on("click", function() {
+    //   var result = $("#builder").queryBuilder("#builder");
+    //
+    //   if (!$.isEmptyObject(result)) {
+    //     $(".qb-rules").val(JSON.stringify(result, null, 2));
+    //   }
+    // });
 
     $("#queue-builder-modal-next-button").click(function() {
       $("#new-queue-modal-screen-1").toggleClass("hide");
@@ -121,6 +121,7 @@ function loadEditPage() {
       var params = {};
       params["task_queue"] = {}
       params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
+      params["task_queue"]["query_builder_sql"] = $('#builder').queryBuilder('getSQL').sql;
       params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value;
 
       $.ajax({
