@@ -17,6 +17,10 @@ describe TaskQueue do
     expect(a_task_queue).to respond_to(:query_builder_rules)
   end
 
+  it 'responds to query_builder_sql' do
+    expect(a_task_queue).to respond_to(:query_builder_sql)
+  end
+
   it 'responds to to_sql' do
     expect(a_task_queue).to respond_to(:to_sql)
   end
@@ -40,38 +44,12 @@ describe TaskQueue do
   describe 'to_sql' do
     it "is empty by default"
 
-    it 'returns correct sql when query builder rules are present' do
-      rules = {
-        "condition": "AND",
-        "rules": [
-          {
-            "id" => "sign_in_count",
-            "field" => "sign_in_count",
-            "type" => "integer",
-            "input" => "number",
-            "operator" => "equal",
-            "value" => 22
-          },
-          {
-            "id" => "reset_password_token",
-            "field" => "reset_password_token",
-            "type" => "string",
-            "input" => "text",
-            "operator" => "equal",
-            "value" => "9u5utojf89hh"
-          }
-        ],
-        "valid": true
-      }
-
+    it 'returns correct sql when query builder sql is present' do
       task_queue = described_class.new
-      task_queue.query_builder_rules = rules.to_json
-      task_queue.table = "users"
-      expected = "select * from users where sign_in_count = 22 and reset_password_token = '9u5utojf89hh';"
+      task_queue.table = "users";
+      task_queue.query_builder_sql = "id >= 1 AND email IS NOT NULL";
 
-      actual = task_queue.to_sql
-
-      expect(actual).to eq(expected)
+      expect(task_queue.to_sql).to eq("select * from users where id >= 1 AND email IS NOT NULL;")
     end
   end
 end
