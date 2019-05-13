@@ -11,7 +11,7 @@ function loadTaskQueuePreview(columns, rows) {
   });
 }
 
-function loadQueryBuider(data) {
+function loadQueryBuilder(data) {
   const filters = [];
   let taskQueueRules;
 
@@ -74,7 +74,7 @@ function getFieldsWithType(table) {
               window.toastr.error("Invalid target database, please review credentials.")
            },
     success: function(data){
-      loadQueryBuider(data);
+      loadQueryBuilder(data);
     }
   })
 }

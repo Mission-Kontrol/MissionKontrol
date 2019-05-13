@@ -9,17 +9,6 @@ class TaskQueuesController < ApplicationController
     @work_lists = WorkList.order(created_at: :desc)
   end
 
-  # def show
-  #   @work_list = WorkList.find(params[:id])
-  #   @work_list_data = ClientRecord.connection.exec_query(@work_list.sql_to_run)
-  #
-  #   @activities = OpenStruct.new
-  #   @activities.all = []
-  #   @activities.calls = []
-  #   @activities.meetings = []
-  #   @activities.notes = []
-  # end
-
   def edit
     @task_queue = TaskQueue.find(params[:id])
   end
