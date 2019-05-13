@@ -42,19 +42,19 @@ describe TaskQueue do
   end
 
   describe 'to_sql' do
-    it "is empty when query builder sql is not present" do
+    it 'is empty when query builder sql is not present' do
       task_queue = described_class.new
-      task_queue.table = "users";
+      task_queue.table = 'users';
 
-      expect(task_queue.to_sql).to eq("")
+      expect(task_queue.to_sql).to eq('')
     end
 
     it 'returns correct sql when query builder sql is present' do
       task_queue = described_class.new
-      task_queue.table = "users";
-      task_queue.query_builder_sql = "id >= 1 AND email IS NOT NULL";
+      task_queue.table = 'users';
+      task_queue.query_builder_sql = 'id >= 1 AND email IS NOT NULL';
 
-      expect(task_queue.to_sql).to eq("select * from users where id >= 1 AND email IS NOT NULL;")
+      expect(task_queue.to_sql).to eq('select * from users where id >= 1 AND email IS NOT NULL;')
     end
   end
 end

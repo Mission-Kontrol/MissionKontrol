@@ -22,9 +22,9 @@ function loadQueryBuilder(data) {
     filter["id"] = id;
 
     if (data[i][1] === "inet" || data[i][1] === "text") {
-      type = "string"
+      type = "string";
     } else {
-      type = data[i][1]
+      type = data[i][1];
     }
 
     filter["type"] = type;
@@ -32,7 +32,7 @@ function loadQueryBuilder(data) {
   }
 
   $("#builder").queryBuilder({
-    filters: filters,
+    filters,
     allow_groups: false,
     operators: ["equal",
                 "not_equal",
@@ -181,4 +181,4 @@ $(document).ready(() => {
 
   loadIndexPage();
   loadEditPage();
-})
+});
