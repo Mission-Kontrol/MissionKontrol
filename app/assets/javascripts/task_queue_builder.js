@@ -11,7 +11,7 @@ function loadTaskQueuePreview(columns, rows) {
   });
 }
 
-function initQueryBuilder() {
+function initQueryBuilder(filters) {
   let taskQueueRules = $("#builder").data().taskQueueRules;
 
   if (taskQueueRules) {
@@ -60,8 +60,8 @@ function loadQueryBuilder(data) {
     filter["type"] = type;
     filters.push(filter);
   }
-  
-  initQueryBuilder()
+
+  initQueryBuilder(filters)
 }
 
 function getFieldsWithType(table) {
@@ -74,13 +74,44 @@ function getFieldsWithType(table) {
     async: true,
     dataType: "json",
     error: function(XMLHttpRequest, errorTextStatus, error){
-              window.toastr.error("Invalid target database, please review credentials.")
+              window.toastr.error("Invalid target database, please review credentials.");
            },
     success: function(data){
       loadQueryBuilder(data);
     }
   })
 }
+
+function disableElementbyId(id) {
+  $("#" + id).attr("disabled", true);
+}
+
+function saveTaskQueue(params) {
+  disableElementbyId("queue-builder-modal-save-button");
+  disableElementbyId("queue-builder-modal-back-button");
+
+  $.ajax({
+    url: "/task_queues",
+    type: "POST",
+    data: params,
+    dataType: "json",
+    error: function(response, status, request) {
+      let responseJson = response.responseJSON;
+      for (var i = 0; i < responseJson.length; i++) {
+        window.toastr.error(responseJson[i]);
+      }
+      window.toastr.error("Failed to save task queue.");
+      disableElementbyId("queue-builder-modal-save-button");
+      disableElementbyId("queue-builder-modal-back-button");
+    },
+    success: function(response, status, request) {
+      window.toastr.info("Task queue saved.");
+      let redirectURL = "/task_queues/" + response.id + "/edit";
+      window.location.replace(redirectURL);
+    }
+  });
+}
+
 
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
@@ -132,7 +163,6 @@ function loadEditPage() {
         data: params,
         dataType: "json",
         error: function(response, status, request) {
-          console.error(status);
           window.toastr.error("Task queue preview failed, review SQL.");
         },
         success: function(response, status, request) {
@@ -146,35 +176,6 @@ function loadEditPage() {
   }
 }
 
-function disableElementbyId(id) {
-  $("#" + id).attr("disabled", true);
-}
-
-function saveTaskQueue(params) {
-  disableElementbyId("queue-builder-modal-save-button")
-  disableElementbyId("queue-builder-modal-back-button")
-
-  $.ajax({
-    url: "/task_queues",
-    type: "POST",
-    data: params,
-    dataType: "json",
-    error: function(response, status, request) {
-      let responseJson = response.responseJSON;
-      for (var i = 0; i < responseJson.length; i++) {
-        window.toastr.error(responseJson[i]);
-      }
-      window.toastr.error("Failed to save task queue.");
-      disableElementbyId("queue-builder-modal-save-button")
-      disableElementbyId("queue-builder-modal-back-button")
-    },
-    success: function(response, status, request) {
-      window.toastr.info("Task queue saved.");
-      let redirectURL = "/task_queues/" + response.id + "/edit";
-      window.location.replace(redirectURL);
-    }
-  })
-}
 
 $(document).ready(() => {
   metaTag = $("meta[name=psj]");

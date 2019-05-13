@@ -44,7 +44,7 @@ module Kuwinda
       end
 
       def query(sql, limit)
-        query_string = sql.split(";").join(" limit #{limit};") if limit
+        query_string = sql.split(';').join(" limit #{limit};") if limit
         conn.exec_query(query_string)
       end
     end

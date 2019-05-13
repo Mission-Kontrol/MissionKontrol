@@ -26,10 +26,7 @@ class TaskQueuesController < ApplicationController
   end
 
   def update
-    @task_queue = TaskQueue.find(params[:id])
-    @task_queue.query_builder_rules = params["task_queue"]["query_builder_rules"]
-    @task_queue.query_builder_sql = params["task_queue"]["query_builder_sql"]
-    @task_queue.raw_sql = params["task_queue"]["raw_sql"]
+    load_task_queue
 
     if @task_queue.save
       begin
@@ -46,10 +43,17 @@ class TaskQueuesController < ApplicationController
 
   private
 
+  def load_task_queue
+    @task_queue = TaskQueue.find(params[:id])
+    @task_queue.query_builder_rules = params['task_queue']['query_builder_rules']
+    @task_queue.query_builder_sql = params['task_queue']['query_builder_sql']
+    @task_queue.raw_sql = params['task_queue']['raw_sql']
+  end
+
   def task_queue_params
     params.require(:task_queue).permit(:name,
-                                        :details,
-                                        :table)
+                                       :details,
+                                       :table)
   end
 
   def handle_success(action:, js_func:, notice:)
@@ -76,7 +80,7 @@ class TaskQueuesController < ApplicationController
     end
 
     query.columns.each do |col|
-      columns << {'name': col, 'title': col}
+      columns << { 'name': col, 'title': col }
     end
 
     data[:rows] = rows
