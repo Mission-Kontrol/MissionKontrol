@@ -12,7 +12,7 @@ function loadQueryBuider(data) {
     var type;
     var filter = {};
     var id = data[i][0];
-    filter['id'] = id;
+    filter["id"] = id;
 
     if (data[i][1] === "inet" || data[i][1] === "text") {
       type = "string"
@@ -102,9 +102,9 @@ function loadIndexPage() {
     $("#queue-builder-modal-save-button").click(function() {
       var params = {};
       params["task_queue"] = {};
-      params["task_queue"]["name"] = document.getElementById('task_queue_name').value;
-      params["task_queue"]["details"] = document.getElementById('task_queue_details').value;
-      params["task_queue"]["table"] = document.getElementById('task_queue_table').value;
+      params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
+      params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
+      params["task_queue"]["table"] = document.getElementById("task_queue_table").value;
       saveTaskQueue(params);
     })
   }
@@ -120,7 +120,7 @@ function loadEditPage() {
     $(".task-queue-update-button").click(function() {
       var params = {};
       params["task_queue"] = {}
-      params["task_queue"]["query_builder_rules"] = JSON.stringify($('#builder').queryBuilder("getRules"), null, 2);
+      params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
       params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value;
 
       $.ajax({
@@ -148,12 +148,12 @@ function disableElementbyId(id) {
 }
 
 function saveTaskQueue(params) {
-  disableElementbyId('queue-builder-modal-save-button')
-  disableElementbyId('queue-builder-modal-back-button')
+  disableElementbyId("queue-builder-modal-save-button")
+  disableElementbyId("queue-builder-modal-back-button")
 
   $.ajax({
     url: "/task_queues",
-    type: 'POST',
+    type: "POST",
     data: params,
     dataType: "json",
     error: function(response, status, request) {
@@ -162,8 +162,8 @@ function saveTaskQueue(params) {
         toastr.error(responseJson[i]);
       }
       toastr.error("Failed to save task queue.");
-      disableElementbyId('queue-builder-modal-save-button')
-      disableElementbyId('queue-builder-modal-back-button')
+      disableElementbyId("queue-builder-modal-save-button")
+      disableElementbyId("queue-builder-modal-back-button")
     },
     success: function(response, status, request) {
       toastr.info("Task queue saved.");
