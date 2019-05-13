@@ -66,7 +66,7 @@ function getFieldsWithType(table) {
     url: "/layouts/table_fields_with_type",
     type: "GET",
     data: {
-      table: table
+      table
     },
     async: true,
     dataType: "json",
