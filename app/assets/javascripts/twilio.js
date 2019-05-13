@@ -78,7 +78,7 @@ function captureCallEvent(twilioCallSid, tableName, recordId, phoneNumber, field
     },
     async: true,
     error: function(XMLHttpRequest, errorTextStatus, error){
-      toastr.error("Something went wrong, please try again.");
+      window.toastr.error("Something went wrong, please try again.");
      }
   })
 }
