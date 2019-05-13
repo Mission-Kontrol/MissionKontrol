@@ -55,22 +55,6 @@ class TaskQueuesController < ApplicationController
     end
   end
 
-  def updatee
-    @task_queue = TaskQueue.find(params[:id])
-    @task_queue.query_builder_rules = params["task_queue"]["query_builder_rules"]
-    @task_queue.raw_sql = params["task_queue"]["raw_sql"]
-
-    if @task_queue.save
-      data = data_for_preview(@task_queue)
-      render action: 'update/success', json: {
-        rows: data[:rows],
-        columns: data[:columns]
-      }
-    else
-      render action: 'update/error', status: 422
-    end
-  end
-
   private
 
   def task_queue_params
