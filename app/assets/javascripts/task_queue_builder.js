@@ -6,29 +6,16 @@ let isCurrentActionEdit;
 
 function loadTaskQueuePreview(columns, rows) {
   $(".task-queue-preview-table").footable({
-    "columns": columns,
-    "rows": rows
+    columns,
+    rows
   });
 }
 
-function loadQueryBuilder(data) {
-  const filters = [];
-  let taskQueueRules;
+function initQueryBuilder() {
+  let taskQueueRules = $("#builder").data().taskQueueRules;
 
-  for (var i = 0; i < data.length; i++) {
-    var type;
-    var filter = {};
-    var id = data[i][0];
-    filter["id"] = id;
-
-    if (data[i][1] === "inet" || data[i][1] === "text") {
-      type = "string";
-    } else {
-      type = data[i][1];
-    }
-
-    filter["type"] = type;
-    filters.push(filter);
+  if (taskQueueRules) {
+    $("#builder").queryBuilder("setRules", taskQueueRules);
   }
 
   $("#builder").queryBuilder({
@@ -53,12 +40,28 @@ function loadQueryBuilder(data) {
                 "ends_with",
                 "not_ends_with"]
   });
+}
 
-  taskQueueRules = $("#builder").data().taskQueueRules;
+function loadQueryBuilder(data) {
+  const filters = [];
 
-  if (taskQueueRules) {
-    $("#builder").queryBuilder("setRules", taskQueueRules);
+  for (var i = 0; i < data.length; i++) {
+    var type;
+    var filter = {};
+    var id = data[i][0];
+    filter["id"] = id;
+
+    if (data[i][1] === "inet" || data[i][1] === "text") {
+      type = "string";
+    } else {
+      type = data[i][1];
+    }
+
+    filter["type"] = type;
+    filters.push(filter);
   }
+  
+  initQueryBuilder()
 }
 
 function getFieldsWithType(table) {
