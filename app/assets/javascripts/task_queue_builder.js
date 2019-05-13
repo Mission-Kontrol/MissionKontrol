@@ -112,7 +112,6 @@ function saveTaskQueue(params) {
   });
 }
 
-
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -175,7 +174,6 @@ function loadEditPage() {
     })
   }
 }
-
 
 $(document).ready(() => {
   metaTag = $("meta[name=psj]");
