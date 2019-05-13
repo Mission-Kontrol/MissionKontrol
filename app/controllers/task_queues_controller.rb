@@ -99,7 +99,7 @@ class TaskQueuesController < ApplicationController
     end
 
     query.to_hash.each do |row|
-      rows << {options: {expanded: true}, value: row}
+      rows << { options: {expanded: true}, value: row }
     end
 
     query.columns.each do |col|
