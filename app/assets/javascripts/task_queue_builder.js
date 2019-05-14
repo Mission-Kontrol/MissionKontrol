@@ -69,7 +69,7 @@ function buildFilterForDataType(type, id) {
     filter["type"] = type;
   }
 
-  return filter
+  return filter;
 }
 
 function loadQueryBuilder(data) {

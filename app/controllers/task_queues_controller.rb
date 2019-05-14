@@ -30,7 +30,7 @@ class TaskQueuesController < ApplicationController
     @task_queue.save!
     data = data_for_preview(@task_queue)
     render action: 'update/success', json: data
-  rescue StandardError => e
+  rescue StandardError
     render action: 'update/error', status: 422, json: {}
   end
 
