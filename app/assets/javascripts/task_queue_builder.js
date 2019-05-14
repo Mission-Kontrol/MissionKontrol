@@ -48,31 +48,44 @@ function initQueryBuilder(filters) {
   }
 }
 
+function buildFilterForDataType(type, id) {
+  var filter = {};
+
+  if (type === "datetime") {
+    filter["id"] = id;
+    filter["type"] = "date";
+    filter["validation"] = {
+      format: "YYYY/MM/DD"
+    };
+    filter["plugin"] = "datepicker";
+    filter["plugin_config"] = {
+      format: "yyyy/mm/dd",
+      todayBtn: "linked",
+      todayHighlight: true,
+      autoclose: true
+    };
+  } else {
+    filter["id"] = id;
+    filter["type"] = type;
+  }
+
+  return filter
+}
+
 function loadQueryBuilder(data) {
   const filters = [];
 
   for (var i = 0; i < data.length; i++) {
-    var filter = {};
+    var filter;
     var id = data[i][0];
     var type = data[i][1];
-    filter["id"] = id;
 
     if (type === "inet" || type === "text") {
+      filter = {};
+      filter["id"] = id;
       filter["type"] = "string";
-    } else if (type === "datetime") {
-      filter["type"] = "date";
-      filter["validation"] = {
-        format: "YYYY/MM/DD"
-      };
-      filter["plugin"] = "datepicker";
-      filter["plugin_config"] = {
-        format: "yyyy/mm/dd",
-        todayBtn: "linked",
-        todayHighlight: true,
-        autoclose: true
-      };
     } else {
-      filter["type"] = type;
+      filter = buildFilterForDataType(type, id);
     }
 
     filters.push(filter);
