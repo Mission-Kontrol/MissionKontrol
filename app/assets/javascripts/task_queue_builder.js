@@ -152,7 +152,7 @@ function loadEditPage() {
       var params = {};
       params["task_queue"] = {}
       params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
-      params["task_queue"]["query_builder_sql"] = $('#builder').queryBuilder('getSQL').sql;
+      params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
       params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value;
 
       $.ajax({
