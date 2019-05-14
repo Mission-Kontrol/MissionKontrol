@@ -77,6 +77,7 @@ class TaskQueuesController < ApplicationController
 
   def build_response_for_preview(query)
     return {} if query.empty
+
     data = {}
     columns = build_column_data_for_preview(query)
     rows = build_row_data_for_preview(query)
@@ -89,9 +90,9 @@ class TaskQueuesController < ApplicationController
     repo = Kuwinda::Repository::TargetDB.new(table: task_queue.table)
 
     if !task_queue.raw_sql.blank?
-      query = repo.query(task_queue.raw_sql, 5)
+      repo.query(task_queue.raw_sql, 5)
     elsif !task_queue.to_sql.blank?
-      query = repo.query(task_queue.to_sql, 5)
+      repo.query(task_queue.to_sql, 5)
     else
       {}
     end
