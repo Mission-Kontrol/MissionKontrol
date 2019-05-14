@@ -27,18 +27,12 @@ class TaskQueuesController < ApplicationController
 
   def update
     load_task_queue
-
-    if @task_queue.save
-      begin
-        data = data_for_preview(@task_queue)
-        render action: 'update/success', json: {
-          rows: data[:rows],
-          columns: data[:columns]
-        }
-      rescue StandardError 
-        render action: 'update/error', status: 422, json: {}
-      end
-    end
+    @task_queue.save!
+    data = data_for_preview(@task_queue)
+    render action: 'update/success', json: {
+      rows: data[:rows],
+      columns: data[:columns]
+    }
   end
 
   private
@@ -86,5 +80,8 @@ class TaskQueuesController < ApplicationController
     data[:rows] = rows
     data[:columns] = columns
     data
+
+  rescue StandardError
+    render action: 'update/error', status: 422, json: {}
   end
 end

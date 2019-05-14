@@ -137,7 +137,7 @@ function loadIndexPage() {
       params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
       params["task_queue"]["table"] = document.getElementById("task_queue_table").value;
       saveTaskQueue(params);
-    })
+    });
   }
 }
 
