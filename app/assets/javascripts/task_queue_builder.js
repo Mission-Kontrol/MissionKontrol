@@ -12,6 +12,13 @@ function loadTaskQueuePreview(columns, rows) {
 }
 
 function initQueryBuilder(filters) {
+  // Fix for Bootstrap Datepicker
+  $('#builder').on('afterUpdateRuleValue.queryBuilder', function(e, rule) {
+    if (rule.filter.plugin === 'datepicker') {
+      rule.$el.find('.rule-value-container input').datepicker('update');
+    }
+  });
+
   $("#builder").queryBuilder({
     filters,
     operators: ["equal",
@@ -48,15 +55,27 @@ function loadQueryBuilder(data) {
     var type;
     var filter = {};
     var id = data[i][0];
+    var type = data[i][1];
     filter["id"] = id;
 
-    if (data[i][1] === "inet" || data[i][1] === "text") {
-      type = "string";
+    if (type === "inet" || type === "text") {
+      filter["type"] = "string";
+    } else if (type === "datetime") {
+      filter["type"] = "date";
+      filter["validation"] = {
+        format: 'YYYY/MM/DD'
+      };
+      filter["plugin"] = "datepicker";
+      filter["plugin_config"] = {
+        format: 'yyyy/mm/dd',
+        todayBtn: 'linked',
+        todayHighlight: true,
+        autoclose: true
+      };
     } else {
-      type = data[i][1];
+      filter["type"] = type;
     }
 
-    filter["type"] = type;
     filters.push(filter);
   }
 
