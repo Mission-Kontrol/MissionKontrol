@@ -96,7 +96,7 @@ function getFieldsWithType(table) {
     success(data){
       loadQueryBuilder(data);
     }
-  })
+  });
 }
 
 function disableElementbyId(id) {
