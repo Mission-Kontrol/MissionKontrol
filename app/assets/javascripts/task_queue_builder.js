@@ -60,7 +60,7 @@ function loadQueryBuilder(data) {
     filters.push(filter);
   }
 
-  initQueryBuilder(filters)
+  initQueryBuilder(filters);
 }
 
 function getFieldsWithType(table) {
