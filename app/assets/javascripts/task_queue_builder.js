@@ -72,10 +72,10 @@ function getFieldsWithType(table) {
     },
     async: true,
     dataType: "json",
-    error: function(XMLHttpRequest, errorTextStatus, error){
+    error(XMLHttpRequest, errorTextStatus, error) {
               window.toastr.error("Invalid target database, please review credentials.");
            },
-    success: function(data){
+    success(data){
       loadQueryBuilder(data);
     }
   })
@@ -94,7 +94,7 @@ function saveTaskQueue(params) {
     type: "POST",
     data: params,
     dataType: "json",
-    error: function(response, status, request) {
+    error(response, status, request) {
       let responseJson = response.responseJSON;
       for (var i = 0; i < responseJson.length; i++) {
         window.toastr.error(responseJson[i]);
@@ -103,7 +103,7 @@ function saveTaskQueue(params) {
       disableElementbyId("queue-builder-modal-save-button");
       disableElementbyId("queue-builder-modal-back-button");
     },
-    success: function(response, status, request) {
+    success(response, status, request) {
       window.toastr.info("Task queue saved.");
       let redirectURL = "/task_queues/" + response.id + "/edit";
       window.location.replace(redirectURL);
@@ -160,17 +160,17 @@ function loadEditPage() {
         type: "PATCH",
         data: params,
         dataType: "json",
-        error: function(response, status, request) {
+        error(response, status, request) {
           window.toastr.error("Task queue preview failed, review SQL.");
         },
-        success: function(response, status, request) {
+        success(response, status, request) {
           let rows = response.rows;
           let columns = response.columns;
           loadTaskQueuePreview(columns, rows);
           window.toastr.info("Task queue updated.");
         }
       })
-    })
+    });
   }
 }
 
