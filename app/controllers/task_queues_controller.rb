@@ -70,7 +70,7 @@ class TaskQueuesController < ApplicationController
     end
 
     query.to_hash.each do |row|
-      rows << { options: {expanded: true}, value: row }
+      rows << { options: { expanded: true }, value: row }
     end
 
     query.columns.each do |col|
@@ -80,7 +80,6 @@ class TaskQueuesController < ApplicationController
     data[:rows] = rows
     data[:columns] = columns
     data
-
   rescue StandardError
     render action: 'update/error', status: 422, json: {}
   end

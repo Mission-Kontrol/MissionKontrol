@@ -13,9 +13,9 @@ function loadTaskQueuePreview(columns, rows) {
 
 function initQueryBuilder(filters) {
   // Fix for Bootstrap Datepicker
-  $('#builder').on('afterUpdateRuleValue.queryBuilder', function(e, rule) {
-    if (rule.filter.plugin === 'datepicker') {
-      rule.$el.find('.rule-value-container input').datepicker('update');
+  $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
+    if (rule.filter.plugin === "datepicker") {
+      rule.$el.find(".rule-value-container input").datepicker("update");
     }
   });
 
@@ -52,7 +52,6 @@ function loadQueryBuilder(data) {
   const filters = [];
 
   for (var i = 0; i < data.length; i++) {
-    var type;
     var filter = {};
     var id = data[i][0];
     var type = data[i][1];
@@ -63,12 +62,12 @@ function loadQueryBuilder(data) {
     } else if (type === "datetime") {
       filter["type"] = "date";
       filter["validation"] = {
-        format: 'YYYY/MM/DD'
+        format: "YYYY/MM/DD"
       };
       filter["plugin"] = "datepicker";
       filter["plugin_config"] = {
-        format: 'yyyy/mm/dd',
-        todayBtn: 'linked',
+        format: "yyyy/mm/dd",
+        todayBtn: "linked",
         todayHighlight: true,
         autoclose: true
       };
@@ -116,7 +115,8 @@ function saveTaskQueue(params) {
     error(response, status, request) {
       let responseJson = response.responseJSON;
       for (var i = 0; i < responseJson.length; i++) {
-        window.toastr.error(responseJson[i]);
+        let errorMessage = toString(responseJson[i]);
+        window.toastr.error(errorMessage);
       }
       window.toastr.error("Failed to save task queue.");
       disableElementbyId("queue-builder-modal-save-button");
@@ -135,7 +135,7 @@ function loadIndexPage() {
     $("#new-task-queue-modal").modal({
       backdrop: "static",
       keyboard: false
-    })
+    });
 
     getFieldsWithType("users");
 
