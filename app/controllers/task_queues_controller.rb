@@ -55,19 +55,10 @@ class TaskQueuesController < ApplicationController
     render(action: action, js: js_func)
   end
 
-  def data_for_preview(task_queue)
-    repo = Kuwinda::Repository::TargetDB.new(table: task_queue.table)
+  def build_preview_response(query)
     data = {}
     rows = []
     columns = []
-
-    if !task_queue.raw_sql.blank?
-      query = repo.query(task_queue.raw_sql, 5)
-    elsif !task_queue.to_sql.blank?
-      query = repo.query(task_queue.to_sql, 5)
-    else
-      return data
-    end
 
     query.to_hash.each do |row|
       rows << { options: { expanded: true }, value: row }
@@ -80,6 +71,20 @@ class TaskQueuesController < ApplicationController
     data[:rows] = rows
     data[:columns] = columns
     data
+  end
+
+  def data_for_preview(task_queue)
+    repo = Kuwinda::Repository::TargetDB.new(table: task_queue.table)
+
+    if !task_queue.raw_sql.blank?
+      query = repo.query(task_queue.raw_sql, 5)
+    elsif !task_queue.to_sql.blank?
+      query = repo.query(task_queue.to_sql, 5)
+    else
+      return {}
+    end
+
+    build_preview_response(query)
   rescue StandardError
     render action: 'update/error', status: 422, json: {}
   end
