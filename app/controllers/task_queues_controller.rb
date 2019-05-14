@@ -29,10 +29,9 @@ class TaskQueuesController < ApplicationController
     load_task_queue
     @task_queue.save!
     data = data_for_preview(@task_queue)
-    render action: 'update/success', json: {
-      rows: data[:rows],
-      columns: data[:columns]
-    }
+    render action: 'update/success', json: data
+  rescue StandardError => e
+    render action: 'update/error', status: 422, json: {}
   end
 
   private
@@ -55,7 +54,7 @@ class TaskQueuesController < ApplicationController
     render(action: action, js: js_func)
   end
 
-  def build_row_data_for_preview
+  def build_row_data_for_preview(query)
     rows = []
 
     query.to_hash.each do |row|
@@ -65,7 +64,7 @@ class TaskQueuesController < ApplicationController
     rows
   end
 
-  def build_column_data_for_preview
+  def build_column_data_for_preview(query)
     columns = []
 
     query.columns.each do |col|
@@ -76,7 +75,7 @@ class TaskQueuesController < ApplicationController
   end
 
   def build_response_for_preview(query)
-    return {} if query.empty
+    return {} if query.empty?
 
     data = {}
     columns = build_column_data_for_preview(query)
@@ -101,7 +100,5 @@ class TaskQueuesController < ApplicationController
   def data_for_preview(task_queue)
     query = build_query_for_preview(task_queue)
     build_response_for_preview(query)
-  rescue StandardError
-    render action: 'update/error', status: 422, json: {}
   end
 end
