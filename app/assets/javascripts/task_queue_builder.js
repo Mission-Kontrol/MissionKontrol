@@ -12,15 +12,8 @@ function loadTaskQueuePreview(columns, rows) {
 }
 
 function initQueryBuilder(filters) {
-  let taskQueueRules = $("#builder").data().taskQueueRules;
-
-  if (taskQueueRules) {
-    $("#builder").queryBuilder("setRules", taskQueueRules);
-  }
-
   $("#builder").queryBuilder({
     filters,
-    allow_groups: false,
     operators: ["equal",
                 "not_equal",
                 "contains",
@@ -40,6 +33,12 @@ function initQueryBuilder(filters) {
                 "ends_with",
                 "not_ends_with"]
   });
+
+  let taskQueueRules = $("#builder").data().taskQueueRules;
+
+  if (taskQueueRules) {
+    $("#builder").queryBuilder("setRules", taskQueueRules);
+  }
 }
 
 function loadQueryBuilder(data) {

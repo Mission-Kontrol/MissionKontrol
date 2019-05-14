@@ -44,7 +44,7 @@ describe TaskQueue do
   describe 'to_sql' do
     it 'is empty when query builder sql is not present' do
       task_queue = described_class.new
-      task_queue.table = 'users';
+      task_queue.table = 'users'
 
       expect(task_queue.to_sql).to eq('')
     end
