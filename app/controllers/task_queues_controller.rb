@@ -35,7 +35,7 @@ class TaskQueuesController < ApplicationController
           rows: data[:rows],
           columns: data[:columns]
         }
-      rescue StandardError => e
+      rescue StandardError 
         render action: 'update/error', status: 422, json: {}
       end
     end

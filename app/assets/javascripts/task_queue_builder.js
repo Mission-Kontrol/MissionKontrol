@@ -169,7 +169,7 @@ function loadEditPage() {
           loadTaskQueuePreview(columns, rows);
           window.toastr.info("Task queue updated.");
         }
-      })
+      });
     });
   }
 }
