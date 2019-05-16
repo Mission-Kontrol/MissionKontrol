@@ -17,6 +17,12 @@
             <li>
               <%= link_to 'Task Queues', task_queues_path %>
             </li>
+
+            <% if active_controller?("task_queues") && active_action?("edit") %>
+              <li>
+                <%= link_to @task_queue.name, edit_task_queue_path(@task_queue) %>
+              </li>
+            <% end %>
           </ol>
         </li>
       </ul>
