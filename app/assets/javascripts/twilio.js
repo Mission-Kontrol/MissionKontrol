@@ -23,10 +23,10 @@ $(document).ready(function() {
 
   /* Callback for when a call ends */
   Twilio.Device.disconnect(function(connection) {
-    const phoneNumber = connection.customParameters.get("phoneNumber")
-    const tableName = connection.customParameters.get("tableName")
-    const recordId = connection.customParameters.get("recordId")
-    const fieldName = connection.customParameters.get("fieldName")
+    const phoneNumber = connection.customParameters.get("phoneNumber");
+    const tableName = connection.customParameters.get("tableName");
+    const recordId = connection.customParameters.get("recordId");
+    const fieldName = connection.customParameters.get("fieldName");
 
     $("#call-status").addClass('hide');
     $(".hangup-button").prop("disabled", true);
@@ -78,7 +78,7 @@ function captureCallEvent(twilioCallSid, tableName, recordId, phoneNumber, field
     },
     async: true,
     error: function(XMLHttpRequest, errorTextStatus, error){
-      console.log("Something went wrong, please try again.")
+      window.toastr.error("Something went wrong, please try again.");
      }
   })
 }

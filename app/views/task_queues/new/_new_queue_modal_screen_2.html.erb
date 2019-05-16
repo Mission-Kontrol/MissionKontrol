@@ -1,0 +1,40 @@
+<div id="new-queue-modal-screen-2" class="hide">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Bring your new queue to life</h4>
+    </div>
+
+    <div class="modal-body">
+      <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
+        <div class="form-group">
+          <p>
+            <b>Give it a name</b>
+          </p>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <p>
+            <b>Select a primary table</b>
+          </p>
+          <%= f.select :table,
+                        options_for_select(@available_tables, selected: @task_queue.table),
+                        {prompt: "Select a table"},
+                        {:class => 'form-control' }%>
+        </div>
+
+        <div class="form-group">
+          <p>
+            <b>Enter details of the task</b>
+          </p>
+          <%= f.text_area :details, class: "form-control" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="modal-footer">
+      <a class="btn btn-default" id="queue-builder-modal-back-button">Back</a>
+      <a class="btn btn-primary" id="queue-builder-modal-save-button">Next</a>
+    </div>
+  </div>
+</div>

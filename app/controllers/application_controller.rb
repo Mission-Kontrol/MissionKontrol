@@ -15,6 +15,10 @@ class ApplicationController < ActionController::Base
     @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
 
+  def load_task_queues
+    @task_queues = TaskQueue.all
+  end
+
   def test_target_db_connection
     ActiveRecord::Base.establish_connection(
       :adapter  => adapter(current_admin_user.target_database_type),

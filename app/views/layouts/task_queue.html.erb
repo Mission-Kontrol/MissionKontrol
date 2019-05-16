@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kuwinda</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <%= tag :meta, name: :psj, action: action_name, controller: controller_name %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
+  </head>
+
+  <body class="gray-bg">
+    <div class="container-fluid white-bg">
+      <div class="row">
+        <div class='col-sm-12'>
+          <%= render 'layouts/task_queue_topnavbar' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="tab-content">
+        <%= render 'layouts/task_queue_create_tab' %>
+        <%= render 'layouts/task_queue_define_tab' %>
+      </div>
+    </div>
+
+    <div id="natterly-container"></div>
+
+    <%# render 'layouts/natterly' %>
+    <%= render 'layouts/twilio' %>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.6/lib/draggable.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/sortable.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+</html>

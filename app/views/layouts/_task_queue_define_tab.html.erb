@@ -1,0 +1,65 @@
+<div class="row white-bg border-bottom">
+  <div class="col-sm-12">
+    <div class="top-nav-for-queue-layout">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#task-queue-builder" aria-controls="task-queue-builder" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Builder</a>
+        </li>
+
+        <li role="presentation">
+          <a href="#task-queue-raw-sql" aria-controls="task-queue-raw-sql" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Raw SQL</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div role="tabpanel" class="tab-pane active" id="home">
+  <div class="row">
+    <div class="col-sm-3 layout-builder-side-nav min-height-100vh">
+      <br>
+      <div class="m-t">
+        <div class="tab-content" id="">
+          <h4>Define what records show in your Task Queue.</h4>
+
+          <p>
+            Set the conditions under which records will appear in your Task Queue
+          </p>
+
+          <ul>
+            <li>Users near or over a usage limit</li>
+            <li>Companies who have not completed on boarding</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-9 white-bg min-height-100vh">
+      <%= render 'shared/flash_message' %>
+
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="task-queue-builder">
+          <%= yield %>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="task-queue-raw-sql">
+          <br>
+          <div class="alert alert-warning" role="alert">WARNING. Raw SQL will override rules.</div>
+          
+          <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
+            <div class="form-group">
+              <%= f.label :raw_sql %>
+              <%= f.text_field :raw_sql, class: "form-control", placeholder: @task_queue.to_sql %>
+            </div>
+          <% end %>
+          <br>
+          <button type="button" name="button" class="btn btn-primary task-queue-update-button">Update Task Queue</button>
+
+          <%= render 'task_queues/preview' %>
+        </div>
+      </div>
+
+      <% render 'layouts/footer' %>
+    </div>
+  </div>
+</div>
