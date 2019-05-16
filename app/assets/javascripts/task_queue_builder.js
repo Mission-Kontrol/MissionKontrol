@@ -143,6 +143,26 @@ function saveTaskQueue(params) {
   });
 }
 
+function buildDraggableForFieldSettings() {
+  let containerId = "#task-queue-draggable-field-settings-container";
+  let data = JSON.parse($(containerId)[0].dataset.fieldsForContainer);
+
+  debugger
+
+  if (data != "[]") {
+    let fieldsForContainer = Object.values(data);
+
+    for (var j = 0; j < fieldsForContainer.length; j++) {
+      let field = fieldsForContainer[j]
+      if (!containerContainsDraggableItem(containerId, field.title)) {
+        let draggableField = buildDraggableField(field);
+        $(containerId).append(draggableField);
+      }
+    }
+  }
+}
+
+
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -203,6 +223,8 @@ function loadEditPage() {
         }
       });
     });
+
+    buildDraggableForFieldSettings("users");
   }
 }
 
