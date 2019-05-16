@@ -1,19 +1,82 @@
-<div role="tabpanel" class="tab-pane" id="profile">
+<div role="tabpanel" class="tab-pane white-bg" id="profile" style="margin: 0 -15px">
   <div class="row">
     <div class="col-sm-1">
       <%= render 'layouts/task_queue_navigation' %>
     </div>
 
-    <div class="col-sm-11">
+    <div class="col-sm-11 min-height-100vh">
       <%= render 'shared/flash_message' %>
 
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="task-queue-general-settings">
-          <h1>General settings</h1>
+          <div class="row min-height-100vh">
+            <div class="col-sm-12 col-md-4 min-height-100vh" style="border-left:1px solid #e7eaec">
+              <h1>General settings</h1>
+              <br>
+
+              <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
+                <div class="form-group">
+                  <%= f.label :name, "Give your work list a name" %>
+                  <%= f.text_field :name, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :details, "Enter details of the task" %>
+                  <%= f.text_area :details, class: "form-control" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="task-queue-field-settings">
-          <h1>Field settings</h1>
+          <div class="row min-height-100vh gray-bg">
+            <div class="col-sm-3 min-height-100vh">
+              <h1>Field settings</h1>
+              <p>draggable</p>
+            </div>
+
+            <div class="col-sm-9 min-height-100vh">
+              <div class="row white-bg min-height-100vh">
+                <div class="top-nav-for-task-queue-field-settings">
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                      <a href="#task-queue-field-settings-builder" aria-controls="task-queue-field-settings-builder" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Builder</a>
+                    </li>
+
+                    <li role="presentation">
+                      <a href="#task-queue-field-settings-preview" aria-controls="task-queue-field-settings-preview" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Preview</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="task-queue-field-settings-builder">
+                    <div class="row" style="">
+                      <div class="col-sm-4 showme">
+                        <div class="gray-bg">
+                          <p>Drag fields to the containers on the right to update layout.</p>
+
+                          <div class="light-border-bottom"></div>
+
+                          <div id="task-queue-draggable-field-settings-container" data-fields-for-container="<%= @task_queue.draggable_fields %>">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-8 gray-bg">
+                        <p>Activity feed</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div role="tabpanel" class="tab-pane" id="task-queue-field-settings-preview">
+                    <p>preview</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="task-queue-outcome-settings">
