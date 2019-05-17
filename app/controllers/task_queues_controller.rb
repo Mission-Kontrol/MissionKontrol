@@ -37,10 +37,12 @@ class TaskQueuesController < ApplicationController
   private
 
   def load_task_queue
+    # TODO: only save fields when present to prevent setting them to nil 
     @task_queue = TaskQueue.find(params[:id])
     @task_queue.query_builder_rules = params['task_queue']['query_builder_rules']
     @task_queue.query_builder_sql = params['task_queue']['query_builder_sql']
     @task_queue.raw_sql = params['task_queue']['raw_sql']
+    @task_queue.draggable_fields = params['task_queue']['draggable_fields']
   end
 
   def task_queue_params
