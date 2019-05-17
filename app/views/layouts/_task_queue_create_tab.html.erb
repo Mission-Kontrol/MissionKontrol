@@ -25,6 +25,10 @@
                   <%= f.text_area :details, class: "form-control" %>
                 </div>
               <% end %>
+
+              <br>
+
+              <button type="button" name="button" class="btn btn-primary task-queue-update-button">Update Task Queue</button>
             </div>
           </div>
         </div>
@@ -33,7 +37,13 @@
           <div class="row min-height-100vh gray-bg">
             <div class="col-sm-3 min-height-100vh">
               <h1>Field settings</h1>
-              <p>draggable</p>
+
+              <p>Drag fields for task queue here.</p>
+
+              <div class="light-border-bottom"></div>
+
+              <div class="" id="layout-builder-draggable-fields-container">
+              </div>
             </div>
 
             <div class="col-sm-9 min-height-100vh">
@@ -53,14 +63,10 @@
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="task-queue-field-settings-builder">
                     <div class="row" style="">
-                      <div class="col-sm-4 showme">
-                        <div class="gray-bg">
-                          <p>Drag fields to the containers on the right to update layout.</p>
-
-                          <div class="light-border-bottom"></div>
-
-                          <div id="task-queue-draggable-field-settings-container" data-fields-for-container="<%= @task_queue.draggable_fields %>">
-                          </div>
+                      <div class="col-sm-4">
+                        <div class="" style="padding: 10px">
+                        <div id="task-queue-draggable-field-settings-container" data-fields-for-container="<%= @task_queue.draggable_fields.to_json %>" style="border: 2px dashed teal;min-height: 25px">
+                        </div>
                         </div>
                       </div>
 
