@@ -1,5 +1,7 @@
 .top-tab-for-queue-layout {
   margin-top: 15px;
+  display: flex;
+  justify-content: center;
 
   .nav.nav-tabs {
     border-bottom: none;
