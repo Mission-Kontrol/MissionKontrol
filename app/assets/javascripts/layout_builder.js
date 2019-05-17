@@ -338,6 +338,10 @@ function updateDraggableFieldsContainer(data) {
       if (!containerContainsDraggableItem('#layout-builder-draggable-main-container3', field.title)) {
         $('#layout-builder-draggable-main-container3').append(draggableField);
       }
+    } else if (containerDataContainsField('task-queue-draggable-field-settings-container', field.title)) {
+      if (!containerContainsDraggableItem('#task-queue-draggable-field-settings-container', field.title)) {
+        $('#task-queue-draggable-field-settings-container').append(draggableField);
+      }
     } else {
       $('#layout-builder-draggable-fields-container').append(draggableField);
     }
@@ -345,6 +349,14 @@ function updateDraggableFieldsContainer(data) {
 }
 
 function containerDataContainsField(containerId, fieldName) {
+  // debugger
+
+  const el = $("#" + containerId)[0];
+
+  if (el === undefined) {
+    return
+  }
+
   let data = JSON.parse($('#' + containerId)[0].dataset.fieldsForContainer);
 
   if (data != "[]") {
@@ -363,56 +375,6 @@ function containerDataContainsField(containerId, fieldName) {
 function containerContainsDraggableItem(containerId, fieldName) {
   let draggableItems = $(containerId + ' .layout-builder-draggable-item').text().trim().split(" ")
   return draggableItems.includes(fieldName)
-}
-
-function initializeDraggable() {
-  const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
-  const dataContainers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
-
-  draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
-    draggable: '.layout-builder-draggable-item',
-    handle: '.layout-builder-draggable-item-handle'
-  });
-
-  const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
-
-  draggable.on('drag:start', (dragEvent) => {
-    showTrashContainer();
-  })
-
-  draggable.on('drag:stop', (dragEvent) => {
-    let currentContainer = dragEvent.source.parentNode;
-    let destinationContainerId = currentContainer.id;
-    let sourceContainerId = dragEvent.data.sourceContainer.id;
-    let currentContainerId = currentContainer.id;
-    let currentFieldValue = dragEvent.source.innerText.trim();
-
-    hideTrashContainer();
-
-    if (destinationContainerId === 'layout-builder-draggable-trash-container') {
-      fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
-
-      setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
-      }, 100);
-
-      setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
-      }, 2000);
-    }
-
-    if (sourceContainerId === destinationContainerId) {
-      return
-    }
-
-    if (isDataContainer(sourceContainerId)) {
-      saveDraggableContainer(dragEvent, sourceContainerId)
-    }
-
-    if (isDataContainer(destinationContainerId)) {
-      saveDraggableContainer(dragEvent, destinationContainerId)
-    }
-  });
 }
 
 function iconForFieldType(fieldType) {
@@ -451,7 +413,12 @@ function isNotFieldsContainer(containerId) {
 
 function saveDraggableContainer(dragEvent, containerId) {
   let containerItemsJSON = getContainerItemsJSON(containerId);
-  updateLayoutBuilderContainer(containerId, containerItemsJSON)
+
+  if (containerId === "task-queue-draggable-field-settings-container") {
+    updateTaskQueueDraggableFields(containerId, containerItemsJSON)
+  } else {
+    updateLayoutBuilderContainer(containerId, containerItemsJSON)
+  }
 }
 
 function updateLayoutBuilderContainer(containerId, containerItems) {
