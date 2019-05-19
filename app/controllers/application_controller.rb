@@ -9,6 +9,40 @@ class ApplicationController < ActionController::Base
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
+  before_action :verify_setup_completed, :verify_license_key
+
+  protected
+
+  def after_sign_up_path_for(resource)
+    test_target_db_connection
+    new_layout_path
+
+  rescue Mysql2::Error,
+         PG::ConnectionBad,
+         InvalidClientDatabaseError => e
+   flash.discard
+   flash[:error] = "Invalid target database, please review credentials."
+   @available_tables = []
+  end
+
+  def after_sign_in_path_for(user)
+    setup_demo_target_database
+    test_target_db_connection
+    dashboard_path
+
+  rescue Mysql2::Error,
+         PG::ConnectionBad,
+         InvalidClientDatabaseError => e
+   flash.discard
+   flash[:error] = "Invalid target database, please review credentials."
+   @available_tables = []
+   dashboard_path
+  end
+
+  def list_table_fields_with_type(table)
+    Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
+  end
+
   private
 
   def load_available_tables
@@ -45,6 +79,7 @@ class ApplicationController < ActionController::Base
   end
 
   def is_demo_target_database_valid?
+    current_admin_user &&
     !current_admin_user.target_database_host.blank? &&
     !current_admin_user.target_database_name.blank? &&
     !current_admin_user.target_database_username.blank? &&
@@ -79,35 +114,26 @@ class ApplicationController < ActionController::Base
     render '/tables/bad_connection'
   end
 
-  protected
-
-  def after_sign_up_path_for(resource)
-    test_target_db_connection
-    new_layout_path
-
-  rescue Mysql2::Error,
-         PG::ConnectionBad,
-         InvalidClientDatabaseError => e
-   flash.discard
-   flash[:error] = "Invalid target database, please review credentials."
-   @available_tables = []
+  def verify_setup_completed
+    return if request.path == '/admin_users/sign_up'
+    if request.host_with_port == 'demo.kuwinda.io'
+      setup_demo_target_database_params
+    elsif SensitiveData.get_target_database_credential(:database_name).nil? && !current_admin_user
+      redirect_to new_admin_user_registration_url
+    end
   end
 
-  def after_sign_in_path_for(user)
-    setup_demo_target_database
-    test_target_db_connection
-    dashboard_path
-
-  rescue Mysql2::Error,
-         PG::ConnectionBad,
-         InvalidClientDatabaseError => e
-   flash.discard
-   flash[:error] = "Invalid target database, please review credentials."
-   @available_tables = []
-   dashboard_path
+  def verify_license_key
+    VerifyLicenseKeyService.validate(current_admin_user) if current_admin_user
   end
 
-  def list_table_fields_with_type(table)
-    Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
+  def setup_demo_target_database_params
+    uri = URI.parse(ENV['DEMO_DATABASE_PG'])
+    SensitiveData.set_target_database_credential(:database_name, uri.path.from(1))
+    SensitiveData.set_target_database_credential(:database_username, uri.user)
+    SensitiveData.set_target_database_credential(:database_password, uri.password)
+    SensitiveData.set_target_database_credential(:database_host, uri.host)
+    SensitiveData.set_target_database_credential(:database_port, uri.port)
+    SensitiveData.set_target_database_credential(:database_type, 'postgres')
   end
 end
