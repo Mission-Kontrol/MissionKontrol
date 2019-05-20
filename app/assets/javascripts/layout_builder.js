@@ -1,3 +1,5 @@
+/*global updateDraggableFieldsContainer:true*/
+
 var draggable;
 var slider;
 
