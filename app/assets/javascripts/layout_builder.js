@@ -349,8 +349,6 @@ function updateDraggableFieldsContainer(data) {
 }
 
 function containerDataContainsField(containerId, fieldName) {
-  // debugger
-
   const el = $("#" + containerId)[0];
 
   if (el === undefined) {
