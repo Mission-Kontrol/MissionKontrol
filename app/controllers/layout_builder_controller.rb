@@ -6,7 +6,7 @@ class LayoutBuilderController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :load_available_tables,
                 :authenticate_admin_user!
-
+  before_action :load_task_queues, only: %i[show preview]
 
   def new
     @available_tables = available_tables
