@@ -12,7 +12,6 @@ function loadTaskQueuePreview(columns, rows) {
 }
 
 function initQueryBuilder(filters) {
-  // Fix for Bootstrap Datepicker
   $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
     if (rule.filter.plugin === "datepicker") {
       rule.$el.find(".rule-value-container input").datepicker("update");
@@ -219,9 +218,7 @@ function loadEditPage() {
         params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
       }
 
-      if (params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value.length > 0) {
-        params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value;
-      }
+      params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value;
 
       $.ajax({
         url: "/task_queues/" + taskQueueId,
