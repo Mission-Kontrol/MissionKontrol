@@ -12,7 +12,7 @@ export CMP_FILE="docker-compose.live.yml"
 # Used doker images:
 export CMP_IMAGE="docker/compose:1.24.0"
 export DB_IMAGE="postgres:11.2-alpine"
-export APP_IMAGE="camillavk/kuwinda:latest"
+export APP_IMAGE="kuwinda/kuwinda:latest"
 
 #
 # Function definitions
