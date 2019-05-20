@@ -1,19 +1,19 @@
 function initializeDraggable() {
-  const containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container';
-  const dataContainers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container';
+  const containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
+  const dataContainers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
 
   draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
-    draggable: '.layout-builder-draggable-item',
-    handle: '.layout-builder-draggable-item-handle'
+    draggable: ".layout-builder-draggable-item",
+    handle: ".layout-builder-draggable-item-handle"
   });
 
-  const fieldsContainer = document.querySelectorAll('#layout-builder-draggable-fields-container')[0];
+  const fieldsContainer = document.querySelectorAll("#layout-builder-draggable-fields-container")[0];
 
-  draggable.on('drag:start', (dragEvent) => {
+  draggable.on("drag:start", (dragEvent) => {
     showTrashContainer();
   })
 
-  draggable.on('drag:stop', (dragEvent) => {
+  draggable.on("drag:stop", (dragEvent) => {
     let currentContainer = dragEvent.source.parentNode;
     let destinationContainerId = currentContainer.id;
     let sourceContainerId = dragEvent.data.sourceContainer.id;
@@ -22,15 +22,15 @@ function initializeDraggable() {
 
     hideTrashContainer();
 
-    if (destinationContainerId === 'layout-builder-draggable-trash-container') {
+    if (destinationContainerId === "layout-builder-draggable-trash-container") {
       fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
 
       setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+        fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
       }, 100);
 
       setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle('layout-builder-trash-can-item-put-back');
+        fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
       }, 2000);
     }
 
