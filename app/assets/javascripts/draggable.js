@@ -1,10 +1,10 @@
 function hideTrashContainer() {
-  $('#layout-builder-draggable-trash-container').addClass('hide');
+  $("#layout-builder-draggable-trash-container").addClass("hide");
 }
 
 function showTrashContainer() {
-  $('#layout-builder-draggable-trash-container').removeClass('hide');
-  $('#layout-builder-draggable-trash-container').addClass('animated zoomIn');
+  $("#layout-builder-draggable-trash-container").removeClass("hide");
+  $("#layout-builder-draggable-trash-container").addClass("animated zoomIn");
 }
 
 function saveDraggableContainer(dragEvent, containerId) {
@@ -58,7 +58,7 @@ function initializeDraggable() {
     }
 
     if (sourceContainerId === destinationContainerId) {
-      return
+      return;
     }
 
     if (isDataContainer(sourceContainerId)) {
