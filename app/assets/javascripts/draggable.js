@@ -1,3 +1,5 @@
+/*global updateDraggableFieldsContainer:true*/
+
 function hideTrashContainer() {
   $("#layout-builder-draggable-trash-container").addClass("hide");
 }

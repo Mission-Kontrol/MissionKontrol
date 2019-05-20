@@ -1,3 +1,5 @@
+/*global updateDraggableFieldsContainer:true*/
+
 let queryBuilderFilters;
 let metaTag;
 let isCurrentControllerTaskQueues;
