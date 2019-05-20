@@ -3,6 +3,7 @@
 class TaskQueuesController < ApplicationController
   layout 'task_queue'
   before_action :load_available_tables
+  before_action :set_activities
 
   def index
     @task_queue = TaskQueue.new
@@ -101,5 +102,13 @@ class TaskQueuesController < ApplicationController
   def data_for_preview(task_queue)
     query = build_query_for_preview(task_queue)
     build_response_for_preview(query)
+  end
+
+  def set_activities
+    @activities = OpenStruct.new
+    @activities.all = []
+    @activities.calls = []
+    @activities.meetings = []
+    @activities.notes = []
   end
 end
