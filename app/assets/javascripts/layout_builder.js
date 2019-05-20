@@ -281,24 +281,6 @@ function buildDraggableField(field) {
   return item
 }
 
-function getOptionsForDraggable(primaryTable) {
-  $.ajax({
-    url: "/layouts/table_fields_with_type",
-    type: 'GET',
-    data: {
-      table: primaryTable
-    },
-    async: true,
-    dataType: "json",
-    error: function(XMLHttpRequest, errorTextStatus, error){
-              toastr.error("Invalid target database, please review credentials.")
-           },
-    success: function(data){
-      updateDraggableFieldsContainer(data);
-    }
-  })
-}
-
 function updateDraggableFieldsContainer(data) {
   $('#layout-builder-draggable-fields-container').html('');
   for (var i = 0; i < data.length; i++) {
@@ -397,10 +379,6 @@ function iconForFieldType(fieldType) {
   }
 }
 
-function isDataContainer(containerId) {
-  return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
-}
-
 function isNotTrashContainer(containerId) {
   return containerId != 'layout-builder-draggable-trash-container'
 }
@@ -467,15 +445,6 @@ function getContainerItemsJSON(containerId) {
   }
 
   return containerItemsJSON
-}
-
-function showTrashContainer() {
-  $('#layout-builder-draggable-trash-container').removeClass('hide');
-  $('#layout-builder-draggable-trash-container').addClass('animated zoomIn');
-}
-
-function hideTrashContainer() {
-  $('#layout-builder-draggable-trash-container').addClass('hide');
 }
 
 function getContainerParam(containerId) {

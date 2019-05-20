@@ -4,6 +4,24 @@ let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
 
+function getOptionsForDraggable(primaryTable) {
+  $.ajax({
+    url: "/layouts/table_fields_with_type",
+    type: 'GET',
+    data: {
+      table: primaryTable
+    },
+    async: true,
+    dataType: "json",
+    error: function(XMLHttpRequest, errorTextStatus, error){
+              toastr.error("Invalid target database, please review credentials.")
+           },
+    success: function(data){
+      updateDraggableFieldsContainer(data);
+    }
+  })
+}
+
 function loadTaskQueuePreview(columns, rows) {
   $(".task-queue-preview-table").footable({
     columns,
@@ -151,22 +169,22 @@ function updateTaskQueueDraggableFields(containerId, containerItems) {
   data["task_queue"] = {};
 
   if (containerItems.length === 0) {
-    data["task_queue"][containerParam] = JSON.stringify(containerItems)
+    data["task_queue"][containerParam] = JSON.stringify(containerItems);
   } else {
-    data["task_queue"][containerParam] = containerItems
+    data["task_queue"][containerParam] = containerItems;
   }
 
   $.ajax({
     url: "/task_queues/" + id,
     type: 'PATCH',
-    data: data,
-    error: function(XMLHttpRequest, errorTextStatus, error){
-      toastr.error(XMLHttpRequest.responseJSON.error);
+    data,
+    error(XMLHttpRequest, errorTextStatus, error){
+      window.toastr.error(XMLHttpRequest.responseJSON.error);
     },
-    success: function(response, status, request){
-      toastr.info('Task queue fields successfully updated.');
+    success(response, status, request){
+      window.toastr.info('Task queue fields successfully updated.');
     }
-  })
+  });
 }
 
 function loadIndexPage() {
