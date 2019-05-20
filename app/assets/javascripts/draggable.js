@@ -7,6 +7,16 @@ function showTrashContainer() {
   $('#layout-builder-draggable-trash-container').addClass('animated zoomIn');
 }
 
+function saveDraggableContainer(dragEvent, containerId) {
+  let containerItemsJSON = getContainerItemsJSON(containerId);
+
+  if (containerId === "task-queue-draggable-field-settings-container") {
+    updateTaskQueueDraggableFields(containerId, containerItemsJSON);
+  } else {
+    updateLayoutBuilderContainer(containerId, containerItemsJSON);
+  }
+}
+
 function isDataContainer(containerId) {
   return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
 }

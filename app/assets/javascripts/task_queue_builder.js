@@ -7,16 +7,16 @@ let isCurrentActionEdit;
 function getOptionsForDraggable(primaryTable) {
   $.ajax({
     url: "/layouts/table_fields_with_type",
-    type: 'GET',
+    type: "GET",
     data: {
       table: primaryTable
     },
     async: true,
     dataType: "json",
-    error: function(XMLHttpRequest, errorTextStatus, error){
-              toastr.error("Invalid target database, please review credentials.")
+    error(XMLHttpRequest, errorTextStatus, error){
+              window.toastr.error("Invalid target database, please review credentials.");
            },
-    success: function(data){
+    success(data){
       updateDraggableFieldsContainer(data);
     }
   })
@@ -161,7 +161,7 @@ function saveTaskQueue(params) {
 }
 
 function updateTaskQueueDraggableFields(containerId, containerItems) {
-  let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
+  let containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3";
   var url = window.location.href;
   var id = url.split("/")[4];
   var containerParam = "draggable_fields";
@@ -176,13 +176,13 @@ function updateTaskQueueDraggableFields(containerId, containerItems) {
 
   $.ajax({
     url: "/task_queues/" + id,
-    type: 'PATCH',
+    type: "PATCH",
     data,
     error(XMLHttpRequest, errorTextStatus, error){
       window.toastr.error(XMLHttpRequest.responseJSON.error);
     },
     success(response, status, request){
-      window.toastr.info('Task queue fields successfully updated.');
+      window.toastr.info("Task queue fields successfully updated.");
     }
   });
 }
@@ -250,7 +250,7 @@ function loadEditPage() {
           let rows = response.rows;
           let columns = response.columns;
 
-          if (rows != undefined && columns != undefined) {
+          if (rows !== undefined && columns !== undefined) {
             loadTaskQueuePreview(columns, rows);
           }
 
