@@ -1,14 +1,14 @@
-<div role="tabpanel" class="tab-pane white-bg" id="profile" style="margin: 0 -15px">
-  <div class="row">
-    <div class="col-sm-1">
+<div role="tabpanel" class="tab-pane" id="profile" style="">
+  <div class="row min-height-100vh" style="">
+    <div class="col-sm-1 min-height-100vh white-bg" style="margin: 0">
       <%= render 'layouts/task_queue_navigation' %>
     </div>
 
-    <div class="col-sm-11 min-height-100vh">
+    <div class="col-sm-11  min-height-100vh ">
       <%= render 'shared/flash_message' %>
 
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="task-queue-general-settings">
+      <div class="tab-content ">
+        <div role="tabpanel" class="tab-pane active " id="task-queue-general-settings">
           <div class="row min-height-100vh">
             <div class="col-sm-12 col-md-4 min-height-100vh" style="border-left:1px solid #e7eaec">
               <h1>General settings</h1>
@@ -33,9 +33,9 @@
           </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane" id="task-queue-field-settings">
-          <div class="row min-height-100vh gray-bg">
-            <div class="col-sm-3 min-height-100vh">
+        <div role="tabpanel" class="tab-pane " id="task-queue-field-settings">
+          <div class="row min-height-100vh gray-bg" style="">
+            <div class="col-sm-3 min-height-100vh ">
               <h1>Field settings</h1>
 
               <p>Drag fields for task queue here.</p>
@@ -46,9 +46,9 @@
               </div>
             </div>
 
-            <div class="col-sm-9 min-height-100vh">
-              <div class="row white-bg min-height-100vh">
-                <div class="top-nav-for-task-queue-field-settings">
+            <div class="col-sm-9 min-height-100vh ">
+              <div class="row white-bg min-height-100vh " style="">
+                <div class="top-nav-for-task-queue-field-settings ">
                   <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
                       <a href="#task-queue-field-settings-builder" aria-controls="task-queue-field-settings-builder" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Builder</a>
@@ -60,18 +60,22 @@
                   </ul>
                 </div>
 
-                <div class="tab-content">
+                <div class="tab-content ">
                   <div role="tabpanel" class="tab-pane active" id="task-queue-field-settings-builder">
-                    <div class="row" style="">
-                      <div class="col-sm-4">
-                        <div class="" style="padding: 10px">
-                        <div id="task-queue-draggable-field-settings-container" data-fields-for-container="<%= @task_queue.draggable_fields.to_json %>" style="border: 2px dashed teal;min-height: 25px">
-                        </div>
+                    <div class="row min-height-100vh " style="margin: 0">
+                      <div class="col-sm-4 min-height-100vh">
+                        <div class="" style="">
+                          <br>
+                          <div id="task-queue-draggable-field-settings-container" data-fields-for-container="<%= @task_queue.draggable_fields.to_json %>" style="border: 2px dashed teal;min-height: 25px">
+                          </div>
                         </div>
                       </div>
 
-                      <div class="col-sm-8 gray-bg">
-                        <p>Activity feed</p>
+                      <div class="col-sm-8 gray-bg min-height-100vh">
+                        <br>
+                        <% if @activities %>
+                          <%= render 'shared/activity_history_template', feedable_type: 'task_queue', feedable_id: @task_queue.id, disabled: true %>
+                        <% end %>
                       </div>
                     </div>
                   </div>
