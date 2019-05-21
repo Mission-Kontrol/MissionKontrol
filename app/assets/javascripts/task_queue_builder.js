@@ -193,18 +193,18 @@ function updateTaskQueueDraggableFields(containerId, containerItems) {
 }
 
 function loadPreviewSlider() {
-  slider = simpleslider.getSlider({
+  slider = window.simpleslider.getSlider({
     paused: true,
-    prop: 'right',
+    prop: "right",
     onChangeEnd: updateSliderCurrentIndex
   });
 
-  var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
-  $('#layout-preview-row-id').text(currentRowId);
+  var currentRowId = $("#layout-preview-slider-container").children()[slider.currentIndex()].dataset.rowId
+  $("#layout-preview-row-id").text(currentRowId);
 
   function updateSliderCurrentIndex() {
-    var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
-    $('#layout-preview-row-id').text(currentRowId);
+    var currentRowId = $("#layout-preview-slider-container").children()[slider.currentIndex()].dataset.rowId
+    $("#layout-preview-row-id").text(currentRowId);
   }
 }
 
