@@ -1,7 +1,4 @@
-/*
-  global updateDraggableFieldsContainer, initializeDraggable, updateLayoutBuilderContainer
-  isNotFieldsContainer, updateTaskQueueDraggableFields, getContainerItemsJSON
-*/
+
 
 var draggable;
 var slider;

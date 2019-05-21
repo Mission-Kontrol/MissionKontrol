@@ -1,8 +1,3 @@
-/*
-  global updateDraggableFieldsContainer, initializeDraggable, updateLayoutBuilderContainer
-  isNotFieldsContainer, updateTaskQueueDraggableFields, getContainerItemsJSON
-*/
-
 let queryBuilderFilters;
 let metaTag;
 let isCurrentControllerTaskQueues;

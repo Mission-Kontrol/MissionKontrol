@@ -1,7 +1,3 @@
-/*
-  global updateDraggableFieldsContainer, initializeDraggable, updateLayoutBuilderContainer
-  isNotFieldsContainer, updateTaskQueueDraggableFields, getContainerItemsJSON
-*/
 
 function hideTrashContainer() {
   $("#layout-builder-draggable-trash-container").addClass("hide");
