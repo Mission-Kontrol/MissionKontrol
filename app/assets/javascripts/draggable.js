@@ -49,7 +49,7 @@ containerDataContainsField = function (containerId, fieldName) {
 
   let data = JSON.parse($("#" + containerId)[0].dataset.fieldsForContainer);
 
-  if (data != "[]") {
+  if (data !== "[]") {
     let fields = Object.values(data);
 
     for (var i = 0; i < fields.length; i++) {

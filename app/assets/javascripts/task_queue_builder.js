@@ -202,7 +202,7 @@ updateTaskQueueDraggableFields = function (containerId, containerItems) {
 }
 
 updateSliderCurrentIndex = function () {
-  var currentRowId = $("#layout-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId
+  var currentRowId = $("#layout-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId;
   $("#layout-preview-row-id").text(currentRowId);
 }
 
@@ -213,10 +213,8 @@ loadPreviewSlider = function () {
     onChangeEnd: updateSliderCurrentIndex
   });
 
-  var currentRowId = $("#layout-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId
+  var currentRowId = $("#layout-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId;
   $("#layout-preview-row-id").text(currentRowId);
-
-
 }
 
 loadIndexPage = function () {
