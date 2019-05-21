@@ -22,21 +22,21 @@ iconForFieldType = function (fieldType) {
   switch(fieldType) {
     case "string":
     case "text":
-      return "fa fa-font"
+      return "fa fa-font";
       break;
     case "time":
     case "timestamp":
-      return "fa fa-clock-o"
+      return "fa fa-clock-o";
       break;
     case "date":
     case "datetime":
-      return "fa fa-calendar"
+      return "fa fa-calendar";
       break;
     case "boolean":
-      return "fa fa-toggle-on"
+      return "fa fa-toggle-on";
       break;
     default:
-      return "fa fa-font"
+      return "fa fa-font";
   }
 }
 
@@ -50,7 +50,7 @@ containerDataContainsField = function (containerId, fieldName) {
   let data = JSON.parse($("#" + containerId)[0].dataset.fieldsForContainer);
 
   if (data != "[]") {
-    let fields = Object.values(data)
+    let fields = Object.values(data);
 
     for (var i = 0; i < fields.length; i++) {
       if (fields[i].title === fieldName ) {
@@ -63,15 +63,15 @@ containerDataContainsField = function (containerId, fieldName) {
 }
 
 containerContainsDraggableItem = function (containerId, fieldName) {
-  let draggableItems = $(containerId + " .layout-builder-draggable-item").text().trim().split(" ")
-  return draggableItems.includes(fieldName)
+  let draggableItems = $(containerId + " .layout-builder-draggable-item").text().trim().split(" ");
+  return draggableItems.includes(fieldName);
 }
 
 buildDraggableField = function (field) {
   var icon = iconForFieldType(field.kind);
   var item;
 
-  if (field.editable === 'true') {
+  if (field.editable === "true") {
     item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
       "<div class='row'>" +
       "<div class='col-sm-7'>" +
@@ -140,9 +140,9 @@ updateDraggableFieldsContainer = function (data) {
   $("#layout-builder-draggable-fields-container").html("");
   for (var i = 0; i < data.length; i++) {
     var field = {}
-    field["title"] = data[i][0]
-    field["kind"] = data[i][1]
-    field["table"] = data[i][2]
+    field["title"] = data[i][0];
+    field["kind"] = data[i][1];
+    field["table"] = data[i][2];
 
     let draggableField = buildDraggableField(field);
 
@@ -186,7 +186,7 @@ updateDraggableFieldsContainer = function (data) {
 }
 
 isDataContainer = function (containerId) {
-  return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
+  return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId);
 }
 
 initializeDraggable = function () {
@@ -237,4 +237,4 @@ initializeDraggable = function () {
       saveDraggableContainer(dragEvent, destinationContainerId);
     }
   });
-}
+};
