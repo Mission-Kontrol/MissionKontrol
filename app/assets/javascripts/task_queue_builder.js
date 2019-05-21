@@ -207,11 +207,11 @@ loadPreviewSlider = function () {
     onChangeEnd: updateSliderCurrentIndex
   });
 
-  var currentRowId = $("#layout-preview-slider-container").children()[slider.currentIndex()].dataset.rowId
+  var currentRowId = $("#layout-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId
   $("#layout-preview-row-id").text(currentRowId);
 
   function updateSliderCurrentIndex() {
-    var currentRowId = $("#layout-preview-slider-container").children()[slider.currentIndex()].dataset.rowId
+    var currentRowId = $("#layout-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId
     $("#layout-preview-row-id").text(currentRowId);
   }
 }
