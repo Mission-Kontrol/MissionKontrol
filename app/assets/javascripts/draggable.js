@@ -1,15 +1,13 @@
-
-
-function hideTrashContainer() {
+const hideTrashContainer = function () {
   $("#layout-builder-draggable-trash-container").addClass("hide");
 }
 
-function showTrashContainer() {
+const showTrashContainer =  function () {
   $("#layout-builder-draggable-trash-container").removeClass("hide");
   $("#layout-builder-draggable-trash-container").addClass("animated zoomIn");
 }
 
-function saveDraggableContainer(dragEvent, containerId) {
+const saveDraggableContainer = function (dragEvent, containerId) {
   let containerItemsJSON = getContainerItemsJSON(containerId);
 
   if (containerId === "task-queue-draggable-field-settings-container") {
@@ -19,11 +17,11 @@ function saveDraggableContainer(dragEvent, containerId) {
   }
 }
 
-function isDataContainer(containerId) {
+const isDataContainer = function (containerId) {
   return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
 }
 
-var initializeDraggable = function () {
+const initializeDraggable = function () {
   const containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
   const dataContainers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
 
