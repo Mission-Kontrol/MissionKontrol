@@ -3,6 +3,7 @@ let metaTag;
 let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
+let taskQueuePreviewSlider;
 
 function getOptionsForDraggable(primaryTable) {
   $.ajax({
@@ -188,7 +189,7 @@ function updateTaskQueueDraggableFields(containerId, containerItems) {
 }
 
 function loadPreviewSlider() {
-  slider = window.simpleslider.getSlider({
+  taskQueuePreviewSlider = window.simpleslider.getSlider({
     paused: true,
     prop: "right",
     onChangeEnd: updateSliderCurrentIndex
