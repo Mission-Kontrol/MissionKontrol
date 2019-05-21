@@ -71,57 +71,57 @@ buildDraggableField = function (field) {
   var icon = iconForFieldType(field.kind);
   var item;
 
-  if (field.editable === "true") {
-    item = "<div class="layout-builder-draggable-field layout-builder-draggable-item draggable-source" data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
-      "<div class="row">" +
-        "<div class="col-sm-7">" +
-          "<div class = "layout-builder-draggable-item-handle">" +
-            "<i class=" + """ + icon + """ + "aria-hidden="true"></i> " +
-            "<span data-toggle="tooltip" data-placement="top" title = "" + field.title + """ + "data-original-title="" + field.title + """ +  ">" + field.title + "</span>" +
+  if (field.editable === 'true') {
+    item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
+      "<div class='row'>" +
+      "<div class='col-sm-7'>" +
+        "<div class = 'layout-builder-draggable-item-handle'>" +
+          "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
+          "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
+        "</div>" +
+      "</div>" +
+
+      "<div class='col-sm-5 text-right'>"+
+        "<div class = 'layout-builder-field-editable-toggle'>" +
+          "<label class='switch'>" +
+              "<div class='toggle'>" +
+                "<input class='layout-builder-editable-toggle toggle-state' type='checkbox' checked='" + field.editable + "'/>" +
+                "<div class='toggle-inner'>" +
+                   "<div class='indicator'></div>" +
+                "</div>" +
+                "<div class='active-bg'></div>" +
+              "</div>" +
+          "</label>" +
+          "</div>" +
+        "</div>" +
+      "</div>"+
+    "</div>"
+  } else {
+    item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
+      "<div class='row'>" +
+        "<div class='col-sm-7'>" +
+          "<div class = 'layout-builder-draggable-item-handle'>" +
+            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
+            "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
           "</div>" +
         "</div>" +
 
-        "<div class="col-sm-5 text-right">"+
-          "<div class = "layout-builder-field-editable-toggle">" +
-            "<label class="switch">" +
-                "<div class="toggle">" +
-                  "<input class="layout-builder-editable-toggle toggle-state" type="checkbox" checked="" + field.editable + ""/>" +
-                  "<div class="toggle-inner">" +
-                     "<div class="indicator"></div>" +
-                  "</div>" +
-                  "<div class="active-bg"></div>" +
+        "<div class='col-sm-5 text-right'>"+
+          "<div class = 'layout-builder-field-editable-toggle'>" +
+            "<label class='switch'>" +
+              "<div class='toggle'>" +
+                "<input class='layout-builder-editable-toggle toggle-state' type='checkbox' />" +
+                "<div class='toggle-inner'>" +
+                   "<div class='indicator'></div>" +
                 "</div>" +
+                "<div class='active-bg'></div>" +
+              "</div>" +
             "</label>" +
             "</div>" +
           "</div>" +
         "</div>"+
       "</div>"
-    } else {
-      item = "<div class="layout-builder-draggable-field layout-builder-draggable-item draggable-source" data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
-        "<div class="row">" +
-          "<div class="col-sm-7">" +
-            "<div class = "layout-builder-draggable-item-handle">" +
-              "<i class=" + """ + icon + """ + "aria-hidden="true"></i> " +
-              "<span data-toggle="tooltip" data-placement="top" title = "" + field.title + """ + "data-original-title="" + field.title + """ +  ">" + field.title + "</span>" +
-            "</div>" +
-          "</div>" +
-
-          "<div class="col-sm-5 text-right">"+
-            "<div class = "layout-builder-field-editable-toggle">" +
-              "<label class="switch">" +
-                "<div class="toggle">" +
-                  "<input class="layout-builder-editable-toggle toggle-state" type="checkbox" />" +
-                  "<div class="toggle-inner">" +
-                     "<div class="indicator"></div>" +
-                  "</div>" +
-                  "<div class="active-bg"></div>" +
-                "</div>" +
-              "</label>" +
-              "</div>" +
-            "</div>" +
-          "</div>"+
-        "</div>"
-    }
+  }
 
   return item
 }
@@ -136,7 +136,7 @@ saveDraggableContainer = function (dragEvent, containerId) {
   }
 }
 
-updateDraggableFieldsContainer = function updateDraggableFieldsContainer (data) {
+updateDraggableFieldsContainer = function (data) {
   $("#layout-builder-draggable-fields-container").html("");
   for (var i = 0; i < data.length; i++) {
     var field = {}
@@ -189,7 +189,7 @@ isDataContainer = function (containerId) {
   return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
 }
 
-initializeDraggable = function initializeDraggable () {
+initializeDraggable = function () {
   const containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
   const dataContainers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
 
