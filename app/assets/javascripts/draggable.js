@@ -44,7 +44,7 @@ containerDataContainsField = function (containerId, fieldName) {
   const el = $("#" + containerId)[0];
 
   if (el === undefined) {
-    return
+    return;
   }
 
   let data = JSON.parse($("#" + containerId)[0].dataset.fieldsForContainer);
@@ -54,12 +54,12 @@ containerDataContainsField = function (containerId, fieldName) {
 
     for (var i = 0; i < fields.length; i++) {
       if (fields[i].title === fieldName ) {
-        return true
+        return true;
       }
     }
   }
 
-  return false
+  return false;
 }
 
 containerContainsDraggableItem = function (containerId, fieldName) {
@@ -123,7 +123,7 @@ buildDraggableField = function (field) {
       "</div>"
   }
 
-  return item
+  return item;
 }
 
 saveDraggableContainer = function (dragEvent, containerId) {
@@ -139,7 +139,7 @@ saveDraggableContainer = function (dragEvent, containerId) {
 updateDraggableFieldsContainer = function (data) {
   $("#layout-builder-draggable-fields-container").html("");
   for (var i = 0; i < data.length; i++) {
-    var field = {}
+    var field = {};
     field["title"] = data[i][0];
     field["kind"] = data[i][1];
     field["table"] = data[i][2];

@@ -1,5 +1,6 @@
 var draggable;
 var slider;
+let updateLayoutBuilderContainer;
 
 $(document).ready(function() {
   let metaTag = $('meta[name=psj]');
@@ -230,7 +231,7 @@ function isNotFieldsContainer(containerId) {
   return containerId != 'layout-builder-draggable-fields-container'
 }
 
-function updateLayoutBuilderContainer(containerId, containerItems) {
+updateLayoutBuilderContainer = function (containerId, containerItems) {
   let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
   var url = window.location.href;
   var id = url.split("/")[4];
