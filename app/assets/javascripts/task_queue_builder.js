@@ -1,4 +1,7 @@
-/*global updateDraggableFieldsContainer:true*/
+/*
+  global updateDraggableFieldsContainer, initializeDraggable, updateLayoutBuilderContainer
+  isNotFieldsContainer, updateTaskQueueDraggableFields, getContainerItemsJSON
+*/
 
 let queryBuilderFilters;
 let metaTag;
@@ -189,6 +192,22 @@ function updateTaskQueueDraggableFields(containerId, containerItems) {
   });
 }
 
+function loadPreviewSlider() {
+  slider = simpleslider.getSlider({
+    paused: true,
+    prop: 'right',
+    onChangeEnd: updateSliderCurrentIndex
+  });
+
+  var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
+  $('#layout-preview-row-id').text(currentRowId);
+
+  function updateSliderCurrentIndex() {
+    var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
+    $('#layout-preview-row-id').text(currentRowId);
+  }
+}
+
 function loadIndexPage() {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -264,6 +283,8 @@ function loadEditPage() {
     getOptionsForDraggable("users");
 
     initializeDraggable();
+
+    loadPreviewSlider();
   }
 }
 
