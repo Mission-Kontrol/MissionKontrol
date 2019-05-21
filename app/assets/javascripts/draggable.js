@@ -136,7 +136,7 @@ saveDraggableContainer = function (dragEvent, containerId) {
   }
 }
 
-updateDraggableFieldsContainer = function (data) {
+updateDraggableFieldsContainer = function updateDraggableFieldsContainer (data) {
   $("#layout-builder-draggable-fields-container").html("");
   for (var i = 0; i < data.length; i++) {
     var field = {}
@@ -189,7 +189,7 @@ isDataContainer = function (containerId) {
   return isNotTrashContainer(containerId) && isNotFieldsContainer(containerId)
 }
 
-initializeDraggable = function () {
+initializeDraggable = function initializeDraggable () {
   const containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
   const dataContainers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
 
