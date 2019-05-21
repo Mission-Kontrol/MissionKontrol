@@ -4,8 +4,20 @@ let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
 let taskQueuePreviewSlider;
+let getOptionsForDraggable;
+let loadTaskQueuePreview;
+let initQueryBuilder;
+let buildFilterForDataType;
+let loadQueryBuilder;
+let getFieldsWithType;
+let disableElementbyId;
+let saveTaskQueue;
+let updateTaskQueueDraggableFields;
+let loadPreviewSlider;
+let loadIndexPage;
+let loadEditPage;
 
-function getOptionsForDraggable(primaryTable) {
+getOptionsForDraggable = function (primaryTable) {
   $.ajax({
     url: "/layouts/table_fields_with_type",
     type: "GET",
@@ -23,14 +35,14 @@ function getOptionsForDraggable(primaryTable) {
   })
 }
 
-function loadTaskQueuePreview(columns, rows) {
+loadTaskQueuePreview = function (columns, rows) {
   $(".task-queue-preview-table").footable({
     columns,
     rows
   });
 }
 
-function initQueryBuilder(filters) {
+initQueryBuilder = function (filters) {
   $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
     if (rule.filter.plugin === "datepicker") {
       rule.$el.find(".rule-value-container input").datepicker("update");
@@ -66,7 +78,7 @@ function initQueryBuilder(filters) {
   }
 }
 
-function buildFilterForDataType(type, id) {
+buildFilterForDataType = function (type, id) {
   var filter = {};
 
   if (type === "datetime") {
@@ -90,7 +102,7 @@ function buildFilterForDataType(type, id) {
   return filter;
 }
 
-function loadQueryBuilder(data) {
+loadQueryBuilder = function (data) {
   const filters = [];
 
   for (var i = 0; i < data.length; i++) {
@@ -112,7 +124,7 @@ function loadQueryBuilder(data) {
   initQueryBuilder(filters);
 }
 
-function getFieldsWithType(table) {
+getFieldsWithType = function (table) {
   $.ajax({
     url: "/layouts/table_fields_with_type",
     type: "GET",
@@ -130,11 +142,11 @@ function getFieldsWithType(table) {
   });
 }
 
-function disableElementbyId(id) {
+disableElementbyId = function (id) {
   $("#" + id).attr("disabled", true);
 }
 
-function saveTaskQueue(params) {
+saveTaskQueue = function (params) {
   disableElementbyId("queue-builder-modal-save-button");
   disableElementbyId("queue-builder-modal-back-button");
 
@@ -161,7 +173,7 @@ function saveTaskQueue(params) {
   });
 }
 
-function updateTaskQueueDraggableFields(containerId, containerItems) {
+updateTaskQueueDraggableFields = function (containerId, containerItems) {
   let containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3";
   var url = window.location.href;
   var id = url.split("/")[4];
@@ -188,7 +200,7 @@ function updateTaskQueueDraggableFields(containerId, containerItems) {
   });
 }
 
-function loadPreviewSlider() {
+loadPreviewSlider = function () {
   taskQueuePreviewSlider = window.simpleslider.getSlider({
     paused: true,
     prop: "right",
@@ -204,7 +216,7 @@ function loadPreviewSlider() {
   }
 }
 
-function loadIndexPage() {
+loadIndexPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
       backdrop: "static",
@@ -234,7 +246,7 @@ function loadIndexPage() {
   }
 }
 
-function loadEditPage() {
+loadEditPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionEdit) {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
