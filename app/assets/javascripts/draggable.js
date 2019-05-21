@@ -20,23 +20,23 @@ showTrashContainer =  function () {
 
 iconForFieldType = function (fieldType) {
   switch(fieldType) {
-    case 'string':
-    case 'text':
-      return 'fa fa-font'
+    case "string":
+    case "text":
+      return "fa fa-font"
       break;
-    case 'time':
-    case 'timestamp':
-      return 'fa fa-clock-o'
+    case "time":
+    case "timestamp":
+      return "fa fa-clock-o"
       break;
-    case 'date':
-    case 'datetime':
-      return 'fa fa-calendar'
+    case "date":
+    case "datetime":
+      return "fa fa-calendar"
       break;
-    case 'boolean':
-      return 'fa fa-toggle-on'
+    case "boolean":
+      return "fa fa-toggle-on"
       break;
     default:
-      return 'fa fa-font'
+      return "fa fa-font"
   }
 }
 
@@ -47,7 +47,7 @@ containerDataContainsField = function (containerId, fieldName) {
     return
   }
 
-  let data = JSON.parse($('#' + containerId)[0].dataset.fieldsForContainer);
+  let data = JSON.parse($("#" + containerId)[0].dataset.fieldsForContainer);
 
   if (data != "[]") {
     let fields = Object.values(data)
@@ -63,7 +63,7 @@ containerDataContainsField = function (containerId, fieldName) {
 }
 
 containerContainsDraggableItem = function (containerId, fieldName) {
-  let draggableItems = $(containerId + ' .layout-builder-draggable-item').text().trim().split(" ")
+  let draggableItems = $(containerId + " .layout-builder-draggable-item").text().trim().split(" ")
   return draggableItems.includes(fieldName)
 }
 
@@ -71,25 +71,25 @@ buildDraggableField = function (field) {
   var icon = iconForFieldType(field.kind);
   var item;
 
-  if (field.editable === 'true') {
-    item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
-      "<div class='row'>" +
-        "<div class='col-sm-7'>" +
-          "<div class = 'layout-builder-draggable-item-handle'>" +
-            "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
-            "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
+  if (field.editable === "true") {
+    item = "<div class="layout-builder-draggable-field layout-builder-draggable-item draggable-source" data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
+      "<div class="row">" +
+        "<div class="col-sm-7">" +
+          "<div class = "layout-builder-draggable-item-handle">" +
+            "<i class=" + """ + icon + """ + "aria-hidden="true"></i> " +
+            "<span data-toggle="tooltip" data-placement="top" title = "" + field.title + """ + "data-original-title="" + field.title + """ +  ">" + field.title + "</span>" +
           "</div>" +
         "</div>" +
 
-        "<div class='col-sm-5 text-right'>"+
-          "<div class = 'layout-builder-field-editable-toggle'>" +
-            "<label class='switch'>" +
-                "<div class='toggle'>" +
-                  "<input class='layout-builder-editable-toggle toggle-state' type='checkbox' checked='" + field.editable + "'/>" +
-                  "<div class='toggle-inner'>" +
-                     "<div class='indicator'></div>" +
+        "<div class="col-sm-5 text-right">"+
+          "<div class = "layout-builder-field-editable-toggle">" +
+            "<label class="switch">" +
+                "<div class="toggle">" +
+                  "<input class="layout-builder-editable-toggle toggle-state" type="checkbox" checked="" + field.editable + ""/>" +
+                  "<div class="toggle-inner">" +
+                     "<div class="indicator"></div>" +
                   "</div>" +
-                  "<div class='active-bg'></div>" +
+                  "<div class="active-bg"></div>" +
                 "</div>" +
             "</label>" +
             "</div>" +
@@ -97,24 +97,24 @@ buildDraggableField = function (field) {
         "</div>"+
       "</div>"
     } else {
-      item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
-        "<div class='row'>" +
-          "<div class='col-sm-7'>" +
-            "<div class = 'layout-builder-draggable-item-handle'>" +
-              "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
-              "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
+      item = "<div class="layout-builder-draggable-field layout-builder-draggable-item draggable-source" data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
+        "<div class="row">" +
+          "<div class="col-sm-7">" +
+            "<div class = "layout-builder-draggable-item-handle">" +
+              "<i class=" + """ + icon + """ + "aria-hidden="true"></i> " +
+              "<span data-toggle="tooltip" data-placement="top" title = "" + field.title + """ + "data-original-title="" + field.title + """ +  ">" + field.title + "</span>" +
             "</div>" +
           "</div>" +
 
-          "<div class='col-sm-5 text-right'>"+
-            "<div class = 'layout-builder-field-editable-toggle'>" +
-              "<label class='switch'>" +
-                "<div class='toggle'>" +
-                  "<input class='layout-builder-editable-toggle toggle-state' type='checkbox' />" +
-                  "<div class='toggle-inner'>" +
-                     "<div class='indicator'></div>" +
+          "<div class="col-sm-5 text-right">"+
+            "<div class = "layout-builder-field-editable-toggle">" +
+              "<label class="switch">" +
+                "<div class="toggle">" +
+                  "<input class="layout-builder-editable-toggle toggle-state" type="checkbox" />" +
+                  "<div class="toggle-inner">" +
+                     "<div class="indicator"></div>" +
                   "</div>" +
-                  "<div class='active-bg'></div>" +
+                  "<div class="active-bg"></div>" +
                 "</div>" +
               "</label>" +
               "</div>" +
@@ -137,7 +137,7 @@ saveDraggableContainer = function (dragEvent, containerId) {
 }
 
 updateDraggableFieldsContainer = function (data) {
-  $('#layout-builder-draggable-fields-container').html('');
+  $("#layout-builder-draggable-fields-container").html("");
   for (var i = 0; i < data.length; i++) {
     var field = {}
     field["title"] = data[i][0]
@@ -151,36 +151,36 @@ updateDraggableFieldsContainer = function (data) {
     // contianer does not already inlcude a dragable item with the same field name.
     //
 
-    if (containerDataContainsField('layout-builder-draggable-header-container1', field.title)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container1', field.title)) {
-        $('#layout-builder-draggable-header-container1').append(draggableField);
+    if (containerDataContainsField("layout-builder-draggable-header-container1", field.title)) {
+      if (!containerContainsDraggableItem("#layout-builder-draggable-header-container1", field.title)) {
+        $("#layout-builder-draggable-header-container1").append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-header-container2', field.title)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-header-container2', field.title)) {
-        $('#layout-builder-draggable-header-container2').append(draggableField);
+    } else if (containerDataContainsField("layout-builder-draggable-header-container2", field.title)) {
+      if (!containerContainsDraggableItem("#layout-builder-draggable-header-container2", field.title)) {
+        $("#layout-builder-draggable-header-container2").append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-side-container', field.title)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-side-container', field.title)) {
-        $('#layout-builder-draggable-side-container').append(draggableField);
+    } else if (containerDataContainsField("layout-builder-draggable-side-container", field.title)) {
+      if (!containerContainsDraggableItem("#layout-builder-draggable-side-container", field.title)) {
+        $("#layout-builder-draggable-side-container").append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-main-container1', field.title)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container1', field.title)) {
-        $('#layout-builder-draggable-main-container1').append(draggableField);
+    } else if (containerDataContainsField("layout-builder-draggable-main-container1", field.title)) {
+      if (!containerContainsDraggableItem("#layout-builder-draggable-main-container1", field.title)) {
+        $("#layout-builder-draggable-main-container1").append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-main-container2', field.title)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container2', field.title)) {
-        $('#layout-builder-draggable-main-container2').append(draggableField);
+    } else if (containerDataContainsField("layout-builder-draggable-main-container2", field.title)) {
+      if (!containerContainsDraggableItem("#layout-builder-draggable-main-container2", field.title)) {
+        $("#layout-builder-draggable-main-container2").append(draggableField);
       }
-    } else if (containerDataContainsField('layout-builder-draggable-main-container3', field.title)) {
-      if (!containerContainsDraggableItem('#layout-builder-draggable-main-container3', field.title)) {
-        $('#layout-builder-draggable-main-container3').append(draggableField);
+    } else if (containerDataContainsField("layout-builder-draggable-main-container3", field.title)) {
+      if (!containerContainsDraggableItem("#layout-builder-draggable-main-container3", field.title)) {
+        $("#layout-builder-draggable-main-container3").append(draggableField);
       }
-    } else if (containerDataContainsField('task-queue-draggable-field-settings-container', field.title)) {
-      if (!containerContainsDraggableItem('#task-queue-draggable-field-settings-container', field.title)) {
-        $('#task-queue-draggable-field-settings-container').append(draggableField);
+    } else if (containerDataContainsField("task-queue-draggable-field-settings-container", field.title)) {
+      if (!containerContainsDraggableItem("#task-queue-draggable-field-settings-container", field.title)) {
+        $("#task-queue-draggable-field-settings-container").append(draggableField);
       }
     } else {
-      $('#layout-builder-draggable-fields-container').append(draggableField);
+      $("#layout-builder-draggable-fields-container").append(draggableField);
     }
   }
 }
