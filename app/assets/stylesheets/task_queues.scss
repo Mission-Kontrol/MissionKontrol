@@ -35,7 +35,6 @@
 }
 
 .task-queue-create-tab {
-  // border: 1px dashed red;
   padding-top: 15px auto;
   text-align: center;
 
@@ -44,9 +43,6 @@
 
     li {
       width: 100%;
-      // margin: 10px auto;
-      // border-top-left-radius: 0;
-      // border-top-right-radius: 0;
 
       a {
         margin-right: 0px;
@@ -62,23 +58,6 @@
 
     li.a {
       margin-right: 0px !important;
-      // border-top-left-radius: 0;
-      // border-top-right-radius: 0;
-    }
-
-    li.a:hover {
-      // border: 1px solid white;
-      // border-top-left-radius: 0;
-      // border-top-right-radius: 0;
-    }
-
-    li.active a {
-      // margin-right: 0;
-      // border: 1px solid white;
-      // border: 1px solid #e3e3e3;
-      // border-right: white;
-      // margin: 0 auto;
-      // border-radius: 4px;
     }
   }
 }
@@ -101,20 +80,16 @@
     li {
       a {
         text-decoration: none;
-        // border: none!important;
       }
 
       a.active {
         text-decoration: none;
-        // border-bottom: 3px solid #d3d3d3 !important;
       }
     }
 
     li.active a {
-      // border: 1px solid #e3e3e3;
       border: 1px solid white;
       border-bottom: 3px solid black;
-      // border-radius: 4px;
     }
   }
 }
