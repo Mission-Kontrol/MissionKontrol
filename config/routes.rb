@@ -43,4 +43,7 @@ Rails.application.routes.draw do
 
   post 'token/generate' => 'token#generate'
   post 'call/connect' => 'call#connect'
+
+  get 'license', to: 'dashboard#license'
+  post 'license/verify', to: 'dashboard#verify_license'
 end
