@@ -3,7 +3,6 @@ let metaTag;
 let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
-let taskQueuePreviewSlider;
 let getOptionsForDraggable;
 let loadTaskQueuePreview;
 let initQueryBuilder;
@@ -13,8 +12,6 @@ let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
 let updateTaskQueueDraggableFields;
-let updateSliderCurrentIndex;
-let loadPreviewSlider;
 let loadIndexPage;
 let loadEditPage;
 
@@ -33,13 +30,6 @@ getOptionsForDraggable = function (primaryTable) {
     success(data){
       updateDraggableFieldsContainer(data);
     }
-  });
-}
-
-loadTaskQueuePreview = function (columns, rows) {
-  $(".task-queue-preview-table").footable({
-    columns,
-    rows
   });
 }
 
@@ -201,22 +191,6 @@ updateTaskQueueDraggableFields = function (containerId, containerItems) {
   });
 }
 
-updateSliderCurrentIndex = function () {
-  var currentRowId = $("#task-queue-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId;
-  $("#task-queue-preview-row-id").text(currentRowId);
-}
-
-loadPreviewSlider = function () {
-  taskQueuePreviewSlider = window.simpleslider.getSlider({
-    paused: true,
-    prop: "right",
-    onChangeEnd: updateSliderCurrentIndex
-  });
-
-  var currentRowId = $("#task-queue-preview-slider-container").children()[taskQueuePreviewSlider.currentIndex()].dataset.rowId;
-  $("#task-queue-preview-row-id").text(currentRowId);
-}
-
 loadIndexPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -292,8 +266,6 @@ loadEditPage = function () {
     getOptionsForDraggable("users");
 
     initializeDraggable();
-
-    // loadPreviewSlider();
   }
 }
 
