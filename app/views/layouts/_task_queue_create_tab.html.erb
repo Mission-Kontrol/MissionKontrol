@@ -1,6 +1,6 @@
-<div role="tabpanel" class="tab-pane" id="profile" style="">
-  <div class="row min-height-100vh" style="">
-    <div class="col-sm-1 min-height-100vh white-bg" style="margin: 0">
+<div role="tabpanel" class="tab-pane" id="profile">
+  <div class="row min-height-100vh">
+    <div class="col-sm-1 min-height-100vh white-bg no-margin">
       <br>
       <%= render 'layouts/task_queue_navigation' %>
     </div>
@@ -11,7 +11,7 @@
       <div class="tab-content ">
         <div role="tabpanel" class="tab-pane active " id="task-queue-general-settings">
           <div class="row min-height-100vh">
-            <div class="col-sm-12 col-md-4 min-height-100vh" style="border-left:1px solid #e7eaec">
+            <div class="col-sm-12 col-md-4 min-height-100vh">
               <h1>General settings</h1>
               <br>
 
@@ -35,7 +35,7 @@
         </div>
 
         <div role="tabpanel" class="tab-pane " id="task-queue-field-settings">
-          <div class="row min-height-100vh gray-bg" style="">
+          <div class="row min-height-100vh gray-bg">
             <div class="col-sm-3 min-height-100vh ">
               <h1>Field settings</h1>
 
@@ -48,7 +48,7 @@
             </div>
 
             <div class="col-sm-9 min-height-100vh ">
-              <div class="row white-bg min-height-100vh " style="">
+              <div class="row white-bg min-height-100vh">
                 <div class="top-nav-for-task-queue-field-settings ">
                   <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
@@ -63,9 +63,9 @@
 
                 <div class="tab-content ">
                   <div role="tabpanel" class="tab-pane active" id="task-queue-field-settings-builder">
-                    <div class="row min-height-100vh " style="margin: 0">
+                    <div class="row min-height-100vh no-margin">
                       <div class="col-sm-4 min-height-100vh">
-                        <div class="" style="">
+                        <div>
                           <br>
                           <div id="task-queue-draggable-field-settings-container" data-fields-for-container="<%= @task_queue.draggable_fields.to_json %>" style="min-height: 25px">
                           </div>
@@ -91,7 +91,7 @@
         </div>
 
         <div role="tabpanel" class="tab-pane" id="task-queue-outcome-settings">
-          <div class="row showme white-bg">
+          <div class="row white-bg">
             <div class="col-sm-6">
               <h1>Outcome settings</h1>
               <p>
