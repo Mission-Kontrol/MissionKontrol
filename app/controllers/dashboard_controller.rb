@@ -7,8 +7,17 @@ class DashboardController < ApplicationController
                 :load_available_tables, only: [:show]
   before_action :load_admin_db_config, only: [:show]
   before_action :load_task_queues, only: [:show]
+  layout 'application', only: [:license]
 
-  def show; end
+  def show
+    redirect_to license_path unless current_admin_user.activation_id
+  end
+
+  def license; end
+
+  def verify_license_key
+    binding.pry 
+  end
 
   private
 
