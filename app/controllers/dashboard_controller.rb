@@ -15,8 +15,10 @@ class DashboardController < ApplicationController
 
   def license; end
 
-  def verify_license_key
-    binding.pry 
+  def verify_license
+    current_admin_user.license_key = params["license_key"]
+    current_admin_user.save
+    verify_license_key
   end
 
   private
