@@ -60,6 +60,16 @@ module TableHelper
     items_for_container(layout_builder, 'draggable_fields_side_container')
   end
 
+  def task_queue_draggable_field_settings_container(task_queue)
+    items = task_queue.draggable_fields
+
+    if items.class == String
+      JSON.parse(items)
+    else
+      items
+    end
+  end
+
   def current_row_valid?(current_row, field)
     current_row &&  !current_row[field["title"]].blank?
   end
