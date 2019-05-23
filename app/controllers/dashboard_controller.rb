@@ -10,21 +10,12 @@ class DashboardController < ApplicationController
   layout 'license', only: [:license, :verify_license]
 
   def show
-    redirect_to license_path unless current_admin_user.activation_id
+    check_license
   end
 
   def license; end
 
-  def verify_license
-    current_admin_user.license_key = params["license_key"]
-    current_admin_user.save
-
-    if verify_license_key[:status] == 200
-      redirect_to edit_admin_user_path(current_admin_user)
-    else
-      render 'verify_license'
-    end
-  end
+  def verify_license; end
 
   private
 
