@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
                 :load_available_tables, only: [:show]
   before_action :load_admin_db_config, only: [:show]
   before_action :load_task_queues, only: [:show]
-  layout 'application', only: [:license]
+  layout 'license', only: [:license, :verify_license]
 
   def show
     redirect_to license_path unless current_admin_user.activation_id
@@ -18,7 +18,12 @@ class DashboardController < ApplicationController
   def verify_license
     current_admin_user.license_key = params["license_key"]
     current_admin_user.save
-    verify_license_key
+
+    if verify_license_key[:status] == 200
+      redirect_to dashboard_path
+    else
+      render 'verify_license'
+    end
   end
 
   private
