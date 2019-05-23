@@ -7,11 +7,10 @@ class DashboardController < ApplicationController
                 :load_available_tables, only: [:show]
   before_action :load_admin_db_config, only: [:show]
   before_action :load_task_queues, only: [:show]
-  layout 'license', only: [:license, :verify_license]
+  before_action :check_license, only: [:show]
+  layout 'license', only: %i[license verify_license]
 
-  def show
-    check_license
-  end
+  def show; end
 
   def license; end
 
