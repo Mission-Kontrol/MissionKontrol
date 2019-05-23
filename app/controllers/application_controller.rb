@@ -116,6 +116,7 @@ class ApplicationController < ActionController::Base
 
   def verify_setup_completed
     return if request.path == '/admin_users/sign_up'
+
     if request.host_with_port == 'demo.kuwinda.io'
       setup_demo_target_database_params
     elsif SensitiveData.get_target_database_credential(:database_name).nil? && !current_admin_user
@@ -140,9 +141,10 @@ class ApplicationController < ActionController::Base
   def check_license
     license_cache_key = "license-#{current_admin_user.license_key}"
 
-    license_cache = Rails.cache.fetch(license_cache_key, :expires_in => 24.hours) do
+    license_cache = Rails.cache.fetch(license_cache_key, expires_in:  24.hours) do
       activate_license unless current_admin_user.activation_id
       return license_cache_key if verify_license_key[:status] == 200
+
       nil
     end
 
