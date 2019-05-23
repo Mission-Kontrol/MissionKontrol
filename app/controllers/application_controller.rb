@@ -140,14 +140,12 @@ class ApplicationController < ActionController::Base
 
   def check_license
     license_cache_key = "license-#{current_admin_user.license_key}"
-
     license_cache = Rails.cache.fetch(license_cache_key, expires_in:  24.hours) do
       activate_license unless current_admin_user.activation_id
       return license_cache_key if verify_license_key[:status] == 200
 
       nil
     end
-
     redirect_to license_path unless license_cache
   end
 
