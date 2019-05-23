@@ -2,12 +2,8 @@
 
 class AdminUserRegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
-
+  before_action :check_license, only: [:edit]
   layout 'application', only: [:new]
-
-  def edit
-    check_license
-  end
 
   protected
 
