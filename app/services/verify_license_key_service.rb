@@ -29,4 +29,3 @@ class VerifyLicenseKeyService
     end
   end
 end
-
