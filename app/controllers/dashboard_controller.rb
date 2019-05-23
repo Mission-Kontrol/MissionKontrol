@@ -20,7 +20,7 @@ class DashboardController < ApplicationController
     current_admin_user.save
 
     if verify_license_key[:status] == 200
-      redirect_to dashboard_path
+      redirect_to edit_admin_user_path(current_admin_user)
     else
       render 'verify_license'
     end
