@@ -5,6 +5,10 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   layout 'application', only: [:new]
 
+  def edit
+    redirect_to license_path unless current_admin_user.activation_id
+  end
+
   protected
 
   def update_resource(resource, params)
