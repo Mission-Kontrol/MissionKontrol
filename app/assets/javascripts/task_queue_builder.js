@@ -3,16 +3,37 @@ let metaTag;
 let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
+let getOptionsForDraggable;
+let loadTaskQueuePreview;
+let initQueryBuilder;
+let buildFilterForDataType;
+let loadQueryBuilder;
+let getFieldsWithType;
+let disableElementbyId;
+let saveTaskQueue;
+let updateTaskQueueDraggableFields;
+let loadIndexPage;
+let loadEditPage;
 
-function loadTaskQueuePreview(columns, rows) {
-  $(".task-queue-preview-table").footable({
-    columns,
-    rows
+getOptionsForDraggable = function (primaryTable) {
+  $.ajax({
+    url: "/layouts/table_fields_with_type",
+    type: "GET",
+    data: {
+      table: primaryTable
+    },
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+              window.toastr.error("Invalid target database, please review credentials.");
+           },
+    success(data){
+      updateDraggableFieldsContainer(data);
+    }
   });
 }
 
-function initQueryBuilder(filters) {
-  // Fix for Bootstrap Datepicker
+initQueryBuilder = function (filters) {
   $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
     if (rule.filter.plugin === "datepicker") {
       rule.$el.find(".rule-value-container input").datepicker("update");
@@ -48,7 +69,7 @@ function initQueryBuilder(filters) {
   }
 }
 
-function buildFilterForDataType(type, id) {
+buildFilterForDataType = function (type, id) {
   var filter = {};
 
   if (type === "datetime") {
@@ -72,7 +93,7 @@ function buildFilterForDataType(type, id) {
   return filter;
 }
 
-function loadQueryBuilder(data) {
+loadQueryBuilder = function (data) {
   const filters = [];
 
   for (var i = 0; i < data.length; i++) {
@@ -94,7 +115,7 @@ function loadQueryBuilder(data) {
   initQueryBuilder(filters);
 }
 
-function getFieldsWithType(table) {
+getFieldsWithType = function (table) {
   $.ajax({
     url: "/layouts/table_fields_with_type",
     type: "GET",
@@ -112,11 +133,11 @@ function getFieldsWithType(table) {
   });
 }
 
-function disableElementbyId(id) {
+disableElementbyId = function (id) {
   $("#" + id).attr("disabled", true);
 }
 
-function saveTaskQueue(params) {
+saveTaskQueue = function (params) {
   disableElementbyId("queue-builder-modal-save-button");
   disableElementbyId("queue-builder-modal-back-button");
 
@@ -143,7 +164,34 @@ function saveTaskQueue(params) {
   });
 }
 
-function loadIndexPage() {
+updateTaskQueueDraggableFields = function (containerId, containerItems) {
+  let containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3";
+  var url = window.location.href;
+  var id = url.split("/")[4];
+  var containerParam = "draggable_fields";
+  var data = {};
+  data["task_queue"] = {};
+
+  if (containerItems.length === 0) {
+    data["task_queue"][containerParam] = JSON.stringify(containerItems);
+  } else {
+    data["task_queue"][containerParam] = containerItems;
+  }
+
+  $.ajax({
+    url: "/task_queues/" + id,
+    type: "PATCH",
+    data,
+    error(XMLHttpRequest, errorTextStatus, error){
+      window.toastr.error(XMLHttpRequest.responseJSON.error);
+    },
+    success(response, status, request){
+      window.toastr.info("Task queue fields successfully updated.");
+    }
+  });
+}
+
+loadIndexPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
       backdrop: "static",
@@ -173,7 +221,7 @@ function loadIndexPage() {
   }
 }
 
-function loadEditPage() {
+loadEditPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionEdit) {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
@@ -183,8 +231,15 @@ function loadEditPage() {
     $(".task-queue-update-button").click(function() {
       var params = {};
       params["task_queue"] = {};
-      params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
-      params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
+
+      if ($("#builder").queryBuilder("getRules") != null) {
+        params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
+      }
+
+      if ($("#builder").queryBuilder("getSQL") != null) {
+        params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
+      }
+
       params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value;
 
       $.ajax({
@@ -198,11 +253,19 @@ function loadEditPage() {
         success(response, status, request) {
           let rows = response.rows;
           let columns = response.columns;
-          loadTaskQueuePreview(columns, rows);
+
+          if (rows !== undefined && columns !== undefined) {
+            loadTaskQueuePreview(columns, rows);
+          }
+
           window.toastr.info("Task queue updated.");
         }
       });
     });
+
+    getOptionsForDraggable("users");
+
+    initializeDraggable();
   }
 }
 

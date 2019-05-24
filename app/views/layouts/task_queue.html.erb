@@ -11,7 +11,7 @@
   </head>
 
   <body class="gray-bg">
-    <div class="container-fluid white-bg">
+    <div class="container-fluid white-bg ">
       <div class="row">
         <div class='col-sm-12'>
           <%= render 'layouts/task_queue_topnavbar' %>
@@ -20,9 +20,11 @@
     </div>
 
     <div class="container-fluid">
-      <div class="tab-content">
-        <%= render 'layouts/task_queue_create_tab' %>
-        <%= render 'layouts/task_queue_define_tab' %>
+      <div class="row" style="margin: 0">
+        <div class="tab-content">
+          <%= render 'layouts/task_queue_create_tab' %>
+          <%= render 'layouts/task_queue_define_tab' %>
+        </div>
       </div>
     </div>
 

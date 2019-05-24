@@ -1,0 +1,26 @@
+<div id="task-queue-preview-container">
+    <div class="task-queue-preview-item" data-row-id='<%= @row['id'] %>'>
+      <div class="row min-height-100vh no-margin">
+        <div class="col-sm-4 min-height-100vh">
+          <div class="" style="">
+            <br>
+            <div>
+              <% task_queue_draggable_field_settings_container(@task_queue).each do |field| %>
+                <% @field = field[1]["title"] %>
+                <p><b><%= @field %></b></p>
+                <p><%= @row[@field] %></p>
+                <div class="divider"></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-8 gray-bg min-height-100vh">
+          <br>
+          <% if @activities %>
+            <%= render 'shared/activity_history_template', feedable_type: 'task_queue', feedable_id: @task_queue.id %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+</div>

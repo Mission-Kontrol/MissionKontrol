@@ -47,6 +47,10 @@
   margin-top: 20px;
 }
 
+.no-margin {
+  margin: 0 !important
+}
+
 .width-100 {
   width: 100%;
 }
@@ -88,4 +92,9 @@
   overflow:hidden;
   text-overflow: ellipsis;
   width: 200px
+}
+
+.divider {
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 10px;
 }

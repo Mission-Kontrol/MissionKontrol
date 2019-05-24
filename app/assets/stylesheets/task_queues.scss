@@ -1,5 +1,7 @@
 .top-tab-for-queue-layout {
   margin-top: 15px;
+  display: flex;
+  justify-content: center;
 
   .nav.nav-tabs {
     border-bottom: none;
@@ -33,14 +35,69 @@
 }
 
 .task-queue-create-tab {
-  margin-top: 15px;
+  padding-top: 15px auto;
+  text-align: center;
 
   .nav.nav-tabs {
     border-bottom: none;
 
-    li.active a {
-      border: 1px solid #e3e3e3;
-      border-radius: 4px;
+    li {
+      width: 100%;
+
+      a {
+        margin-right: 0px;
+        border-radius: 0;
+        border: none;
+
+        i {
+          margin: 10px auto;
+          font-size: 18px;
+        }
+      }
+    }
+
+    li.a {
+      margin-right: 0px !important;
     }
   }
+}
+
+.top-nav-for-task-queue-field-settings {
+  padding: 20px 20px 0 20px;
+  border-bottom: 1px solid #e3e3e3;
+
+  .top-nav-item-for-queue-layout {
+    color: black;
+    font-size: 14px;
+    text-decoration:underline;
+    margin-right: 10px;
+    text-align: center;
+  }
+
+  .nav.nav-tabs {
+    border-bottom: none;
+
+    li {
+      a {
+        text-decoration: none;
+      }
+
+      a.active {
+        text-decoration: none;
+      }
+    }
+
+    li.active a {
+      border: 1px solid white;
+      border-bottom: 3px solid black;
+    }
+  }
+}
+
+#task-queue-draggable-field-settings-container {
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  min-height: 25px;
+  border: 2px dashed #eaeaea;
 }

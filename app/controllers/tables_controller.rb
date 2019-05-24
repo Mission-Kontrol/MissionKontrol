@@ -8,7 +8,7 @@ class TablesController < ApplicationController
                 :set_activities,
                 :set_current_table,
                 :load_available_tables
-  before_action :load_task_queues, only: [:show]
+  before_action :load_task_queues, only: %i[show preview]
 
   def show
     sql_result = @target_db_repo.all

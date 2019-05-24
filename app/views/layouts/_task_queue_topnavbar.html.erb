@@ -1,5 +1,5 @@
 <div class="row border-bottom">
-  <div class="col-sm-5">
+  <div class="col-sm-4">
     <nav class="navbar navbar-static-top layouts-navbar" role="navigation">
       <ul class="nav navbar-top-links navbar-left">
         <li>
@@ -7,23 +7,11 @@
             <span><img src="/assets/logos/kuwinda_thumbnail.png" alt="" class="logo-thumbnail"></span>
           <% end %>
         </li>
-
-        <li>
-          <ol class="breadcrumb layouts-layout_builder_topnavbar-breadcrumb">
-            <li>
-              <%= link_to 'Dashboard', dashboard_path %>
-            </li>
-
-            <li>
-              <%= link_to 'Task Queues', task_queues_path %>
-            </li>
-          </ol>
-        </li>
       </ul>
     </nav>
   </div>
 
-  <div class="col-sm-2">
+  <div class="col-sm-4">
     <div class="">
       <div class="text-center top-tab-for-queue-layout">
         <ul class="nav nav-tabs" role="tablist">
@@ -36,10 +24,30 @@
           </li>
         </ul>
       </div>
+
+      <div class="text-center hide">
+        <br>
+        <ol class="breadcrumb layouts-layout_builder_topnavbar-breadcrumb">
+          <li>
+            <%= link_to 'Dashboard', dashboard_path %>
+          </li>
+
+          <li>
+            <%= link_to 'Task Queues', task_queues_path %>
+          </li>
+
+          <% if active_controller?("task_queues") && active_action?("edit") %>
+            <li>
+              <%= link_to @task_queue.name, edit_task_queue_path(@task_queue) %>
+            </li>
+          <% end %>
+        </ol>
+        <br>
+      </div>
     </div>
   </div>
 
-  <div class="col-sm-5">
+  <div class="col-sm-4">
     <nav class="navbar navbar-static-top layouts-navbar" role="navigation">
       <ul class="nav navbar-top-links navbar-right">
         <li>

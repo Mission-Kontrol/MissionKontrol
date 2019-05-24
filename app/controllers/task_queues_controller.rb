@@ -3,6 +3,7 @@
 class TaskQueuesController < ApplicationController
   layout 'task_queue'
   before_action :load_available_tables
+  before_action :set_activities
 
   def index
     @task_queue = TaskQueue.new
@@ -11,6 +12,9 @@ class TaskQueuesController < ApplicationController
 
   def edit
     @task_queue = TaskQueue.find(params[:id])
+    repo = Kuwinda::Repository::TargetDB.new(table: @task_queue.table)
+    result = repo.query(@task_queue.to_sql, 1)
+    @row = result.first
   end
 
   def new; end
@@ -38,9 +42,10 @@ class TaskQueuesController < ApplicationController
 
   def load_task_queue
     @task_queue = TaskQueue.find(params[:id])
-    @task_queue.query_builder_rules = params['task_queue']['query_builder_rules']
-    @task_queue.query_builder_sql = params['task_queue']['query_builder_sql']
-    @task_queue.raw_sql = params['task_queue']['raw_sql']
+    @task_queue.query_builder_rules = params['task_queue']['query_builder_rules'] if params['task_queue']['query_builder_rules']
+    @task_queue.query_builder_sql = params['task_queue']['query_builder_sql'] if params['task_queue']['query_builder_sql']
+    @task_queue.raw_sql = params['task_queue']['raw_sql'] if params['task_queue']['raw_sql']
+    @task_queue.draggable_fields = params['task_queue']['draggable_fields'] if params['task_queue']['draggable_fields']
   end
 
   def task_queue_params
@@ -100,5 +105,13 @@ class TaskQueuesController < ApplicationController
   def data_for_preview(task_queue)
     query = build_query_for_preview(task_queue)
     build_response_for_preview(query)
+  end
+
+  def set_activities
+    @activities = OpenStruct.new
+    @activities.all = []
+    @activities.calls = []
+    @activities.meetings = []
+    @activities.notes = []
   end
 end
