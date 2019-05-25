@@ -3,77 +3,79 @@
 require 'rails_helper'
 
 describe TablesController, :type => :controller do
-  let(:admin) do
-    AdminUser.first_or_create(email: 'test@test.com', password: '123456', password_confirmation: '123456')
-  end
   let(:admin_without_license) { create(:admin_user) }
   let(:admin_with_license) { create(:admin_user, :with_license) }
 
   describe 'GET show' do
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
-        sign_in admin
-        allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
+    context "when admin user has a valid license" do
+      context "when client database connection is invalid" do
+        it "renders the bad connection template" do
+          sign_in admin_with_license
+          allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
 
-        VCR.use_cassette('license_key/validation_success') do
-          get :show, params: { id: 'users', table_name: 'users', table: 'users'}
+          VCR.use_cassette('license_key/validation_success') do
+            get :show, params: { id: 'users', table_name: 'users', table: 'users'}
+          end
+
+          expect(response).to render_template("tables/bad_connection")
         end
-
-        expect(response).to render_template("tables/bad_connection")
       end
-    end
 
-    context "when client database connection is valid" do
-      it "renders the show template" do
-        sign_in admin
+      context "when client database connection is valid" do
+        it "renders the show template" do
+          sign_in admin_with_license
 
-        VCR.use_cassette('license_key/validation_success') do
-          get :show, params: { id: 'users', table_name: 'users', table: 'users'}
+          VCR.use_cassette('license_key/validation_success') do
+            get :show, params: { id: 'users', table_name: 'users', table: 'users'}
+          end
+
+          expect(response).to render_template("show")
         end
-
-        expect(response).to render_template("show")
       end
     end
   end
 
   describe 'GET preview' do
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
-        sign_in admin
-        allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
+    context "when admin user has a valid license" do
 
-        VCR.use_cassette('license_key/validation_success') do
-          get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
-        end
-
-        expect(response).to render_template("tables/bad_connection")
-      end
-    end
-
-    context "when client database connection is valid" do
-      context "when layout exists for table" do
-        it "renders the preview template" do
-          create(:view_builder, table_name: "users")
-          sign_in admin
+      context "when client database connection is invalid" do
+        it "renders the bad connection template" do
+          sign_in admin_with_license
+          allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
 
           VCR.use_cassette('license_key/validation_success') do
             get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
           end
 
-          expect(response).to render_template("preview")
+          expect(response).to render_template("tables/bad_connection")
         end
       end
 
-      context "when layout does not exist for table" do
-        it "redirects to the new layout template" do
-          ViewBuilder.where(table_name: 'users').delete_all
-          sign_in admin
+      context "when client database connection is valid" do
+        context "when layout exists for table" do
+          it "renders the preview template" do
+            create(:view_builder, table_name: "users")
+            sign_in admin_with_license
 
-          VCR.use_cassette('license_key/validation_success') do
-            get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
+            VCR.use_cassette('license_key/validation_success') do
+              get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
+            end
+
+            expect(response).to render_template("preview")
           end
-          
-          expect(response).to redirect_to(new_layout_url)
+        end
+
+        context "when layout does not exist for table" do
+          it "redirects to the new layout template" do
+            ViewBuilder.where(table_name: 'users').delete_all
+            sign_in admin_with_license
+
+            VCR.use_cassette('license_key/validation_success') do
+              get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
+            end
+
+            expect(response).to redirect_to(new_layout_url)
+          end
         end
       end
     end
