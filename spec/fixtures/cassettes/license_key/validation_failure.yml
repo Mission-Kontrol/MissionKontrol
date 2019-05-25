@@ -51,4 +51,106 @@ http_interactions:
       string: '{"error":true,"status":500,"errors":{"license_key":["Required."]}}'
     http_version: 
   recorded_at: Sat, 25 May 2019 10:14:17 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3ApTUJ879L9HyxhLjDPViY3pcu; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '66'
+      Date:
+      - Sat, 25 May 2019 13:41:55 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Required."]}}'
+    http_version: 
+  recorded_at: Sat, 25 May 2019 13:41:55 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=&license_key=&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AgCnLq7jriXuhhvNWGvgQ64tK; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '66'
+      Date:
+      - Sat, 25 May 2019 13:41:56 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Required."]}}'
+    http_version: 
+  recorded_at: Sat, 25 May 2019 13:41:56 GMT
 recorded_with: VCR 4.0.0
