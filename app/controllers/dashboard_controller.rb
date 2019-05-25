@@ -14,7 +14,11 @@ class DashboardController < ApplicationController
 
   def license; end
 
-  def verify_license; end
+  def verify_license
+    current_admin_user.license_key = params[:license_key]
+    current_admin_user.save
+    redirect_to dashboard_path if verify_license_key[:status] == 200
+  end
 
   private
 
