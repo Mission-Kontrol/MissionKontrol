@@ -3,17 +3,20 @@
 require 'rails_helper'
 
 describe DashboardController, :type => :controller do
-  let(:admin) do
-    AdminUser.first_or_create(email: 'test@test.com', password: '123456', password_confirmation: '123456')
+  let(:admin_without_license) { create(:admin_user) }
+  let(:admin_with_license) { create(:admin_user, :with_license) }
+
+  before do
+    AdminUser.delete_all
   end
 
   describe 'GET show' do
     context "when client database connection is invalid" do
       it "renders the bad connection template" do
-        sign_in admin
+        sign_in admin_with_license
         allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
 
-        VCR.use_cassette('license_check_success') do
+        VCR.use_cassette('license_key/validation_success') do
           get :show
         end
 
@@ -23,9 +26,9 @@ describe DashboardController, :type => :controller do
 
     context "when client database connection is valid" do
       it "renders the show template" do
-        sign_in admin
+        sign_in admin_with_license
 
-        VCR.use_cassette('license_check_success') do
+        VCR.use_cassette('license_key/validation_success', :record => :new_episodes) do
           get :show
         end
 
@@ -35,10 +38,9 @@ describe DashboardController, :type => :controller do
 
     context "when admin user has not activated license" do
       it "redirects to the license route" do
-        user = create(:admin_user)
-        sign_in user
+        sign_in admin_without_license
 
-        VCR.use_cassette('license_check_failure') do
+        VCR.use_cassette('license_key/validation_failure') do
           get :show
         end
 
