@@ -6,8 +6,11 @@ RSpec.feature 'Admin views a table', type: :feature do
   end
 
   scenario 'clicking on a table will show the selected table' do
-    sign_in_as_admin
-    when_i_click_the_users_link
+    VCR.use_cassette('license_key/validation_success') do
+      sign_in_as_admin_with_license
+      when_i_click_the_users_link
+    end
+
     then_i_expect_to_be_redirected_to_the_users_table
   end
 end
