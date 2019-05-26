@@ -1,8 +1,6 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 m-t-xl m-b-xl">
-
-
       <div class="ibox float-e-margins">
         <div class="ibox-content">
           <div class="text-center">
@@ -21,14 +19,7 @@
 
           <p>If this was a trial license you can buy a full license here.</p>
 
-          <%= form_tag("/license/verify", method: "post") do %>
-            <div class="form-group">
-              <%= label_tag(:q, "License key:") %>
-              <%= text_field_tag(:license_key, '', {class: 'form-control'}) %>
-            </div>
-
-            <%= submit_tag("Submit", {class: 'btn btn-primary'}) %>
-          <% end %>
+          <%= render 'license_form' %>
         </div>
       </div>
     </div>
