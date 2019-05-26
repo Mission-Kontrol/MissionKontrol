@@ -56,7 +56,6 @@ ActiveRecord::Schema.define(version: 20190518152319) do
     t.jsonb "query_builder_rules", default: []
     t.string "raw_sql"
     t.string "query_builder_sql"
-    t.jsonb "draggable_fields", default: []
   end
 
   create_table "view_builders", force: :cascade do |t|
