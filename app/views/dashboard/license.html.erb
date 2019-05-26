@@ -19,14 +19,7 @@
 
           <p>Welcome to the installation process. You’ll need a license key to get set-up. You can get a trial or full license key from <a href="www.kuwinda.io">www.kuwinda.io</a></p>
 
-          <%= form_tag("/license/verify", method: "post") do %>
-            <div class="form-group">
-              <%= label_tag(:q, "License key:") %>
-              <%= text_field_tag(:license_key, '', {class: 'form-control'}) %>
-            </div>
-
-            <%= submit_tag("Submit", {class: 'btn btn-primary'}) %>
-          <% end %>
+          <%= render 'license_form' %>
 
           <p class="hide">
             <b>Server response:</b> License terminated. If this is unexpected please contact team@kuwinda.io
