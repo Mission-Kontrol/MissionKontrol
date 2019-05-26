@@ -9,7 +9,13 @@ class ApplicationController < ActionController::Base
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
-  before_action :verify_setup_completed, :verify_license_key
+  before_action :verify_setup_completed
+  # we dont want to do this on login route
+  # before_action :verify_license_key
+
+  def check_license
+    redirect_to license_path unless is_license_valid?
+  end
 
   protected
 
@@ -138,17 +144,28 @@ class ApplicationController < ActionController::Base
     SensitiveData.set_target_database_credential(:database_type, 'postgres')
   end
 
-  def check_license
-    license_cache_key = "license-#{current_admin_user.license_key}"
+  def is_license_valid?
+    cache_key = "license-#{current_admin_user.license_key}"
+    license_cache = fetch_license_cache(cache_key)
 
-    license_cache = Rails.cache.fetch(license_cache_key, expires_in: 24.hours) do
-      activate_license unless current_admin_user.activation_id
-      return license_cache_key if verify_license_key[:status] == 200
-
-      nil
+    if license_cache
+      true
+    else
+      if verify_license_key[:status] == 200
+        set_license_cache(cache_key)
+        true
+      else
+        false
+      end
     end
-    
-    redirect_to license_path unless license_cache
+  end
+
+  def fetch_license_cache(cache_key)
+    Rails.cache.fetch(cache_key)
+  end
+
+  def set_license_cache(cache_key)
+    Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if verify_license_key[:status] == 200
   end
 
   def activate_license
