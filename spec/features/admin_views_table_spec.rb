@@ -5,7 +5,7 @@ RSpec.feature 'Admin views a table', type: :feature do
     delete_layout_for_users
   end
 
-  scenario 'clicking on a table will show the selected table' do
+  xscenario 'clicking on a table will show the selected table' do
     VCR.use_cassette('license_key/validation_success') do
       sign_in_as_admin_with_license
       when_i_click_the_users_link
