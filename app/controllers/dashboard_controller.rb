@@ -15,22 +15,26 @@ class DashboardController < ApplicationController
   def license; end
 
   def verify_license
-    if params[:activation_id]
-      current_admin_user.activation_id = params[:activation_id]
-      activate_license
-    end
+    activate_admin_license if params[:activation_id]
+    admin_license_valid = verify_admin_license if params[:license_key]
 
-    if params[:license_key]
-      current_admin_user.license_key = params[:license_key]
-
-      if verify_license_key[:status] == 200
-        current_admin_user.save
-        redirect_to dashboard_path
-      end
+    if admin_license_valid
+      current_admin_user.save
+      redirect_to dashboard_path
     end
   end
 
   private
+
+  def activate_admin_license
+    current_admin_user.activation_id = params[:activation_id]
+    activate_license
+  end
+
+  def verify_admin_license
+    current_admin_user.license_key = params[:license_key]
+    verify_license_key[:status] == 200
+  end
 
   def load_admin_db_config
     db = Rails.configuration.database_configuration[Rails.env]

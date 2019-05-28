@@ -7,9 +7,9 @@ describe TablesController, :type => :controller do
   let(:admin_with_license) { create(:admin_user, :with_license) }
 
   describe 'GET show' do
-    context "when admin user has a valid license" do
-      context "when client database connection is invalid" do
-        it "renders the bad connection template" do
+    context 'when admin user has a valid license' do
+      context 'when client database connection is invalid' do
+        it 'renders the bad connection template' do
           sign_in admin_with_license
           allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
 
@@ -17,29 +17,29 @@ describe TablesController, :type => :controller do
             get :show, params: { id: 'users', table_name: 'users', table: 'users'}
           end
 
-          expect(response).to render_template("tables/bad_connection")
+          expect(response).to render_template('tables/bad_connection')
         end
       end
 
-      context "when client database connection is valid" do
-        it "renders the show template" do
+      context 'when client database connection is valid' do
+        it 'renders the show template' do
           sign_in admin_with_license
 
           VCR.use_cassette('license_key/validation_success') do
             get :show, params: { id: 'users', table_name: 'users', table: 'users'}
           end
 
-          expect(response).to render_template("show")
+          expect(response).to render_template('show')
         end
       end
     end
   end
 
   describe 'GET preview' do
-    context "when admin user has a valid license" do
+    context 'when admin user has a valid license' do
 
-      context "when client database connection is invalid" do
-        it "renders the bad connection template" do
+      context 'when client database connection is invalid' do
+        it 'renders the bad connection template' do
           sign_in admin_with_license
           allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
 
@@ -47,26 +47,26 @@ describe TablesController, :type => :controller do
             get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
           end
 
-          expect(response).to render_template("tables/bad_connection")
+          expect(response).to render_template('tables/bad_connection')
         end
       end
 
-      context "when client database connection is valid" do
-        context "when layout exists for table" do
-          it "renders the preview template" do
-            create(:view_builder, table_name: "users")
+      context 'when client database connection is valid' do
+        context 'when layout exists for table' do
+          it 'renders the preview template' do
+            create(:view_builder, table_name: 'users')
             sign_in admin_with_license
 
             VCR.use_cassette('license_key/validation_success') do
               get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
             end
 
-            expect(response).to render_template("preview")
+            expect(response).to render_template('preview')
           end
         end
 
-        context "when layout does not exist for table" do
-          it "redirects to the new layout template" do
+        context 'when layout does not exist for table' do
+          it 'redirects to the new layout template' do
             ViewBuilder.where(table_name: 'users').delete_all
             sign_in admin_with_license
 

@@ -11,8 +11,8 @@ describe DashboardController, :type => :controller do
   end
 
   describe 'GET show' do
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
+    context 'when client database connection is invalid' do
+      it 'renders the bad connection template' do
         sign_in admin_with_license
         allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
 
@@ -20,24 +20,24 @@ describe DashboardController, :type => :controller do
           get :show
         end
 
-        expect(response).to render_template("tables/bad_connection")
+        expect(response).to render_template('tables/bad_connection')
       end
     end
 
-    context "when client database connection is valid" do
-      it "renders the show template" do
+    context 'when client database connection is valid' do
+      it 'renders the show template' do
         sign_in admin_with_license
 
-        VCR.use_cassette('license_key/validation_success', :record => :new_episodes) do
+        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
           get :show
         end
 
-        expect(response).to render_template("show")
+        expect(response).to render_template('show')
       end
     end
 
-    context "when admin user has not activated license" do
-      it "redirects to the license route" do
+    context 'when admin user has not activated license' do
+      it 'redirects to the license route' do
         sign_in admin_without_license
 
         VCR.use_cassette('license_key/validation_failure', :record => :new_episodes) do

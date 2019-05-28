@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   # before_action :verify_license_key
 
   def check_license
-    redirect_to license_path unless is_license_valid?
+    redirect_to license_path unless license_valid?
   end
 
   protected
@@ -144,19 +144,17 @@ class ApplicationController < ActionController::Base
     SensitiveData.set_target_database_credential(:database_type, 'postgres')
   end
 
-  def is_license_valid?
+  def license_valid?
     cache_key = "license-#{current_admin_user.license_key}"
     license_cache = fetch_license_cache(cache_key)
 
     if license_cache
       true
+    elsif verify_license_key[:status] == 200
+      license_cache(cache_key)
+      true
     else
-      if verify_license_key[:status] == 200
-        set_license_cache(cache_key)
-        true
-      else
-        false
-      end
+      false
     end
   end
 
@@ -164,7 +162,7 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch(cache_key)
   end
 
-  def set_license_cache(cache_key)
+  def license_cache=(cache_key)
     Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if verify_license_key[:status] == 200
   end
 

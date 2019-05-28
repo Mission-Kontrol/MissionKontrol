@@ -25,11 +25,11 @@ describe LayoutBuilderController, type: :controller do
   end
 
   describe 'POST create' do
-    context "when admin has a valid license key" do
+    context 'when admin has a valid license key' do
       before do
         params = {
-          view_name: "name of view",
-          table: "Users",
+          view_name: 'name of view',
+          table: 'Users'
         }
         admin_user = create(:admin_user, :with_license)
         sign_in admin_user
@@ -40,8 +40,8 @@ describe LayoutBuilderController, type: :controller do
       end
 
       it 'will create the view builder' do
-        expect(assigns(:view_builder).view_name).to eq "name of view"
-        expect(assigns(:view_builder).table_name).to eq "Users"
+        expect(assigns(:view_builder).view_name).to eq 'name of view'
+        expect(assigns(:view_builder).table_name).to eq 'Users'
       end
 
       it 'will save the view builder' do
@@ -60,7 +60,7 @@ describe LayoutBuilderController, type: :controller do
       }
     end
 
-    context "when admin has a valid license key" do
+    context 'when admin has a valid license key' do
       before do
         @view_builder = create(:view_builder)
         admin_user = create(:admin_user, :with_license)
@@ -95,8 +95,8 @@ describe LayoutBuilderController, type: :controller do
   end
 
   describe 'GET show' do
-    context "when client database is valid" do
-      context "when admin has a valid license key" do
+    context 'when client database is valid' do
+      context 'when admin has a valid license key' do
         before do
           @view_builder = create(:view_builder)
           params = { id: @view_builder.id }
@@ -118,8 +118,8 @@ describe LayoutBuilderController, type: :controller do
       end
     end
 
-    context "when client database connection is invalid" do
-      context "when admin has a valid license key" do
+    context 'when client database connection is invalid' do
+      context 'when admin has a valid license key' do
         before do
           admin_user = create(:admin_user, :with_license)
           sign_in admin_user
@@ -130,16 +130,16 @@ describe LayoutBuilderController, type: :controller do
           end
         end
 
-        it "renders the bad connection template" do
-          expect(response).to render_template("tables/bad_connection")
+        it 'renders the bad connection template' do
+          expect(response).to render_template('tables/bad_connection')
         end
       end
     end
   end
 
   describe 'GET edit' do
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
+    context 'when client database connection is invalid' do
+      it 'renders the bad connection template' do
         sign_in admin_with_license
         allow(controller).to receive(:edit).and_raise(InvalidClientDatabaseError.new)
 
@@ -147,14 +147,14 @@ describe LayoutBuilderController, type: :controller do
           get :edit, params: { use_route: 'layouts/' }
         end
 
-        expect(response).to render_template("tables/bad_connection")
+        expect(response).to render_template('tables/bad_connection')
       end
     end
   end
 
   describe 'GET preview' do
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
+    context 'when client database connection is invalid' do
+      it 'renders the bad connection template' do
         sign_in admin_with_license
         allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
 
@@ -162,7 +162,7 @@ describe LayoutBuilderController, type: :controller do
           get :preview, params: { use_route: 'layouts/' }
         end
 
-        expect(response).to render_template("tables/bad_connection")
+        expect(response).to render_template('tables/bad_connection')
       end
     end
   end
