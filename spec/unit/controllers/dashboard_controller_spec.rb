@@ -40,7 +40,7 @@ describe DashboardController, :type => :controller do
       it 'redirects to the license route' do
         sign_in admin_without_license
 
-        VCR.use_cassette('license_key/validation_failure', :record => :new_episodes) do
+        VCR.use_cassette('license_key/validation_failure', record: :new_episodes) do
           get :show
         end
 
