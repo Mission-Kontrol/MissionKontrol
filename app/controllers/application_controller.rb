@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
     if license_cache
       true
     elsif verify_license_key[:status] == 200
-      license_cache(cache_key)
+      license_cache=(cache_key)
       true
     else
       false
