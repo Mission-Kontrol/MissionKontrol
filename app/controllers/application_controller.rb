@@ -141,7 +141,7 @@ class ApplicationController < ActionController::Base
 
   def license_valid?
     return false unless current_admin_user
-    
+  
     cache_key = "license-#{current_admin_user.license_key}"
     license_cache = fetch_license_cache(cache_key)
 
