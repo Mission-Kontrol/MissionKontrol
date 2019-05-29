@@ -2,6 +2,7 @@
 
 class AdminUserRegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
+  skip_before_action :check_license, :only => %i[new]
   layout 'application', only: [:new]
 
   protected
