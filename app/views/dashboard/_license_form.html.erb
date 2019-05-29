@@ -1,0 +1,12 @@
+<%= form_tag("/license/verify", method: "post") do %>
+  <div class="form-group">
+    <%= label_tag(:q, "License key:") %>
+    <%= text_field_tag(:license_key, '', {class: 'form-control'}) %>
+  </div>
+
+  <p>
+    If this was a trial license you will need to <a href="https://www.kuwinda.io">buy a license here</a>.
+  </p>
+
+  <%= submit_tag("Submit", {class: 'btn btn-primary'}) %>
+<% end %>

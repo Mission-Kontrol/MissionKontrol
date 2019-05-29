@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 describe LayoutBuilderController, type: :controller do
-  let(:table) { 'Users' }
-
-  let(:admin) do
-    AdminUser.first_or_create(email: 'test@test.com', password: '123456', password_confirmation: '123456')
-  end
+  let(:admin_without_license) { create(:admin_user) }
+  let(:admin_with_license) { create(:admin_user, :with_license) }
 
   describe 'GET new' do
     before do
-      sign_in admin
-      get :new
+      sign_in admin_with_license
+
+      VCR.use_cassette('license_key/validation_success') do
+        get :new
+      end
     end
 
     it 'will render the page' do
@@ -25,49 +25,32 @@ describe LayoutBuilderController, type: :controller do
   end
 
   describe 'POST create' do
-    before do
-      sign_in admin
-      post :create, params: params
-    end
-    let(:view_name) { 'View name' }
-    let(:params) do
-      {
-        view_name: view_name,
-        table: table,
-      }
-    end
+    context 'when admin has a valid license key' do
+      before do
+        params = {
+          view_name: 'name of view',
+          table: 'Users'
+        }
+        admin_user = create(:admin_user, :with_license)
+        sign_in admin_user
 
-    it 'will create the view builder' do
-      expect(assigns(:view_builder).view_name).to eq view_name
-      expect(assigns(:view_builder).table_name).to eq table
-    end
+        VCR.use_cassette('license_key/validation_success') do
+          post :create, params: params
+        end
+      end
 
-    it 'will save the view builder' do
-      expect(assigns(:view_builder)).to be_a ViewBuilder
+      it 'will create the view builder' do
+        expect(assigns(:view_builder).view_name).to eq 'name of view'
+        expect(assigns(:view_builder).table_name).to eq 'Users'
+      end
+
+      it 'will save the view builder' do
+        expect(assigns(:view_builder)).to be_a ViewBuilder
+      end
     end
   end
 
   describe 'PATCH update' do
-    before do
-      sign_in admin
-      put :update, params: params, format: :js
-      view_builder.reload
-    end
-    let(:params) do
-      {
-        id: view_builder.id,
-        tableConfigurations: table_configurations,
-      }
-    end
-    let(:view_builder) { create(:view_builder) }
-    let(:table_configurations) do
-      {
-        '1' => { 'Field' => 'area', 'Position' => '1' },
-        '2' => { 'Field' => 'level', 'Position' => '2' },
-        '3' => { 'Field' => 'plan', 'Position' => '3' },
-        '4' => { 'Field' => 'space', 'Position' => '4' }
-      }
-    end
     let(:expected_positions) do
       {
         '1' => 'area',
@@ -77,66 +60,109 @@ describe LayoutBuilderController, type: :controller do
       }
     end
 
-    it 'will update the positions of the visible fields' do
-      expect(view_builder.table_attributes['visible_fields']).to eq expected_positions
-    end
+    context 'when admin has a valid license key' do
+      before do
+        @view_builder = create(:view_builder)
+        admin_user = create(:admin_user, :with_license)
+        table_configurations = {
+          '1' => { 'Field' => 'area', 'Position' => '1' },
+          '2' => { 'Field' => 'level', 'Position' => '2' },
+          '3' => { 'Field' => 'plan', 'Position' => '3' },
+          '4' => { 'Field' => 'space', 'Position' => '4' }
+        }
+        params = {
+          id: @view_builder.id,
+          tableConfigurations: table_configurations,
+        }
 
-    it 'will redirect to view the configuration' do
-      expect(response).to redirect_to(layout_url(view_builder))
+        sign_in admin_user
+
+        VCR.use_cassette('license_key/validation_success') do
+          put :update, params: params, format: :js
+        end
+
+        @view_builder.reload
+      end
+
+      it 'will update the positions of the visible fields' do
+        expect(@view_builder.table_attributes['visible_fields']).to eq expected_positions
+      end
+
+      it 'will redirect to view the configuration' do
+        expect(response).to redirect_to(layout_url(@view_builder))
+      end
     end
   end
 
   describe 'GET show' do
-    before do
-      sign_in admin
-      get :new
+    context 'when client database is valid' do
+      context 'when admin has a valid license key' do
+        before do
+          @view_builder = create(:view_builder)
+          params = { id: @view_builder.id }
+          admin_user = create(:admin_user, :with_license)
+          sign_in admin_user
+
+          VCR.use_cassette('license_key/validation_success') do
+            get :show, params: params
+          end
+        end
+
+        it 'will render the page' do
+          expect(response.status).to eq(200)
+        end
+
+        it 'will assign the view_builder' do
+          expect(assigns[:view_builder]).to eq @view_builder
+        end
+      end
     end
 
-    context "when client database is valid" do
-      before { get :show, params: params }
-      let(:params) { { id: view_builder.id } }
-      let(:view_builder) { create(:view_builder) }
+    context 'when client database connection is invalid' do
+      context 'when admin has a valid license key' do
+        before do
+          admin_user = create(:admin_user, :with_license)
+          sign_in admin_user
+          allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
 
-      it 'will render the page' do
-        expect(response.status).to eq(200)
-      end
+          VCR.use_cassette('license_key/validation_success') do
+            get :show, params: { use_route: 'layouts/' }
+          end
+        end
 
-      it 'will assign the view_builder' do
-        expect(assigns[:view_builder]).to eq view_builder
-      end
-    end
-
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
-        sign_in admin
-        allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
-        get :show, params: { use_route: 'layouts/' }
-
-        expect(response).to render_template("tables/bad_connection")
+        it 'renders the bad connection template' do
+          expect(response).to render_template('tables/bad_connection')
+        end
       end
     end
   end
 
   describe 'GET edit' do
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
-        sign_in admin
+    context 'when client database connection is invalid' do
+      it 'renders the bad connection template' do
+        sign_in admin_with_license
         allow(controller).to receive(:edit).and_raise(InvalidClientDatabaseError.new)
-        get :edit, params: { use_route: 'layouts/' }
 
-        expect(response).to render_template("tables/bad_connection")
+        VCR.use_cassette('license_key/validation_success') do
+          get :edit, params: { use_route: 'layouts/' }
+        end
+
+        expect(response).to render_template('tables/bad_connection')
       end
     end
   end
 
   describe 'GET preview' do
-    context "when client database connection is invalid" do
-      it "renders the bad connection template" do
-        sign_in admin
+    context 'when client database connection is invalid' do
+      it 'renders the bad connection template' do
+        sign_in admin_with_license
         allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
-        get :preview, params: { use_route: 'layouts/' }
 
-        expect(response).to render_template("tables/bad_connection")
+        VCR.use_cassette('license_key/validation_success') do
+          get :preview, params: { use_route: 'layouts/' }
+        end
+
+        expect(response).to render_template('tables/bad_connection')
       end
     end
   end

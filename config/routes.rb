@@ -4,12 +4,13 @@ Rails.application.routes.draw do
   devise_for(
     :admin_users,
     controllers: {
-      registrations: 'admin_user_registrations'
+      registrations: 'admin_user_registrations',
+      sessions: 'admin_user_sessions'
     }
   )
 
   devise_scope :admin_user do
-    root to: "devise/sessions#new"
+    root to: "admin_user_sessions#new"
   end
 
   resources :admin_users, only: :index
@@ -43,4 +44,8 @@ Rails.application.routes.draw do
 
   post 'token/generate' => 'token#generate'
   post 'call/connect' => 'call#connect'
+
+  get 'license', to: 'dashboard#license'
+  post 'license/verify', to: 'dashboard#verify_license'
+  get 'license/verify', to: 'dashboard#verify_license', as: 'verify_license'
 end
