@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
                 :load_available_tables, only: [:show]
   before_action :load_admin_db_config, only: [:show]
   before_action :load_task_queues, only: [:show]
-  before_action :check_license, only: [:show]
+  skip_before_action :check_license, :only => %i[license verify_license]
   layout 'license', only: %i[license verify_license]
 
   def show; end
@@ -15,25 +15,34 @@ class DashboardController < ApplicationController
   def license; end
 
   def verify_license
-    activate_admin_license if params[:activation_id]
-    admin_license_valid = verify_admin_license if params[:license_key]
+    current_admin_user.license_key = params[:license_key] if params[:license_key]
+    license_active = activate_admin_license
 
-    if admin_license_valid
-      current_admin_user.save
-      redirect_to dashboard_path
+    if license_active
+      license_valid = validate_admin_license
+
+      if license_valid
+        current_admin_user.save
+        redirect_to dashboard_path
+      end
     end
   end
 
   private
 
   def activate_admin_license
-    current_admin_user.activation_id = params[:activation_id]
-    activate_license
+    activate_result = activate_license
+
+    if activate_result[:status] == 200
+      current_admin_user.activation_id = activate_result[:data]["activation_id"]
+      true
+    else
+      false
+    end
   end
 
-  def verify_admin_license
-    current_admin_user.license_key = params[:license_key]
-    verify_license_key[:status] == 200
+  def validate_admin_license
+    validate_license_key[:status] == 200
   end
 
   def load_admin_db_config
