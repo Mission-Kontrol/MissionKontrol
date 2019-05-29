@@ -10,11 +10,10 @@ class ApplicationController < ActionController::Base
               ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
   before_action :verify_setup_completed
-  # we dont want to do this on login route
-  # before_action :verify_license_key
+  before_action :check_license,
 
   def check_license
-    redirect_to license_path unless license_valid?
+    redirect_to license_path and return unless license_valid?
   end
 
   protected
@@ -130,10 +129,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def verify_license_key
-    VerifyLicenseKeyService.validate(current_admin_user) if current_admin_user
-  end
-
   def setup_demo_target_database_params
     uri = URI.parse(ENV['DEMO_DATABASE_PG'])
     SensitiveData.set_target_database_credential(:database_name, uri.path.from(1))
@@ -150,7 +145,7 @@ class ApplicationController < ActionController::Base
 
     if license_cache
       true
-    elsif verify_license_key[:status] == 200
+    elsif validate_license_key[:status] == 200
       license_cache=(cache_key)
       true
     else
@@ -164,6 +159,10 @@ class ApplicationController < ActionController::Base
 
   def license_cache=(cache_key)
     Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if verify_license_key[:status] == 200
+  end
+
+  def validate_license_key
+    VerifyLicenseKeyService.validate(current_admin_user) if current_admin_user
   end
 
   def activate_license
