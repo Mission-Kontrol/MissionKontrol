@@ -17,15 +17,9 @@ class DashboardController < ApplicationController
   def verify_license
     current_admin_user.license_key = params[:license_key] if params[:license_key]
     license_active = activate_current_license
-
-    if license_active
-      license_valid = validate_current_license
-
-      if license_valid
-        current_admin_user.save
-        redirect_to dashboard_path && return
-      end
-    end
+    license_valid = validate_current_license if license_active
+    current_admin_user.save if license_valid
+    redirect_to dashboard_path && return if license_valid
   end
 
   private
