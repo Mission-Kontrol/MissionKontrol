@@ -19,7 +19,7 @@ http_interactions:
       message: OK
     headers:
       Set-Cookie:
-      - tk_ai=woo%3AlaNoRKo3JN0rWH5NSVlfqwej; path=/
+      - tk_ai=woo%3AI6tzMc1uAAA2NH%2FWxPg7cNgC; path=/
       X-Robots-Tag:
       - noindex
       X-Content-Type-Options:
@@ -37,7 +37,7 @@ http_interactions:
       Content-Length:
       - '117'
       Date:
-      - Sun, 19 May 2019 10:56:00 GMT
+      - Wed, 29 May 2019 15:31:19 GMT
       Server:
       - LiteSpeed
       Vary:
@@ -51,5 +51,5 @@ http_interactions:
       string: '{"error":true,"status":500,"errors":{"activation_id":["Invalid activation."],"license_key":["Invalid
         license key."]}}'
     http_version: 
-  recorded_at: Sun, 19 May 2019 10:56:01 GMT
+  recorded_at: Wed, 29 May 2019 15:31:19 GMT
 recorded_with: VCR 4.0.0

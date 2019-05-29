@@ -19,7 +19,7 @@ http_interactions:
       message: OK
     headers:
       Set-Cookie:
-      - tk_ai=woo%3AJryqVzGxr4OnzDhvsL8rycWl; path=/
+      - tk_ai=woo%3AN6l%2FLpZrv4ueeJvqLHfF%2Fl2M; path=/
       X-Robots-Tag:
       - noindex
       X-Content-Type-Options:
@@ -37,7 +37,7 @@ http_interactions:
       Content-Length:
       - '588'
       Date:
-      - Sun, 19 May 2019 10:10:33 GMT
+      - Wed, 29 May 2019 15:31:18 GMT
       Server:
       - LiteSpeed
       Vary:
@@ -48,8 +48,8 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: '{"error":false,"status":200,"message":"License Key activated successfully.","data":{"expire":1560669447,"downloadable":{"name":"Docker+install+script","url":"https:\/\/www.kuwinda.io\/wp-content\/uploads\/2019\/05\/auto-install.sh_.zip"},"ctoken":"5ce01d5728633","activation_id":1558260633,"expire_date":"2019-06-16
+      string: '{"error":false,"status":200,"message":"License Key activated successfully.","data":{"expire":1560669447,"downloadable":{"name":"Docker+install+script","url":"https:\/\/www.kuwinda.io\/wp-content\/uploads\/2019\/05\/auto-install.sh_.zip"},"ctoken":"5ceea5ae7deb9","activation_id":1559143878,"expire_date":"2019-06-16
         07:17","timezone":"UTC","the_key":"wcCXJZ5fd3TdekwrB5No912UO2-26","url":"https:\/\/www.kuwinda.io\/my-account\/?view-license-key=1&key=wcCXJZ5fd3TdekwrB5No912UO2-26","has_expired":false,"status":"active","allow_offline":false,"offline_interval":null,"offline_value":null}}'
     http_version: 
-  recorded_at: Sun, 19 May 2019 10:10:34 GMT
+  recorded_at: Wed, 29 May 2019 15:31:18 GMT
 recorded_with: VCR 4.0.0
