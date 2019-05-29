@@ -36,11 +36,53 @@ describe DashboardController, :type => :controller do
       end
     end
 
-    context 'when admin user has not activated license' do
+    context 'when license exist' do
+      context 'when license activation and validation suceeds' do
+        it 'renders the dashboard show template' do
+          sign_in admin_with_license
+
+          VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
+            get :show
+          end
+
+          expect(response).to render_template('show')
+        end
+      end
+
+      context 'when license activation fails' do
+        it 'redirects to the license route' do
+          admin_without_activation = create(:admin_user)
+
+          sign_in admin_without_activation
+
+          VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
+            get :show
+          end
+
+          expect(response).to redirect_to(license_path)
+        end
+      end
+
+      context 'when license validation fails' do
+        it 'redirects to the license route' do
+          admin_without_validation = create(:admin_user, activation_id: '1558260633')
+
+          sign_in admin_without_validation
+
+          VCR.use_cassette('license_key/validation_failure', record: :new_episodes) do
+            get :show
+          end
+
+          expect(response).to redirect_to(license_path)
+        end
+      end
+    end
+
+    context 'when license does not exist' do
       it 'redirects to the license route' do
         sign_in admin_without_license
 
-        VCR.use_cassette('license_key/validation_failure', record: :new_episodes) do
+        VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
           get :show
         end
 
