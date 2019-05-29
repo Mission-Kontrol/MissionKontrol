@@ -10,10 +10,10 @@ class ApplicationController < ActionController::Base
               ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
   before_action :verify_setup_completed
-  before_action :check_license,
+  before_action :check_license
 
   def check_license
-    redirect_to license_path and return unless license_valid?
+    redirect_to license_path && return unless license_valid?
   end
 
   protected
@@ -141,13 +141,14 @@ class ApplicationController < ActionController::Base
 
   def license_valid?
     return false unless current_admin_user
+    
     cache_key = "license-#{current_admin_user.license_key}"
     license_cache = fetch_license_cache(cache_key)
 
     if license_cache
       true
     elsif validate_license_key[:status] == 200
-      license_cache=(cache_key)
+      license_cache = cache_key
       true
     else
       false
