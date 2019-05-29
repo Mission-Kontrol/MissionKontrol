@@ -17,7 +17,7 @@ describe VerifyLicenseKeyService do
       let(:license_key) { 'not_a_license_key' }
 
       it 'returns a 400 status' do
-        VCR.use_cassette('license_key/activation_failure') do
+        VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
           expect(described_class.activate(user)[:status]).to eq 500
         end
       end
