@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :check_license
 
   def check_license
-    redirect_to license_path && return unless license_valid?
+    redirect_to license_path unless license_valid?
   end
 
   protected
