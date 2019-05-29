@@ -3,11 +3,11 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 
-gem 'rails', '5.1.1'
+gem 'rails', '5.1.7'
 
-gem 'bootstrap-sass', '~> 3.3.7'
+gem 'bootstrap-sass', '>= 3.4.1'
 gem 'coffee-rails'
-gem 'devise', '~> 4.4.3'
+gem 'devise', '>= 4.6.0'
 gem 'font-awesome-rails', '~> 4.7.0.4'
 gem 'jbuilder', '~> 2.7.0'
 gem 'jquery-rails', '~> 4.3'
