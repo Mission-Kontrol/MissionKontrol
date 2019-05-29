@@ -210,6 +210,60 @@ http_interactions:
   recorded_at: Sat, 25 May 2019 13:31:19 GMT
 - request:
     method: post
+<<<<<<< Updated upstream
+=======
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=&license_key=wcCXJZ5fd3TdekwrB5No912UO2-26&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3A3NE4N0nWoaQr04uebBSW%2FxBH; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '68'
+      Date:
+      - Wed, 29 May 2019 14:47:43 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"activation_id":["Required."]}}'
+    http_version: 
+  recorded_at: Wed, 29 May 2019 14:47:43 GMT
+- request:
+    method: post
+>>>>>>> Stashed changes
     uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=wcCXJZ5fd3TdekwrB5No912UO2-26&sku=2&store_code=Z0cm9LxK3jFtbX7
     body:
       encoding: UTF-8
@@ -227,7 +281,11 @@ http_interactions:
       message: OK
     headers:
       Set-Cookie:
+<<<<<<< Updated upstream
       - tk_ai=woo%3ACOhzAiRaDn92y1qik4DbShku; path=/
+=======
+      - tk_ai=woo%3AoeVtsk6QZVzoZjaVjqmrf5EE; path=/
+>>>>>>> Stashed changes
       X-Robots-Tag:
       - noindex
       X-Content-Type-Options:
@@ -245,7 +303,11 @@ http_interactions:
       Content-Length:
       - '588'
       Date:
+<<<<<<< Updated upstream
       - Wed, 29 May 2019 15:29:00 GMT
+=======
+      - Wed, 29 May 2019 14:53:13 GMT
+>>>>>>> Stashed changes
       Server:
       - LiteSpeed
       Vary:
@@ -256,6 +318,7 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
+<<<<<<< Updated upstream
       string: '{"error":false,"status":200,"message":"License Key activated successfully.","data":{"expire":1560669447,"downloadable":{"name":"Docker+install+script","url":"https:\/\/www.kuwinda.io\/wp-content\/uploads\/2019\/05\/auto-install.sh_.zip"},"ctoken":"5ceea1d14bb6a","activation_id":1559143740,"expire_date":"2019-06-16
         07:17","timezone":"UTC","the_key":"wcCXJZ5fd3TdekwrB5No912UO2-26","url":"https:\/\/www.kuwinda.io\/my-account\/?view-license-key=1&key=wcCXJZ5fd3TdekwrB5No912UO2-26","has_expired":false,"status":"active","allow_offline":false,"offline_interval":null,"offline_value":null}}'
     http_version: 
@@ -263,6 +326,15 @@ http_interactions:
 - request:
     method: post
     uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=1559143740&license_key=wcCXJZ5fd3TdekwrB5No912UO2-26&sku=2&store_code=Z0cm9LxK3jFtbX7
+=======
+      string: '{"error":false,"status":200,"message":"License Key activated successfully.","data":{"expire":1560669447,"downloadable":{"name":"Docker+install+script","url":"https:\/\/www.kuwinda.io\/wp-content\/uploads\/2019\/05\/auto-install.sh_.zip"},"ctoken":"5cee98f6548eb","activation_id":1559141593,"expire_date":"2019-06-16
+        07:17","timezone":"UTC","the_key":"wcCXJZ5fd3TdekwrB5No912UO2-26","url":"https:\/\/www.kuwinda.io\/my-account\/?view-license-key=1&key=wcCXJZ5fd3TdekwrB5No912UO2-26","has_expired":false,"status":"active","allow_offline":false,"offline_interval":null,"offline_value":null}}'
+    http_version: 
+  recorded_at: Wed, 29 May 2019 14:53:13 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=1559141593&license_key=wcCXJZ5fd3TdekwrB5No912UO2-26&sku=2&store_code=Z0cm9LxK3jFtbX7
+>>>>>>> Stashed changes
     body:
       encoding: UTF-8
       string: ''
@@ -279,7 +351,11 @@ http_interactions:
       message: OK
     headers:
       Set-Cookie:
+<<<<<<< Updated upstream
       - tk_ai=woo%3A4hmJpsCfYW%2F0kWBIURzhr1wk; path=/
+=======
+      - tk_ai=woo%3ArOm6XpR5Iws0wqDuEGmMQwdY; path=/
+>>>>>>> Stashed changes
       X-Robots-Tag:
       - noindex
       X-Content-Type-Options:
@@ -297,7 +373,11 @@ http_interactions:
       Content-Length:
       - '574'
       Date:
+<<<<<<< Updated upstream
       - Wed, 29 May 2019 15:29:00 GMT
+=======
+      - Wed, 29 May 2019 14:53:14 GMT
+>>>>>>> Stashed changes
       Server:
       - LiteSpeed
       Vary:
@@ -308,8 +388,15 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
+<<<<<<< Updated upstream
       string: '{"error":false,"status":200,"message":"License Key is valid.","data":{"expire":1560669447,"downloadable":{"name":"Docker+install+script","url":"https:\/\/www.kuwinda.io\/wp-content\/uploads\/2019\/05\/auto-install.sh_.zip"},"ctoken":"5ceea53c27da3","activation_id":1559143740,"expire_date":"2019-06-16
         07:17","timezone":"UTC","the_key":"wcCXJZ5fd3TdekwrB5No912UO2-26","url":"https:\/\/www.kuwinda.io\/my-account\/?view-license-key=1&key=wcCXJZ5fd3TdekwrB5No912UO2-26","has_expired":false,"status":"active","allow_offline":false,"offline_interval":null,"offline_value":null}}'
     http_version: 
   recorded_at: Wed, 29 May 2019 15:29:00 GMT
+=======
+      string: '{"error":false,"status":200,"message":"License Key is valid.","data":{"expire":1560669447,"downloadable":{"name":"Docker+install+script","url":"https:\/\/www.kuwinda.io\/wp-content\/uploads\/2019\/05\/auto-install.sh_.zip"},"ctoken":"5cee9cd9b7f73","activation_id":1559141593,"expire_date":"2019-06-16
+        07:17","timezone":"UTC","the_key":"wcCXJZ5fd3TdekwrB5No912UO2-26","url":"https:\/\/www.kuwinda.io\/my-account\/?view-license-key=1&key=wcCXJZ5fd3TdekwrB5No912UO2-26","has_expired":false,"status":"active","allow_offline":false,"offline_interval":null,"offline_value":null}}'
+    http_version: 
+  recorded_at: Wed, 29 May 2019 14:53:14 GMT
+>>>>>>> Stashed changes
 recorded_with: VCR 4.0.0

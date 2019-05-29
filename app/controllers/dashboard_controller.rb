@@ -19,7 +19,7 @@ class DashboardController < ApplicationController
     license_active = activate_current_license
     license_valid = validate_current_license if license_active
     current_admin_user.save if license_valid
-    redirect_to dashboard_path && return if license_valid
+    redirect_to dashboard_path if license_valid
   end
 
   private

@@ -275,7 +275,11 @@ http_interactions:
       message: OK
     headers:
       Set-Cookie:
+<<<<<<< Updated upstream
       - tk_ai=woo%3AgUC54hMuQkGFA%2FC8hoUL860n; path=/
+=======
+      - tk_ai=woo%3A9%2BTedZKviuoHkxRqJvk7x3qR; path=/
+>>>>>>> Stashed changes
       X-Robots-Tag:
       - noindex
       X-Content-Type-Options:
@@ -293,7 +297,11 @@ http_interactions:
       Content-Length:
       - '77'
       Date:
+<<<<<<< Updated upstream
       - Wed, 29 May 2019 15:29:01 GMT
+=======
+      - Wed, 29 May 2019 15:20:30 GMT
+>>>>>>> Stashed changes
       Server:
       - LiteSpeed
       Vary:
@@ -307,5 +315,9 @@ http_interactions:
       string: '{"error":true,"status":500,"errors":{"license_key":["Invalid license
         key."]}}'
     http_version: 
+<<<<<<< Updated upstream
   recorded_at: Wed, 29 May 2019 15:29:01 GMT
+=======
+  recorded_at: Wed, 29 May 2019 15:20:30 GMT
+>>>>>>> Stashed changes
 recorded_with: VCR 4.0.0
