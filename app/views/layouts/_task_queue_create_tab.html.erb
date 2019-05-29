@@ -97,6 +97,61 @@
               <p>
                 Every list is actionable, these outcomes will define how long before the record re-appears on the list depending on the outcome of the action.
               </p>
+
+              <%= form_for @task_queue do |f| %>
+                <div class="row">
+                  <div class="col-sm-12 col-md-2">
+                    <div class="form-group">
+                      <br>
+                      <p><b>Success</b></p>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12 col-md-5">
+                    <div class="form-group">
+                      <%= f.text_field :success_outcome_title, class: "form-control", placeholder: "E.g. Talked to customer" %>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12 col-md-5">
+                    <div class="form-group">
+                      <%= f.select(:success_outcome_timeout, TaskQueue::OUTCOME_TIMEOUTS, { include_blank: true, prompt: "Select time to re-appear", selected: @task_queue.success_outcome_timeout }, { class: "form-control" }) %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-12 col-md-2">
+                    <div class="form-group">
+                      <br>
+                      <p><b>Failure</b></p>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12 col-md-5">
+                    <div class="form-group">
+                      <%= f.text_field :failure_outcome_title, class: "form-control", placeholder: "E.g. Did not talk to customer" %>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12 col-md-5">
+                    <div class="form-group">
+                      <%= f.select(:failure_outcome_timeout, TaskQueue::OUTCOME_TIMEOUTS, { include_blank: true, prompt: "Select time to re-appear", selected: @task_queue.failure_outcome_timeout }, { class: "form-control" }) %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+
+              <div class="row">
+              <div class="col-sm-12">
+                <br>
+                <button type="button" name="button" class="btn btn-primary task-queue-update-button">Update Task Queue</button>
+                <br>
+                <br>
+                <br>
+                <br>
+              </div>
+              </div>
             </div>
           </div>
         </div>
