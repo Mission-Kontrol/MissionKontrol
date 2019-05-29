@@ -37,7 +37,6 @@ describe TablesController, :type => :controller do
 
   describe 'GET preview' do
     context 'when admin user has a valid license' do
-
       context 'when client database connection is invalid' do
         it 'renders the bad connection template' do
           sign_in admin_with_license
