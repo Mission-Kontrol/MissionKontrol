@@ -8,7 +8,23 @@ class VerifyLicenseKeyService
       call('license_key_activate', user)
     end
 
+    def activate_full(user)
+      call('license_key_activate', user, { sku: 1 })
+    end
+
+    def activate_trial(user)
+      call('license_key_activate', user)
+    end
+
     def validate(user)
+      call('license_key_validate', user, activation_id: user.activation_id)
+    end
+
+    def validate_full(user)
+      call('license_key_validate', user, { activation_id: user.activation_id, sku: 1 })
+    end
+
+    def validate_trial(user)
       call('license_key_validate', user, activation_id: user.activation_id)
     end
 
