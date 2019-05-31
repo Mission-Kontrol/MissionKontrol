@@ -30,9 +30,7 @@ class DashboardController < ApplicationController
   def activate_current_license
     return false unless current_admin_user
 
-    return true if activate_full_license
-
-    return true if activate_trial_license
+    return true if activate_full_license || activate_trial_license
 
     false
   end
@@ -40,9 +38,7 @@ class DashboardController < ApplicationController
   def validate_current_license
     return false unless current_admin_user
 
-    return true if validate_full_license
-
-    return true if validate_trial_license
+    return true if validate_full_license || validate_trial_license
 
     false
   end
