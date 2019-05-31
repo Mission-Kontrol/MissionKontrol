@@ -147,7 +147,7 @@ class ApplicationController < ActionController::Base
 
     if license_cache
       true
-    elsif validate_license_key[:status] == 200
+    elsif activate_current_license && validate_current_license
       license_cache = cache_key
       true
     else
