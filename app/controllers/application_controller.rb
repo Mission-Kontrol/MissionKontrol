@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
   end
 
   def license_cache=(cache_key)
-    Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if verify_license_key[:status] == 200
+    Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if activate_current_license && validate_current_license
   end
 
   def validate_license_key
