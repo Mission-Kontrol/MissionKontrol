@@ -5,6 +5,7 @@ require 'rails_helper'
 describe DashboardController, :type => :controller do
   let(:admin_without_license) { create(:admin_user) }
   let(:admin_with_license) { create(:admin_user, :with_license) }
+  let(:admin_with_trial_license) { create(:admin_user, :with_license) }
   let(:admin_with_invalid_license) { create(:admin_user, license_key: 'not_a_license') }
 
   describe 'GET show' do
@@ -33,45 +34,31 @@ describe DashboardController, :type => :controller do
       end
     end
 
-    context 'when license exist' do
-      context 'when validation succeeds' do
-        it 'renders the dashboard show template' do
-          sign_in admin_with_license
+    context 'when full license key is present' do
+      it 'redirects to dashboard'
+    end
 
-          VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-            get :show
-          end
+    context 'when trial license key is present' do
+      it 'renders the dashboard show template' do
+        sign_in admin_with_trial_license
 
-          expect(response).to render_template('show')
+        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
+          get :show
         end
+
+        expect(response).to render_template('show')
       end
+    end
 
-      context 'when license activation fails' do
-        it 'redirects to the license route' do
-          admin_without_activation = create(:admin_user)
+    context 'when license key is invalid' do
+      it 'redirects to the license route' do
+        sign_in admin_with_invalid_license
 
-          sign_in admin_without_activation
-
-          VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
-            get :show
-          end
-
-          expect(response).to redirect_to(license_path)
+        VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
+          get :show
         end
-      end
 
-      context 'when license validation fails' do
-        it 'redirects to the license route' do
-          admin_without_validation = create(:admin_user, activation_id: '1558260633')
-
-          sign_in admin_without_validation
-
-          VCR.use_cassette('license_key/validation_failure', record: :new_episodes) do
-            get :show
-          end
-
-          expect(response).to redirect_to(license_path)
-        end
+        expect(response).to redirect_to(license_path)
       end
     end
 
@@ -89,63 +76,84 @@ describe DashboardController, :type => :controller do
   end
 
   describe 'POST verify_license' do
-    context 'when license key is present' do
-      context 'when activation succeeds' do
-        context 'when validation succeeds' do
-          before do
-            sign_in admin_without_license
+    context 'when full license' do
+      # before do
+      #   sign_in admin_with_full_license
+      #
+      #   VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
+      #     get :show
+      #   end
+      # end
 
-            params = {
-              license_key: 'wcCXJZ5fd3TdekwrB5No912UO2-26'
-            }
+      it 'updates the license key of the current admin user'
+      it 'updates the activation id of the current admin user'
+      it 'updates the current admin user to a full license'
+      it 'redirects to dashboard'
+    end
 
-            VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-              post :verify_license, params: params
-            end
+    context 'when trial license' do
+      before do
+        sign_in admin_with_trial_license
+        @params = {}
+        @params['license_key'] = 'wcCXJZ5fd3TdekwrB5No912UO2-26'
 
-            admin_without_license.reload
-          end
-
-          it 'redirects back to the dashboard route' do
-            expect(response).to redirect_to(dashboard_path)
-          end
-
-          it "captures activation id" do
-            expect(admin_without_license.activation_id).to_not be_nil
-          end
-
-          it "captures license key" do
-            expect(admin_without_license.license_key).to_not be_nil
-          end
-        end
-
-        context 'when validation fails' do
-          it 'renders the verify license template' do
-            sign_in admin_with_invalid_license
-
-            VCR.use_cassette('license_key/validation_failure', record: :new_episodes) do
-              post :verify_license
-            end
-
-            expect(response).to render_template('verify_license')
-          end
+        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
+          post :verify_license, params: @params
         end
       end
 
-      context 'when activation fails' do
-        it 'renders the verify license template' do
-          sign_in admin_without_license
+      it 'updates the license key of the current admin user' do
+        expect(admin_with_trial_license.license_key).to eq(@params['license_key'])
+      end
 
-          VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
-            post :verify_license
-          end
+      it 'updates the activation id of the current admin user' do
+        expect(admin_with_trial_license.activation_id).to_not be_nil
+      end
 
-          expect(response).to render_template('verify_license')
-        end
+      it 'does not update the current admin user to a full license' do
+        expect(admin_with_trial_license.full_license).to eq(false)
+      end
+
+      it 'redirects to dashboard' do
+        expect(response).to redirect_to(dashboard_path)
       end
     end
 
-    context 'when license is missing' do
+    context 'when license key is invalid' do
+      before do
+        sign_in admin_without_license
+        @params = {}
+        @params['license_key'] = 'invalid_license'
+
+        VCR.use_cassette('license_key/validation_failure', record: :new_episodes) do
+          post :verify_license, params: @params
+        end
+      end
+
+      it 'does not update the license key of the current admin user' do
+        expect(admin_without_license.license_key).to be_nil
+      end
+
+      it 'does not update the activation id of the current admin user' do
+        expect(admin_without_license.activation_id).to be_nil
+      end
+
+      it 'does not update the current admin user to a full license' do
+        expect(admin_with_trial_license.full_license).to eq(false)
+      end
+
+      it 'renders the verify license template' do
+        sign_in admin_with_invalid_license
+
+        VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
+          post :verify_license
+        end
+
+        expect(response).to render_template('verify_license')
+      end
+    end
+
+    context 'when license key is missing' do
       it 'renders the verify license template' do
         sign_in admin_without_license
 
