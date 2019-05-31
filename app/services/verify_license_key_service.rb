@@ -9,7 +9,7 @@ class VerifyLicenseKeyService
     end
 
     def activate_full(user)
-      call('license_key_activate', user, { sku: 1 })
+      call('license_key_activate', user, sku: 1)
     end
 
     def activate_trial(user)
@@ -21,7 +21,7 @@ class VerifyLicenseKeyService
     end
 
     def validate_full(user)
-      call('license_key_validate', user, { activation_id: user.activation_id, sku: 1 })
+      call('license_key_validate', user, activation_id: user.activation_id, sku: 1)
     end
 
     def validate_trial(user)
