@@ -29,15 +29,21 @@ class DashboardController < ApplicationController
 
   def activate_current_license
     return false unless current_admin_user
+
     return true if activate_full_license
+
     return true if activate_trial_license
+
     false
   end
 
   def validate_current_license
     return false unless current_admin_user
+
     return true if validate_full_license
+
     return true if validate_trial_license
+
     false
   end
 
@@ -65,12 +71,18 @@ class DashboardController < ApplicationController
 
   def validate_full_license
     validate_result = VerifyLicenseKeyService.validate_full(current_admin_user)
-    validate_result[:status] == 200 ? true : false
+
+    if validate_result[:status] == 200
+      current_admin_user.full_license = true
+      true
+    else
+      false
+    end
   end
 
   def validate_trial_license
     validate_result = VerifyLicenseKeyService.validate_trial(current_admin_user)
-    validate_result[:status] == 200 ? true : false
+    validate_result[:status] == 200
   end
 
   def load_admin_db_config
