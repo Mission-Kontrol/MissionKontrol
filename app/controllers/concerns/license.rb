@@ -67,10 +67,6 @@ module License
     Rails.cache.fetch(cache_key)
   end
 
-  def license_cache=(cache_key)
-    Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if license_verified
-  end
-
   def license_valid?
     return false unless current_admin_user
 
@@ -80,7 +76,7 @@ module License
     if license_cache
       true
     elsif license_verified
-      license_cache = cache_key
+      Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key }
       true
     else
       false
