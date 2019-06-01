@@ -58,9 +58,11 @@
             <%= link_to "Create Task Queue", task_queues_path %>
           </li>
 
-          <li>
-            <a href="#" class="divider"></a>
-          </li>
+          <% if @task_queues.present? %>
+            <li>
+              <a href="#" class="divider"></a>
+            </li>
+          <% end %>
 
           <% @task_queues.each do |q| %>
             <li class="">
