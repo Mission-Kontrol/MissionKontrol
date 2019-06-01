@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module License
   extend ActiveSupport::Concern
-  
+
   private
 
   def activate_current_license
