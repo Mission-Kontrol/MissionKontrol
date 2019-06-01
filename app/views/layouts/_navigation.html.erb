@@ -56,10 +56,11 @@
             <span class="nav-label" data-i18n="nav.queues">Task Queues</span> <span class="fa arrow"></span>
           <% end %>
 
-          <ul class="nav nav-second-level collapse">
+          <% if @task_queues.present? %>
             <li>
-              <%= link_to "Create Task Queue", task_queues_path %>
+              <a href="#" class="divider"></a>
             </li>
+          <% end %>
 
             <li>
               <a href="#" class="divider"></a>
