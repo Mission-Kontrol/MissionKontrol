@@ -1,33 +1,35 @@
-<div class="">
-  <div class="well well-sm hide" id="call-status">
-     Connecting to Twilio...
-   </div>
-
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary call-customer-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
-        <span>Call <%= layout_builder.table_name.singularize %></span>
-        <span class="caret"></span>
-      </button>
-
-      <ul class="dropdown-menu">
-        <% @fields_with_type.each do |f| %>
-          <% @field = f[0] %>
-          <% if layout_builder.callable_fields.include?(@field) %>
-            <% if is_phone_number?(@current_row[@field]) %>
-              <li><a href="#" class="call-customer-button" onclick="callCustomer('<%= @current_row[@field] %>', '<%= @current_table %>', '<%= @current_row['id'] %>', '<%= @field %>')"><b><%= @field %></b>: <%= @current_row[@field] %></a></li>
-            <% else %>
-              <li>
-                <a href="#" class="call-customer-button disabled" disabled>
-                  <b><%= @field %></b>: <%= @current_row[@field] %> <br>
-                  <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> not a phone number</small>
-                </a>
-              </li>
-            <% end %>
-          <% end %>
-        <% end %>
-      </ul>
+<div class="row">
+  <div class="col-sm-12 twilio_call_buttons">
+    <div class="well well-sm hide" id="call-status">
+      Connecting to Twilio...
     </div>
 
-   <button class="btn btn-danger hangup-button" onclick="hangUp()" disabled>Hang up</button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary call-customer-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+          <span>Call <%= layout_builder.table_name.singularize %></span>
+          <span class="caret"></span>
+        </button>
+
+        <ul class="dropdown-menu">
+          <% @fields_with_type.each do |f| %>
+            <% @field = f[0] %>
+            <% if layout_builder.callable_fields.include?(@field) %>
+              <% if is_phone_number?(@current_row[@field]) %>
+                <li><a href="#" class="call-customer-button" onclick="callCustomer('<%= @current_row[@field] %>', '<%= @current_table %>', '<%= @current_row['id'] %>', '<%= @field %>')"><b><%= @field %></b>: <%= @current_row[@field] %></a></li>
+              <% else %>
+                <li>
+                  <a href="#" class="call-customer-button disabled" disabled>
+                    <b><%= @field %></b>: <%= @current_row[@field] %> <br>
+                    <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> not a phone number</small>
+                  </a>
+                </li>
+              <% end %>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+
+    <button class="btn btn-danger hangup-button" onclick="hangUp()" disabled>Hang up</button>
+  </div>
 </div>

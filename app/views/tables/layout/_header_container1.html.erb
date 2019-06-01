@@ -22,11 +22,13 @@
       </div>
     </div>
   <% else %>
-    <div class="">
+    <div class="row">
       <% if @current_row &&  !@current_row[field["title"]].blank? %>
-        <p class="header-container1-content">
-          <%= @current_row[field["title"]] %>
-        </p>
+        <div class="col-sm-12">
+          <p class="header-container1-content">
+            <%= @current_row[field["title"]] %>
+          </p>
+        </div>
       <% else %>
         <p class="header-container1-content">--</p>
       <% end %>

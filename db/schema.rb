@@ -58,10 +58,6 @@ ActiveRecord::Schema.define(version: 20190531093327) do
     t.string "raw_sql"
     t.string "query_builder_sql"
     t.jsonb "draggable_fields", default: []
-    t.string "success_outcome_title"
-    t.string "success_outcome_timeout"
-    t.string "failure_outcome_title"
-    t.string "failure_outcome_timeout"
   end
 
   create_table "view_builders", force: :cascade do |t|
