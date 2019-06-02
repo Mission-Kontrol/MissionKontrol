@@ -25,6 +25,7 @@ services:
       KUWINDA_DATABASE_HOST: db
       KUWINDA_DATABASE_USER: postgres
       KUWINDA_DATABASE_PASSWORD: postgres
+      KUWINDA_DATABASE_PORT: 5432
     depends_on:
       - db
 
