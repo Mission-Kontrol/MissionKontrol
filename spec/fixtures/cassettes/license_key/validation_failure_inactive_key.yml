@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=1558260633&license_key=Fw1vI9g2450xr0tb2V15nZ82dW-27&sku=2&store_code=Z0cm9LxK3jFtbX7
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=1558260633&license_key=wcCXJZ5fd3TdekwrB5No912UO2-26&sku=2&store_code=Z0cm9LxK3jFtbX7
     body:
       encoding: UTF-8
       string: ''

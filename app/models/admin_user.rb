@@ -17,6 +17,22 @@ class AdminUser < ApplicationRecord
     "admin"
   end
 
+  def trial_license_key_not_activated?
+    !activation_id.present? && !full_license
+  end
+
+  def full_license_key_not_activated?
+    !activation_id.present? && full_license
+  end
+
+  def trial_license_user?
+    license_key.present? && activation_id.present? && !full_license
+  end
+
+  def full_license_user?
+    license_key.present? && full_license && activation_id.present?
+  end
+
   def twilio_auth_token
     SensitiveData.get_twilio_credential(:auth_token)
   end

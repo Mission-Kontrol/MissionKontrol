@@ -63,7 +63,7 @@ $(document).ready(function() {
       evt.preventDefault();
       var table = $(this).data().tableName;
       showFieldSettingsFormScreen2();
-      rebuildDraggable(table);
+      // rebuildDraggable(table);
     })
 
     $('.layout_builder_field_settings_form_back_btn').click(function() {

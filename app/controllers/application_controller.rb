@@ -3,6 +3,7 @@
 class InvalidClientDatabaseError < StandardError; end
 
 class ApplicationController < ActionController::Base
+  include License
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -124,7 +125,7 @@ class ApplicationController < ActionController::Base
 
     if request.host_with_port == 'demo.kuwinda.io'
       setup_demo_target_database_params
-    elsif SensitiveData.get_target_database_credential(:database_name).nil? && !current_admin_user
+    elsif SensitiveData.get_target_database_credential(:database_name).nil? && AdminUser.none?
       redirect_to new_admin_user_registration_url
     end
   end
@@ -137,37 +138,5 @@ class ApplicationController < ActionController::Base
     SensitiveData.set_target_database_credential(:database_host, uri.host)
     SensitiveData.set_target_database_credential(:database_port, uri.port)
     SensitiveData.set_target_database_credential(:database_type, 'postgres')
-  end
-
-  def license_valid?
-    return false unless current_admin_user
-
-    cache_key = "license-#{current_admin_user.license_key}"
-    license_cache = fetch_license_cache(cache_key)
-
-    if license_cache
-      true
-    elsif validate_license_key[:status] == 200
-      license_cache = cache_key
-      true
-    else
-      false
-    end
-  end
-
-  def fetch_license_cache(cache_key)
-    Rails.cache.fetch(cache_key)
-  end
-
-  def license_cache=(cache_key)
-    Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if verify_license_key[:status] == 200
-  end
-
-  def validate_license_key
-    VerifyLicenseKeyService.validate(current_admin_user) if current_admin_user
-  end
-
-  def activate_license
-    VerifyLicenseKeyService.activate(current_admin_user) if current_admin_user
   end
 end

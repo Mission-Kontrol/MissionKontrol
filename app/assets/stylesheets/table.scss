@@ -1,6 +1,8 @@
 .header-container1-content {
   font-size: 24px;
   color: #726d73;
+  padding-top: 10px;
+  margin-bottom: 0px;
 }
 
 .header-container2-content {
@@ -28,4 +30,12 @@
     text-decoration: none;
     color: #726d73
   }
+}
+
+.twilio_call_buttons {
+  padding-left: 30px;
+  padding-bottom: 12px;
+}
+.twilio_dialer_buttons {
+  padding-top: 15px;
 }

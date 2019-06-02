@@ -1,0 +1,106 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=cF320SNdpxlZZXZ06gzY33Gx5i-30&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AzqBBTdp11dKwDegaSzBlQtM7; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '77'
+      Date:
+      - Sun, 02 Jun 2019 12:43:07 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Invalid license
+        key."]}}'
+    http_version: 
+  recorded_at: Sun, 02 Jun 2019 12:43:06 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=cF320SNdpxlZZXZ06gzY33Gx5i-30&sku=1&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3Ad2XrFzmC9XLMi4MipfIso4tG; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '512'
+      Date:
+      - Sun, 02 Jun 2019 12:43:07 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":false,"status":200,"message":"License Key activated successfully.","data":{"expire":null,"downloadable":null,"ctoken":"5cf152e925c31","activation_id":1559479387,"expire_date":null,"timezone":null,"the_key":"cF320SNdpxlZZXZ06gzY33Gx5i-30","url":"https:\/\/www.kuwinda.io\/my-account\/?view-license-key=1&key=cF320SNdpxlZZXZ06gzY33Gx5i-30","has_expired":false,"status":"active","allow_offline":false,"offline_interval":null,"offline_value":null,"subscription_status":"trial","subscription_is_trial":true}}'
+    http_version: 
+  recorded_at: Sun, 02 Jun 2019 12:43:07 GMT
+recorded_with: VCR 4.0.0

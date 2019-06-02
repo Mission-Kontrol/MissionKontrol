@@ -154,4 +154,417 @@ http_interactions:
         key."]}}'
     http_version: 
   recorded_at: Wed, 29 May 2019 15:42:01 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=not_a_license&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AhGgNsLd%2Bvfguz8hzB1tSkAI2; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '77'
+      Date:
+      - Fri, 31 May 2019 09:45:35 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Invalid license
+        key."]}}'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 09:45:35 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=&license_key=not_a_license&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AC3ho1aIqr7pD6Vpu7wjhyUHd; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '68'
+      Date:
+      - Fri, 31 May 2019 09:54:03 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"activation_id":["Required."]}}'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 09:54:03 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=invalid_license&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3A3dFf1CgPUwo1HAzrXoA4A7cs; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '77'
+      Date:
+      - Fri, 31 May 2019 13:06:50 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Invalid license
+        key."]}}'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 13:06:50 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=&sku=1&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AsHZxrgNTpxEGmnTBp68m4Mih; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '66'
+      Date:
+      - Fri, 31 May 2019 13:43:53 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Required."]}}'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 13:43:54 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=invalid_license&sku=1&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3A5eSPFJ581Dn%2Bl4Thkk0vtDyq; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '77'
+      Date:
+      - Fri, 31 May 2019 13:43:55 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Invalid license
+        key."]}}'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 13:43:55 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=not_a_license&sku=1&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AKinDYME09ilhc042YhAayyx%2F; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '77'
+      Date:
+      - Fri, 31 May 2019 17:35:39 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Invalid license
+        key."]}}'
+    http_version: 
+  recorded_at: Fri, 31 May 2019 17:35:39 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AaFihFpOjZILpgcP1ni6XuXcj; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '66'
+      Date:
+      - Sun, 02 Jun 2019 11:29:25 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Required."]}}'
+    http_version: 
+  recorded_at: Sun, 02 Jun 2019 11:29:25 GMT
+- request:
+    method: post
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_activate&license_key=not_a_license&sku=2&store_code=Z0cm9LxK3jFtbX7
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Set-Cookie:
+      - tk_ai=woo%3AXH2aq9zIVnv3ZiBEhvOXUhXm; path=/
+      X-Robots-Tag:
+      - noindex
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Wed, 11 Jan 1984 05:00:00 GMT
+      Cache-Control:
+      - no-transform, no-cache, must-revalidate, max-age=0
+      X-Frame-Options:
+      - SAMEORIGIN
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '77'
+      Date:
+      - Sun, 02 Jun 2019 11:29:46 GMT
+      Server:
+      - LiteSpeed
+      Vary:
+      - User-Agent
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="35,39,43,44"
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"error":true,"status":500,"errors":{"license_key":["Invalid license
+        key."]}}'
+    http_version: 
+  recorded_at: Sun, 02 Jun 2019 11:29:46 GMT
 recorded_with: VCR 4.0.0

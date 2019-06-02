@@ -9,31 +9,32 @@ $(document).ready(function() {
   let isCurrentActionPreview = metaTag.attr('action') == 'preview';
   let isCurrentActionEdit = metaTag.attr('action') == 'edit';
   let tourComplete = (sessionStorage.tourCompleted === 'true');
+  let demoApp = (window.location.hostname === "demo.kuwinda.io");
 
   loadFlotChart();
   loadFooTable();
   loadToastr();
 
-  if (isCurrentControllerDashboard && isCurrentActionShow) {
+  if (isCurrentControllerDashboard && isCurrentActionShow && demoApp) {
     if (!tourComplete) {
       loadEnjoyhint1();
       enjoyhint.run();
     }
   }
 
-  if (isCurrentControllerTables && isCurrentActionShow) {
+  if (isCurrentControllerTables && isCurrentActionShow  && demoApp) {
     if (!tourComplete) {
       loadEnjoyhint2();
       enjoyhint.run();
     }
   }
 
-  if (isCurrentControllerTables && isCurrentActionPreview) {
+  if (isCurrentControllerTables && isCurrentActionPreview  && demoApp) {
     loadEnjoyhint3();
     enjoyhint.run();
   }
 
-  if (isCurrentControllerLayoutBuilder && isCurrentActionEdit) {
+  if (isCurrentControllerLayoutBuilder && isCurrentActionEdit  && demoApp) {
     if (!tourComplete) {
       loadEnjoyhint4();
       enjoyhint.run();
@@ -82,7 +83,7 @@ function loadFlotChart() {
       borderWidth: 1,
       color: '#d5d5d5'
     },
-    colors: ["#1ab394", "#1C84C6"],
+    colors: ["#563D7C", "#1C84C6"],
     xaxis: {
     },
     yaxis: {
