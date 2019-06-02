@@ -16,8 +16,9 @@ class DashboardController < ApplicationController
 
   def verify_license
     current_admin_user.license_key = params[:license_key] if params[:license_key]
+    current_admin_user.activation_id = nil
 
-    if license_verified
+    if license_verified?
       current_admin_user.save
       redirect_to dashboard_path
     else

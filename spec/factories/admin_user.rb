@@ -7,7 +7,7 @@ FactoryBot.define do
     password_confirmation { 'password' }
 
     trait :with_license do
-      activation_id { '1558260633' }
+      activation_id { '1559143878' }
       license_key { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
     end
   end

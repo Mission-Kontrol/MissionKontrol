@@ -3,9 +3,16 @@
 require 'rails_helper'
 
 describe TablesController, :type => :controller do
-  let(:admin_without_license) { create(:admin_user) }
   let(:admin_with_license) { create(:admin_user, :with_license) }
 
+  before do
+    Rails.cache.write("license-#{admin_with_license.license_key}", expires_in: 2.hours)
+  end
+
+  after do
+    Rails.cache.clear
+  end
+  
   describe 'GET show' do
     context 'when admin user has a valid license' do
       context 'when client database connection is invalid' do
