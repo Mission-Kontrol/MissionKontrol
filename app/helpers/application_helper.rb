@@ -15,4 +15,8 @@ module ApplicationHelper
   rescue
     false
   end
+
+  def demo_app
+    request.host_with_port == 'demo.kuwinda.io'
+  end
 end

@@ -3,14 +3,21 @@
 require 'rails_helper'
 
 describe LayoutBuilderController, type: :controller do
-  let(:admin_without_license) { create(:admin_user) }
   let(:admin_with_license) { create(:admin_user, :with_license) }
+
+  before do
+    Rails.cache.write("license-#{admin_with_license.license_key}", expires_in: 2.hours)
+  end
+
+  after do
+    Rails.cache.clear
+  end
 
   describe 'GET new' do
     before do
-      sign_in admin_with_license
-
       VCR.use_cassette('license_key/validation_success') do
+        sign_in admin_with_license
+
         get :new
       end
     end
@@ -32,9 +39,10 @@ describe LayoutBuilderController, type: :controller do
           table: 'Users'
         }
         admin_user = create(:admin_user, :with_license)
-        sign_in admin_user
 
         VCR.use_cassette('license_key/validation_success') do
+          sign_in admin_user
+
           post :create, params: params
         end
       end
@@ -75,9 +83,9 @@ describe LayoutBuilderController, type: :controller do
           tableConfigurations: table_configurations,
         }
 
-        sign_in admin_user
-
         VCR.use_cassette('license_key/validation_success') do
+          sign_in admin_user
+
           put :update, params: params, format: :js
         end
 
@@ -101,9 +109,10 @@ describe LayoutBuilderController, type: :controller do
           @view_builder = create(:view_builder)
           params = { id: @view_builder.id }
           admin_user = create(:admin_user, :with_license)
-          sign_in admin_user
 
           VCR.use_cassette('license_key/validation_success') do
+            sign_in admin_user
+
             get :show, params: params
           end
         end
@@ -122,10 +131,11 @@ describe LayoutBuilderController, type: :controller do
       context 'when admin has a valid license key' do
         before do
           admin_user = create(:admin_user, :with_license)
-          sign_in admin_user
           allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
 
           VCR.use_cassette('license_key/validation_success') do
+            sign_in admin_user
+
             get :show, params: { use_route: 'layouts/' }
           end
         end
@@ -140,10 +150,11 @@ describe LayoutBuilderController, type: :controller do
   describe 'GET edit' do
     context 'when client database connection is invalid' do
       it 'renders the bad connection template' do
-        sign_in admin_with_license
         allow(controller).to receive(:edit).and_raise(InvalidClientDatabaseError.new)
 
         VCR.use_cassette('license_key/validation_success') do
+          sign_in admin_with_license
+
           get :edit, params: { use_route: 'layouts/' }
         end
 
@@ -155,10 +166,11 @@ describe LayoutBuilderController, type: :controller do
   describe 'GET preview' do
     context 'when client database connection is invalid' do
       it 'renders the bad connection template' do
-        sign_in admin_with_license
         allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
 
         VCR.use_cassette('license_key/validation_success') do
+          sign_in admin_with_license
+
           get :preview, params: { use_route: 'layouts/' }
         end
 

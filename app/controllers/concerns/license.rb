@@ -5,78 +5,35 @@ module License
 
   private
 
-  def activate_current_license
-    return false unless current_admin_user
+  def license_verified?
+    return false unless current_admin_user.license_key.present?
 
-    return true if activate_full_license || activate_trial_license
+    return VerifyLicenseKeyService.activate(current_admin_user, 'trial') if current_admin_user.trial_license_key_not_activated?
 
-    false
-  end
+    return VerifyLicenseKeyService.validate(current_admin_user, 'trial') if current_admin_user.trial_license_user?
 
-  def validate_current_license
-    return false unless current_admin_user
+    return VerifyLicenseKeyService.activate(current_admin_user, 'full') if current_admin_user.full_license_key_not_activated?
 
-    return true if validate_full_license || validate_trial_license
-
-    false
-  end
-
-  def activate_full_license
-    activate_result = VerifyLicenseKeyService.activate_full(current_admin_user)
-
-    if activate_result[:status] == 200
-      current_admin_user.activation_id = activate_result[:data]['activation_id']
-      true
-    else
-      false
-    end
-  end
-
-  def activate_trial_license
-    activate_result = VerifyLicenseKeyService.activate_trial(current_admin_user)
-
-    if activate_result[:status] == 200
-      current_admin_user.activation_id = activate_result[:data]['activation_id']
-      true
-    else
-      false
-    end
-  end
-
-  def validate_full_license
-    validate_result = VerifyLicenseKeyService.validate_full(current_admin_user)
-
-    if validate_result[:status] == 200
-      current_admin_user.full_license = true
-      true
-    else
-      false
-    end
-  end
-
-  def validate_trial_license
-    validate_result = VerifyLicenseKeyService.validate_trial(current_admin_user)
-    validate_result[:status] == 200
-  end
-
-  def license_verified
-    activate_current_license && validate_current_license
+    return VerifyLicenseKeyService.validate(current_admin_user, 'full') if current_admin_user.full_license_user?
   end
 
   def fetch_license_cache(cache_key)
     Rails.cache.fetch(cache_key)
   end
 
+  def cache_license(cache_key)
+    Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key } if license_verified?
+  end
+
   def license_valid?
     return false unless current_admin_user
 
     cache_key = "license-#{current_admin_user.license_key}"
-    license_cache = fetch_license_cache(cache_key)
 
-    if license_cache
+    if fetch_license_cache(cache_key)
       true
-    elsif license_verified
-      Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key }
+    elsif license_verified?
+      cache_license(cache_key)
       true
     else
       false

@@ -3,187 +3,290 @@
 require 'rails_helper'
 
 describe DashboardController, :type => :controller do
-  let(:admin_without_license) { create(:admin_user) }
-  let(:admin_without_license_1) { create(:admin_user) }
-  let(:admin_without_license_2) { create(:admin_user) }
-  let(:admin_without_license_3) { create(:admin_user) }
-  let(:admin_without_license_4) { create(:admin_user) }
-  let(:admin_with_license) { create(:admin_user, :with_license) }
-  let(:admin_with_trial_license) { create(:admin_user, :with_license) }
-  let(:admin_with_full_license) { create(:admin_user, license_key: '') }
-  let(:admin_with_invalid_license) { create(:admin_user, license_key: 'not_a_license') }
+  let(:subject) do
+    sign_in admin_user
+    get :show
+  end
+
+  let(:admin_user) { create(:admin_user) }
+  let(:full_license_key) { 'full_license_key' }
+  let(:full_license_activation_id) { 'full_activation_id' }
+  let(:trial_license_key) { 'trial_license_key' }
+  let(:trial_license_activation_id) { 'trial_activation_id' }
+
+  after do
+    Rails.cache.clear
+  end
 
   describe 'GET show' do
-    context 'when client database connection is invalid' do
-      it 'renders the bad connection template' do
-        sign_in admin_with_license
-        allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
+    describe 'client database connection' do
+      before do
+        admin_user.license_key = trial_license_key
+        admin_user.save
+        Rails.cache.write("license-#{trial_license_key}", expires_in: 2.hours)
+      end
 
-        VCR.use_cassette('license_key/validation_success') do
-          get :show
+      context 'when client database connection is invalid' do
+        it 'renders the bad connection template' do
+          allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
+
+          subject
+
+          expect(response).to render_template('tables/bad_connection')
         end
+      end
 
-        expect(response).to render_template('tables/bad_connection')
+      context 'when client database connection is valid' do
+        it 'renders the show template' do
+          subject
+
+          expect(response).to render_template('show')
+        end
       end
     end
 
-    context 'when client database connection is valid' do
-      it 'renders the show template' do
-        sign_in admin_with_license
-
-        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-          get :show
+    describe 'license keys' do
+      context 'when full license key is present in the cache' do
+        before do
+          admin_user.license_key = full_license_key
+          admin_user.save
+          Rails.cache.write("license-#{full_license_key}", expires_in: 2.hours)
         end
 
-        expect(response).to render_template('show')
+        it 'renders the dashboard show template' do
+          subject
+
+          expect(response).to render_template('show')
+        end
+
+        it 'does not request to validate the license key' do
+          expect(VerifyLicenseKeyService).to_not receive(:validate)
+
+          subject
+        end
       end
-    end
 
-    context 'when full license key is present' do
-      xit 'renders the dashboard show template' do
-        sign_in admin_with_full_license
-
-        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-          get :show
+      context 'when full license key is not in cache' do
+        before do
+          Rails.cache.clear
         end
 
-        expect(response).to render_template('show')
+        context 'when admin user has full license key as true' do
+          before do
+            admin_user.full_license = true
+            admin_user.license_key = full_license_key
+          end
+
+          context 'when activation id is present' do
+            before do
+              admin_user.activation_id = full_license_activation_id
+              admin_user.save
+            end
+
+            it 'requests to validate the present key' do
+              expect(VerifyLicenseKeyService).to receive(:validate).with(admin_user, 'full')
+              subject
+            end
+
+            it 'saves the validated key to the cache' do
+              allow(VerifyLicenseKeyService).to receive(:validate).and_return(true)
+              subject
+
+              cached_license_key = Rails.cache.fetch("license-#{full_license_key}")
+              expect(cached_license_key).to eq "license-#{full_license_key}"
+            end
+          end
+
+          context 'when activation id is not present' do
+            before do
+              admin_user.activation_id = nil
+              admin_user.save
+            end
+
+            it 'requests an activation id' do
+              expect(VerifyLicenseKeyService).to receive(:activate).with(admin_user, 'full')
+              subject
+            end
+
+            context 'when activation_id is saved' do
+              before do
+                allow(VerifyLicenseKeyService).to receive(:activate).and_return(true)
+                admin_user.activation_id = full_license_activation_id
+                admin_user.save
+              end
+
+              it 'saves the validated key to the cache' do
+                allow(VerifyLicenseKeyService).to receive(:validate).and_return(true)
+
+                subject
+
+                cached_license_key = Rails.cache.fetch("license-#{full_license_key}")
+                expect(cached_license_key).to eq "license-#{full_license_key}"
+              end
+            end
+          end
+        end
       end
-    end
 
-    context 'when trial license key is present' do
-      it 'renders the dashboard show template' do
-        sign_in admin_with_trial_license
-
-        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-          get :show
+      context 'when trial license key is present in the cache' do
+        before do
+          admin_user.license_key = trial_license_key
+          admin_user.save
+          Rails.cache.write("license-#{trial_license_key}", expires_in: 2.hours)
         end
 
-        expect(response).to render_template('show')
+        it 'renders the dashboard show template' do
+          subject
+
+          expect(response).to render_template('show')
+        end
+
+        it 'does not request to validate the license key' do
+          expect(VerifyLicenseKeyService).to_not receive(:validate).with(admin_user, 'trial')
+
+          subject
+        end
       end
-    end
 
-    context 'when license key is invalid' do
-      it 'redirects to the license route' do
-        sign_in admin_with_invalid_license
-
-        VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
-          get :show
+      context 'when trial license key is not in cache' do
+        before do
+          Rails.cache.clear
         end
 
-        expect(response).to redirect_to(license_path)
+        context 'when admin user has trial license key as false' do
+          before do
+            admin_user.full_license = nil
+            admin_user.license_key = trial_license_key
+          end
+
+          context 'when activation id is present' do
+            before do
+              admin_user.activation_id = trial_license_activation_id
+              admin_user.save
+            end
+
+            it 'requests to validate the present key' do
+              expect(VerifyLicenseKeyService).to receive(:validate).with(admin_user, 'trial')
+              subject
+            end
+
+            it 'saves the validated key to the cache' do
+              allow(VerifyLicenseKeyService).to receive(:validate).and_return(true)
+
+              subject
+
+              cached_license_key = Rails.cache.fetch("license-#{trial_license_key}")
+              expect(cached_license_key).to eq "license-#{trial_license_key}"
+            end
+          end
+
+          context 'when activation id is not present' do
+            before do
+              admin_user.activation_id = nil
+              admin_user.save
+            end
+
+            it 'requests an activation id' do
+              expect(VerifyLicenseKeyService).to receive(:activate).with(admin_user, 'trial')
+              subject
+            end
+
+            context 'when activation_id is saved' do
+              before do
+                allow(VerifyLicenseKeyService).to receive(:activate).and_return(true)
+                admin_user.activation_id = trial_license_activation_id
+                admin_user.save
+              end
+
+              it 'saves the validated key to the cache' do
+                allow(VerifyLicenseKeyService).to receive(:validate).and_return(true)
+
+                subject
+
+                cached_license_key = Rails.cache.fetch("license-#{trial_license_key}")
+                expect(cached_license_key).to eq "license-#{trial_license_key}"
+              end
+            end
+          end
+        end
       end
-    end
 
-    context 'when license does not exist' do
-      it 'redirects to the license route' do
-        sign_in admin_without_license
+      context 'when license key is not present on the admin user' do
+        it 'redirects to the license route' do
+          subject
 
-        VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
-          get :show
+          expect(response).to redirect_to(license_path)
+        end
+      end
+
+      context 'when trial license key saved against the user is invalid' do
+        before do
+          admin_user.license_key = 'invalid_trial_key'
+          admin_user.activation_id = trial_license_activation_id
+          admin_user.save
+          Rails.cache.clear
         end
 
-        expect(response).to redirect_to(license_path)
+        it 'redirects to the license route' do
+          allow(VerifyLicenseKeyService).to receive(:validate).and_return(false)
+
+          subject
+
+          expect(response).to redirect_to(license_path)
+        end
+      end
+
+      context 'when full license key saved against the user is invalid' do
+        before do
+          admin_user.license_key = 'invalid_full_key'
+          admin_user.activation_id = full_license_activation_id
+          admin_user.full_license = true
+          admin_user.save
+          Rails.cache.clear
+        end
+
+        it 'redirects to the license route' do
+          allow(VerifyLicenseKeyService).to receive(:validate).and_return(false)
+
+          subject
+
+          expect(response).to redirect_to(license_path)
+        end
       end
     end
   end
 
   describe 'POST verify_license' do
-    context 'when full license' do
+    let(:params) { { license_key: license_key } }
+
+    context 'with trial license' do
+      let(:license_key) { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
+      let(:activation_id) { '1559143878' }
+
       before do
-        sign_in admin_without_license_1
-        @params = {}
-        @params['license_key'] = 'full_license'
-
-        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-          post :verify_license, params: @params
-        end
-      end
-
-      xit 'updates the license key of the current admin user' do
-        expect(admin_without_license_1.license_key).to eq(@params['license_key'])
-      end
-
-      xit 'updates the activation id of the current admin user' do
-        expect(admin_without_license_1.activation_id).to_not be_nil
-      end
-
-      xit 'updates the current admin user to a full license' do
-        expect(admin_without_license_1.full_license).to eq(true)
-      end
-
-      xit 'redirects to dashboard' do
-        expect(response).to redirect_to(dashboard_path)
-      end
-    end
-
-    context 'when trial license' do
-      before do
-        sign_in admin_without_license_2
-        @params = {}
-        @params['license_key'] = 'wcCXJZ5fd3TdekwrB5No912UO2-26'
-
-        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-          post :verify_license, params: @params
-        end
-
-        admin_without_license_2.reload
+        sign_in admin_user
       end
 
       it 'updates the license key of the current admin user' do
-        expect(admin_without_license_2.license_key).to eq(@params['license_key'])
+        VCR.use_cassette('license_key/activation_success') do
+          VCR.use_cassette('license_key/validation_success') do
+            post :verify_license, params: params
+          end
+        end
+
+        admin_user.reload
+        expect(admin_user.license_key).to eq(license_key)
       end
 
       it 'updates the activation id of the current admin user' do
-        expect(admin_without_license_2.activation_id).to_not be_nil
-      end
-
-      it 'does not update the current admin user to a full license' do
-        expect(admin_without_license_2.full_license).to eq(false)
-      end
-
-      it 'redirects to dashboard' do
-        expect(response).to redirect_to(dashboard_path)
-      end
-    end
-
-    context 'when license key is invalid' do
-      before do
-        sign_in admin_without_license_3
-        @params = {}
-        @params['license_key'] = 'invalid_license'
-
-        VCR.use_cassette('license_key/validation_failure', record: :new_episodes) do
-          post :verify_license, params: @params
-        end
-      end
-
-      it 'does not update the license key of the current admin user' do
-        expect(admin_without_license_3.license_key).to be_nil
-      end
-
-      it 'does not update the activation id of the current admin user' do
-        expect(admin_without_license_3.activation_id).to be_nil
-      end
-
-      it 'does not update the current admin user to a full license' do
-        expect(admin_without_license_3.full_license).to eq(false)
-      end
-
-      it 'renders the verify license template' do
-        expect(response).to render_template('verify_license')
-      end
-    end
-
-    context 'when license key is missing' do
-      it 'renders the verify license template' do
-        sign_in admin_without_license_4
-
-        VCR.use_cassette('license_key/activation_failure', record: :new_episodes) do
-          post :verify_license
+        VCR.use_cassette('license_key/activation_success') do
+          VCR.use_cassette('license_key/validation_success') do
+            post :verify_license, params: params
+          end
         end
 
-        expect(response).to render_template('verify_license')
+        admin_user.reload
+        expect(admin_user.activation_id).to eq(activation_id)
       end
     end
   end

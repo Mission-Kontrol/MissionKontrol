@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=1559143878&license_key=wcCXJZ5fd3TdekwrB5No912UO2-26&sku=2&store_code=Z0cm9LxK3jFtbX7
+    uri: https://www.kuwinda.io/wp-admin/admin-ajax.php?action=license_key_validate&activation_id=not_a_valid_activation_id&license_key=wcCXJZ5fd3TdekwrB5No912UO2-26&sku=2&store_code=Z0cm9LxK3jFtbX7
     body:
       encoding: UTF-8
       string: ''
@@ -19,7 +19,7 @@ http_interactions:
       message: OK
     headers:
       Set-Cookie:
-      - tk_ai=woo%3AeK78zhROWSLYhC9ZSAONRS6B; path=/
+      - tk_ai=woo%3ADXL91Q1IaBz4ndbBnvFzXXcX; path=/
       X-Robots-Tag:
       - noindex
       X-Content-Type-Options:
@@ -35,9 +35,9 @@ http_interactions:
       Content-Type:
       - application/json
       Content-Length:
-      - '574'
+      - '68'
       Date:
-      - Wed, 29 May 2019 15:30:23 GMT
+      - Sun, 02 Jun 2019 13:45:52 GMT
       Server:
       - LiteSpeed
       Vary:
@@ -48,7 +48,7 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: '{"error":false,"status":200,"message":"License Key is valid.","data":{"expire":1560669447,"downloadable":{"name":"Docker+install+script","url":"https:\/\/www.kuwinda.io\/wp-content\/uploads\/2019\/05\/auto-install.sh_.zip"},"ctoken":"5ceea53c27da3","activation_id":1558260633,"expire_date":"2019-06-16
-        07:17","timezone":"UTC","the_key":"wcCXJZ5fd3TdekwrB5No912UO2-26","url":"https:\/\/www.kuwinda.io\/my-account\/?view-license-key=1&key=wcCXJZ5fd3TdekwrB5No912UO2-26","has_expired":false,"status":"active","allow_offline":false,"offline_interval":null,"offline_value":null}}'
+      string: '{"error":true,"status":500,"errors":{"activation_id":["Required."]}}'
     http_version: 
-  recorded_at: Wed, 29 May 2019 15:30:23 GMT
+  recorded_at: Sun, 02 Jun 2019 13:45:51 GMT
+recorded_with: VCR 4.0.0
