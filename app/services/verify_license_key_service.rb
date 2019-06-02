@@ -4,11 +4,11 @@ class VerifyLicenseKeyService
   class << self
     include HTTParty
 
-    SKU = { full: '1', trial: '2' }
+    SKU = { full: '1', trial: '2' }.freeze
     STORE_CODE = 'Z0cm9LxK3jFtbX7'
 
     def activate(user, type)
-      response  = call('license_key_activate', user, type: type)
+      response = call('license_key_activate', user, type: type)
 
       if response[:status] == 200
         user.update_attribute(:activation_id, response[:data]['activation_id'])

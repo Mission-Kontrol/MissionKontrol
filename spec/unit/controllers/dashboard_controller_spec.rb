@@ -61,7 +61,7 @@ describe DashboardController, :type => :controller do
 
         it 'does not request to validate the license key' do
           expect(VerifyLicenseKeyService).to_not receive(:validate)
-          
+
           subject
         end
       end
@@ -82,12 +82,12 @@ describe DashboardController, :type => :controller do
               admin_user.activation_id = full_license_activation_id
               admin_user.save
             end
-    
+
             it 'requests to validate the present key' do
               expect(VerifyLicenseKeyService).to receive(:validate).with(admin_user, 'full')
               subject
             end
-            
+
             it 'saves the validated key to the cache' do
               allow(VerifyLicenseKeyService).to receive(:validate).and_return(true)
               subject
@@ -143,7 +143,7 @@ describe DashboardController, :type => :controller do
 
         it 'does not request to validate the license key' do
           expect(VerifyLicenseKeyService).to_not receive(:validate).with(admin_user, 'trial')
-          
+
           subject
         end
       end
@@ -164,15 +164,15 @@ describe DashboardController, :type => :controller do
               admin_user.activation_id = trial_license_activation_id
               admin_user.save
             end
-    
+
             it 'requests to validate the present key' do
               expect(VerifyLicenseKeyService).to receive(:validate).with(admin_user, 'trial')
               subject
             end
-            
+
             it 'saves the validated key to the cache' do
               allow(VerifyLicenseKeyService).to receive(:validate).and_return(true)
-              
+
               subject
 
               cached_license_key = Rails.cache.fetch("license-#{trial_license_key}")
@@ -212,9 +212,9 @@ describe DashboardController, :type => :controller do
       end
 
       context 'when license key is not present on the admin user' do
-        it 'redirects to the license route' do        
+        it 'redirects to the license route' do
           subject
-          
+
           expect(response).to redirect_to(license_path)
         end
       end
@@ -229,7 +229,7 @@ describe DashboardController, :type => :controller do
 
         it 'redirects to the license route' do
           allow(VerifyLicenseKeyService).to receive(:validate).and_return(false)
-          
+
           subject
 
           expect(response).to redirect_to(license_path)
@@ -247,7 +247,7 @@ describe DashboardController, :type => :controller do
 
         it 'redirects to the license route' do
           allow(VerifyLicenseKeyService).to receive(:validate).and_return(false)
-          
+
           subject
 
           expect(response).to redirect_to(license_path)
@@ -264,14 +264,14 @@ describe DashboardController, :type => :controller do
       let(:activation_id) { '1559143878' }
 
       before do
-        sign_in admin_user     
+        sign_in admin_user
       end
 
       it 'updates the license key of the current admin user' do
         VCR.use_cassette('license_key/activation_success') do
           VCR.use_cassette('license_key/validation_success') do
             post :verify_license, params: params
-          end 
+          end
         end
 
         admin_user.reload
@@ -282,9 +282,9 @@ describe DashboardController, :type => :controller do
         VCR.use_cassette('license_key/activation_success') do
           VCR.use_cassette('license_key/validation_success') do
             post :verify_license, params: params
-          end 
+          end
         end
-        
+
         admin_user.reload
         expect(admin_user.activation_id).to eq(activation_id)
       end

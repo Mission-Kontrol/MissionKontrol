@@ -12,7 +12,7 @@ describe TablesController, :type => :controller do
   after do
     Rails.cache.clear
   end
-  
+
   describe 'GET show' do
     context 'when admin user has a valid license' do
       context 'when client database connection is invalid' do

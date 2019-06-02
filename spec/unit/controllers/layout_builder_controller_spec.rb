@@ -15,7 +15,6 @@ describe LayoutBuilderController, type: :controller do
 
   describe 'GET new' do
     before do
-
       VCR.use_cassette('license_key/validation_success') do
         sign_in admin_with_license
 

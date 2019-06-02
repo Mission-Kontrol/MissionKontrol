@@ -14,7 +14,7 @@ describe VerifyLicenseKeyService do
   context '#activate' do
     context 'trial license key' do
       let(:subject) { described_class.activate(admin_user, 'trial') }
-      
+
       before do
         admin_user.license_key = trial_license_key
         admin_user.save
@@ -95,7 +95,7 @@ describe VerifyLicenseKeyService do
       it 'saves the validated key to the cache' do
         VCR.use_cassette('license_key/validation_success') do
           cache_key = "license-#{admin_user.license_key}"
-  
+
           subject
           expect(Rails.cache.fetch(cache_key)).to eq cache_key
         end
