@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   )
 
   devise_scope :admin_user do
-    root to: "admin_user_sessions#new"
+    root to: "admin_user_registrations#new"
   end
 
   resources :admin_users, only: :index
