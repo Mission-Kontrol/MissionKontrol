@@ -72,18 +72,13 @@
             </li>
           <% end %>
 
-            <li>
-              <a href="#" class="divider"></a>
+          <% @task_queues.each do |q| %>
+            <li class="">
+              <%= link_to q.name, edit_task_queue_path(q) %>
             </li>
-
-            <% @task_queues.each do |q| %>
-              <li class="">
-                <%= link_to q.name, edit_task_queue_path(q) %>
-              </li>
-            <% end %>
-          </ul>
-        </li>
-      <% end %>
+          <% end %>
+        </ul>
+      </li>
 
       <li class="<%= active_controller?('layout_builder') %> hide">
         <%= link_to layouts_path do %>
