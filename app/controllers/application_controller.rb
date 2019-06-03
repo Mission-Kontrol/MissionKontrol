@@ -126,7 +126,7 @@ class ApplicationController < ActionController::Base
     if request.host_with_port == 'demo.kuwinda.io'
       setup_demo_target_database_params
     elsif SensitiveData.get_target_database_credential(:database_name).nil?
-      redirect_to new_admin_user_registration_url
+      redirect_to new_admin_user_registration_url unless params["admin_user"]["target_database_name"]
     end
   end
 
