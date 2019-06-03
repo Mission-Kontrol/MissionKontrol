@@ -3,6 +3,7 @@
 class AdminUserRegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
   skip_before_action :check_license, :only => %i[new create]
+
   layout 'application', only: [:new]
 
   protected
@@ -52,16 +53,6 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   def after_update_path_for(_resource)
     dashboard_path
-  end
-
-  def test_target_db_connection
-    ActiveRecord::Base.establish_connection(
-      :adapter  => adapter(params["admin_user"]["target_database_type"]),
-      :host     => params["admin_user"]["target_database_host"],
-      :username => params["admin_user"]["target_database_username"],
-      :password => params["admin_user"]["target_database_password"],
-      :database => params["admin_user"]["target_database_name"]
-    ).connection
   end
 
   def adapter(scheme)

@@ -94,16 +94,6 @@ class ApplicationController < ActionController::Base
     !current_admin_user.target_database_type.blank?
   end
 
-  def test_target_db_connection
-    ActiveRecord::Base.establish_connection(
-      :adapter  => adapter(current_admin_user.target_database_type),
-      :host     => current_admin_user.target_database_host,
-      :username => current_admin_user.target_database_username,
-      :password => current_admin_user.target_database_password,
-      :database => current_admin_user.target_database_name
-    ).connection
-  end
-
   def adapter(scheme)
    case scheme
    when 'postgresql', 'postgres'
@@ -120,14 +110,22 @@ class ApplicationController < ActionController::Base
     render '/tables/bad_connection'
   end
 
-  def verify_setup_completed
-    return if request.path == '/admin_users/sign_up'
+  #
+  # TODO: This method needs a review, not sure what the goal should be and if it
+  # should fire for every action, especially authentication related actions (Devise)
 
-    if request.host_with_port == 'demo.kuwinda.io'
-      setup_demo_target_database_params
-    elsif SensitiveData.get_target_database_credential(:database_name).nil?
-      redirect_to new_admin_user_registration_url
-    end
+  # def verify_setup_completed
+  #   return if request.path == '/admin_users/sign_up'
+  #
+  #   if request.host_with_port == 'demo.kuwinda.io'
+  #     setup_demo_target_database_params
+  #   elsif SensitiveData.get_target_database_credential(:database_name).nil?
+  #     redirect_to new_admin_user_registration_url unless params["admin_user"] && params["admin_user"]["target_database_name"]
+  #   end
+  # end
+
+  def verify_setup_completed
+    setup_demo_target_database_params if request.host_with_port == 'demo.kuwinda.io'
   end
 
   def setup_demo_target_database_params
