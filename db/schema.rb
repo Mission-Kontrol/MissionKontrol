@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190528153818) do
+ActiveRecord::Schema.define(version: 20190531093327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,10 @@ ActiveRecord::Schema.define(version: 20190528153818) do
     t.string "raw_sql"
     t.string "query_builder_sql"
     t.jsonb "draggable_fields", default: []
+    t.string "success_outcome_title"
+    t.string "success_outcome_timeout"
+    t.string "failure_outcome_title"
+    t.string "failure_outcome_timeout"
   end
 
   create_table "view_builders", force: :cascade do |t|
