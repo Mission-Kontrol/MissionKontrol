@@ -42,6 +42,8 @@ class TaskQueuesController < ApplicationController
 
   def load_task_queue
     @task_queue = TaskQueue.find(params[:id])
+    @task_queue.name = params['task_queue']['name'] if params['task_queue']['name']
+    @task_queue.details = params['task_queue']['details'] if params['task_queue']['details']
     @task_queue.query_builder_rules = params['task_queue']['query_builder_rules'] if params['task_queue']['query_builder_rules']
     @task_queue.query_builder_sql = params['task_queue']['query_builder_sql'] if params['task_queue']['query_builder_sql']
     @task_queue.raw_sql = params['task_queue']['raw_sql'] if params['task_queue']['raw_sql']
@@ -67,7 +69,7 @@ class TaskQueuesController < ApplicationController
     rows = []
 
     query.to_hash.each do |row|
-      rows << { options: { expanded: true }, value: row }
+      rows << { options: { expanded: true, classes: 'task-queue-item' }, value: row }
     end
 
     rows
