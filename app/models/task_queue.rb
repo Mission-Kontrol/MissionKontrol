@@ -4,8 +4,8 @@ class TaskQueue < ApplicationRecord
   validates :name, :table, presence: true
 
   OUTCOME_TIMEOUTS = [
-    ["1 Day", '86400', ]
-  ]
+    ['1 Day', '86400']
+  ].freeze
 
   def to_sql
     return '' if query_builder_sql.blank?
