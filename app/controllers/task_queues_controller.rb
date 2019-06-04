@@ -23,7 +23,7 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.new(task_queue_params)
 
     if @task_queue.save
-      render status: 201, json: @task_queue
+      redirect_to edit_task_queue_path(@task_queue)
     else
       render 'create/error', status: 422, json: @task_queue.errors.full_messages
     end
