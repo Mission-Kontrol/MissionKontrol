@@ -64,7 +64,9 @@ initQueryBuilder = function (filters) {
 
   let taskQueueRules = $("#builder").data().taskQueueRules;
 
-  if (taskQueueRules) {
+  if ($.isEmptyObject(taskQueueRules) ) {
+    console.log("no rule present")
+  } else {
     $("#builder").queryBuilder("setRules", taskQueueRules);
   }
 }
