@@ -38,6 +38,26 @@ class TaskQueuesController < ApplicationController
     render action: 'update/error', status: 422, json: {}
   end
 
+  def outcome
+    # create task queue outcome
+    task_queue = TaskQueue.find(params["task_queue_id"])
+
+    if params["outcome"] == 'success'
+      task_queue_item_timeout = task_queue.success_outcome_timeout
+    else
+      task_queue_item_timeout = task_queue.failure_outcome_timeout
+    end
+
+    outcome = TaskQueueOutcome.new
+    outcome.outcome = params["outcome"]
+    outcome.task_queue_id = params["task_queue_id"]
+    outcome.task_queue_item_table = params["table"]
+    outcome.task_queue_item_primary_key = params["primary_key"]
+    outcome.task_queue_item_reappear_at = Time.now + task_queue_item_timeout.to_i.days
+
+    outcome.save!
+  end
+
   private
 
   def load_task_queue
@@ -69,6 +89,8 @@ class TaskQueuesController < ApplicationController
     rows = []
 
     query.to_hash.each do |row|
+      # exclude rows with active outcome lock
+      next if outcome_active(row)
       rows << { options: { expanded: true, classes: 'task-queue-item' }, value: row }
     end
 
@@ -119,5 +141,11 @@ class TaskQueuesController < ApplicationController
     @activities.calls = []
     @activities.meetings = []
     @activities.notes = []
+  end
+
+  def outcome_active(row)
+    # check task queue outcomes for either success or failure outcome for row or false
+    # check if outcome is valid false
+    # invalidate outcome if not valid anymore
   end
 end
