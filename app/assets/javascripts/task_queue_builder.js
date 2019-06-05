@@ -12,6 +12,8 @@ let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
 let updateTaskQueueDraggableFields;
+let getTaskQueueItem;
+let applyOutcomeRule;
 let loadIndexPage;
 let loadEditPage;
 
@@ -193,6 +195,65 @@ updateTaskQueueDraggableFields = function (containerId, containerItems) {
   });
 }
 
+loadTaskQueuePreview = function (columns, rows) {
+  $(".task-queue-preview-table").footable({
+    columns,
+    rows
+  });
+}
+
+getTaskQueueItem = function (table, primaryKey) {
+  var params = {};
+  params["task_queue_item"] = {};
+
+  // $.ajax({
+  //   url: "/task_queues/" + taskQueueId,
+  //   type: "PATCH",
+  //   data: params,
+  //   dataType: "json",
+  //   error(response, status, request) {
+  //     window.toastr.error("Task queue preview failed, review SQL.");
+  //   },
+  //   success(response, status, request) {
+  //     let rows = response.rows;
+  //     let columns = response.columns;
+  //
+  //     if (rows !== undefined && columns !== undefined) {
+  //       loadTaskQueuePreview(columns, rows);
+  //     }
+  //
+  //     window.toastr.info("Task queue updated.");
+  //   }
+  // });
+}
+
+applyOutcomeRule = function (outcome) {
+  let table = $('#task-queue-item-modal').data('taskQueueTable');
+  let primaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
+  let taskQueueId = $('#task-queue-item-modal').data('taskQueueId');
+  let url = "/task_queues/" + taskQueueId + "/outcome";
+  let data = {};
+
+  data['outcome'] = outcome;
+  data['table'] = table;
+  data['primary_key'] = primaryKey;
+  data['task_queue_id'] = taskQueueId;
+
+  $.ajax({
+    url,
+    type: "POST",
+    data,
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+              window.toastr.error("Something went wrong, please try again.");
+           },
+    success(data){
+      window.toastr.success("Task queue outcome updated.");
+    }
+  });
+}
+
 loadIndexPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -221,13 +282,6 @@ loadIndexPage = function () {
       saveTaskQueue(params);
     });
   }
-}
-
-loadTaskQueuePreview = function (columns, rows) {
-  $(".task-queue-preview-table").footable({
-    columns,
-    rows
-  });
 }
 
 loadEditPage = function () {
@@ -278,8 +332,19 @@ loadEditPage = function () {
     });
 
     $(document).on('click','.task-queue-item', function() {
+      let taskQueueTable = $(this).parent().parent().data().taskQueueTable;
+      let taskQueueItemPrimaryKey = $(this).data().taskQueueItemId;
+
+      $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
+      $('#task-queue-item-modal').data('taskQueueItemPrimaryKey', taskQueueItemPrimaryKey);
       $('#task-queue-item-modal').modal({});
+
       // get row and activity history
+
+      //
+      // debugger
+      //
+      // getTaskQueueItem(taskQueueTable, taskQueueItemPrimaryKey)
     })
 
     getOptionsForDraggable("users");
@@ -296,4 +361,17 @@ $(document).ready(() => {
 
   loadIndexPage();
   loadEditPage();
+
+  // modify foo table to add the id of each row as a data attribute
+  (function($, F){
+    // Extend the Row.$create method to add an id attribute to each <tr>.
+    F.Row.extend("$create", function(){
+        // call the original method
+        this._super();
+        // get the current row values
+        var values = this.val();
+        // then add whatever attributes are required
+        this.$el.attr("data-task-queue-item-id", values["id"]);
+    });
+  })(jQuery, FooTable);
 });
