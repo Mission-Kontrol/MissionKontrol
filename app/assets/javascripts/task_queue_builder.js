@@ -64,7 +64,9 @@ initQueryBuilder = function (filters) {
 
   let taskQueueRules = $("#builder").data().taskQueueRules;
 
-  if (taskQueueRules) {
+  if ($.isEmptyObject(taskQueueRules) ) {
+    console.log("no rule present")
+  } else {
     $("#builder").queryBuilder("setRules", taskQueueRules);
   }
 }
@@ -221,6 +223,13 @@ loadIndexPage = function () {
   }
 }
 
+loadTaskQueuePreview = function (columns, rows) {
+  $(".task-queue-preview-table").footable({
+    columns,
+    rows
+  });
+}
+
 loadEditPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionEdit) {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
@@ -240,7 +249,10 @@ loadEditPage = function () {
         params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
       }
 
-      params["task_queue"]["raw_sql"] = document.getElementById("task_queue_raw_sql").value;
+      params["task_queue"]["success_outcome_title"] = document.getElementById("task_queue_success_outcome_title").value;
+      params["task_queue"]["success_outcome_timeout"] = document.getElementById("task_queue_success_outcome_timeout").value;
+      params["task_queue"]["failure_outcome_title"] = document.getElementById("task_queue_failure_outcome_title").value;
+      params["task_queue"]["failure_outcome_timeout"] = document.getElementById("task_queue_failure_outcome_timeout").value;
 
       $.ajax({
         url: "/task_queues/" + taskQueueId,

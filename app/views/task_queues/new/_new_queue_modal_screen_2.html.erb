@@ -5,7 +5,7 @@
     </div>
 
     <div class="modal-body">
-      <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
+      <%= form_for(@task_queue, html: {class: "m-t"}) do |f| %>
         <div class="form-group">
           <p>
             <b>Give it a name</b>
@@ -29,12 +29,12 @@
           </p>
           <%= f.text_area :details, class: "form-control" %>
         </div>
-      <% end %>
-    </div>
 
-    <div class="modal-footer">
-      <a class="btn btn-default" id="queue-builder-modal-back-button">Back</a>
-      <a class="btn btn-primary" id="queue-builder-modal-save-button">Next</a>
+        <div class="form-group">
+          <a class="btn btn-default" id="queue-builder-modal-back-button">Back</a>
+          <%= f.submit  class: "btn btn-primary" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

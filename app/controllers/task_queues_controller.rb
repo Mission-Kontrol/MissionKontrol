@@ -23,7 +23,7 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.new(task_queue_params)
 
     if @task_queue.save
-      render status: 201, json: @task_queue
+      redirect_to edit_task_queue_path(@task_queue)
     else
       render 'create/error', status: 422, json: @task_queue.errors.full_messages
     end
@@ -46,6 +46,10 @@ class TaskQueuesController < ApplicationController
     @task_queue.query_builder_sql = params['task_queue']['query_builder_sql'] if params['task_queue']['query_builder_sql']
     @task_queue.raw_sql = params['task_queue']['raw_sql'] if params['task_queue']['raw_sql']
     @task_queue.draggable_fields = params['task_queue']['draggable_fields'] if params['task_queue']['draggable_fields']
+    @task_queue.success_outcome_title = params['task_queue']['success_outcome_title'] if params['task_queue']['success_outcome_title']
+    @task_queue.success_outcome_timeout = params['task_queue']['success_outcome_timeout'] if params['task_queue']['success_outcome_timeout']
+    @task_queue.failure_outcome_title = params['task_queue']['failure_outcome_title'] if params['task_queue']['failure_outcome_title']
+    @task_queue.failure_outcome_timeout = params['task_queue']['failure_outcome_timeout'] if params['task_queue']['failure_outcome_timeout']
   end
 
   def task_queue_params
