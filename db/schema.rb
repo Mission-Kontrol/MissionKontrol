@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190531093327) do
+ActiveRecord::Schema.define(version: 20190605164115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,15 @@ ActiveRecord::Schema.define(version: 20190531093327) do
     t.boolean "full_license", default: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "task_queue_outcomes", force: :cascade do |t|
+    t.integer "task_queue_id", null: false
+    t.string "task_queue_item_table", null: false
+    t.string "task_queue_item_primary_key", null: false
+    t.datetime "task_queue_item_reappear_at", null: false
+    t.string "outcome", null: false
+    t.index ["outcome", "task_queue_id", "task_queue_item_primary_key"], name: "task_queue_item_unique", unique: true
   end
 
   create_table "task_queues", force: :cascade do |t|
