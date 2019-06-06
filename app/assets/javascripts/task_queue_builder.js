@@ -12,7 +12,6 @@ let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
 let updateTaskQueueDraggableFields;
-let getTaskQueueItem;
 let applyOutcomeRule;
 let loadIndexPage;
 let loadEditPage;
@@ -202,31 +201,6 @@ loadTaskQueuePreview = function (columns, rows) {
   });
 }
 
-getTaskQueueItem = function (table, primaryKey) {
-  var params = {};
-  params["task_queue_item"] = {};
-
-  // $.ajax({
-  //   url: "/task_queues/" + taskQueueId,
-  //   type: "PATCH",
-  //   data: params,
-  //   dataType: "json",
-  //   error(response, status, request) {
-  //     window.toastr.error("Task queue preview failed, review SQL.");
-  //   },
-  //   success(response, status, request) {
-  //     let rows = response.rows;
-  //     let columns = response.columns;
-  //
-  //     if (rows !== undefined && columns !== undefined) {
-  //       loadTaskQueuePreview(columns, rows);
-  //     }
-  //
-  //     window.toastr.info("Task queue updated.");
-  //   }
-  // });
-}
-
 applyOutcomeRule = function (outcome) {
   let table = $('#task-queue-item-modal').data('taskQueueTable');
   let primaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
@@ -338,13 +312,6 @@ loadEditPage = function () {
       $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
       $('#task-queue-item-modal').data('taskQueueItemPrimaryKey', taskQueueItemPrimaryKey);
       $('#task-queue-item-modal').modal({});
-
-      // get row and activity history
-
-      //
-      // debugger
-      //
-      // getTaskQueueItem(taskQueueTable, taskQueueItemPrimaryKey)
     })
 
     getOptionsForDraggable("users");
