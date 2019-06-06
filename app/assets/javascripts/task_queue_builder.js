@@ -201,6 +201,40 @@ loadTaskQueuePreview = function (columns, rows) {
   });
 }
 
+updateTaskQueueItemData = function (data) {
+  const entries = Object.entries(data.row)
+  $('#task_queue_item_data').empty();
+
+  for (var i = 0; i < entries.length; i++) {
+    const entryHtml = "<p><b>" + entries[i][0]+ "</b>: <span>" + entries[i][1]+ "</span></p>"
+    $('#task_queue_item_data').append(entryHtml);
+  }
+}
+
+getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
+  let data = {};
+  let url = "/task_queues/" + taskQueueId + "/record";
+
+  data["task_queue_item_primary_key"] = taskQueueItemPrimaryKey;
+  data["task_queue_id"] = taskQueueId;
+
+  $.ajax({
+    url,
+    type: "GET",
+    data,
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+              window.toastr.error("Something went wrong, please try again.");
+           },
+    success(data){
+      window.toastr.success("Task queue item retrieved successfully.");
+      // update modal with row data and activity feed
+      updateTaskQueueItemData(data);
+    }
+  });
+}
+
 applyOutcomeRule = function (outcome) {
   let table = $('#task-queue-item-modal').data('taskQueueTable');
   let primaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
@@ -308,10 +342,13 @@ loadEditPage = function () {
     $(document).on('click','.task-queue-item', function() {
       let taskQueueTable = $(this).parent().parent().data().taskQueueTable;
       let taskQueueItemPrimaryKey = $(this).data().taskQueueItemId;
+      let taskQueueId = $('#task-queue-item-modal').data().taskQueueId;
 
       $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
       $('#task-queue-item-modal').data('taskQueueItemPrimaryKey', taskQueueItemPrimaryKey);
       $('#task-queue-item-modal').modal({});
+
+      getTaskQueueItem(taskQueueId, taskQueueItemPrimaryKey)
     })
 
     getOptionsForDraggable("users");
