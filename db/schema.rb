@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20190605164115) do
     t.string "task_queue_item_primary_key", null: false
     t.datetime "task_queue_item_reappear_at", null: false
     t.string "outcome", null: false
-    t.index ["outcome", "task_queue_id", "task_queue_item_primary_key"], name: "task_queue_item_unique", unique: true
+    t.index ["task_queue_id", "task_queue_item_primary_key"], name: "task_queue_item_unique", unique: true
   end
 
   create_table "task_queues", force: :cascade do |t|
