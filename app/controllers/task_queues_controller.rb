@@ -87,7 +87,7 @@ class TaskQueuesController < ApplicationController
     rows = []
 
     query.to_hash.each do |row|
-      next unless is_time_to_reappear(row)
+      next unless time_to_reappear?(row)
       rows << { options: { expanded: true, classes: 'task-queue-item' }, value: row }
     end
 
@@ -140,7 +140,7 @@ class TaskQueuesController < ApplicationController
     @activities.notes = []
   end
 
-  def is_time_to_reappear(row)
+  def time_to_reappear?(row)
     outcome = TaskQueueOutcome.where(task_queue_id: @task_queue.id, task_queue_item_primary_key: row['id']).first
 
     return true unless outcome
