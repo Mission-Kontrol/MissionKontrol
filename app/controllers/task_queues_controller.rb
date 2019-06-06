@@ -56,6 +56,11 @@ class TaskQueuesController < ApplicationController
     outcome.save!
   end
 
+  def record
+    data = build_data_for_task_queue_record
+    render json: { row: data }
+  end
+
   private
 
   # rubocop:disable Metrics/AbcSize
@@ -154,5 +159,20 @@ class TaskQueuesController < ApplicationController
     else
       false
     end
+  end
+
+  def build_data_for_task_queue_record
+    task_queue = TaskQueue.find(params[:id])
+    repo = Kuwinda::Repository::TargetDB.new
+    repo.table = task_queue.table
+    row = repo.find(params["task_queue_item_primary_key"])
+    data = {}
+
+    row.each do |k, v|
+      next if task_queue.draggable_fields.include?(k)
+      data[k] = v
+    end
+
+    data
   end
 end
