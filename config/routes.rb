@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :task_queues, only: %i[index show new create edit update] do
     member do
       post 'outcome'
+      get 'record'
     end
   end
 
