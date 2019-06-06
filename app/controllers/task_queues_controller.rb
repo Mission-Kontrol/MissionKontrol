@@ -39,25 +39,26 @@ class TaskQueuesController < ApplicationController
   end
 
   def outcome
-    task_queue = TaskQueue.find(params["task_queue_id"])
+    task_queue = TaskQueue.find(params['task_queue_id'])
 
-    if params["outcome"] == 'success'
-      task_queue_item_timeout = task_queue.success_outcome_timeout
-    else
-      task_queue_item_timeout = task_queue.failure_outcome_timeout
-    end
+    task_queue_item_timeout = if params['outcome'] == 'success'
+                                task_queue.success_outcome_timeout
+                              else
+                                task_queue.failure_outcome_timeout
+                              end
 
     outcome = TaskQueueOutcome.new
-    outcome.outcome = params["outcome"]
-    outcome.task_queue_id = params["task_queue_id"]
-    outcome.task_queue_item_table = params["table"]
-    outcome.task_queue_item_primary_key = params["primary_key"]
+    outcome.outcome = params['outcome']
+    outcome.task_queue_id = params['task_queue_id']
+    outcome.task_queue_item_table = params['table']
+    outcome.task_queue_item_primary_key = params['primary_key']
     outcome.task_queue_item_reappear_at = Time.now + task_queue_item_timeout.to_i.days
     outcome.save!
   end
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def load_task_queue
     @task_queue = TaskQueue.find(params[:id])
     @task_queue.name = params['task_queue']['name'] if params['task_queue']['name']
@@ -71,6 +72,7 @@ class TaskQueuesController < ApplicationController
     @task_queue.failure_outcome_title = params['task_queue']['failure_outcome_title'] if params['task_queue']['failure_outcome_title']
     @task_queue.failure_outcome_timeout = params['task_queue']['failure_outcome_timeout'] if params['task_queue']['failure_outcome_timeout']
   end
+  # rubocop:enable Metrics/AbcSize
 
   def task_queue_params
     params.require(:task_queue).permit(:name,
@@ -88,6 +90,7 @@ class TaskQueuesController < ApplicationController
 
     query.to_hash.each do |row|
       next unless time_to_reappear?(row)
+
       rows << { options: { expanded: true, classes: 'task-queue-item' }, value: row }
     end
 
