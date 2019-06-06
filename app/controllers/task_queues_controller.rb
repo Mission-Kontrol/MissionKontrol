@@ -39,7 +39,6 @@ class TaskQueuesController < ApplicationController
   end
 
   def outcome
-    # create task queue outcome
     task_queue = TaskQueue.find(params["task_queue_id"])
 
     if params["outcome"] == 'success'
@@ -54,7 +53,6 @@ class TaskQueuesController < ApplicationController
     outcome.task_queue_item_table = params["table"]
     outcome.task_queue_item_primary_key = params["primary_key"]
     outcome.task_queue_item_reappear_at = Time.now + task_queue_item_timeout.to_i.days
-
     outcome.save!
   end
 
@@ -89,8 +87,7 @@ class TaskQueuesController < ApplicationController
     rows = []
 
     query.to_hash.each do |row|
-      # exclude rows with active outcome lock
-      next if outcome_active(row)
+      next unless is_time_to_reappear(row)
       rows << { options: { expanded: true, classes: 'task-queue-item' }, value: row }
     end
 
@@ -143,9 +140,16 @@ class TaskQueuesController < ApplicationController
     @activities.notes = []
   end
 
-  def outcome_active(row)
-    # check task queue outcomes for either success or failure outcome for row or false
-    # check if outcome is valid false
-    # invalidate outcome if not valid anymore
+  def is_time_to_reappear(row)
+    outcome = TaskQueueOutcome.where(task_queue_id: @task_queue.id, task_queue_item_primary_key: row['id']).first
+
+    return true unless outcome
+
+    if outcome.task_queue_item_reappear_at < Time.now
+      outcome.delete
+      true
+    else
+      false
+    end
   end
 end
