@@ -115,7 +115,7 @@
 
                   <div class="col-sm-12 col-md-5">
                     <div class="form-group">
-                      <%= f.select(:success_outcome_timeout, TaskQueue::OUTCOME_TIMEOUTS, { include_blank: true, prompt: "Select time to re-appear", selected: @task_queue.success_outcome_timeout }, { class: "form-control" }) %>
+                      <%= f.select(:success_outcome_timeout, TaskQueue::OUTCOME_TIMEOUTS, {selected: @task_queue.success_outcome_timeout }, { class: "form-control" }) %>
                     </div>
                   </div>
                 </div>
@@ -136,7 +136,7 @@
 
                   <div class="col-sm-12 col-md-5">
                     <div class="form-group">
-                      <%= f.select(:failure_outcome_timeout, TaskQueue::OUTCOME_TIMEOUTS, { include_blank: true, prompt: "Select time to re-appear", selected: @task_queue.failure_outcome_timeout }, { class: "form-control" }) %>
+                      <%= f.select(:failure_outcome_timeout, TaskQueue::OUTCOME_TIMEOUTS, {selected: @task_queue.failure_outcome_timeout }, { class: "form-control" }) %>
                     </div>
                   </div>
                 </div>
