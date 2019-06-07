@@ -246,19 +246,10 @@ addToTaskQueueActivityStream = function(kind, content, time, author) {
   $('#task-queue-record-activity-stream').append(stream);
 
   if (kind === 'note') {
-    if ($('#task-queue-record-note-activity-stream .stream').length === 0) {
-      $('#task-queue-record-note-activity-stream').empty();
-    }
     $('#task-queue-record-note-activity-stream').append(stream);
   } else if (kind === 'call') {
-    if ($('#task-queue-record-call-activity-stream .stream').length === 0) {
-      $('#task-queue-record-call-activity-stream').empty();
-    }
     $('#task-queue-record-call-activity-stream').append(stream);
   } else {
-    if ($('#task-queue-record-meeting-activity-stream .stream').length === 0) {
-      $('#task-queue-record-meeting-activity-stream').empty();
-    }
     $('#task-queue-record-meeting-activity-stream').append(stream);
   }
 }
@@ -266,6 +257,9 @@ addToTaskQueueActivityStream = function(kind, content, time, author) {
 updateTaskQueueItemFeed = function (data) {
   const entries = Object.entries(data.activities)
   $('#task-queue-record-activity-stream').empty();
+  $('#task-queue-record-note-activity-stream').empty();
+  $('#task-queue-record-call-activity-stream').empty();
+  $('#task-queue-record-meeting-activity-stream').empty();
 
   for (var i = 0; i < entries.length; i++) {
     addToTaskQueueActivityStream(entries[i][1].kind, entries[i][1].content, entries[i][1]["created_at"], data.author)
@@ -289,7 +283,6 @@ getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
               window.toastr.error("Something went wrong, please try again.");
            },
     success(data){
-      // update modal with row data and activity feed
       updateTaskQueueItemData(data);
       updateTaskQueueItemFeed(data);
     }
