@@ -12,6 +12,8 @@ let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
 let updateTaskQueueDraggableFields;
+let updateTaskQueueItemFeed;
+let addToTaskQueueActivityStream;
 let applyOutcomeRule;
 let loadIndexPage;
 let loadEditPage;
@@ -211,6 +213,65 @@ updateTaskQueueItemData = function (data) {
   }
 }
 
+addToTaskQueueActivityStream = function(kind, content, time, author) {
+  let streamIcon;
+  let stream;
+
+  if (kind === 'note') {
+    streamIcon = "fa fa-pencil";
+  } else if (kind === 'call') {
+    streamIcon = "fa fa-phone";
+  } else if (kind === "meeting") {
+    streamIcon = "fa fa-calendar";
+  } else {
+    streamIcon = "fa fa-circle";
+  }
+
+  stream = "<div class='stream'>" +
+    "<div class='stream-badge'>" +
+      "<i class='" + streamIcon + "'></i>" +
+    "</div>" +
+    "<div class='stream-panel'>" +
+      "<div class='stream-info'>" +
+        "<a href=''>" +
+          "<img src='/assets/a2-22c5f70142282015b1aa1e8611a895fed56efb2db0045afe0fa124d2a1973d3c.jpg' />" +
+          "<span>" + author + "</span>" +
+          "<span class='date'>" + moment(time).fromNow() + "</span>" +
+        "</a>" +
+      "</div>" +
+      content +
+    "</div>" +
+  "</div>";
+
+  $('#task-queue-record-activity-stream').append(stream);
+
+  if (kind === 'note') {
+    if ($('#task-queue-record-note-activity-stream .stream').length === 0) {
+      $('#task-queue-record-note-activity-stream').empty();
+    }
+    $('#task-queue-record-note-activity-stream').append(stream);
+  } else if (kind === 'call') {
+    if ($('#task-queue-record-call-activity-stream .stream').length === 0) {
+      $('#task-queue-record-call-activity-stream').empty();
+    }
+    $('#task-queue-record-call-activity-stream').append(stream);
+  } else {
+    if ($('#task-queue-record-meeting-activity-stream .stream').length === 0) {
+      $('#task-queue-record-meeting-activity-stream').empty();
+    }
+    $('#task-queue-record-meeting-activity-stream').append(stream);
+  }
+}
+
+updateTaskQueueItemFeed = function (data) {
+  const entries = Object.entries(data.activities)
+  $('#task-queue-record-activity-stream').empty();
+
+  for (var i = 0; i < entries.length; i++) {
+    addToTaskQueueActivityStream(entries[i][1].kind, entries[i][1].content, entries[i][1]["created_at"], data.author)
+  }
+}
+
 getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
   let data = {};
   let url = "/task_queues/" + taskQueueId + "/record";
@@ -230,6 +291,7 @@ getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
     success(data){
       // update modal with row data and activity feed
       updateTaskQueueItemData(data);
+      updateTaskQueueItemFeed(data);
     }
   });
 }
@@ -349,6 +411,12 @@ loadEditPage = function () {
 
       getTaskQueueItem(taskQueueId, taskQueueItemPrimaryKey)
     })
+
+    $("#task-queue-record-activity-form").submit( function() {
+      let taskQueueItemPrimaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
+      $(this).append("<input type='hidden' name='activity[feedable_id]' value='" + taskQueueItemPrimaryKey + "'/>");
+      return true;
+    });
 
     getOptionsForDraggable("users");
 
