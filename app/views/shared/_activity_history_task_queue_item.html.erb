@@ -9,14 +9,10 @@
   <div class="tab-content">
     <div id="tab-1" class="tab-pane active all-activities-tab">
       <div class="panel-body">
-        <%= render 'activities/form', feedable_type: feedable_type, feedable_id: feedable_id %>
+        <%= render 'activities/task_queue_record_activity_form', feedable_type: feedable_type %>
 
-        <div class="activity-stream">
-          <% if @activities.all.size > 0 %>
-            <%= render 'shared/activity_stream', activities: @activities.all %>
-          <% else %>
-            <p class="default-message">No activity has been recored for this <%= feedable_type %>.</p>
-          <% end %>
+        <div class="activity-stream" id="task-queue-record-activity-stream">
+          <p class="default-message">No activity has been recored for this task queue record.</p>
         </div>
 
         <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
@@ -25,43 +21,25 @@
 
     <div id="tab-2" class="tab-pane activity-tab-for-calls">
       <div class="panel-body">
-        <div class="activity-stream">
-          <% if @activities.calls.size > 0 %>
-            <%= render 'shared/activity_stream', activities: @activities.calls %>
-          <% else %>
-            <p class="default-message">No calls has been recored for this <%= feedable_type %>.</p>
-          <% end %>
+        <div class="activity-stream" id="task-queue-record-call-activity-stream">
+          <p class="default-message">No calls has been recored for this task queue record.</p>
         </div>
-
-        <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
       </div>
     </div>
 
     <div id="tab-3" class="tab-pane activity-tab-for-meetings">
       <div class="panel-body">
-        <div class="activity-stream">
-          <% if @activities.meetings.size > 0 %>
-            <%= render 'shared/activity_stream', activities: @activities.meetings %>
-          <% else %>
-            <p class="default-message">No meetings has been recored for this <%= feedable_type %>.</p>
-          <% end %>
+        <div class="activity-stream" id="task-queue-record-meeting-activity-stream">
+          <p class="default-message">No meetings has been recored for this task queue record.</p>
         </div>
-
-        <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
       </div>
     </div>
 
     <div id="tab-4" class="tab-pane activity-tab-for-notes">
       <div class="panel-body">
-        <div class="activity-stream">
-          <% if @activities.notes.size > 0 %>
-            <%= render 'shared/activity_stream', activities: @activities.notes %>
-          <% else %>
-            <p class="default-message">No notes has been recored for this <%= feedable_type %>.</p>
-          <% end %>
+        <div class="activity-stream" id="task-queue-record-note-activity-stream">
+          <p class="default-message">No notes has been recored for this task queue record.</p>
         </div>
-
-        <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
       </div>
     </div>
   </div>
