@@ -228,7 +228,6 @@ getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
               window.toastr.error("Something went wrong, please try again.");
            },
     success(data){
-      window.toastr.success("Task queue item retrieved successfully.");
       // update modal with row data and activity feed
       updateTaskQueueItemData(data);
     }
