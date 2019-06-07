@@ -57,7 +57,7 @@ class TaskQueuesController < ApplicationController
   end
 
   def record
-    data = build_data_for_task_queue_record
+    data = build_data_for_record
     render json: { row: data }
   end
 
@@ -161,18 +161,18 @@ class TaskQueuesController < ApplicationController
     end
   end
 
-  def build_data_for_task_queue_record
+  def build_data_for_record
     task_queue = TaskQueue.find(params[:id])
     repo = Kuwinda::Repository::TargetDB.new
     repo.table = task_queue.table
     row = repo.find(params["task_queue_item_primary_key"])
-    data = {}
+    record = {}
 
     row.each do |k, v|
-      next if task_queue.draggable_fields.include?(k)
-      data[k] = v
+      next unless task_queue.draggable_fields.include?(k)
+      record[k] = v
     end
 
-    data
+    record
   end
 end
