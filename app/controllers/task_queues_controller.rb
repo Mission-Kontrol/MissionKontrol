@@ -167,7 +167,7 @@ class TaskQueuesController < ApplicationController
 
     row.each do |k, v|
       next unless field_visible?(@task_queue, k)
-      
+
       record[k] = v
     end
 
