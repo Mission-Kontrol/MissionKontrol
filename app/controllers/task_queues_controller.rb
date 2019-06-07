@@ -161,6 +161,10 @@ class TaskQueuesController < ApplicationController
     end
   end
 
+  def field_visible?(task_queue, field)
+    task_queue.draggable_fields.values.map {|f| f["title"]}.include?(field)
+  end
+
   def build_data_for_record
     task_queue = TaskQueue.find(params[:id])
     repo = Kuwinda::Repository::TargetDB.new
@@ -169,7 +173,7 @@ class TaskQueuesController < ApplicationController
     record = {}
 
     row.each do |k, v|
-      next unless task_queue.draggable_fields.include?(k)
+      next unless field_visible?(task_queue, k)
       record[k] = v
     end
 
