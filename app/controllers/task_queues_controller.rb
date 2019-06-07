@@ -58,7 +58,7 @@ class TaskQueuesController < ApplicationController
 
   def record
     @task_queue = TaskQueue.find(params[:id])
-    activities = Activity.where(feedable_type: @task_queue.table, feedable_id: params["task_queue_item_primary_key"])
+    activities = Activity.where(feedable_type: @task_queue.table, feedable_id: params['task_queue_item_primary_key'])
     data = build_data_for_record
     render json: { row: data, activities: activities, author: current_admin_user.full_name }
   end
@@ -156,17 +156,18 @@ class TaskQueuesController < ApplicationController
   end
 
   def field_visible?(task_queue, field)
-    task_queue.draggable_fields.values.map {|f| f["title"]}.include?(field)
+    task_queue.draggable_fields.values.map { |f| f['title'] }.include?(field)
   end
 
   def build_data_for_record
     repo = Kuwinda::Repository::TargetDB.new
     repo.table = @task_queue.table
-    row = repo.find(params["task_queue_item_primary_key"])
+    row = repo.find(params['task_queue_item_primary_key'])
     record = {}
 
     row.each do |k, v|
       next unless field_visible?(@task_queue, k)
+      
       record[k] = v
     end
 
