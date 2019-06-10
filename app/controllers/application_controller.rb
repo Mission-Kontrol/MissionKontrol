@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
               ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
 
   before_action :verify_setup_completed
-  before_action :check_license
 
   def check_license
     redirect_to license_path unless license_valid?
