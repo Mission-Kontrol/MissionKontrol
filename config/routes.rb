@@ -14,7 +14,12 @@ Rails.application.routes.draw do
   end
 
   resources :admin_users, only: :index
-  resources :task_queues, only: %i[index show new create edit update]
+  resources :task_queues, only: %i[index show new create edit update] do
+    member do
+      post 'outcome'
+      get 'record'
+    end
+  end
 
   resources :tables, only: %i[show]
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'

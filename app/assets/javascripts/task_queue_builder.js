@@ -12,6 +12,9 @@ let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
 let updateTaskQueueDraggableFields;
+let updateTaskQueueItemFeed;
+let addToTaskQueueActivityStream;
+let applyOutcomeRule;
 let loadIndexPage;
 let loadEditPage;
 
@@ -193,6 +196,126 @@ updateTaskQueueDraggableFields = function (containerId, containerItems) {
   });
 }
 
+loadTaskQueuePreview = function (columns, rows) {
+  $(".task-queue-preview-table").footable({
+    columns,
+    rows
+  });
+}
+
+updateTaskQueueItemData = function (data) {
+  const entries = Object.entries(data.row)
+  $('#task_queue_item_data').empty();
+
+  for (var i = 0; i < entries.length; i++) {
+    const entryHtml = "<p><b>" + entries[i][0]+ "</b>: <span>" + entries[i][1]+ "</span></p>"
+    $('#task_queue_item_data').append(entryHtml);
+  }
+}
+
+addToTaskQueueActivityStream = function(kind, content, time, author) {
+  let streamIcon;
+  let stream;
+
+  if (kind === 'note') {
+    streamIcon = "fa fa-pencil";
+  } else if (kind === 'call') {
+    streamIcon = "fa fa-phone";
+  } else if (kind === "meeting") {
+    streamIcon = "fa fa-calendar";
+  } else {
+    streamIcon = "fa fa-circle";
+  }
+
+  stream = "<div class='stream'>" +
+    "<div class='stream-badge'>" +
+      "<i class='" + streamIcon + "'></i>" +
+    "</div>" +
+    "<div class='stream-panel'>" +
+      "<div class='stream-info'>" +
+        "<a href=''>" +
+          "<img src='/assets/a2-22c5f70142282015b1aa1e8611a895fed56efb2db0045afe0fa124d2a1973d3c.jpg' />" +
+          "<span>" + author + "</span>" +
+          "<span class='date'>" + moment(time).fromNow() + "</span>" +
+        "</a>" +
+      "</div>" +
+      content +
+    "</div>" +
+  "</div>";
+
+  $('#task-queue-record-activity-stream').append(stream);
+
+  if (kind === 'note') {
+    $('#task-queue-record-note-activity-stream').append(stream);
+  } else if (kind === 'call') {
+    $('#task-queue-record-call-activity-stream').append(stream);
+  } else {
+    $('#task-queue-record-meeting-activity-stream').append(stream);
+  }
+}
+
+updateTaskQueueItemFeed = function (data) {
+  const entries = Object.entries(data.activities)
+  $('#task-queue-record-activity-stream').empty();
+  $('#task-queue-record-note-activity-stream').empty();
+  $('#task-queue-record-call-activity-stream').empty();
+  $('#task-queue-record-meeting-activity-stream').empty();
+
+  for (var i = 0; i < entries.length; i++) {
+    addToTaskQueueActivityStream(entries[i][1].kind, entries[i][1].content, entries[i][1]["created_at"], data.author)
+  }
+}
+
+getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
+  let data = {};
+  let url = "/task_queues/" + taskQueueId + "/record";
+
+  data["task_queue_item_primary_key"] = taskQueueItemPrimaryKey;
+  data["task_queue_id"] = taskQueueId;
+
+  $.ajax({
+    url,
+    type: "GET",
+    data,
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+              window.toastr.error("Something went wrong, please try again.");
+           },
+    success(data){
+      updateTaskQueueItemData(data);
+      updateTaskQueueItemFeed(data);
+    }
+  });
+}
+
+applyOutcomeRule = function (outcome) {
+  let table = $('#task-queue-item-modal').data('taskQueueTable');
+  let primaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
+  let taskQueueId = $('#task-queue-item-modal').data('taskQueueId');
+  let url = "/task_queues/" + taskQueueId + "/outcome";
+  let data = {};
+
+  data['outcome'] = outcome;
+  data['table'] = table;
+  data['primary_key'] = primaryKey;
+  data['task_queue_id'] = taskQueueId;
+
+  $.ajax({
+    url,
+    type: "POST",
+    data,
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+              window.toastr.error("Something went wrong, please try again.");
+           },
+    success(data){
+      window.toastr.success("Task queue outcome updated.");
+    }
+  });
+}
+
 loadIndexPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
     $("#new-task-queue-modal").modal({
@@ -223,13 +346,6 @@ loadIndexPage = function () {
   }
 }
 
-loadTaskQueuePreview = function (columns, rows) {
-  $(".task-queue-preview-table").footable({
-    columns,
-    rows
-  });
-}
-
 loadEditPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionEdit) {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
@@ -249,6 +365,8 @@ loadEditPage = function () {
         params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
       }
 
+      params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
+      params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
       params["task_queue"]["success_outcome_title"] = document.getElementById("task_queue_success_outcome_title").value;
       params["task_queue"]["success_outcome_timeout"] = document.getElementById("task_queue_success_outcome_timeout").value;
       params["task_queue"]["failure_outcome_title"] = document.getElementById("task_queue_failure_outcome_title").value;
@@ -275,6 +393,24 @@ loadEditPage = function () {
       });
     });
 
+    $(document).on('click','.task-queue-item', function() {
+      let taskQueueTable = $(this).parent().parent().data().taskQueueTable;
+      let taskQueueItemPrimaryKey = $(this).data().taskQueueItemId;
+      let taskQueueId = $('#task-queue-item-modal').data().taskQueueId;
+
+      $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
+      $('#task-queue-item-modal').data('taskQueueItemPrimaryKey', taskQueueItemPrimaryKey);
+      $('#task-queue-item-modal').modal({});
+
+      getTaskQueueItem(taskQueueId, taskQueueItemPrimaryKey)
+    })
+
+    $("#task-queue-record-activity-form").submit( function() {
+      let taskQueueItemPrimaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
+      $(this).append("<input type='hidden' name='activity[feedable_id]' value='" + taskQueueItemPrimaryKey + "'/>");
+      return true;
+    });
+
     getOptionsForDraggable("users");
 
     initializeDraggable();
@@ -289,4 +425,17 @@ $(document).ready(() => {
 
   loadIndexPage();
   loadEditPage();
+
+  // modify foo table to add the id of each row as a data attribute
+  (function($, F){
+    // Extend the Row.$create method to add an id attribute to each <tr>.
+    F.Row.extend("$create", function(){
+        // call the original method
+        this._super();
+        // get the current row values
+        var values = this.val();
+        // then add whatever attributes are required
+        this.$el.attr("data-task-queue-item-id", values["id"]);
+    });
+  })(jQuery, FooTable);
 });

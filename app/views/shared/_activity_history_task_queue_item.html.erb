@@ -1,0 +1,46 @@
+<div class="tabs-container">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#tab-1">All</a></li>
+    <li class=""><a data-toggle="tab" href="#tab-2">Calls</a></li>
+    <li class=""><a data-toggle="tab" href="#tab-3">Meetings</a></li>
+    <li class=""><a data-toggle="tab" href="#tab-4">Notes</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="tab-1" class="tab-pane active all-activities-tab">
+      <div class="panel-body">
+        <%= render 'activities/task_queue_record_activity_form', feedable_type: feedable_type %>
+
+        <div class="activity-stream" id="task-queue-record-activity-stream">
+          <p class="default-message">No activity has been recored for this task queue record.</p>
+        </div>
+
+        <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
+      </div>
+    </div>
+
+    <div id="tab-2" class="tab-pane activity-tab-for-calls">
+      <div class="panel-body">
+        <div class="activity-stream" id="task-queue-record-call-activity-stream">
+          <p class="default-message">No calls has been recored for this task queue record.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-3" class="tab-pane activity-tab-for-meetings">
+      <div class="panel-body">
+        <div class="activity-stream" id="task-queue-record-meeting-activity-stream">
+          <p class="default-message">No meetings has been recored for this task queue record.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-4" class="tab-pane activity-tab-for-notes">
+      <div class="panel-body">
+        <div class="activity-stream" id="task-queue-record-note-activity-stream">
+          <p class="default-message">No notes has been recored for this task queue record.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
