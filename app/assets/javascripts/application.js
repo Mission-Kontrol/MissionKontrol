@@ -6,6 +6,7 @@
 //
 //
 //= require jquery/jquery-3.1.1.min.js
+//= require turbolinks
 //= require rails-ujs
 //= require bootstrap-sprockets
 //= require metisMenu/jquery.metisMenu.js
