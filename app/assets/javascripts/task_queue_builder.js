@@ -12,6 +12,8 @@ let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
 let updateTaskQueueDraggableFields;
+let updateTaskQueueItemFeed;
+let addToTaskQueueActivityStream;
 let applyOutcomeRule;
 let loadIndexPage;
 let loadEditPage;
@@ -201,6 +203,92 @@ loadTaskQueuePreview = function (columns, rows) {
   });
 }
 
+updateTaskQueueItemData = function (data) {
+  const entries = Object.entries(data.row)
+  $('#task_queue_item_data').empty();
+
+  for (var i = 0; i < entries.length; i++) {
+    const entryHtml = "<p><b>" + entries[i][0]+ "</b>: <span>" + entries[i][1]+ "</span></p>"
+    $('#task_queue_item_data').append(entryHtml);
+  }
+}
+
+addToTaskQueueActivityStream = function(kind, content, time, author) {
+  let streamIcon;
+  let stream;
+
+  if (kind === 'note') {
+    streamIcon = "fa fa-pencil";
+  } else if (kind === 'call') {
+    streamIcon = "fa fa-phone";
+  } else if (kind === "meeting") {
+    streamIcon = "fa fa-calendar";
+  } else {
+    streamIcon = "fa fa-circle";
+  }
+
+  stream = "<div class='stream'>" +
+    "<div class='stream-badge'>" +
+      "<i class='" + streamIcon + "'></i>" +
+    "</div>" +
+    "<div class='stream-panel'>" +
+      "<div class='stream-info'>" +
+        "<a href=''>" +
+          "<img src='/assets/a2-22c5f70142282015b1aa1e8611a895fed56efb2db0045afe0fa124d2a1973d3c.jpg' />" +
+          "<span>" + author + "</span>" +
+          "<span class='date'>" + moment(time).fromNow() + "</span>" +
+        "</a>" +
+      "</div>" +
+      content +
+    "</div>" +
+  "</div>";
+
+  $('#task-queue-record-activity-stream').append(stream);
+
+  if (kind === 'note') {
+    $('#task-queue-record-note-activity-stream').append(stream);
+  } else if (kind === 'call') {
+    $('#task-queue-record-call-activity-stream').append(stream);
+  } else {
+    $('#task-queue-record-meeting-activity-stream').append(stream);
+  }
+}
+
+updateTaskQueueItemFeed = function (data) {
+  const entries = Object.entries(data.activities)
+  $('#task-queue-record-activity-stream').empty();
+  $('#task-queue-record-note-activity-stream').empty();
+  $('#task-queue-record-call-activity-stream').empty();
+  $('#task-queue-record-meeting-activity-stream').empty();
+
+  for (var i = 0; i < entries.length; i++) {
+    addToTaskQueueActivityStream(entries[i][1].kind, entries[i][1].content, entries[i][1]["created_at"], data.author)
+  }
+}
+
+getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
+  let data = {};
+  let url = "/task_queues/" + taskQueueId + "/record";
+
+  data["task_queue_item_primary_key"] = taskQueueItemPrimaryKey;
+  data["task_queue_id"] = taskQueueId;
+
+  $.ajax({
+    url,
+    type: "GET",
+    data,
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+              window.toastr.error("Something went wrong, please try again.");
+           },
+    success(data){
+      updateTaskQueueItemData(data);
+      updateTaskQueueItemFeed(data);
+    }
+  });
+}
+
 applyOutcomeRule = function (outcome) {
   let table = $('#task-queue-item-modal').data('taskQueueTable');
   let primaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
@@ -308,11 +396,20 @@ loadEditPage = function () {
     $(document).on('click','.task-queue-item', function() {
       let taskQueueTable = $(this).parent().parent().data().taskQueueTable;
       let taskQueueItemPrimaryKey = $(this).data().taskQueueItemId;
+      let taskQueueId = $('#task-queue-item-modal').data().taskQueueId;
 
       $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
       $('#task-queue-item-modal').data('taskQueueItemPrimaryKey', taskQueueItemPrimaryKey);
       $('#task-queue-item-modal').modal({});
+
+      getTaskQueueItem(taskQueueId, taskQueueItemPrimaryKey)
     })
+
+    $("#task-queue-record-activity-form").submit( function() {
+      let taskQueueItemPrimaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
+      $(this).append("<input type='hidden' name='activity[feedable_id]' value='" + taskQueueItemPrimaryKey + "'/>");
+      return true;
+    });
 
     getOptionsForDraggable("users");
 

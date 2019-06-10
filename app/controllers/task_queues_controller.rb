@@ -3,7 +3,6 @@
 class TaskQueuesController < ApplicationController
   layout 'task_queue'
   before_action :load_available_tables
-  before_action :set_activities
 
   def index
     @task_queue = TaskQueue.new
@@ -15,6 +14,7 @@ class TaskQueuesController < ApplicationController
     repo = Kuwinda::Repository::TargetDB.new(table: @task_queue.table)
     result = repo.query(@task_queue.to_sql, 1)
     @row = result.first
+    @activity = Activity.new
   end
 
   def new; end
@@ -54,6 +54,13 @@ class TaskQueuesController < ApplicationController
     outcome.task_queue_item_primary_key = params['primary_key']
     outcome.task_queue_item_reappear_at = Time.now + task_queue_item_timeout.to_i.days
     outcome.save!
+  end
+
+  def record
+    @task_queue = TaskQueue.find(params[:id])
+    activities = Activity.where(feedable_type: @task_queue.table, feedable_id: params['task_queue_item_primary_key'])
+    data = build_data_for_record
+    render json: { row: data, activities: activities, author: current_admin_user.full_name }
   end
 
   private
@@ -135,14 +142,6 @@ class TaskQueuesController < ApplicationController
     build_response_for_preview(query)
   end
 
-  def set_activities
-    @activities = OpenStruct.new
-    @activities.all = []
-    @activities.calls = []
-    @activities.meetings = []
-    @activities.notes = []
-  end
-
   def time_to_reappear?(row)
     outcome = TaskQueueOutcome.where(task_queue_id: @task_queue.id, task_queue_item_primary_key: row['id']).first
 
@@ -154,5 +153,24 @@ class TaskQueuesController < ApplicationController
     else
       false
     end
+  end
+
+  def field_visible?(task_queue, field)
+    task_queue.draggable_fields.values.map { |f| f['title'] }.include?(field)
+  end
+
+  def build_data_for_record
+    repo = Kuwinda::Repository::TargetDB.new
+    repo.table = @task_queue.table
+    row = repo.find(params['task_queue_item_primary_key'])
+    record = {}
+
+    row.each do |k, v|
+      next unless field_visible?(@task_queue, k)
+
+      record[k] = v
+    end
+
+    record
   end
 end

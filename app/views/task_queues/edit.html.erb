@@ -33,9 +33,7 @@
               <%= @task_queue.details %>
             </p>
 
-            <div class="">
-              <p>Table: <span id="row-item-table"><%= @task_queue.name %></span></p>
-              <p>Primary key: <span id="row-item-primary-key"></span></p>
+            <div id="task_queue_item_data">
             </div>
 
             <div class="text-center" style="margin-top: 20px">
@@ -54,7 +52,7 @@
           <div class="col-sm-7" style="background-color: white;padding: 50px 25px;min-height: 500px">
             <h5>Activity history</h5>
             <hr>
-            <%= render 'shared/activity_history_task_queue_item', feedable_type: 'task_queue_item', feedable_id: @task_queue.id %>
+            <%= render 'shared/activity_history_task_queue_item', feedable_type: @task_queue.table %>
           </div>
         </div>
       </div>
