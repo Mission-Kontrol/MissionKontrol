@@ -3,7 +3,7 @@
 class TablesController < ApplicationController
   layout 'dashboard'
   before_action :authenticate_admin_user!,
-                :setup_demo_target_database,
+                # :setup_demo_target_database,
                 :set_target_db_repo,
                 :set_activities,
                 :set_current_table,

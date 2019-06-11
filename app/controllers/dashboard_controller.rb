@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 class DashboardController < ApplicationController
-  before_action :authenticate_admin_user!
-  before_action :setup_demo_target_database,
-                :test_target_db_connection,
-                :load_available_tables, only: [:show]
-  before_action :load_admin_db_config, only: [:show]
-  before_action :load_task_queues, only: [:show]
-  before_action :check_license, only: [:show]
-  skip_before_action :authenticate_admin_user!, only: %i[license verify_license]
+  before_action :authenticate_admin_user!, except: %i[license verify_license]
+  before_action :load_available_tables,
+                :load_admin_db_config,
+                :load_task_queues,
+                :check_license, only: [:show]
+
   layout 'license', only: %i[license verify_license]
 
   def show; end

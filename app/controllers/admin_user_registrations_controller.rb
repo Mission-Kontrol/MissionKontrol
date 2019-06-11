@@ -7,7 +7,6 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   protected
 
   def update_resource(resource, params)
-    test_target_db_connection
     resource.update_without_password(params)
   end
 
