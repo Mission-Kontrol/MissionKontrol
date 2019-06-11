@@ -38,7 +38,6 @@ Rails.application.routes.draw do
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
   resources :view_builder
-  resources :reports, only: %i[index]
   resources :activities, only: :create
 
   get 'dashboard', to: 'dashboard#show'
