@@ -13,7 +13,6 @@ Rails.application.routes.draw do
     root to: "dashboard#license"
   end
 
-  resources :admin_users, only: :index
   resources :task_queues, only: %i[index show new create edit update] do
     member do
       post 'outcome'
