@@ -15,6 +15,7 @@
     </div>
   </div>
 
+  <% if current_admin_user.twilio_setup_complete? && layout_builder.callable_fields.present? %>
   <div class="col-sm-4 twilio_dialer_buttons">
     <div class="row">
       <div class="col-sm-12">
@@ -22,6 +23,7 @@
       </div>
     </div>
   </div>
+  <% end %>
 </div>
 
 <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
