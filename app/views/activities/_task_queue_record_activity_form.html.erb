@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-sm-5 col-sm-offset-4">
         <div class="form-group">
-          <%= form.select(:kind, (Activity::KINDS - ["call"]).map { |i| [i, i] }, {:prompt => "Select type of activity"}, { class: "form-control" }) %>
+          <%= form.select(:kind, (Activity::KINDS - ["call", "meeting"]).map { |i| [i, i] }, {:prompt => "Select type of activity"}, { class: "form-control" }) %>
         </div>
       </div>
 
