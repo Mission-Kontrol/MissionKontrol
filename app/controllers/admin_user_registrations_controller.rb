@@ -54,15 +54,4 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   def after_update_path_for(_resource)
     dashboard_path
   end
-
-  def adapter(scheme)
-    case scheme
-    when 'postgresql', 'postgres'
-      return 'postgresql'
-    when 'mysql', 'mysql2'
-      return 'mysql2'
-    else
-      raise InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
-    end
-  end
 end

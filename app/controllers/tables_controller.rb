@@ -2,12 +2,13 @@
 
 class TablesController < ApplicationController
   layout 'dashboard'
+
   before_action :authenticate_admin_user!,
-                # :setup_demo_target_database,
                 :set_target_db_repo,
                 :set_activities,
                 :set_current_table,
                 :load_available_tables
+
   before_action :load_task_queues, only: %i[show preview]
 
   def show

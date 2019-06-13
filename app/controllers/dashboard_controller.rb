@@ -2,6 +2,7 @@
 
 class DashboardController < ApplicationController
   before_action :authenticate_admin_user!, except: %i[license verify_license]
+  
   before_action :load_available_tables,
                 :load_admin_db_config,
                 :load_task_queues,
