@@ -18,9 +18,7 @@
 
         <div class="col-sm-8 gray-bg min-height-100vh">
           <br>
-          <% if @activities %>
-            <%= render 'shared/activity_history_template', feedable_type: 'task_queue', feedable_id: @task_queue.id %>
-          <% end %>
+          <%= render 'shared/activity_history_template', feedable_type: 'task_queue', feedable_id: @task_queue.id %>
         </div>
       </div>
     </div>
