@@ -43,4 +43,12 @@ class ApplicationController < ActionController::Base
   def load_task_queues
     @task_queues = TaskQueue.all
   end
+
+  def set_activities
+    @activities = OpenStruct.new
+    @activities.all = []
+    @activities.calls = []
+    @activities.meetings = []
+    @activities.notes = []
+  end
 end

@@ -98,14 +98,6 @@ class TablesController < ApplicationController
     @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
   end
 
-  def set_activities
-    @activities = OpenStruct.new
-    @activities.all = []
-    @activities.calls = []
-    @activities.meetings = []
-    @activities.notes = []
-  end
-
   def set_activities_for_table
     feedable_type = @target_db_repo.table
     feedable_id = params[:record_id]

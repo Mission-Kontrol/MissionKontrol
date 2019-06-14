@@ -2,7 +2,7 @@
 
 class TaskQueuesController < ApplicationController
   layout 'task_queue'
-  before_action :load_available_tables
+  before_action :load_available_tables, :set_activities
 
   def index
     @task_queue = TaskQueue.new
