@@ -14,13 +14,17 @@ class ApplicationController < ActionController::Base
     redirect_to license_path unless license_valid?
   end
 
-
   def referred_from_demo?
     request.host_with_port == 'demo.kuwinda.io'
   end
 
   protected
 
+  def handle_invalid_client_db_error
+    @available_tables = []
+    @task_queues = []
+    render '/tables/bad_connection'
+  end
 
   def after_sign_in_path_for(resource)
     dashboard_path

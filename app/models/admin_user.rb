@@ -15,9 +15,9 @@ class AdminUser < ApplicationRecord
 
   def twilio_setup_complete?
     !twilio_account_sid.blank? &&
-    !twilio_auth_token.blank? &&
-    !twilio_application_sid.blank? &&
-    !twilio_caller_id.blank? 
+      !twilio_auth_token.blank? &&
+      !twilio_application_sid.blank? &&
+      !twilio_caller_id.blank?
   end
 
   def role

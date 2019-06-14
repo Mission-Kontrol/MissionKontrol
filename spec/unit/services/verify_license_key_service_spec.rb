@@ -59,7 +59,7 @@ describe VerifyLicenseKeyService do
       context 'and valid activation id' do
         let(:subject) { described_class.validate(trial_license_key, trial_license_activation_id, 'trial') }
 
-        xit "returns license key data" do
+        xit 'returns license key data' do
           VCR.use_cassette('license_key/validation_success') do
             expect(subject).to_not be_nil
           end
@@ -71,7 +71,7 @@ describe VerifyLicenseKeyService do
       context 'and valid activation id' do
         let(:subject) { described_class.validate(full_license_key, full_license_activation_id, 'full') }
 
-        xit "returns license key data" do
+        xit 'returns license key data' do
           VCR.use_cassette('license_key/validation_success') do
             expect(subject).to_not be_nil
           end
@@ -79,3 +79,4 @@ describe VerifyLicenseKeyService do
       end
     end
   end
+end

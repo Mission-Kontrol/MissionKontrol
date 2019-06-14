@@ -12,7 +12,7 @@ class VerifyLicenseKeyService
       validation = validate(license_key, activation, type)
       return license_key, activation if activation && validation
 
-      return nil, nil
+      [nil, nil]
     end
 
     def activate(license_key, type)
@@ -25,15 +25,7 @@ class VerifyLicenseKeyService
     def validate(license_key, activation_id, type)
       return nil unless activation_id
 
-      response = call('license_key_validate', license_key, activation_id: activation_id, type: type)
-
-      if response[:status] == 200
-        # cache_key = "license-#{user.license_key}"
-        # Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key }
-        response
-      else
-        nil
-      end
+      call('license_key_validate', license_key, activation_id: activation_id, type: type)
     end
 
     private
@@ -52,19 +44,5 @@ class VerifyLicenseKeyService
       message = response['message'] || response['errors']['license_key'].try(:first) || response['errors']['activation_id'].try(:first)
       { status: response['status'], message: message, data: response['data'] }
     end
-
-    # def activate_full_license(user)
-    #   response = call('license_key_activate', user, type: 'full')
-    #
-    #   if response[:status] == 200
-    #     user.update_attributes(
-    #       activation_id: response[:data]['activation_id'],
-    #       full_license: true
-    #     )
-    #     true
-    #   else
-    #     false
-    #   end
-    # end
   end
 end

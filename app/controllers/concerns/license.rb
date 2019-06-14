@@ -7,7 +7,7 @@ module License
 
   def verify_license!(license_key, type)
     license_key, activation_id = VerifyLicenseKeyService.verify(license_key, type)
-    return license_key, activation_id
+    [license_key, activation_id]
   end
 
   def fetch_license_cache(cache_key)
