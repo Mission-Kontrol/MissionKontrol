@@ -306,6 +306,14 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+.clickable-row:hover {
+  background-color: #eaeaea;
+}
+
+.footable-sortable:hover {
+  background-color: #eaeaea;
+}
+
 .toggle {
   margin-top: -3px;
   isolation: isolate;
