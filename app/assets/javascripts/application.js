@@ -22,3 +22,4 @@
 // = require draggable
 // = require layout_builder
 // = require task_queue_builder
+// = require table
