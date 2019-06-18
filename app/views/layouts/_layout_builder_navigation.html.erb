@@ -22,12 +22,6 @@
       <div class="tab-content" id="layout_builder_general_settings_form">
         <h4>General settings</h4>
 
-        <p class="hide">
-          <small>
-            Saved.
-          </small>
-        </p>
-
         <%= render 'general_settings_form' %>
       </div>
 
@@ -43,7 +37,7 @@
           <% if action_name == 'edit' %>
             <div class="light-border-bottom layout-builder-side-nav-available-table">
               <% primary_table = @view_builder.table_name %>
-              <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= primary_table %>>
+              <a href="#" class="layout_builder_selected_table_name" data-table-name="<%= primary_table %>" data-primary-table="<%= primary_table %>">
                 <strong><%= primary_table %></strong>
                 <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
               </a>
@@ -51,7 +45,7 @@
 
             <% @relatable_tables.each do |table| %>
               <div class="light-border-bottom layout-builder-side-nav-available-table">
-                <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= table %>>
+                <a href="#" class="layout_builder_selected_table_name" data-table-name="<%= table %>" data-primary-table="<%= primary_table %>">
                   <%= table %>
                   <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
                 </a>
@@ -69,10 +63,6 @@
               </div>
             <% end %>
           <% end %>
-
-          <br>
-          <div class="divider">
-          </div>
         </div>
 
         <div class="hide" id="layout_builder_field_settings_form_screen_2">
@@ -85,7 +75,23 @@
 
           <p>Drag fields to the containers on the right to update layout.</p>
 
+          <p>
+            You can add a related table by dragging ‘Create table’ to a new layout section.
+          </p>
+
+          <p>
+            You can show/hide and order columns in the layout view.
+          </p>
+
           <div class="light-border-bottom"></div>
+
+          <div class="layout_builder_drag_table hide" style="margin: 20px 0;padding: 10px 5px; background-color: #c2c2c2;">
+            <span><i class="fa fa-arrows fa-2x" aria-hidden="true"></i> Create table</span>
+          </div>
+
+          <br>
+          <p><b>Table fields available</b></p>
+          <br>
 
           <div id="layout-builder-draggable-fields-container">
           </div>
