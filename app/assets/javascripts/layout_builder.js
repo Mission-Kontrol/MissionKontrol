@@ -61,9 +61,21 @@ $(document).ready(function() {
 
     $('.layout_builder_selected_table_name').click(function(evt) {
       evt.preventDefault();
-      var table = $(this).data().tableName;
+      let clickedTable = $(this).data().tableName;
+      let primaryTable = $(this).data().primaryTable;
+      let header = "Fields / " + clickedTable;
+
+      $('#layout_builder_selected_table_name').html(header);
       showFieldSettingsFormScreen2();
       // rebuildDraggable(table);
+
+      // debugger
+
+      if (primaryTable != clickedTable) {
+        // show create related table button
+        console.log("primary table is not equal to clicked table");
+        $('.layout_builder_drag_table').removeClass('hide');
+      }
     })
 
     $('.layout_builder_field_settings_form_back_btn').click(function() {
@@ -187,12 +199,10 @@ function rebuildDraggable(table) {
   }
 
   rebuildDraggableDataContainers();
-  getOptionsForDraggable(table);
   let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
 
+  getOptionsForDraggable(table);
   addPaddingToDraggableItems(containers);
-
-  document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
   initializeDraggable();
 }
 
@@ -341,7 +351,6 @@ function goToPreviousScreen() {
 function showFieldSettingsFormScreen2() {
   $('#layout_builder_field_settings_form_screen_1').addClass('hide');
   $('#layout_builder_field_settings_form_screen_2').removeClass('hide');
-  $('.layout-builder-side-nav').css({ 'background-color': '#efefef' })
 }
 
 function showFieldSettingsFormScreen1() {
