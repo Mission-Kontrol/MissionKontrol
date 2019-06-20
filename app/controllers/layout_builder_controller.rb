@@ -86,10 +86,6 @@ class LayoutBuilderController < ApplicationController
     Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
 
-  def relatable_tables(table)
-    Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
-  end
-
   def field_params
     params.permit(:view_name, :table, selectedOptions: [])
   end

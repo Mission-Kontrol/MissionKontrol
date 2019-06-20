@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   rescue_from InvalidClientDatabaseError,
-              ActiveRecord::NoDatabaseError, :with => :handle_invalid_client_db_error
+              ActiveRecord::NoDatabaseError,
+              PG::ConnectionBad, :with => :handle_invalid_client_db_error
 
   def check_license
     redirect_to license_path unless license_valid?
@@ -50,5 +51,9 @@ class ApplicationController < ActionController::Base
     @activities.calls = []
     @activities.meetings = []
     @activities.notes = []
+  end
+
+  def relatable_tables(table)
+    Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
   end
 end
