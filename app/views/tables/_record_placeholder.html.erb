@@ -26,10 +26,10 @@
   <% end %>
 </div>
 
-<% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
+<div class="wrapper">
+  <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
           draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container2) &&
           draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container3) %>
-  <div class="wrapper">
     <div class="row m-t white-bg">
       <div class="col-sm-4">
         <div class="table-record-placeholder">
@@ -74,4 +74,10 @@
 
     <div class="clearfix"></div>
   </div>
+
+  <% @relatable_tables.each do |relative| %>
+    <div class="row white-bg m-t m-b">
+      <%= render 'related_table', hidden_columns: relative[:hidden_columns], current_table: relative[:name], headers:  relative[:headers], rows:  relative[:rows]%>
+    </div>
+  <% end %>
 </div>
