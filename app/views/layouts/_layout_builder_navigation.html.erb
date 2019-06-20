@@ -43,13 +43,15 @@
               </a>
             </div>
 
-            <% @relatable_tables.each do |table| %>
-              <div class="light-border-bottom layout-builder-side-nav-available-table">
-                <a href="#" class="layout_builder_selected_table_name" data-table-name="<%= table %>" data-primary-table="<%= primary_table %>">
-                  <%= table %>
-                  <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
-                </a>
-              </div>
+            <% if @relatable_tables %>
+              <% @relatable_tables.each do |table| %>
+                <div class="light-border-bottom layout-builder-side-nav-available-table">
+                  <a href="#" class="layout_builder_selected_table_name" data-table-name="<%= table %>" data-primary-table="<%= primary_table %>">
+                    <%= table %>
+                    <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+              <% end %>
             <% end %>
           <% end %>
 
@@ -85,13 +87,22 @@
 
           <div class="light-border-bottom"></div>
 
-          <div class="layout_builder_drag_table hide" style="margin: 20px 0;padding: 10px 5px; background-color: #c2c2c2;">
-            <span><i class="fa fa-arrows fa-2x" aria-hidden="true"></i> Create table</span>
+
+          <div id="draggable-list-of-relatable-tables">
+            <% if @relatable_tables %>
+              <% @relatable_tables.each do |relative| %>
+                <div class="layout_builder_drag_table hide" style="margin: 20px 0;padding: 10px 5px; background-color: #c2c2c2;">
+                  <span><i class="fa fa-arrows fa-2x" aria-hidden="true"></i> Create table - <%= relative %></span>
+                </div>
+              <% end %>
+            <% end %>
           </div>
 
-          <br>
-          <p><b>Table fields available</b></p>
-          <br>
+          <div id="layout-builder-draggable-fields-container-header">
+            <br>
+            <p><b>Table fields available</b></p>
+            <br>
+          </div>
 
           <div id="layout-builder-draggable-fields-container">
           </div>
