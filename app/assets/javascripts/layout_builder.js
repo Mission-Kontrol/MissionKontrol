@@ -39,6 +39,10 @@ $(document).ready(function() {
     })
   }
 
+  if (isCurrentControllerLayout && isCurrentActionEdit) {
+    dragula([document.querySelector('#draggable-list-of-relatable-tables'), document.querySelector('#droppable-list-of-relatable-tables')]);
+  }
+
   if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
     $('.layout-builder-nav-item').click(function(evt) {
       evt.preventDefault();
@@ -75,6 +79,11 @@ $(document).ready(function() {
         // show create related table button
         console.log("primary table is not equal to clicked table");
         $('.layout_builder_drag_table').removeClass('hide');
+        $('#layout-builder-draggable-fields-container').addClass('hide');
+        $('#layout-builder-draggable-fields-container-header').addClass('hide');
+      } else {
+        $('#layout-builder-draggable-fields-container-header').removeClass('hide');
+        $('#layout-builder-draggable-fields-container').removeClass('hide');
       }
     })
 
