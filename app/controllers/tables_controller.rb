@@ -10,6 +10,7 @@ class TablesController < ApplicationController
                 :load_available_tables
 
   before_action :load_task_queues, only: %i[show preview]
+  before_action :set_relatable_tables, only: %i[preview]
 
   def show
     sql_result = @target_db_repo.all
@@ -164,5 +165,24 @@ class TablesController < ApplicationController
 
   def set_current_table
     @current_table = params[:table]
+  end
+
+  def set_relatable_tables
+    @relatable_tables = []
+
+    relatable_tables(@current_table).each do |table|
+      relative = {}
+      @target_db_repo.table = table
+      foreign_key_title = helpers.get_foreign_key(@current_table)
+      foreign_key_value = params[:record_id]
+      sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value)
+      relative[:headers] = sql_result ? sql_result.columns : []
+      relative[:rows] = sql_result ? sql_result.to_hash : []
+      relative[:hidden_columns] = []
+      relative[:name] = table
+      @relatable_tables << relative
+    end
+
+    @relatable_tables
   end
 end
