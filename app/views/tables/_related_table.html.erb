@@ -1,0 +1,49 @@
+<div class="row space-20">
+  <div class="col-sm-12">
+    <h3><%= current_table.humanize %></h3>
+  </div>
+  <div class="col-xs-7 col-sm-8 col-md-9 col-lg-9" style="padding: 10px;">
+    <div id="filter-form-container-<%= current_table %>"></div>
+  </div>
+
+  <div class="col-xs-5 col-sm-4 col-md-3 col-lg-3 text-right">
+    <% if table_has_layout?(current_table) %>
+      <div class="column-visibility-settings-modal-trigger-wrapper">
+        <a href="#" data-toggle="modal" data-target="#column-visibility-settings-modal" id="column-visibility-settings-modal-trigger" class="btn btn-default">
+          <i class="fa fa-columns" aria-hidden="true"></i> Columns
+        </a>
+      </div>
+    <% end %>
+    <button class="btn btn-warning excelexport btn-md" type="button">export CSV</button>
+  </div>
+</div>
+
+<div class="table-responsive" >
+  <table id="target-table-<%= current_table.downcase %>" class="footable table" data-filter-container="#filter-form-container-<%= current_table %>" data-filtering="true"  data-sorting="true" data-paging="true" data-table-name='<%= current_table %>' data-filter-position="left">
+    <thead>
+      <tr>
+        <% headers.each do |header|%>
+          <% @column_is_hidden = hidden_columns.include?(header) %>
+
+          <% if @column_is_hidden %>
+            <th class='column-<%= header %> hide'><%= header.humanize %></th>
+          <% else %>
+            <th class='column-<%= header %>'><%= header.humanize %></th>
+          <% end %>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% rows.each do |r|%>
+        <tr class="clickable-row" data-href='<%= table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>'>
+          <% if table_has_layout?(current_table) %>
+            <%= render 'related_table_with_layout', r: r, hidden_columns: hidden_columns %>
+          <% else %>
+            <%= render 'table_without_layout', r: r, hidden_columns: hidden_columns %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
