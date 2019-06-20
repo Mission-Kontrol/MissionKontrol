@@ -43,7 +43,7 @@
         <ul class="nav nav-second-level collapse">
           <% @available_tables.each do |t| %>
             <li class="">
-              <%= link_to t, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
+              <%= link_to t.humanize, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
             </li>
           <% end %>
         </ul>
@@ -85,13 +85,6 @@
         <%= link_to edit_admin_user_registration_path do %>
           <i class="fa fa-sliders"></i>
           <span class="nav-label" data-i18n="nav.layouts">Settings</span>
-        <% end %>
-      </li>
-
-      <li class="<%= active_controller?('reports') %> hide">
-        <%= link_to reports_path do %>
-          <i class="fa fa-file-text-o"></i>
-          <span class="nav-label" data-i18n="nav.layouts">Reports</span>
         <% end %>
       </li>
     </ul>

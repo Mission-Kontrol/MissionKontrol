@@ -10,10 +10,9 @@ Rails.application.routes.draw do
   )
 
   devise_scope :admin_user do
-    root to: "admin_user_registrations#new"
+    root to: "dashboard#license"
   end
 
-  resources :admin_users, only: :index
   resources :task_queues, only: %i[index show new create edit update] do
     member do
       post 'outcome'
@@ -38,7 +37,6 @@ Rails.application.routes.draw do
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
   resources :view_builder
-  resources :reports, only: %i[index]
   resources :activities, only: :create
 
   get 'dashboard', to: 'dashboard#show'

@@ -1,7 +1,7 @@
 <%= form_tag("/license/verify", method: "post") do %>
   <div class="form-group">
     <%= label_tag(:q, "License key:") %>
-    <%= text_field_tag(:license_key, '', {class: 'form-control'}) %>
+    <%= text_field_tag(:license_key, '', {class: 'form-control', required: true}) %>
   </div>
 
   <p>

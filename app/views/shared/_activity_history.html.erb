@@ -1,8 +1,11 @@
+<h3>Activity History</h3>
+
+<hr>
+
 <div class="tabs-container">
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#tab-1">All</a></li>
     <li class=""><a data-toggle="tab" href="#tab-2">Calls</a></li>
-    <li class=""><a data-toggle="tab" href="#tab-3">Meetings</a></li>
     <li class=""><a data-toggle="tab" href="#tab-4">Notes</a></li>
   </ul>
 
@@ -19,7 +22,7 @@
           <% end %>
         </div>
 
-        <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
+        <button type="button" class="btn btn-block btn-primary margin-top-20 hide" disabled>Show more</button>
       </div>
     </div>
 
@@ -30,20 +33,6 @@
             <%= render 'shared/activity_stream', activities: @activities.calls %>
           <% else %>
             <p class="default-message">No calls has been recored for this <%= feedable_type %>.</p>
-          <% end %>
-        </div>
-
-        <button type="button" class="btn btn-block btn-primary margin-top-20" disabled>Show more</button>
-      </div>
-    </div>
-
-    <div id="tab-3" class="tab-pane activity-tab-for-meetings">
-      <div class="panel-body">
-        <div class="activity-stream">
-          <% if @activities.meetings.size > 0 %>
-            <%= render 'shared/activity_stream', activities: @activities.meetings %>
-          <% else %>
-            <p class="default-message">No meetings has been recored for this <%= feedable_type %>.</p>
           <% end %>
         </div>
 

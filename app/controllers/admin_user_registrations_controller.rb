@@ -2,14 +2,11 @@
 
 class AdminUserRegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
-  skip_before_action :check_license, :only => %i[new create]
-
   layout 'application', only: [:new]
 
   protected
 
   def update_resource(resource, params)
-    test_target_db_connection
     resource.update_without_password(params)
   end
 
@@ -38,6 +35,9 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   def configure_permitted_parameters
     db_params = permitted_admin_db_params + permitted_target_db_params
     keys = %w[
+      license_key
+      activation_id
+      full_license
       first_name
       last_name
       company_name
@@ -53,16 +53,5 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   def after_update_path_for(_resource)
     dashboard_path
-  end
-
-  def adapter(scheme)
-    case scheme
-    when 'postgresql', 'postgres'
-      return 'postgresql'
-    when 'mysql', 'mysql2'
-      return 'mysql2'
-    else
-      raise InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
-    end
   end
 end

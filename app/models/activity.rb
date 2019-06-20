@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Activity < ApplicationRecord
-  KINDS = %w[note meeting call].freeze
+  KINDS = %w[note call].freeze
   FEEDABLE_TYPES = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
 
   validates :content, presence: true

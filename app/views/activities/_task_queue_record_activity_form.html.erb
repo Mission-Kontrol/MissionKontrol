@@ -6,18 +6,13 @@
 
     <div class="form-group">
       <%= form.hidden_field :feedable_type, id: :feedable_type, value: feedable_type  %>
+      <%= form.hidden_field :kind, value: 'note'  %>
     </div>
 
     <div class="row">
-      <div class="col-sm-5 col-sm-offset-4">
-        <div class="form-group">
-          <%= form.select(:kind, (Activity::KINDS - ["call"]).map { |i| [i, i] }, {:prompt => "Select type of activity"}, { class: "form-control" }) %>
-        </div>
-      </div>
-
-      <div class="col-sm-3">
-        <div class="actions">
-          <%= form.submit 'Save', class: 'btn btn-primary width-100', id: 'task-queue-record-activity-submit' %>
+      <div class="col-sm-12">
+        <div class="actions text-right">
+          <%= form.submit 'Save', class: 'btn btn-primary', id: 'task-queue-record-activity-submit' %>
         </div>
       </div>
     </div>

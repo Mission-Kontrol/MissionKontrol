@@ -2,12 +2,13 @@
 
 class TablesController < ApplicationController
   layout 'dashboard'
+
   before_action :authenticate_admin_user!,
-                :setup_demo_target_database,
                 :set_target_db_repo,
                 :set_activities,
                 :set_current_table,
                 :load_available_tables
+
   before_action :load_task_queues, only: %i[show preview]
 
   def show
@@ -95,14 +96,6 @@ class TablesController < ApplicationController
 
   def set_target_db_repo
     @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
-  end
-
-  def set_activities
-    @activities = OpenStruct.new
-    @activities.all = []
-    @activities.calls = []
-    @activities.meetings = []
-    @activities.notes = []
   end
 
   def set_activities_for_table
