@@ -7,7 +7,8 @@ class TablesController < ApplicationController
                 :set_target_db_repo,
                 :set_activities,
                 :set_current_table,
-                :load_available_tables
+                :load_available_tables,
+                :check_license
 
   before_action :load_task_queues, only: %i[show preview]
   before_action :set_relatable_tables, only: %i[preview]
@@ -170,7 +171,9 @@ class TablesController < ApplicationController
   def set_relatable_tables
     @relatable_tables = []
 
+
     relatable_tables(@current_table).each do |table|
+      layout = ViewBuilder.find_by_table_name(table)
       relative = {}
       @target_db_repo.table = table
       foreign_key_title = helpers.get_foreign_key(@current_table)
@@ -178,7 +181,7 @@ class TablesController < ApplicationController
       sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value)
       relative[:headers] = sql_result ? sql_result.columns : []
       relative[:rows] = sql_result ? sql_result.to_hash : []
-      relative[:hidden_columns] = []
+      relative[:hidden_columns] = table_has_layout?(table) ? layout.hidden_columns : []
       relative[:name] = table
       @relatable_tables << relative
     end
