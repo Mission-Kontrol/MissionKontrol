@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   get 'layouts/table_fields_with_type', to: 'layout_builder#table_fields_with_type'
   resources :layout_builder, as: "layouts", path: 'layouts'
   get 'layouts/:id/preview', to: 'layout_builder#preview', as: 'layout_builder_preview'
+  patch 'layouts/:id/related_tables', to: 'layout_builder#update_related_tables', as: 'update_related_tables'
+  patch 'layouts/:id/related_tables/remove', to: 'layout_builder#remove_related_table', as: 'remove_related_table'
 
   get 'view_builder/table_fields', to: 'view_builder#table_fields'
   get 'view_builder/view', to: 'view_builder#view_page'
