@@ -10,37 +10,15 @@
   </head>
 
   <body>
-
-    <!-- Skin configuration box -->
-
-    <!-- Wrapper-->
     <div id="wrapper" class="<%= params[:controller] %>.<%= params[:action] %> ">
-
-      <!-- Navigation -->
       <%= render 'layouts/navigation' %>
-
-      <!-- Page wraper -->
-      <div id="page-wrapper" class="gray-bg <%= @extra_class %> ">
-
+      <div id="page-wrapper" class="gray-bg <%= @extra_class %>">
         <%= render 'shared/flash_message' %>
-
-        <!-- Page wrapper -->
         <%= render 'layouts/topnavbar' %>
-
-        <!-- Main view  -->
         <%= yield %>
-
-        <!-- Footer -->
         <%= render 'layouts/footer' %>
-
       </div>
-      <!-- End page wrapper-->
-
-      <!-- Right sidebar -->
-      <%= render 'layouts/rightsidebar' %>
-
     </div>
-    <!-- End wrapper-->
 
     <div id="natterly-container"></div>
 

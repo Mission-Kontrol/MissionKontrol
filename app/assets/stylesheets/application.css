@@ -41,6 +41,10 @@
   background-color: inherit;
 }
 
+#page-wrapper {
+  padding-bottom: 50px;
+}
+
 /*
   helper classes
 */
