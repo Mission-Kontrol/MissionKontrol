@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190605164115) do
+ActiveRecord::Schema.define(version: 20190620170803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20190605164115) do
     t.jsonb "draggable_fields_main_container3", default: []
     t.jsonb "hidden_columns", default: []
     t.jsonb "callable_fields", default: []
+    t.jsonb "related_tables", default: []
   end
 
   create_table "work_lists", force: :cascade do |t|
