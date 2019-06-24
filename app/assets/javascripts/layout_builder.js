@@ -45,7 +45,7 @@ $(document).ready(function() {
 
     drake.on('drop', (el) => {
       // TODO:
-      // save relatable table or remove related table based on container name 
+      // save relatable table or remove related table based on container name
       updateLayoutRelatedTables(el);
     })
   }
@@ -94,7 +94,8 @@ $(document).ready(function() {
       }
     })
 
-    $('.layout_builder_field_settings_form_back_btn').click(function() {
+    $('.layout_builder_field_settings_form_back_btn').click(function(e) {
+      e.preventDefault();
       showFieldSettingsFormScreen1();
     })
 
