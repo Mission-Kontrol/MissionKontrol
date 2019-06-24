@@ -1,3 +1,5 @@
+<%= render 'column_settings_modal', columns: headers, hidden_columns: hidden_columns  %>
+
 <div class="row space-20">
   <div class="col-sm-12">
     <h3><%= current_table.humanize %></h3>
@@ -14,6 +16,7 @@
         </a>
       </div>
     <% end %>
+
     <button class="btn btn-warning excelexport btn-md" type="button">export CSV</button>
   </div>
 </div>

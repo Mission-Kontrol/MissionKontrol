@@ -1,41 +1,45 @@
-<div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-lg-10">
-    <h2><%= @current_table.capitalize %></h2>
+<div class="wrapper white-bg page-heading m-b">
+  <div class="row">
+    <div class="col-lg-10">
+      <h2><%= @current_table.capitalize %></h2>
 
-    <ol class="breadcrumb">
-      <li class="">
-        <span>Tables</span>
-      </li>
+      <ol class="breadcrumb">
+        <li class="">
+          <span>Tables</span>
+        </li>
 
-      <li class="">
-        <%= link_to @current_table.capitalize, table_path(table: @current_table, id: @current_table.downcase) %>
-      </li>
+        <li class="">
+          <%= link_to @current_table.capitalize, table_path(table: @current_table, id: @current_table.downcase) %>
+        </li>
 
-      <li class="active">
-        <span><%= @row["id"] %></span>
-      </li>
-    </ol>
+        <li class="active">
+          <span><%= @row["id"] %></span>
+        </li>
+      </ol>
+    </div>
+
+    <% if @layout_builder %>
+      <div class="col-lg-2">
+        <div class="text-right" style='padding: 30px 0 0 0'>
+          <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-outline btn-primary edit-layout-btn" }) %>
+        </div>
+      </div>
+    <% end %>
   </div>
+</div>
 
+<div>
   <% if @layout_builder %>
-    <div class="col-lg-2">
-      <div class="text-right" style='padding: 30px 0 0 0'>
-        <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-outline btn-primary edit-layout-btn" }) %>
+    <div class="m-t">
+      <%= render 'record_placeholder', layout_builder: @layout_builder %>
+    </div>
+  <% else %>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="row">
+        <div class="col-lg-4">
+          <%= render 'record_summary' %>
+        </div>
       </div>
     </div>
   <% end %>
 </div>
-
-<% if @layout_builder %>
-  <div class="m-t">
-    <%= render 'record_placeholder', layout_builder: @layout_builder %>
-  </div>
-<% else %>
-  <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-      <div class="col-lg-4">
-        <%= render 'record_summary' %>
-      </div>
-    </div>
-  </div>
-<% end %>
