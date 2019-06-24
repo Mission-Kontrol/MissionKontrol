@@ -57,9 +57,11 @@
 <div class="row m-b white-bg">
   <div class="col-sm-12">
     <div class="layout-placeholder" id="droppable-list-of-relatable-tables">
-      <p class="text-center">
-        Related tables | droppable-list-of-relatable-tables
-      </p>
+      <% @view_builder.related_tables.each do |relative| %>
+        <div class="droppable-list-item-for-relatable-table" style="" data-table="<%= relative %>">
+          <span><i class="fa fa-arrows fa-2x" aria-hidden="true"></i> Create table - <%= relative %></span>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
