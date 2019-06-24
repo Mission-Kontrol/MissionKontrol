@@ -44,8 +44,7 @@ $(document).ready(function() {
     drake = dragula([document.querySelector('#draggable-list-of-relatable-tables'), document.querySelector('#droppable-list-of-relatable-tables')]);
 
     drake.on('drop', (el) => {
-      // TODO:
-      // save relatable table or remove related table based on container name
+      $(el).find(".remove-related-table").removeClass("hide")
       updateLayoutRelatedTables(el);
     })
   }
@@ -72,25 +71,25 @@ $(document).ready(function() {
 
     $('.layout_builder_selected_table_name').click(function(evt) {
       evt.preventDefault();
+      $(".related-table-notice").addClass('hide');
+      $(".draggable-related-table").addClass('hide');
+
       let clickedTable = $(this).data().tableName;
+      let clickedTableClass = ".draggable-related-table-for-" + clickedTable;
       let primaryTable = $(this).data().primaryTable;
       let header = "Fields / " + clickedTable;
 
       $('#layout_builder_selected_table_name').html(header);
       showFieldSettingsFormScreen2();
-      // rebuildDraggable(table);
+      rebuildDraggable(clickedTable);
 
-      // debugger
-
-      if (primaryTable != clickedTable) {
-        // show create related table button
-        console.log("primary table is not equal to clicked table");
-        $('.layout_builder_drag_table').removeClass('hide');
-        $('#layout-builder-draggable-fields-container').addClass('hide');
-        $('#layout-builder-draggable-fields-container-header').addClass('hide');
-      } else {
-        $('#layout-builder-draggable-fields-container-header').removeClass('hide');
-        $('#layout-builder-draggable-fields-container').removeClass('hide');
+      if (clickedTable != primaryTable) {
+        $(".related-table-notice").removeClass('hide');
+        $(clickedTableClass).removeClass('hide');
+        setTimeout(function(){
+          $("#layout-builder-draggable-fields-container .layout-builder-draggable-field" ).css( 'background-color', '#c2c2c2' );
+          $("#layout-builder-draggable-fields-container .layout-builder-draggable-field" ).css( 'pointer-events', 'none' );
+        }, 2000);
       }
     })
 
@@ -356,49 +355,17 @@ function saveLayout(name, primaryTable) {
 }
 
 function updateLayoutRelatedTables(el) {
-  // let relatedTable = el.dataset.table;
-  // let relatedTablesContainer = $("droppable-list-of-relatable-tables");
   let data = {};
   let layoutID = location.pathname.split("/")[2];
   data['related_table'] = el.dataset.table;
-
-  // save list
-
-
-
-
-  // var layoutID;
-  // var redirectURL;
-
-  // create list of existing related tables
-  // for (var i = 0; i < relatedTablesContainer.length; i++) {
-  //   let relative = relatedTablesContainer[i]
-  //   debugger
-  //   data['relatedTables'].push(relative.dataset.table)
-  // }
-  //
-  // // add el to list
-  // data['relatedTables'].push(el.dataset.table)
-  //
-  //
-  //
-  // debugger
-
-
 
   $.ajax({
     url: "/layouts/" + layoutID + "/related_tables",
     type: 'PATCH',
     data,
     error: function(XMLHttpRequest, errorTextStatus, error){
-              alert("Failed: "+ errorTextStatus+" ;"+error);
-           }
-           // ,
-    // success: function(response, status, request){
-    //   layoutID = response.id;
-    //   redirectURL = "/layouts/" + layoutID + "/edit";
-    //   window.location.replace(redirectURL);
-    // }
+      alert("Failed: "+ errorTextStatus+" ;"+error);
+     }
   })
 }
 
@@ -642,6 +609,25 @@ function updateCallableFields() {
     },
     success: function(response, status, request){
       console.log("PATCH /layouts/:id Success")
+    }
+  })
+}
+
+function removeRelatedTable() {
+  let clickedTable = event.target.parentElement.parentElement;
+  let data = {};
+  let layoutID = location.pathname.split("/")[2];
+  data['related_table'] = clickedTable.dataset.table;
+
+  $.ajax({
+    url: "/layouts/" + layoutID + "/related_tables/remove",
+    type: 'PATCH',
+    data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+        alert("Failed: "+ errorTextStatus+" ;"+error);
+     },
+    success: function(response, status, request){
+      clickedTable.remove();
     }
   })
 }
