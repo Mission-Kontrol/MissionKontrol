@@ -72,10 +72,10 @@ $(document).ready(function() {
     $('.layout_builder_selected_table_name').click(function(evt) {
       evt.preventDefault();
       $(".related-table-notice").addClass('hide');
-      $(".draggable-related-table").addClass('hide');
+      $(".draggable-list-item-for-relatable-table").addClass('hide');
 
       let clickedTable = $(this).data().tableName;
-      let clickedTableClass = ".draggable-related-table-for-" + clickedTable;
+      let clickedTableClass = ".draggable-list-item-for-" + clickedTable;
       let primaryTable = $(this).data().primaryTable;
       let header = "Fields / " + clickedTable;
 
