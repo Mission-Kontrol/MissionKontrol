@@ -1,5 +1,6 @@
 var draggable;
 var slider;
+var drake;
 
 $(document).ready(function() {
   let metaTag = $('meta[name=psj]');
@@ -40,7 +41,13 @@ $(document).ready(function() {
   }
 
   if (isCurrentControllerLayout && isCurrentActionEdit) {
-    dragula([document.querySelector('#draggable-list-of-relatable-tables'), document.querySelector('#droppable-list-of-relatable-tables')]);
+    drake = dragula([document.querySelector('#draggable-list-of-relatable-tables'), document.querySelector('#droppable-list-of-relatable-tables')]);
+
+    drake.on('drop', (el) => {
+      // TODO:
+      // save relatable table or remove related table based on container name 
+      updateLayoutRelatedTables(el);
+    })
   }
 
   if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
@@ -344,6 +351,53 @@ function saveLayout(name, primaryTable) {
       redirectURL = "/layouts/" + layoutID + "/edit";
       window.location.replace(redirectURL);
     }
+  })
+}
+
+function updateLayoutRelatedTables(el) {
+  // let relatedTable = el.dataset.table;
+  // let relatedTablesContainer = $("droppable-list-of-relatable-tables");
+  let data = {};
+  let layoutID = location.pathname.split("/")[2];
+  data['related_table'] = el.dataset.table;
+
+  // save list
+
+
+
+
+  // var layoutID;
+  // var redirectURL;
+
+  // create list of existing related tables
+  // for (var i = 0; i < relatedTablesContainer.length; i++) {
+  //   let relative = relatedTablesContainer[i]
+  //   debugger
+  //   data['relatedTables'].push(relative.dataset.table)
+  // }
+  //
+  // // add el to list
+  // data['relatedTables'].push(el.dataset.table)
+  //
+  //
+  //
+  // debugger
+
+
+
+  $.ajax({
+    url: "/layouts/" + layoutID + "/related_tables",
+    type: 'PATCH',
+    data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+              alert("Failed: "+ errorTextStatus+" ;"+error);
+           }
+           // ,
+    // success: function(response, status, request){
+    //   layoutID = response.id;
+    //   redirectURL = "/layouts/" + layoutID + "/edit";
+    //   window.location.replace(redirectURL);
+    // }
   })
 }
 
