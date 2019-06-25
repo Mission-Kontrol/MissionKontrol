@@ -58,11 +58,11 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
 
   def update_target_db_connection
     ActiveRecord::Base.establish_connection(
-       :adapter  => adapter_for_db(current_admin_user.target_database_type),
-       :host     => current_admin_user.target_database_host,
-       :username => current_admin_user.target_database_username,
-       :password => current_admin_user.target_database_password,
-       :database => current_admin_user.target_database_name
-     ).connection
+      :adapter  => adapter_for_db(current_admin_user.target_database_type),
+      :host     => current_admin_user.target_database_host,
+      :username => current_admin_user.target_database_username,
+      :password => current_admin_user.target_database_password,
+      :database => current_admin_user.target_database_name
+    ).connection
   end
 end

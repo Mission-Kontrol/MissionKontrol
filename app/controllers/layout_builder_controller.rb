@@ -57,7 +57,7 @@ class LayoutBuilderController < ApplicationController
 
   def remove_related_table
     @layout = ViewBuilder.find(params[:id])
-    @layout.related_tables = @layout.related_tables - [params["related_table"]]
+    @layout.related_tables = @layout.related_tables - [params['related_table']]
 
     if @layout.save
       respond_to do |format|
