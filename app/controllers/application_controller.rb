@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
     dashboard_path
   end
 
+  def after_sign_out_path_for(resource_or_scope)
+    new_admin_user_session_path
+  end
+
   def list_table_fields_with_type(table)
     Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
   end
