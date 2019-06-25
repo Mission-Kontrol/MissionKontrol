@@ -11,11 +11,11 @@ module License
   end
 
   def validate_trial_license
-    VerifyLicenseKeyService.validate(current_admin_user.license_key, current_admin_user.activation_id, "trial")
+    VerifyLicenseKeyService.validate(current_admin_user.license_key, current_admin_user.activation_id, 'trial')
   end
 
   def validate_full_license
-    VerifyLicenseKeyService.validate(current_admin_user.license_key, current_admin_user.activation_id, "full")
+    VerifyLicenseKeyService.validate(current_admin_user.license_key, current_admin_user.activation_id, 'full')
   end
 
   def fetch_license_cache(cache_key)
