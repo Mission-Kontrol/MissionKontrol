@@ -7,7 +7,7 @@ set -e
 # The basic directory structure:
 case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
     darwin) CFG_DIR="/Users/kuwinda" ;;
-    linux) CFG_DIR="/opt/.kuwinda" ;;
+    linux) CFG_DIR="/opt/kuwinda" ;;
 esac
 export CFG_DIR
 export LOG_DIR="$CFG_DIR/logs"
@@ -168,9 +168,14 @@ function configure_runtime() {
     #
     # Creates required configuration files.
     #
-    mkdir -p "$CFG_DIR" "$LOG_DIR" "$SSL_DIR"
-    [[ -n "$SSL_CERT_FILE" ]] && { cp -af "$SSL_CERT_FILE" "$SSL_DIR/certificate.pem"; chmod 0400 "$SSL_DIR/certificate.pem"; }
-    [[ -n "$SSL_CERT_KEY" ]] && { cp -af "$SSL_CERT_KEY" "$SSL_DIR/private.key"; chmod 0400 "$SSL_DIR/private.key"; }
+    mkdir -p "$CFG_DIR"
+    case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
+        linux) mkdir -p "$LOG_DIR" "$SSL_DIR" ;;
+    esac
+    # For Mac OS X, log/ and ssl/ directories will not be shared from host
+    # and thus self-signed ssl certificate will be re-generated each time web container is recreated
+    [[ -n "$SSL_CERT_FILE" ]] && { cp -af "$SSL_CERT_FILE" "$SSL_DIR/certificate.pem"; chmod 0444 "$SSL_DIR/certificate.pem"; }
+    [[ -n "$SSL_CERT_KEY" ]] && { cp -af "$SSL_CERT_KEY" "$SSL_DIR/private.key"; chmod 0444 "$SSL_DIR/private.key"; }
 
     [[ "$EXPOSE_PORT" =~ ^(.*):(.*)$ ]] || EXPOSE_PORT="80:443"
     local HTTP_PORT=${EXPOSE_PORT%%:*}
@@ -181,18 +186,18 @@ function configure_runtime() {
     if [ ! -f "$CFG_DIR/.db.env" -o ! -f "$CFG_DIR/.app.env" ]; then
         local RANDOM_PASSWORD=$(gen_passwd 12)
 
-        cat<<_EOF_ >"$CFG_DIR/.db.env"
+        cat<<_EOF_ >"$CFG_DIR/db.env"
 POSTGRES_USER=kuwinda
 POSTGRES_PASSWORD=$RANDOM_PASSWORD
 _EOF_
-        cat<<_EOF_ >"$CFG_DIR/.app.env"
+        cat<<_EOF_ >"$CFG_DIR/app.env"
 KUWINDA_DATABASE_USER=kuwinda
 KUWINDA_DATABASE_PASSWORD=$RANDOM_PASSWORD
 KUWINDA_DATABASE_PORT=5432
 KUWINDA_DATABASE_SETUP=true
 KUWINDA_DATABASE_TIMEOUT=90s
 _EOF_
-        chmod 0644 "$CFG_DIR/.db.env" "$CFG_DIR/.app.env"
+        chmod 0644 "$CFG_DIR/db.env" "$CFG_DIR/app.env"
     fi
 
     # Create compose file, if it does not exist.
@@ -204,11 +209,10 @@ services:
   db:
     image: $DB_IMAGE
     env_file:
-      - $CFG_DIR/.db.env
+      - $CFG_DIR/db.env
     networks:
       - internal
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - postgres-data:/var/lib/postgresql/data
     restart: always
 
@@ -218,7 +222,7 @@ services:
     depends_on:
       - db
     env_file:
-      - $CFG_DIR/.app.env
+      - $CFG_DIR/app.env
     environment:
       KUWINDA_DATABASE_HOST: db
       WEB_SERVER_ENABLE: "true"
@@ -232,10 +236,7 @@ services:
       - "${HTTP_PORT}:${HTTP_PORT}"
       - "${HTTPS_PORT}:${HTTPS_PORT}"
     restart: always
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - $LOG_DIR:/app/log
-      - $SSL_DIR:/etc/nginx/ssl
+    # web volumes
 
 volumes:
   postgres-data:
@@ -248,6 +249,9 @@ networks:
         - subnet: 172.16.0.0/28
 _EOF_
     fi
+    case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
+        linux) sed -i "/web volumes/a\    volumes:\n      - $LOG_DIR:/app/log\n      - $SSL_DIR:/etc/nginx/ssl" "$CFG_DIR/$CMP_FILE"
+    esac
 
     echo -e " [\e[1;37mINFO\e[0m] :: Configuration files has been created."
 }

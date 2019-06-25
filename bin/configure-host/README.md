@@ -2,6 +2,7 @@
 
 The Bash script that automate and simplify Kuwinda server configuration.
 
+
 ## Script Options
 
 ```bash
@@ -24,6 +25,7 @@ The Bash script that automate and simplify Kuwinda server configuration.
 ```
 
 **NOTE:** The script supports short (`-`) and long (`--`) options, which in most cases cane be used interchangeably at the same time. However, some systems do not support this, so in the case of problems with the use of the script you will need to try to use only short (`-`) or long (`--`) options.
+
 
 ## Usage
 
@@ -56,6 +58,7 @@ sudo ./auto-install.sh --run --ports 8080:8443 --use_https --ssl_cert my_cert.pe
 sudo ./auto-install.sh -r -p 8080:8443 -e -c my_cert.pem -k my_cert.key
 ```
 
+
 ## Supported systems
 
 The `auto-install.sh` script has been tested for the following Linux distributions:
@@ -67,3 +70,9 @@ The `auto-install.sh` script has been tested for the following Linux distributio
 * Amazon Linux OS 1 (2018.03), 2
 * any Linux OS with [pre-installed](https://docs.docker.com/install/) docker engine (CE or EE)
 * Mac OS X with [pre-installed](https://docs.docker.com/docker-for-mac/install/) docker engine (CE or EE)
+
+### Mac OS X
+
+The configuration in the case of Mac OS X is slightly different from the configuration for Linux OS.
+
+In this case, no `log/` and `ssl/` directories are shared from the host with the application container. It means that at this moment, the application container will only use self-signed SSL certificate that will be re-generated each time the container is recreated.
