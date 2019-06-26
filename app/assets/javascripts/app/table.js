@@ -1,4 +1,26 @@
 $(document).ready(function() {
+  $('.data-table').DataTable({
+      colReorder: true,
+      "deferRender": true,
+      "autoWidth": false,
+      "scrollX": true,
+      "ajax": '/' + (location.pathname+location.search).substr(1),
+      dom: 'Bfrtip',
+      "createdRow": function( row, data, dataIndex ) {
+        let table = $(this).data('table-name');
+        let id = data[0];
+        let previewUrl = '/tables/' + table + '/' + id + '?table=' + table;
+        $(row).addClass( 'clickable-row' );
+        $(row).attr( 'data-href',  previewUrl);
+      },
+      buttons: [
+        {
+          extend: 'csv',
+          className: 'btn btn-warning',
+        }
+      ]
+  });
+
   $('.hidden-column-checkbox').change(function() {
     let columnName = this.value;
     let hiddenColumns = [];
@@ -38,6 +60,8 @@ function hideColumn(columnName) {
   let data = {};
   let columnData = {};
 
+  var tb = document.getElementById("target-table-" + tableName);
+
   columnData['column'] = columnName
   data["view_builder"] = {};
   data["view_builder"]["hidden_columns"] = columnData;
@@ -51,6 +75,10 @@ function hideColumn(columnName) {
     },
     success: function(response, status, request){
       $(columnClass).addClass('hide');
+
+      // tb.getElementsByTagName("thead")[0].style.display = "none";
+      // tb.getElementsByTagName("tr")[0].style.display = "none";
+
       console.log(url + " Success");
     }
   })
