@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-sm-12">
+    <table id="target-table-<%= @target_db_repo.table.downcase %>" class="data-table table" data-table-name='<%= current_table %>'>
+      <thead>
+        <tr>
+          <% @headers.each do |header|%>
+            <th class='column-<%= header %>'><%= header.humanize %></th>
+          <% end %>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</div>
