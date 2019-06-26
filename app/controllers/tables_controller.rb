@@ -12,8 +12,20 @@ class TablesController < ApplicationController
 
   before_action :load_task_queues, only: %i[show preview]
   before_action :set_relatable_tables, only: %i[preview]
+  before_action :set_layout_for_table, only: %i[show]
 
   def show
+    respond_to do |format|
+      format.js {
+        render_show_js
+      }
+      format.html {
+        render_show_html
+      }
+    end
+  end
+
+  def render_show_html
     sql_result = @target_db_repo.all
 
     if table_has_layout?(@current_table)
@@ -26,10 +38,29 @@ class TablesController < ApplicationController
     end
 
     @rows = sql_result ? sql_result.to_hash : []
+  end
 
-  rescue ActiveRecord::StatementInvalid
-    @available_tables = []
-    render 'bad_connection'
+  def render_show_js
+    offset = params["start"]
+    limit = params["length"]
+
+    sql_result = @target_db_repo.all(limit, offset)
+
+    if @layout_for_table && !@layout_for_table.hidden_columns.blank?
+      render json: {
+        data: sql_result.to_hash.map { |e| e.except(*@layout_for_table.hidden_columns).values } ,
+        draw: params["draw"].to_i,
+        recordsTotal: @target_db_repo.count.rows[0][0],
+        recordsFiltered: @target_db_repo.count.rows[0][0]
+      }
+    else
+      render json: {
+        data: sql_result.to_hash.map { |e| e.values } ,
+        draw: params["draw"].to_i,
+        recordsTotal: @target_db_repo.count.rows[0][0],
+        recordsFiltered: @target_db_repo.count.rows[0][0]
+      }
+    end
   end
 
   def preview
@@ -158,6 +189,10 @@ class TablesController < ApplicationController
 
   def table_has_layout?(table)
     ViewBuilder.where(table_name: table).size > 0
+  end
+
+  def set_layout_for_table
+    @layout_for_table = ViewBuilder.where(table_name: @current_table).first
   end
 
   def load_available_tables
