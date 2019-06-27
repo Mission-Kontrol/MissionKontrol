@@ -52,79 +52,95 @@ function fulfill_dependencies() {
                 VERSION_ID="$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)"
             else
                 echo -e " [\e[1;31mERRO\e[0m] :: Unsuported Linux distribution or version."
-                echo -e " [\e[1;33mWARN\e[0m] :: You must first install the docker engine manually."
+                echo -e " [\e[1;33mWARN\e[0m] :: You must first install the docker engine manually.\n"
                 exit 3
             fi
             case "$ID" in
                 ubuntu|debian)
-                    if [ "$DOCKER_INSTALLED" != "true" ]; then
-                        apt-get -qq update
-                        apt-get -qq install -y \
-                            apt-transport-https \
-                            ca-certificates \
-                            curl \
-                            gnupg-agent \
-                            software-properties-common >/dev/null
-                        curl -fsSL https://download.docker.com/linux/$ID/gpg \
-                          | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add - >/dev/null
-                        add-apt-repository -y \
-                            "deb [arch=amd64] https://download.docker.com/linux/$ID \
-                            $(lsb_release -cs) stable" >/dev/null
-                        apt-get -qq update
+                    case "$VERSION_ID" in
+                        16.04|18.04|18.10|8|9|10)
+                            if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                apt-get -qq update
+                                apt-get -qq install -y \
+                                    apt-transport-https \
+                                    ca-certificates \
+                                    curl \
+                                    gnupg-agent \
+                                    software-properties-common >/dev/null
+                                curl -fsSL https://download.docker.com/linux/$ID/gpg \
+                                  | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add - >/dev/null
+                                add-apt-repository -y \
+                                    "deb [arch=amd64] https://download.docker.com/linux/$ID \
+                                    $(lsb_release -cs) stable" >/dev/null
+                                apt-get -qq update
 
-                        PKG="docker-ce docker-ce-cli containerd.io"
-                        if [ "$ID" == "debian" -a "$VERSION_ID" == "8" ]; then
-                            PKG="docker-ce"
-                        fi
-                        apt-get -qq install -y $PKG >/dev/null
-                    fi
-                    if [ "$DOCKER_RUNNING" != "true" ]; then
-                        case "$VERSION_ID" in
-                            16.04|18.04|8|9)
+                                PKG="docker-ce docker-ce-cli containerd.io"
+                                if [ "$ID" == "debian" -a "$VERSION_ID" == "8" ]; then
+                                    PKG="docker-ce"
+                                fi
+                                apt-get -qq install -y $PKG >/dev/null
+                            fi
+                            if [ "$DOCKER_RUNNING" != "true" ]; then
                                 systemctl -q enable docker.service
                                 systemctl -q start docker.service
-                                ;;
-                        esac
-                    fi
+                            fi
+                            ;;
+                        *)
+                            echo -e " [\e[1;31mERRO\e[0m] :: Unsuported version of the ${ID^} OS."
+                            echo -e " [\e[1;33mWARN\e[0m] :: Please use supported version.\n"
+                            exit 7
+                    esac
                     ;;
                 centos)
-                    if [ "$DOCKER_INSTALLED" != "true" ]; then
-                        yum install -y -q \
-                            yum-utils \
-                            device-mapper-persistent-data \
-                            lvm2
-                        yum-config-manager -y -q --add-repo \
-                            https://download.docker.com/linux/$ID/docker-ce.repo
-                        yum install -y -q docker-ce docker-ce-cli containerd.io
-                    fi
-                    if [ "$DOCKER_RUNNING" != "true" ]; then
-                        case "$VERSION_ID" in
-                            7)
-                                systemctl -q enable docker.service
-                                systemctl -q start docker.service
-                                ;;
-                            6)
-                                chkconfig docker on >/dev/null
-                                service docker start >/dev/null
-                                ;;
-                        esac
-                    fi
+                    case "$VERSION_ID" in
+                        6|7)
+                            if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                yum install -y -q \
+                                    yum-utils \
+                                    device-mapper-persistent-data \
+                                    lvm2
+                                yum-config-manager -y -q --add-repo \
+                                    https://download.docker.com/linux/$ID/docker-ce.repo
+                                yum install -y -q docker-ce docker-ce-cli containerd.io
+                            fi
+                            if [ "$DOCKER_RUNNING" != "true" ]; then
+                                case "$VERSION_ID" in
+                                    7)
+                                        systemctl -q enable docker.service
+                                        systemctl -q start docker.service
+                                        ;;
+                                    6)
+                                        chkconfig docker on >/dev/null
+                                        service docker start >/dev/null
+                                        ;;
+                                esac
+                            fi
+                            ;;
+                        *)
+                            echo -e " [\e[1;31mERRO\e[0m] :: Unsuported version of the ${ID^} OS."
+                            echo -e " [\e[1;33mWARN\e[0m] :: Please use supported version.\n"
+                            exit 7
+                    esac
                     ;;
                 fedora)
-                    if [ "$DOCKER_INSTALLED" != "true" ]; then
-                        dnf install -y -q dnf-plugins-core
-                        dnf config-manager -y --add-repo \
-                            https://download.docker.com/linux/$ID/docker-ce.repo
-                        dnf install -y -q docker-ce docker-ce-cli containerd.io
-                    fi
-                    if [ "$DOCKER_RUNNING" != "true" ]; then
-                        case "$VERSION_ID" in
-                            28|29)
+                    case "$VERSION_ID" in
+                        28|29)
+                            if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                dnf install -y -q dnf-plugins-core
+                                dnf config-manager -y --add-repo \
+                                    https://download.docker.com/linux/$ID/docker-ce.repo
+                                dnf install -y -q docker-ce docker-ce-cli containerd.io
+                            fi
+                            if [ "$DOCKER_RUNNING" != "true" ]; then
                                 systemctl -q enable docker.service
                                 systemctl -q start docker.service
-                                ;;
-                        esac
-                    fi
+                            fi
+                            ;;
+                        *)
+                            echo -e " [\e[1;31mERRO\e[0m] :: Unsuported version of the ${ID^} OS."
+                            echo -e " [\e[1;33mWARN\e[0m] :: Please use supported version.\n"
+                            exit 7
+                    esac
                     ;;
                 amzn)
                     if [ "$DOCKER_INSTALLED" != "true" ]; then

@@ -63,8 +63,8 @@ sudo ./auto-install.sh -r -p 8080:8443 -e -c my_cert.pem -k my_cert.key
 
 The `auto-install.sh` script has been tested for the following Linux distributions:
 
-* Ubuntu 16.04, 18.04
-* Debian 8, 9
+* Ubuntu 16.04, 18.04, 18.10
+* Debian 8, 9, 10
 * CentOS 7
 * Fedora 28, 29
 * Amazon Linux OS 1 (2018.03), 2
@@ -76,3 +76,31 @@ The `auto-install.sh` script has been tested for the following Linux distributio
 The configuration in the case of Mac OS X is slightly different from the configuration for Linux OS.
 
 In this case, no `log/` and `ssl/` directories are shared from the host with the application container. It means that at this moment, the application container will only use self-signed SSL certificate that will be re-generated each time the container is recreated.
+
+### Unsupported systems
+
+When you try to use a script on an unsupported OS or version, the following message will be displayed:
+
+```bash
+
+ [INFO] :: Executing 'run' command...
+ [INFO] :: Installing required dependencies.
+           This may take a moment...
+ [ERRO] :: Unsuported Linux distribution or version.
+ [WARN] :: You must first install the docker engine manually.
+
+```
+
+or
+
+```bash
+
+ [INFO] :: Executing 'run' command...
+ [INFO] :: Installing required dependencies.
+           This may take a moment...
+ [ERRO] :: Unsuported version of the Ubuntu OS.
+ [WARN] :: Please use supported version.
+
+```
+
+You can, however, get around this by manually installing the seselected docker engine version before running the script. Look for additional information and instruction in the [Docker documentation](https://docs.docker.com/install/) and the Linux distribution that you use.
