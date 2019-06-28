@@ -78,11 +78,18 @@
   </div>
 </div>
 
-<div class="wrapper">
+<div class="wrapper wrapper-content animated fadeInRight">
   <% @relatable_tables.each do |relative| %>
     <% if layout_builder.related_tables.include?(relative[:name]) %>
-      <div class="row white-bg m-t m-b">
-        <%= render 'related_table', hidden_columns: relative[:hidden_columns], current_table: relative[:name], headers:  relative[:headers], rows:  relative[:rows]%>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="ibox float-e-margins">
+            <div class="ibox-content">
+              <br>
+              <%= render 'related_data_table', current_table: relative[:name], headers:  relative[:headers]%>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
   <% end %>
