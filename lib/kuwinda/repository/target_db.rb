@@ -11,8 +11,10 @@ module Kuwinda
         @conn = conn
       end
 
-      def all(limit = nil)
-        if limit
+      def all(limit = nil, offset = nil)
+        if limit && offset
+          sql = "select * from #{table} limit #{limit} offset #{offset};"
+        elsif limit
           sql = "select * from #{table} limit #{limit};"
         else
           sql = "select * from #{table};"
@@ -51,6 +53,11 @@ module Kuwinda
       def query(sql, limit)
         query_string = sql.split(';').join(" limit #{limit};") if limit
         conn.exec_query(query_string)
+      end
+
+      def count
+        sql = "SELECT COUNT(*) FROM #{table};"
+        conn.exec_query(sql)
       end
     end
   end

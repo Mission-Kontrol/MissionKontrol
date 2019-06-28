@@ -1,4 +1,36 @@
 $(document).ready(function() {
+  $(".excelexport").on("click", function (e) {
+    let tableId = e.target.parentElement.parentElement.parentElement.getElementsByTagName("table")[0].id
+    var csv = FooTable.get("#" + tableId).toCSV(true);
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = "kuwinda-" + tableId + ".csv";
+    hiddenElement.click();
+  });
+  
+  $('.data-table').DataTable({
+      colReorder: true,
+      "deferRender": true,
+      "autoWidth": false,
+      "scrollX": true,
+      "ajax": '/' + (location.pathname+location.search).substr(1),
+      dom: 'Bfrtip',
+      "createdRow": function( row, data, dataIndex ) {
+        let table = $(this).data('table-name');
+        let id = data[0];
+        let previewUrl = '/tables/' + table + '/' + id + '?table=' + table;
+        $(row).addClass( 'clickable-row' );
+        $(row).attr( 'data-href',  previewUrl);
+      },
+      buttons: [
+        {
+          extend: 'csv',
+          className: 'btn btn-warning',
+        }
+      ]
+  });
+
   $('.hidden-column-checkbox').change(function() {
     let columnName = this.value;
     let hiddenColumns = [];
