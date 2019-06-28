@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class DataTableStatesController < ApplicationController
   def load
     dts = DataTableState.find_by_table(params[:table])
     respond_to do |format|
-      format.js {
+      format.js do
         render json: dts.state_as_json
-      }
+      end
     end
   end
 
@@ -15,9 +17,9 @@ class DataTableStatesController < ApplicationController
     dts.save
 
     respond_to do |format|
-      format.js {
+      format.js do
         render json: dts.state_as_json
-      }
+      end
     end
   end
 

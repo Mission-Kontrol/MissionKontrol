@@ -16,13 +16,13 @@ class TablesController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html {
+      format.html do
         render_show_html
-      }
+      end
 
-      format.js {
+      format.js do
         render_show_js
-      }
+      end
     end
   end
 
@@ -42,8 +42,8 @@ class TablesController < ApplicationController
   end
 
   def render_show_js
-    offset = params["start"]
-    limit = params["length"]
+    offset = params['start']
+    limit = params['length']
     columns = []
 
     sql_result = @target_db_repo.all(limit, offset)
@@ -51,11 +51,11 @@ class TablesController < ApplicationController
     sql_result.columns.each do |c|
       columns << { data: c }
     end
-    
+
     render json: {
       data: sql_result.to_hash,
       columns: columns,
-      draw: params["draw"].to_i,
+      draw: params['draw'].to_i,
       recordsTotal: @target_db_repo.count.rows[0][0],
       recordsFiltered: @target_db_repo.count.rows[0][0]
     }
@@ -93,41 +93,6 @@ class TablesController < ApplicationController
     render json: {
      error: e.to_s
    }, status: 400
-  end
-
-  def hide_column
-    view_builder = ViewBuilder.find_by_table_name(params[:table_name])
-
-    view_builder.hidden_columns = view_builder.hidden_columns | [params[:view_builder][:hidden_columns][:column]]
-
-    respond_to do |format|
-      if view_builder.save
-        format.js { render action: 'show/success' }
-      else
-        format.js { render action: 'show/failure', status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def show_column
-    view_builder = ViewBuilder.find_by_table_name(params[:table_name])
-
-    view_builder.hidden_columns =  view_builder.hidden_columns - [params[:view_builder][:hidden_columns][:column]]
-
-    respond_to do |format|
-      if view_builder.save
-        format.js { render action: 'show/success' }
-      else
-        format.js { render action: 'show/failure', status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def save_state
-  end
-
-  def load_state
-
   end
 
   private
