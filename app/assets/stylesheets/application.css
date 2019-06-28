@@ -25,8 +25,12 @@
 
  body {
    min-width: 1269px;
-   overflow-x: scroll;
  }
+
+.container-fluid {
+
+  overflow-x: unset;
+}
 
 
 /*
@@ -34,6 +38,10 @@
 */
 .navbar.navbar-static-top {
   background-color: inherit;
+}
+
+#page-wrapper {
+  padding-bottom: 50px;
 }
 
 /*

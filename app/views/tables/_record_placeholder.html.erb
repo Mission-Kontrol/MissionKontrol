@@ -1,35 +1,37 @@
-<div class="row row-eq-height white-bg">
-  <div class="col-sm-8">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="table-record-placeholder-header">
-          <%= render 'tables/layout/header_container1', layout_builder: layout_builder %>
+<div class="wrapper">
+  <div class="row row-eq-height white-bg">
+    <div class="col-sm-8">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="table-record-placeholder-header">
+            <%= render 'tables/layout/header_container1', layout_builder: layout_builder %>
+          </div>
         </div>
-      </div>
 
-      <div class="col-sm-12">
-        <div class="table-record-placeholder-header">
-          <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
+        <div class="col-sm-12">
+          <div class="table-record-placeholder-header">
+            <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <% if current_admin_user.twilio_setup_complete? && layout_builder.callable_fields.present? %>
-  <div class="col-sm-4 twilio_dialer_buttons">
-    <div class="row">
-      <div class="col-sm-12">
-        <%= render '/tables/twilio_dialer', layout_builder: layout_builder %>
+    <% if current_admin_user.twilio_setup_complete? && layout_builder.callable_fields.present? %>
+    <div class="col-sm-4 twilio_dialer_buttons">
+      <div class="row">
+        <div class="col-sm-12">
+          <%= render '/tables/twilio_dialer', layout_builder: layout_builder %>
+        </div>
       </div>
     </div>
+    <% end %>
   </div>
-  <% end %>
 </div>
 
-<% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
+<div class="wrapper" style="">
+  <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
           draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container2) &&
           draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container3) %>
-  <div class="wrapper">
     <div class="row m-t white-bg">
       <div class="col-sm-4">
         <div class="table-record-placeholder">
@@ -74,4 +76,14 @@
 
     <div class="clearfix"></div>
   </div>
+</div>
+
+<div class="wrapper">
+  <% @relatable_tables.each do |relative| %>
+    <% if layout_builder.related_tables.include?(relative[:name]) %>
+      <div class="row white-bg m-t m-b">
+        <%= render 'related_table', hidden_columns: relative[:hidden_columns], current_table: relative[:name], headers:  relative[:headers], rows:  relative[:rows]%>
+      </div>
+    <% end %>
+  <% end %>
 </div>

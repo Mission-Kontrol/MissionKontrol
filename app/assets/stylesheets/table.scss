@@ -40,3 +40,24 @@
   padding-top: 15px;
   text-align: right;
 }
+
+#draggable-list-of-relatable-tables, #droppable-list-of-relatable-tables {
+  cursor: pointer;
+}
+
+#droppable-list-of-relatable-tables {
+  padding: 5px;
+  min-height:30px;border: 2px dashed #eaeaea
+}
+
+.droppable-list-item-for-relatable-table {
+  margin: 5px;
+  padding: 10px 15px;
+  background-color: #c2c2c2;
+}
+
+.draggable-list-item-for-relatable-table {
+  margin: 10px;
+  padding: 10px 5px;
+  background-color: #c2c2c2;
+}

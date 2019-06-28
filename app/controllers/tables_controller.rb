@@ -7,9 +7,11 @@ class TablesController < ApplicationController
                 :set_target_db_repo,
                 :set_activities,
                 :set_current_table,
-                :load_available_tables
+                :load_available_tables,
+                :check_license
 
   before_action :load_task_queues, only: %i[show preview]
+  before_action :set_relatable_tables, only: %i[preview]
 
   def show
     sql_result = @target_db_repo.all

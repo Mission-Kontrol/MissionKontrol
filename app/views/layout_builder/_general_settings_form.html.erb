@@ -13,7 +13,7 @@
                     { class: 'form-control' , "data-table-name" =>  @view_builder.table_name, :disabled => true } %>
   </div>
 
-  <div class="form-group">
+  <div class="form-group hide">
     <div class="row">
       <div class="col-md-8">
         <strong>Commentable</strong>
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group hide">
     <strong>Parent comments table</strong>
     <p>Select a parent table if applicable. E.g. Companies might be parent to Users.</p>
     <%= form.select :parent_comment_table,

@@ -44,6 +44,28 @@ class LayoutBuilderController < ApplicationController
     end
   end
 
+  def update_related_tables
+    @layout = ViewBuilder.find(params[:id])
+    @layout.related_tables |= [params['related_table']]
+
+    if @layout.save
+      respond_to do |format|
+        format.js { render 'layout_builder/update/success' }
+      end
+    end
+  end
+
+  def remove_related_table
+    @layout = ViewBuilder.find(params[:id])
+    @layout.related_tables = @layout.related_tables - [params['related_table']]
+
+    if @layout.save
+      respond_to do |format|
+        format.js { render 'layout_builder/update/success' }
+      end
+    end
+  end
+
   def edit
     @view_builder = ViewBuilder.find(params[:id])
     @relatable_tables = relatable_tables(@view_builder.table_name)
@@ -84,10 +106,6 @@ class LayoutBuilderController < ApplicationController
 
   def available_tables
     Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  end
-
-  def relatable_tables(table)
-    Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
   end
 
   def field_params

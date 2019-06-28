@@ -33,6 +33,11 @@ module Kuwinda
         result.nil? ? result : result.first
       end
 
+      def find_all_related(foreign_key_title, foreign_key_value, limit = 10)
+        sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit};"
+        conn.exec_query(sql)
+      end
+
       def update_record(table, field, value, id)
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
         conn.exec_query(sql)

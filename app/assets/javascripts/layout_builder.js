@@ -1,5 +1,6 @@
 var draggable;
 var slider;
+var drake;
 
 $(document).ready(function() {
   let metaTag = $('meta[name=psj]');
@@ -39,6 +40,15 @@ $(document).ready(function() {
     })
   }
 
+  if (isCurrentControllerLayout && isCurrentActionEdit) {
+    drake = dragula([document.querySelector('#draggable-list-of-relatable-tables'), document.querySelector('#droppable-list-of-relatable-tables')]);
+
+    drake.on('drop', (el) => {
+      $(el).find(".remove-related-table").removeClass("hide")
+      updateLayoutRelatedTables(el);
+    })
+  }
+
   if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
     $('.layout-builder-nav-item').click(function(evt) {
       evt.preventDefault();
@@ -61,12 +71,30 @@ $(document).ready(function() {
 
     $('.layout_builder_selected_table_name').click(function(evt) {
       evt.preventDefault();
-      var table = $(this).data().tableName;
+      $(".related-table-notice").addClass('hide');
+      $(".draggable-list-item-for-relatable-table").addClass('hide');
+
+      let clickedTable = $(this).data().tableName;
+      let clickedTableClass = ".draggable-list-item-for-" + clickedTable;
+      let primaryTable = $(this).data().primaryTable;
+      let header = "Fields / " + clickedTable;
+
+      $('#layout_builder_selected_table_name').html(header);
       showFieldSettingsFormScreen2();
-      // rebuildDraggable(table);
+      rebuildDraggable(clickedTable);
+
+      if (clickedTable != primaryTable) {
+        $(".related-table-notice").removeClass('hide');
+        $(clickedTableClass).removeClass('hide');
+        setTimeout(function(){
+          $("#layout-builder-draggable-fields-container .layout-builder-draggable-field" ).css( 'background-color', '#c2c2c2' );
+          $("#layout-builder-draggable-fields-container .layout-builder-draggable-field" ).css( 'pointer-events', 'none' );
+        }, 2000);
+      }
     })
 
-    $('.layout_builder_field_settings_form_back_btn').click(function() {
+    $('.layout_builder_field_settings_form_back_btn').click(function(e) {
+      e.preventDefault();
       showFieldSettingsFormScreen1();
     })
 
@@ -187,12 +215,10 @@ function rebuildDraggable(table) {
   }
 
   rebuildDraggableDataContainers();
-  getOptionsForDraggable(table);
   let containers = '#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3'
 
+  getOptionsForDraggable(table);
   addPaddingToDraggableItems(containers);
-
-  document.getElementById('layout_builder_selected_table_name').innerHTML = "Fields / " + table;
   initializeDraggable();
 }
 
@@ -328,6 +354,21 @@ function saveLayout(name, primaryTable) {
   })
 }
 
+function updateLayoutRelatedTables(el) {
+  let data = {};
+  let layoutID = location.pathname.split("/")[2];
+  data['related_table'] = el.dataset.table;
+
+  $.ajax({
+    url: "/layouts/" + layoutID + "/related_tables",
+    type: 'PATCH',
+    data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+      alert("Failed: "+ errorTextStatus+" ;"+error);
+     }
+  })
+}
+
 function goToNextScreen() {
   $('#layout-builder-modal-screen-1').toggleClass('hide');
   $('#layout-builder-modal-screen-2').toggleClass('hide');
@@ -341,7 +382,6 @@ function goToPreviousScreen() {
 function showFieldSettingsFormScreen2() {
   $('#layout_builder_field_settings_form_screen_1').addClass('hide');
   $('#layout_builder_field_settings_form_screen_2').removeClass('hide');
-  $('.layout-builder-side-nav').css({ 'background-color': '#efefef' })
 }
 
 function showFieldSettingsFormScreen1() {
@@ -569,6 +609,25 @@ function updateCallableFields() {
     },
     success: function(response, status, request){
       console.log("PATCH /layouts/:id Success")
+    }
+  })
+}
+
+function removeRelatedTable() {
+  let clickedTable = event.target.parentElement.parentElement;
+  let data = {};
+  let layoutID = location.pathname.split("/")[2];
+  data['related_table'] = clickedTable.dataset.table;
+
+  $.ajax({
+    url: "/layouts/" + layoutID + "/related_tables/remove",
+    type: 'PATCH',
+    data,
+    error: function(XMLHttpRequest, errorTextStatus, error){
+        alert("Failed: "+ errorTextStatus+" ;"+error);
+     },
+    success: function(response, status, request){
+      clickedTable.remove();
     }
   })
 }
