@@ -628,11 +628,8 @@ function removeRelatedTable() {
         alert("Failed: "+ errorTextStatus+" ;"+error);
      },
     success: function(response, status, request){
-      // debugger
       $(clickedTable).find('i.fa-times').hide();
       $(clickedTable).appendTo("#draggable-list-of-relatable-tables");
-      // $("#draggable-list-of-relatable-tables")
-      // clickedTable.remove();
     }
   })
 }
