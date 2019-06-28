@@ -53,4 +53,7 @@ Rails.application.routes.draw do
   get 'license', to: 'dashboard#license'
   post 'license/verify', to: 'dashboard#verify_license'
   get 'license/verify', to: 'dashboard#verify_license', as: 'verify_license'
+
+  get 'data_table_states/load'
+  post 'data_table_states/save'
 end

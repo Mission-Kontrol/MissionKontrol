@@ -16,11 +16,12 @@ class TablesController < ApplicationController
 
   def show
     respond_to do |format|
-      format.js {
-        render_show_js
-      }
       format.html {
         render_show_html
+      }
+
+      format.js {
+        render_show_js
       }
     end
   end
@@ -43,19 +44,28 @@ class TablesController < ApplicationController
   def render_show_js
     offset = params["start"]
     limit = params["length"]
+    columns = []
 
     sql_result = @target_db_repo.all(limit, offset)
 
+    sql_result.columns.each do |c|
+      columns << { data: c }
+    end
+
     if @layout_for_table && !@layout_for_table.hidden_columns.blank?
       render json: {
-        data: sql_result.to_hash.map { |e| e.except(*@layout_for_table.hidden_columns).values } ,
+        # data: sql_result.to_hash.map { |e| e.except(*@layout_for_table.hidden_columns).values } ,
+        data: sql_result.to_hash.map { |e| e.except(*@layout_for_table.hidden_columns) } ,
+        columns: columns,
         draw: params["draw"].to_i,
         recordsTotal: @target_db_repo.count.rows[0][0],
         recordsFiltered: @target_db_repo.count.rows[0][0]
       }
     else
       render json: {
-        data: sql_result.to_hash.map { |e| e.values } ,
+        # data: sql_result.to_hash.map { |e| e.values } ,
+        data: sql_result.to_hash,
+        columns: columns,
         draw: params["draw"].to_i,
         recordsTotal: @target_db_repo.count.rows[0][0],
         recordsFiltered: @target_db_repo.count.rows[0][0]
@@ -123,6 +133,13 @@ class TablesController < ApplicationController
         format.js { render action: 'show/failure', status: :unprocessable_entity }
       end
     end
+  end
+
+  def save_state
+  end
+
+  def load_state
+
   end
 
   private
