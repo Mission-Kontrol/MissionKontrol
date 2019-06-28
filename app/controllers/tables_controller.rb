@@ -51,26 +51,14 @@ class TablesController < ApplicationController
     sql_result.columns.each do |c|
       columns << { data: c }
     end
-
-    if @layout_for_table && !@layout_for_table.hidden_columns.blank?
-      render json: {
-        # data: sql_result.to_hash.map { |e| e.except(*@layout_for_table.hidden_columns).values } ,
-        data: sql_result.to_hash.map { |e| e.except(*@layout_for_table.hidden_columns) } ,
-        columns: columns,
-        draw: params["draw"].to_i,
-        recordsTotal: @target_db_repo.count.rows[0][0],
-        recordsFiltered: @target_db_repo.count.rows[0][0]
-      }
-    else
-      render json: {
-        # data: sql_result.to_hash.map { |e| e.values } ,
-        data: sql_result.to_hash,
-        columns: columns,
-        draw: params["draw"].to_i,
-        recordsTotal: @target_db_repo.count.rows[0][0],
-        recordsFiltered: @target_db_repo.count.rows[0][0]
-      }
-    end
+    
+    render json: {
+      data: sql_result.to_hash,
+      columns: columns,
+      draw: params["draw"].to_i,
+      recordsTotal: @target_db_repo.count.rows[0][0],
+      recordsFiltered: @target_db_repo.count.rows[0][0]
+    }
   end
 
   def preview
