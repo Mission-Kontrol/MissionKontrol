@@ -125,13 +125,6 @@ function loadRelatedDataTable (columns, id, ajax) {
         }
       });
     },
-    // "createdRow": function( row, data, dataIndex ) {
-    //   let table = $(this).data('table-name');
-    //   let id = data.id;
-    //   let previewUrl = '/tables/' + table + '/' + id + '?table=' + table;
-    //   $(row).addClass( 'clickable-row' );
-    //   $(row).attr( 'data-href',  previewUrl);
-    // },
     "buttons": [
       'colvis',
       {
