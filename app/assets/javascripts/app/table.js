@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  fetchDataForTable();
+
   $(".excelexport").on("click", function (e) {
     let tableId = e.target.parentElement.parentElement.parentElement.getElementsByTagName("table")[0].id
     var csv = FooTable.get("#" + tableId).toCSV(true);
@@ -7,28 +9,6 @@ $(document).ready(function() {
     hiddenElement.target = '_blank';
     hiddenElement.download = "kuwinda-" + tableId + ".csv";
     hiddenElement.click();
-  });
-  
-  $('.data-table').DataTable({
-      colReorder: true,
-      "deferRender": true,
-      "autoWidth": false,
-      "scrollX": true,
-      "ajax": '/' + (location.pathname+location.search).substr(1),
-      dom: 'Bfrtip',
-      "createdRow": function( row, data, dataIndex ) {
-        let table = $(this).data('table-name');
-        let id = data[0];
-        let previewUrl = '/tables/' + table + '/' + id + '?table=' + table;
-        $(row).addClass( 'clickable-row' );
-        $(row).attr( 'data-href',  previewUrl);
-      },
-      buttons: [
-        {
-          extend: 'csv',
-          className: 'btn btn-warning',
-        }
-      ]
   });
 
   $('.hidden-column-checkbox').change(function() {
@@ -111,4 +91,63 @@ function showColumn(columnName) {
       console.log(url + " Success");
     }
   })
+}
+
+function fetchDataForTable() {
+  $.ajax({
+    dataType: 'json',
+    url: '/' + (location.pathname+location.search).substr(1),
+    success: function(d) {
+      loadDataTable(d.columns)
+    }
+  });
+}
+
+function loadDataTable (columns) {
+  $('.data-table').DataTable({
+    "colReorder": true,
+    "deferRender": true,
+    "autoWidth": false,
+    "scrollX": true,
+    "ajax": '/' + (location.pathname+location.search).substr(1),
+    "dom": 'Bfrtip',
+    "columns": columns,
+    "stateSave": true,
+    "stateSaveCallback": function (settings, data) {
+      if ( settings.iDraw <= 1 ) {
+        return;
+      }
+
+      $.ajax({
+        "url": "/data_table_states/save?table=" + $(this).data('table-name'),
+        "data": { "state": data },
+        "dataType": "json",
+        "type": "POST",
+        "success": function () {}
+      });
+    },
+    "stateLoadCallback": function (settings, callback) {
+      $.ajax({
+        "url": '/data_table_states/load?table=' + $(this).data('table-name'),
+        "dataType": 'json',
+        "success": function (json) {
+          callback( json );
+        }
+      });
+    },
+    "createdRow": function( row, data, dataIndex ) {
+      let table = $(this).data('table-name');
+      let id = data.id;
+      let previewUrl = '/tables/' + table + '/' + id + '?table=' + table;
+      $(row).addClass( 'clickable-row' );
+      $(row).attr( 'data-href',  previewUrl);
+    },
+    "buttons": [
+      'colvis',
+      {
+        "extend": 'csv',
+        "className": 'btn btn-warning',
+      }
+    ]
+  });
 }
