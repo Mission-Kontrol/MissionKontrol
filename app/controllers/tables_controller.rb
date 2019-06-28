@@ -16,12 +16,13 @@ class TablesController < ApplicationController
 
   def show
     respond_to do |format|
-      format.js {
+      format.js do
         render_show_js
-      }
-      format.html {
+      end
+
+      format.html do
         render_show_html
-      }
+      end
     end
   end
 
@@ -41,26 +42,17 @@ class TablesController < ApplicationController
   end
 
   def render_show_js
-    offset = params["start"]
-    limit = params["length"]
+    offset = params['start']
+    limit = params['length']
 
     sql_result = @target_db_repo.all(limit, offset)
 
-    if @layout_for_table && !@layout_for_table.hidden_columns.blank?
-      render json: {
-        data: sql_result.to_hash.map { |e| e.except(*@layout_for_table.hidden_columns).values } ,
-        draw: params["draw"].to_i,
-        recordsTotal: @target_db_repo.count.rows[0][0],
-        recordsFiltered: @target_db_repo.count.rows[0][0]
-      }
-    else
-      render json: {
-        data: sql_result.to_hash.map { |e| e.values } ,
-        draw: params["draw"].to_i,
-        recordsTotal: @target_db_repo.count.rows[0][0],
-        recordsFiltered: @target_db_repo.count.rows[0][0]
-      }
-    end
+    render json: {
+      data: sql_result.to_hash.map(&:value),
+      draw: params['draw'].to_i,
+      recordsTotal: @target_db_repo.count.rows[0][0],
+      recordsFiltered: @target_db_repo.count.rows[0][0]
+    }
   end
 
   def preview
@@ -95,34 +87,6 @@ class TablesController < ApplicationController
     render json: {
      error: e.to_s
    }, status: 400
-  end
-
-  def hide_column
-    view_builder = ViewBuilder.find_by_table_name(params[:table_name])
-
-    view_builder.hidden_columns = view_builder.hidden_columns | [params[:view_builder][:hidden_columns][:column]]
-
-    respond_to do |format|
-      if view_builder.save
-        format.js { render action: 'show/success' }
-      else
-        format.js { render action: 'show/failure', status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def show_column
-    view_builder = ViewBuilder.find_by_table_name(params[:table_name])
-
-    view_builder.hidden_columns =  view_builder.hidden_columns - [params[:view_builder][:hidden_columns][:column]]
-
-    respond_to do |format|
-      if view_builder.save
-        format.js { render action: 'show/success' }
-      else
-        format.js { render action: 'show/failure', status: :unprocessable_entity }
-      end
-    end
   end
 
   private
