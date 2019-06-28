@@ -19,14 +19,10 @@
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-content">
-
           <br>
-
-          <%= render 'data_table', hidden_columns: @hidden_columns, current_table: @current_table %>
+          <%= render 'data_table', current_table: @current_table %>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<%= render 'column_settings_modal', columns: @headers, hidden_columns: @hidden_columns  %>
