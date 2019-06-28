@@ -7,7 +7,9 @@ class DataTableStatesController < ApplicationController
       format.js do
         if dts
           render json: dts.state_as_json
-        end 
+        else
+          render json: {}
+        end
       end
     end
   end
