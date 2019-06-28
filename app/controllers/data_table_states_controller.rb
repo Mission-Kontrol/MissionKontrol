@@ -5,7 +5,9 @@ class DataTableStatesController < ApplicationController
     dts = DataTableState.find_by_table(params[:table])
     respond_to do |format|
       format.js do
-        render json: dts.state_as_json
+        if dts
+          render json: dts.state_as_json
+        end 
       end
     end
   end
