@@ -44,7 +44,8 @@ $(document).ready(function() {
     drake = dragula([document.querySelector('#draggable-list-of-relatable-tables'), document.querySelector('#droppable-list-of-relatable-tables')]);
 
     drake.on('drop', (el) => {
-      $(el).find(".remove-related-table").removeClass("hide")
+      $(el).find(".remove-related-table").removeClass("hide");
+      $(el).find('i.fa-times').show();
       updateLayoutRelatedTables(el);
     })
   }
@@ -627,7 +628,11 @@ function removeRelatedTable() {
         alert("Failed: "+ errorTextStatus+" ;"+error);
      },
     success: function(response, status, request){
-      clickedTable.remove();
+      // debugger
+      $(clickedTable).find('i.fa-times').hide();
+      $(clickedTable).appendTo("#draggable-list-of-relatable-tables");
+      // $("#draggable-list-of-relatable-tables")
+      // clickedTable.remove();
     }
   })
 }
