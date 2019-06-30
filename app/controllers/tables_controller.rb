@@ -2,7 +2,7 @@
 
 class TablesController < ApplicationController
   include TableActivity
-  
+
   layout 'dashboard'
 
   before_action :authenticate_admin_user!,
