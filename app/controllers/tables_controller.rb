@@ -26,50 +26,16 @@ class TablesController < ApplicationController
     end
   end
 
-  def render_show_html
-    sql_result = @target_db_repo.all
-
-    if table_has_layout?(@current_table)
-      @layout = ViewBuilder.find_by_table_name(@current_table)
-      @headers = sql_result ? sql_result.columns : []
-      @hidden_columns = @layout.hidden_columns
-    else
-      @headers = sql_result ? sql_result.columns.first(5) : []
-      @hidden_columns = []
-    end
-
-    @rows = sql_result ? sql_result.to_hash : []
-  end
-
-  def render_show_js
-    offset = params['start']
-    limit = params['length']
-    columns = []
-
-    sql_result = @target_db_repo.all(limit, offset)
-
-    sql_result.columns.each do |c|
-      columns << { data: c }
-    end
-
-    render json: {
-      data: sql_result.to_hash,
-      columns: columns,
-      draw: params['draw'].to_i,
-      recordsTotal: @target_db_repo.count.rows[0][0],
-      recordsFiltered: @target_db_repo.count.rows[0][0]
-    }
-  end
-
   def preview
-    redirect_to new_layout_path unless table_has_layout?(@current_table)
+    respond_to do |format|
+      format.html do
+        render_preview_html
+      end
 
-    @target_db_repo.table = @current_table
-    @activity = Activity.new
-    @row = @target_db_repo.find(params[:record_id])
-    @layout_builder = ViewBuilder.where(table_name: @current_table).last
-    @fields_with_type = list_table_fields_with_type(@layout_builder.table_name) if @layout_builder
-    set_activities_for_table
+      format.js do
+        render_preview_js
+      end
+    end
   end
 
   def update_table_field
@@ -96,6 +62,65 @@ class TablesController < ApplicationController
   end
 
   private
+
+  def render_show_html
+    sql_result = @target_db_repo.all
+    @headers = sql_result ? sql_result.columns : []
+    render :show
+  end
+
+  def render_show_js
+    offset = params['start']
+    limit = params['length']
+    columns = []
+
+    sql_result = @target_db_repo.all(limit, offset)
+
+    sql_result.columns.each do |c|
+      columns << { data: c }
+    end
+
+    render json: {
+      data: sql_result.to_hash,
+      columns: columns,
+      draw: params['draw'].to_i,
+      recordsTotal: @target_db_repo.count.rows[0][0],
+      recordsFiltered: @target_db_repo.count.rows[0][0]
+    }
+  end
+
+  def render_preview_html
+    redirect_to new_layout_path unless table_has_layout?(@current_table)
+
+    @target_db_repo.table = @current_table
+    @activity = Activity.new
+    @row = @target_db_repo.find(params[:record_id])
+    @layout_builder = ViewBuilder.where(table_name: @current_table).last
+    @fields_with_type = list_table_fields_with_type(@layout_builder.table_name) if @layout_builder
+    set_activities_for_table
+  end
+
+  def render_preview_js
+    offset = params['start']
+    limit = params['length']
+    columns = []
+    @target_db_repo.table = params["table"]
+    foreign_key_title = helpers.get_foreign_key(params[:table_name])
+    foreign_key_value = params[:record_id]
+    sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value, limit, offset)
+
+    sql_result.columns.each do |c|
+      columns << { data: c }
+    end
+
+    render json: {
+      data: sql_result.to_hash,
+      columns: columns,
+      draw: params['draw'].to_i,
+      recordsTotal: @target_db_repo.count_related(foreign_key_title, foreign_key_value).rows[0][0],
+      recordsFiltered: @target_db_repo.count_related(foreign_key_title, foreign_key_value).rows[0][0]
+    }
+  end
 
   def set_target_db_repo
     @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
