@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TablesController < ApplicationController
+  include TableActivity
+  
   layout 'dashboard'
 
   before_action :authenticate_admin_user!,
@@ -104,7 +106,7 @@ class TablesController < ApplicationController
     offset = params['start']
     limit = params['length']
     columns = []
-    @target_db_repo.table = params["table"]
+    @target_db_repo.table = params['table']
     foreign_key_title = helpers.get_foreign_key(params[:table_name])
     foreign_key_value = params[:record_id]
     sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value, limit, offset)
@@ -124,47 +126,6 @@ class TablesController < ApplicationController
 
   def set_target_db_repo
     @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
-  end
-
-  def set_activities_for_table
-    feedable_type = @target_db_repo.table
-    feedable_id = params[:record_id]
-
-    @activities_for_table = Activity.where(
-      feedable_type: feedable_type,
-      feedable_id: feedable_id
-    )
-
-    group_activities_by_kind
-  end
-
-  def group_activities_by_kind
-    select_all_activities
-    select_call_activities
-    select_note_activities
-    select_meeting_activities
-  end
-
-  def select_all_activities
-    @activities.all = @activities_for_table
-  end
-
-  def select_call_activities
-    @activities.calls = @activities_for_table.select do |i|
-      i.kind == 'call'
-    end
-  end
-
-  def select_meeting_activities
-    @activities.meetings = @activities_for_table.select do |i|
-      i.kind == 'meeting'
-    end
-  end
-
-  def select_note_activities
-    @activities.notes = @activities_for_table.select do |i|
-      i.kind == 'note'
-    end
   end
 
   def table_field_params
@@ -188,10 +149,6 @@ class TablesController < ApplicationController
 
   def set_layout_for_table
     @layout_for_table = ViewBuilder.where(table_name: @current_table).first
-  end
-
-  def load_available_tables
-    @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
 
   def set_current_table
