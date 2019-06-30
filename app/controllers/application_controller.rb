@@ -79,12 +79,10 @@ class ApplicationController < ActionController::Base
       layout = ViewBuilder.find_by_table_name(table)
       relative = {}
       @target_db_repo.table = table
-      foreign_key_title = helpers.get_foreign_key(@current_table)
+      foreign_key_title = helpers.get_foreign_key(params[:table_name])
       foreign_key_value = params[:record_id]
-      sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value)
+      sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value, 10, 0)
       relative[:headers] = sql_result ? sql_result.columns : []
-      relative[:rows] = sql_result ? sql_result.to_hash : []
-      relative[:hidden_columns] = table_has_layout?(table) ? layout.hidden_columns : []
       relative[:name] = table
       @relatable_tables << relative
     end
