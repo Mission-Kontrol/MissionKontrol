@@ -35,8 +35,15 @@ module Kuwinda
         result.nil? ? result : result.first
       end
 
-      def find_all_related(foreign_key_title, foreign_key_value, limit = 10)
-        sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit};"
+      def find_all_related(foreign_key_title, foreign_key_value, limit = 10, offset = nil)
+        if limit && offset
+          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit} offset #{offset};"
+        elsif limit
+          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit};"
+        else
+          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
+        end
+
         conn.exec_query(sql)
       end
 
@@ -57,6 +64,11 @@ module Kuwinda
 
       def count
         sql = "SELECT COUNT(*) FROM #{table};"
+        conn.exec_query(sql)
+      end
+
+      def count_related(foreign_key_title, foreign_key_value)
+        sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
       end
     end

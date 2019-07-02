@@ -1,6 +1,17 @@
 $(document).ready(function() {
-  fetchDataForTable();
-  fetchDataForRelatedTables();
+  let metaTag = $('meta[name=psj]');
+  let isCurrentControllerTables = metaTag.attr('controller') == 'tables';
+  let isCurrentActionShow = metaTag.attr('action') == 'show';
+  let isCurrentActionPreview = metaTag.attr('action') == 'preview';
+
+  if (isCurrentControllerTables && isCurrentActionShow) {
+    fetchDataForTable();
+  }
+
+  if (isCurrentControllerTables && isCurrentActionPreview) {
+    fetchDataForRelatedTables();
+  }
+
   $('.editable-input input').blur(function(event) {
     const table = event.target.dataset.table
     const field = event.target.dataset.field
@@ -27,12 +38,14 @@ function fetchDataForTable() {
 }
 
 function fetchDataForRelatedTables() {
+  let recordId = location.pathname.split("/")[3];
+  let primaryTable = location.pathname.split("/")[2];
   let relatedTables = $('.related-data-table');
 
   for (var i = 0; i < relatedTables.length; i++) {
     let relatedTable = relatedTables[i].dataset.tableName;
     let relatedTableId = relatedTables[i].id;
-    let url = "/tables/" + relatedTable + "?table=" + relatedTable;
+    let url = "/tables/" + primaryTable + "/" + recordId + "?table=" + relatedTable;
 
     $.ajax({
       dataType: 'json',
