@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
-              PG::ConnectionBad, :with => :handle_invalid_client_db_error
+              PG::ConnectionBad,
+              Mysql2::Error, :with => :handle_invalid_client_db_error
 
   def check_license
     redirect_to license_path unless license_valid?
