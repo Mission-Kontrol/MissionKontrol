@@ -87,18 +87,21 @@
 
           <div class="light-border-bottom"></div>
 
-          <div id="draggable-list-of-relatable-tables" style="">
             <% if @relatable_tables %>
               <% @relatable_tables.each do |relative| %>
                 <% if !@view_builder.related_tables.include?(relative) %>
-                  <div class="draggable-list-item-for-relatable-table draggable-list-item-for-<%= relative %> hide" style="" data-table="<%= relative %>">
-                    <span><i class="fa fa-arrows" aria-hidden="true"></i> Create table - <%= relative %></span>
-                    <span class="pull-right hide remove-related-table" onclick="removeRelatedTable()"><i class="fa fa-times" aria-hidden="true"></i></span>
+                  <div class="draggable-list-for-relatable-table" id="draggable-list-for-relatable-table-<%= relative %>">
+                    <div class="draggable-list-item draggable-list-item-for-<%= relative %> hide" data-table="<%= relative %>" data-container-id="draggable-list-for-relatable-table-<%= relative %>">
+                      <span><i class="fa fa-arrows" aria-hidden="true"></i> Create table - <%= relative %></span>
+                      <span class="pull-right hide remove-related-table" onclick="removeRelatedTable()"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                <% else %>
+                  <div class="draggable-list-for-relatable-table" id="draggable-list-for-relatable-table-<%= relative %>">
                   </div>
                 <% end %>
               <% end %>
             <% end %>
-          </div>
 
           <div id="layout-builder-draggable-fields-container-header">
             <br>
