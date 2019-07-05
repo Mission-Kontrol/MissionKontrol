@@ -381,11 +381,10 @@ loadEditPage = function () {
           window.toastr.error("Task queue preview failed, review SQL.");
         },
         success(response, status, request) {
-          let rows = response.rows;
           let columns = response.columns;
 
-          if (rows !== undefined && columns !== undefined) {
-            loadTaskQueuePreview(columns, rows);
+          if (columns !== undefined) {
+            loadTaskQueuePreviewDataTable(columns);
           }
 
           window.toastr.info("Task queue updated.");
