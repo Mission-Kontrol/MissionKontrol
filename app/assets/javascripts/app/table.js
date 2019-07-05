@@ -154,3 +154,59 @@ function loadRelatedDataTable (columns, id, ajax) {
     }
   });
 }
+
+function loadTaskQueuePreviewDataTable (columns) {
+  if ( $.fn.dataTable.isDataTable( '#task-queue-preview-table' ) ) {
+    let table = $('#task-queue-preview-table').DataTable();
+    table.destroy();
+  }
+
+  $('#task-queue-preview-table').DataTable({
+    "colReorder": true,
+    "deferRender": true,
+    "autoWidth": false,
+    "scrollX": true,
+    "ajax": "/task_queues/" + location.pathname.split("/")[2] + "/preview",
+    "dom": 'Bfrtip',
+    "columns": columns,
+    "stateSave": true,
+    "stateSaveCallback": function (settings, data) {
+      if ( settings.iDraw <= 1 ) {
+        return;
+      }
+
+      $.ajax({
+        "url": "/data_table_states/save?table=" + $(this).data('table-name'),
+        "data": { "state": data },
+        "dataType": "json",
+        "type": "POST",
+        "success": function () {}
+      });
+    },
+    "stateLoadCallback": function (settings, callback) {
+      $.ajax({
+        "url": '/data_table_states/load?table=' + $(this).data('table-name'),
+        "dataType": 'json',
+        "success": function (json) {
+          callback( json );
+        }
+      });
+    },
+    "buttons": [
+      'colvis',
+      {
+        "extend": 'csv',
+        "className": 'btn btn-warning',
+      }
+    ],
+    "createdRow": function( row, data, dataIndex ) {
+      let table = $(this).data('table-name');
+      let id = data.id;
+      let previewUrl = '/tables/' + table + '/' + id + '?table=' + table;
+      $(row).addClass( 'clickable-row' );
+      $(row).attr( 'data-href',  previewUrl);
+    }
+  });
+
+  $('#task-queue-preview-table').removeClass("hide");
+}
