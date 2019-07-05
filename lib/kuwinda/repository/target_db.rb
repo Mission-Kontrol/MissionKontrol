@@ -57,8 +57,16 @@ module Kuwinda
         conn.exec_query(sql)
       end
 
-      def query(sql, limit)
-        query_string = sql.split(';').join(" limit #{limit};") if limit
+      def query(sql, limit, offset)
+        if limit && offset
+          query_string = sql.split(';')
+          query_string = "#{query_string[0]} limit #{limit} offset #{offset};"
+        elsif limit
+          query_string = sql.split(';')
+          query_string = "#{query_string[0]} limit #{limit};"
+        else
+          query_string = sql
+        end
         conn.exec_query(query_string)
       end
 
