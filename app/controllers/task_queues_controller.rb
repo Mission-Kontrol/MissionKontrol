@@ -13,6 +13,7 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.find(params[:id])
     repo = Kuwinda::Repository::TargetDB.new(table: @task_queue.table)
     result = repo.query(@task_queue.to_sql, 1)
+    @task_queue_headers = result.columns
     @row = result.first
     @activity = Activity.new
   end
@@ -34,8 +35,28 @@ class TaskQueuesController < ApplicationController
     @task_queue.save!
     data = data_for_preview(@task_queue)
     render action: 'update/success', json: data
+
   rescue StandardError
     render action: 'update/error', status: 422, json: {}
+  end
+
+  def preview
+    @task_queue = TaskQueue.find(params[:id])
+    offset = params['start']
+    limit = params['length']
+    columns = []
+    sql_result = build_query_for_preview(@task_queue)
+    sql_result.columns.each do |c|
+      columns << { data: c }
+    end
+
+    render json: {
+      data: sql_result.to_hash,
+      columns: columns,
+      draw: params['draw'].to_i,
+      recordsTotal: @target_db_repo.count.rows[0][0],
+      recordsFiltered: sql_result.count
+    }
   end
 
   def outcome
@@ -107,31 +128,27 @@ class TaskQueuesController < ApplicationController
   def build_column_data_for_preview(query)
     columns = []
 
-    query.columns.each do |col|
-      columns << { 'name': col, 'title': col }
+    query.columns.each do |c|
+      columns << { data: c }
     end
 
     columns
   end
 
   def build_response_for_preview(query)
-    return {} if query.empty?
-
     data = {}
     columns = build_column_data_for_preview(query)
-    rows = build_row_data_for_preview(query)
-    data[:rows] = rows
     data[:columns] = columns
     data
   end
 
   def build_query_for_preview(task_queue)
-    repo = Kuwinda::Repository::TargetDB.new(table: task_queue.table)
+    @target_db_repo = Kuwinda::Repository::TargetDB.new(task_queue.table)
 
     if !task_queue.raw_sql.blank?
-      repo.query(task_queue.raw_sql, 5)
+      @target_db_repo.query(task_queue.raw_sql, 5)
     elsif !task_queue.to_sql.blank?
-      repo.query(task_queue.to_sql, 5)
+      @target_db_repo.query(task_queue.to_sql, 5)
     else
       {}
     end
