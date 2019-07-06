@@ -23,6 +23,7 @@
   z-index: -2px;
 }
 
+
 .layout-builder-draggable-field {
   padding: 10px 10px;
   border-radius: 2px;
@@ -55,6 +56,10 @@
     white-space: nowrap;
     cursor: pointer;
   }
+}
+
+.layout-builder-draggable-field:hover {
+  background-color: #f2f2f2;
 }
 
 .draggable-mirror {
