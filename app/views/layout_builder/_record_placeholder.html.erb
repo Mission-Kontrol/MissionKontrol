@@ -1,19 +1,22 @@
 <div class="row white-bg">
-  <div class="col-sm-12">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="table-record-placeholder-header">
-          <%= render 'layout_builder/layout/header_container1', layout_builder: layout_builder %>
+  <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_header_container1) &&
+            draggable_fields_container_is_empty?(layout_builder.draggable_fields_header_container2) %>
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="table-record-placeholder-header">
+            <%= render 'layout_builder/layout/header_container1', layout_builder: layout_builder %>
+          </div>
         </div>
-      </div>
 
-      <div class="col-sm-12">
-        <div class="table-record-placeholder-header">
-          <%= render 'layout_builder/layout/header_container2', layout_builder: layout_builder %>
+        <div class="col-sm-12">
+          <div class="table-record-placeholder-header">
+            <%= render 'layout_builder/layout/header_container2', layout_builder: layout_builder %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>
 
 <div class="wrapper">
