@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
-              PG::ConnectionBad, :with => :handle_invalid_client_db_error
+              PG::ConnectionBad,
+              Mysql2::Error, :with => :handle_invalid_client_db_error
 
   def check_license
     redirect_to license_path unless license_valid?
@@ -24,7 +25,7 @@ class ApplicationController < ActionController::Base
   def handle_invalid_client_db_error
     @available_tables = []
     @task_queues = []
-    render '/tables/bad_connection'
+    render '/layouts/bad_connection'
   end
 
   def after_sign_in_path_for(resource)
