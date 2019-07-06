@@ -20,7 +20,7 @@ class LayoutBuilderController < ApplicationController
 
   def table_fields_with_type
     @fields_with_type = list_table_fields_with_type(params[:table])
-    render json: @fields_with_type
+    render json: @fields_with_type.sort
   end
 
   def create
