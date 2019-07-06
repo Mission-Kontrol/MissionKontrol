@@ -195,7 +195,7 @@ initializeDraggable = function () {
 
   window.draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: ".layout-builder-draggable-item",
-    handle: ".layout-builder-draggable-item-handle"
+    handle: ".layout-builder-draggable-item"
   });
 
   const fieldsContainer = document.querySelectorAll("#layout-builder-draggable-fields-container")[0];
