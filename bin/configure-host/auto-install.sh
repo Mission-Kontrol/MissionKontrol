@@ -5,7 +5,11 @@
 set -e
 #
 # The basic directory structure:
-export CFG_DIR="/opt/kuwinda"
+case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
+    darwin) CFG_DIR="/Users/kuwinda" ;;
+    linux) CFG_DIR="/opt/kuwinda" ;;
+esac
+export CFG_DIR
 export LOG_DIR="$CFG_DIR/logs"
 export SSL_DIR="$CFG_DIR/ssl"
 export CMP_FILE="docker-compose.live.yml"
@@ -34,106 +38,131 @@ function fulfill_dependencies() {
         echo -e "           This may take a moment..."
     fi
 
-    if [ -f /etc/os-release ]; then
-        . /etc/os-release
-    elif [ -f /etc/centos-release ]; then
-        ID="centos"
-        VERSION_ID="$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)"
-    else
-        echo -e " [\e[1;31mERRO\e[0m] :: Unsuported Linux distribution or version."
-        echo -e " [\e[1;33mWARN\e[0m] :: You must first install the docker engine manually."
-        exit 3
-    fi
-    case "$ID" in
-        ubuntu|debian)
-            if [ "$DOCKER_INSTALLED" != "true" ]; then
-                apt-get -qq update
-                apt-get -qq install -y \
-                    apt-transport-https \
-                    ca-certificates \
-                    curl \
-                    gnupg-agent \
-                    software-properties-common >/dev/null
-                curl -fsSL https://download.docker.com/linux/$ID/gpg \
-                  | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add - >/dev/null
-                add-apt-repository -y \
-                    "deb [arch=amd64] https://download.docker.com/linux/$ID \
-                    $(lsb_release -cs) stable" >/dev/null
-                apt-get -qq update
+    case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
+        darwin)
+            echo -e " [\e[1;37mINFO\e[0m] :: Docker engine for Mac OS X must be installed manually."
+            echo -e "           Follow instructions available at https://docs.docker.com/docker-for-mac/install/"
+            exit 6
+            ;;
+        linux)
+            if [ -f /etc/os-release ]; then
+                . /etc/os-release
+            elif [ -f /etc/centos-release ]; then
+                ID="centos"
+                VERSION_ID="$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)"
+            else
+                echo -e " [\e[1;31mERRO\e[0m] :: Unsuported Linux distribution or version."
+                echo -e " [\e[1;33mWARN\e[0m] :: You must first install the docker engine manually.\n"
+                exit 3
+            fi
+            case "$ID" in
+                ubuntu|debian)
+                    case "$VERSION_ID" in
+                        16.04|18.04|18.10|8|9|10)
+                            if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                apt-get -qq update
+                                apt-get -qq install -y \
+                                    apt-transport-https \
+                                    ca-certificates \
+                                    curl \
+                                    gnupg-agent \
+                                    software-properties-common >/dev/null
+                                curl -fsSL https://download.docker.com/linux/$ID/gpg \
+                                  | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add - >/dev/null
+                                add-apt-repository -y \
+                                    "deb [arch=amd64] https://download.docker.com/linux/$ID \
+                                    $(lsb_release -cs) stable" >/dev/null
+                                apt-get -qq update
 
-                PKG="docker-ce docker-ce-cli containerd.io"
-                if [ "$ID" == "debian" -a "$VERSION_ID" == "8" ]; then
-                    PKG="docker-ce"
-                fi
-                apt-get -qq install -y $PKG >/dev/null
-            fi
-            if [ "$DOCKER_RUNNING" != "true" ]; then
-                case "$VERSION_ID" in
-                    16.04|18.04|8|9)
-                        systemctl -q enable docker.service
-                        systemctl -q start docker.service
-                        ;;
-                esac
-            fi
+                                PKG="docker-ce docker-ce-cli containerd.io"
+                                if [ "$ID" == "debian" -a "$VERSION_ID" == "8" ]; then
+                                    PKG="docker-ce"
+                                fi
+                                apt-get -qq install -y $PKG >/dev/null
+                            fi
+                            if [ "$DOCKER_RUNNING" != "true" ]; then
+                                systemctl -q enable docker.service
+                                systemctl -q start docker.service
+                            fi
+                            ;;
+                        *)
+                            echo -e " [\e[1;31mERRO\e[0m] :: Unsuported version of the ${ID^} OS."
+                            echo -e " [\e[1;33mWARN\e[0m] :: Please use supported version.\n"
+                            exit 7
+                    esac
+                    ;;
+                centos)
+                    case "$VERSION_ID" in
+                        6|7)
+                            if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                yum install -y -q \
+                                    yum-utils \
+                                    device-mapper-persistent-data \
+                                    lvm2
+                                yum-config-manager -y -q --add-repo \
+                                    https://download.docker.com/linux/$ID/docker-ce.repo
+                                yum install -y -q docker-ce docker-ce-cli containerd.io
+                            fi
+                            if [ "$DOCKER_RUNNING" != "true" ]; then
+                                case "$VERSION_ID" in
+                                    7)
+                                        systemctl -q enable docker.service
+                                        systemctl -q start docker.service
+                                        ;;
+                                    6)
+                                        chkconfig docker on >/dev/null
+                                        service docker start >/dev/null
+                                        ;;
+                                esac
+                            fi
+                            ;;
+                        *)
+                            echo -e " [\e[1;31mERRO\e[0m] :: Unsuported version of the ${ID^} OS."
+                            echo -e " [\e[1;33mWARN\e[0m] :: Please use supported version.\n"
+                            exit 7
+                    esac
+                    ;;
+                fedora)
+                    case "$VERSION_ID" in
+                        28|29)
+                            if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                dnf install -y -q dnf-plugins-core
+                                dnf config-manager -y --add-repo \
+                                    https://download.docker.com/linux/$ID/docker-ce.repo
+                                dnf install -y -q docker-ce docker-ce-cli containerd.io
+                            fi
+                            if [ "$DOCKER_RUNNING" != "true" ]; then
+                                systemctl -q enable docker.service
+                                systemctl -q start docker.service
+                            fi
+                            ;;
+                        *)
+                            echo -e " [\e[1;31mERRO\e[0m] :: Unsuported version of the ${ID^} OS."
+                            echo -e " [\e[1;33mWARN\e[0m] :: Please use supported version.\n"
+                            exit 7
+                    esac
+                    ;;
+                amzn)
+                    if [ "$DOCKER_INSTALLED" != "true" ]; then
+                        case "$VERSION_ID" in
+                            2) amazon-linux-extras install -y docker >/dev/null; ;;
+                            2018.03) yum install -y -q docker
+                        esac
+                    fi
+                    if [ "$DOCKER_RUNNING" != "true" ]; then
+                        case "$VERSION_ID" in
+                            2)
+                                systemctl -q enable docker.service
+                                systemctl -q start docker.service
+                                ;;
+                            2018.03)
+                                chkconfig docker on >/dev/null
+                                service docker start >/dev/null
+                                ;;
+                        esac
+                    fi
+            esac
             ;;
-        centos)
-            if [ "$DOCKER_INSTALLED" != "true" ]; then
-                yum install -y -q \
-                    yum-utils \
-                    device-mapper-persistent-data \
-                    lvm2
-                yum-config-manager -y -q --add-repo \
-                    https://download.docker.com/linux/$ID/docker-ce.repo
-                yum install -y -q docker-ce docker-ce-cli containerd.io
-            fi
-            if [ "$DOCKER_RUNNING" != "true" ]; then
-                case "$VERSION_ID" in
-                    7)
-                        systemctl -q enable docker.service
-                        systemctl -q start docker.service
-                        ;;
-                    6)
-                        chkconfig docker on >/dev/null
-                        service docker start >/dev/null
-                        ;;
-                esac
-            fi
-            ;;
-        fedora)
-            if [ "$DOCKER_INSTALLED" != "true" ]; then
-                dnf install -y -q dnf-plugins-core
-                dnf config-manager -y --add-repo \
-                    https://download.docker.com/linux/$ID/docker-ce.repo
-                dnf install -y -q docker-ce docker-ce-cli containerd.io
-            fi
-            if [ "$DOCKER_RUNNING" != "true" ]; then
-                case "$VERSION_ID" in
-                    28|29)
-                        systemctl -q enable docker.service
-                        systemctl -q start docker.service
-                        ;;
-                esac
-            fi
-            ;;
-        amzn)
-            if [ "$DOCKER_INSTALLED" != "true" ]; then
-                case "$VERSION_ID" in
-                    2) amazon-linux-extras install -y docker >/dev/null; ;;
-                    2018.03) yum install -y -q docker
-                esac
-            fi
-            if [ "$DOCKER_RUNNING" != "true" ]; then
-                case "$VERSION_ID" in
-                    2)
-                        systemctl -q enable docker.service
-                        systemctl -q start docker.service
-                        ;;
-                    2018.03)
-                        chkconfig docker on >/dev/null
-                        service docker start >/dev/null
-                        ;;
-                esac
-            fi
     esac
 
     echo -e " [\e[1;37mINFO\e[0m] :: Server setup has been completed."
@@ -145,16 +174,24 @@ function gen_passwd() {
     #
     local size="$1"
     local chars="${2:-A-Za-z0-9}"
-    head /dev/urandom | tr -dc $chars | head -c ${size:-8}
+    case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
+        darwin) openssl rand -base64 $size ;;
+        linux) head /dev/urandom | env LC_CTYPE=C tr -dc $chars | head -c ${size:-8}; echo ;;
+    esac
 }
 
 function configure_runtime() {
     #
     # Creates required configuration files.
     #
-    mkdir -p "$CFG_DIR" "$LOG_DIR" "$SSL_DIR"
-    [[ -n "$SSL_CERT_FILE" ]] && { cp -af "$SSL_CERT_FILE" "$SSL_DIR/certificate.pem"; chmod 0400 "$SSL_DIR/certificate.pem"; }
-    [[ -n "$SSL_CERT_KEY" ]] && { cp -af "$SSL_CERT_KEY" "$SSL_DIR/private.key"; chmod 0400 "$SSL_DIR/private.key"; }
+    mkdir -p "$CFG_DIR"
+    case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
+        linux) mkdir -p "$LOG_DIR" "$SSL_DIR" ;;
+    esac
+    # For Mac OS X, log/ and ssl/ directories will not be shared from host
+    # and thus self-signed ssl certificate will be re-generated each time web container is recreated
+    [[ -n "$SSL_CERT_FILE" ]] && { cp -af "$SSL_CERT_FILE" "$SSL_DIR/certificate.pem"; chmod 0444 "$SSL_DIR/certificate.pem"; }
+    [[ -n "$SSL_CERT_KEY" ]] && { cp -af "$SSL_CERT_KEY" "$SSL_DIR/private.key"; chmod 0444 "$SSL_DIR/private.key"; }
 
     [[ "$EXPOSE_PORT" =~ ^(.*):(.*)$ ]] || EXPOSE_PORT="80:443"
     local HTTP_PORT=${EXPOSE_PORT%%:*}
@@ -163,20 +200,20 @@ function configure_runtime() {
     echo -e " [\e[1;37mINFO\e[0m] :: Creating configuration files."
     # Create hidden files with env variables, if they do not exist.
     if [ ! -f "$CFG_DIR/.db.env" -o ! -f "$CFG_DIR/.app.env" ]; then
-        local RANDOM_PASSWORD=$(gen_passwd 16)
+        local RANDOM_PASSWORD=$(gen_passwd 12)
 
-        cat<<_EOF_ >"$CFG_DIR/.db.env"
+        cat<<_EOF_ >"$CFG_DIR/db.env"
 POSTGRES_USER=kuwinda
 POSTGRES_PASSWORD=$RANDOM_PASSWORD
 _EOF_
-        cat<<_EOF_ >"$CFG_DIR/.app.env"
+        cat<<_EOF_ >"$CFG_DIR/app.env"
 KUWINDA_DATABASE_USER=kuwinda
 KUWINDA_DATABASE_PASSWORD=$RANDOM_PASSWORD
 KUWINDA_DATABASE_PORT=5432
 KUWINDA_DATABASE_SETUP=true
 KUWINDA_DATABASE_TIMEOUT=90s
 _EOF_
-        chmod 0600 "$CFG_DIR/.db.env" "$CFG_DIR/.app.env"
+        chmod 0644 "$CFG_DIR/db.env" "$CFG_DIR/app.env"
     fi
 
     # Create compose file, if it does not exist.
@@ -188,11 +225,10 @@ services:
   db:
     image: $DB_IMAGE
     env_file:
-      - "$CFG_DIR/.db.env"
+      - $CFG_DIR/db.env
     networks:
       - internal
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - postgres-data:/var/lib/postgresql/data
     restart: always
 
@@ -202,7 +238,7 @@ services:
     depends_on:
       - db
     env_file:
-      - "$CFG_DIR/.app.env"
+      - $CFG_DIR/app.env
     environment:
       KUWINDA_DATABASE_HOST: db
       WEB_SERVER_ENABLE: "true"
@@ -216,10 +252,7 @@ services:
       - "${HTTP_PORT}:${HTTP_PORT}"
       - "${HTTPS_PORT}:${HTTPS_PORT}"
     restart: always
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - $LOG_DIR:/app/log
-      - $SSL_DIR:/etc/nginx/ssl
+    # web volumes
 
 volumes:
   postgres-data:
@@ -232,6 +265,9 @@ networks:
         - subnet: 172.16.0.0/28
 _EOF_
     fi
+    case "$(echo "$(uname)" | awk '{print tolower($0)}')" in
+        linux) sed -i "/web volumes/a\    volumes:\n      - $LOG_DIR:/app/log\n      - $SSL_DIR:/etc/nginx/ssl" "$CFG_DIR/$CMP_FILE"
+    esac
 
     echo -e " [\e[1;37mINFO\e[0m] :: Configuration files has been created."
 }
@@ -265,9 +301,9 @@ function print_help() {
     echo -e "       -r | --run                : Runs setup of the server and application containers."
     echo -e "       -s | --stop               : Stops application containers deployed on the server.\n"
     echo -e "       -p | --ports              : Allows to specify custom ports (HTTP and HTTPS) on which application will be exposed on host."
-    echo -e "            --use_https          : Allows to enable and enforce HTTPS with Web Server."
-    echo -e "            --ssl_cert           : Path to the SSL certificate file."
-    echo -e "            --ssl_cert_key       : Path to the SSL certificate key file.\n"
+    echo -e "       -e | --use_https          : Allows to enable and enforce HTTPS with Web Server."
+    echo -e "       -c | --ssl_cert           : Path to the SSL certificate file."
+    echo -e "       -k | --ssl_cert_key       : Path to the SSL certificate key file.\n"
     echo -e "       -u | --update             : Updates configuration and application containers."
     echo -e "       -f | --force              : Used with '--update' option to force update of the configuration and application contaienrs.\n"
     echo -e "       -d | --remove             : Removes application containers and configuration files from the server.\n"
@@ -279,7 +315,7 @@ function print_help() {
 # Main part of script - command line options
 #
 echo
-shortOptions='dfhp:rsu'
+shortOptions='c:defhk:p:rsu'
 longOptions='force,help,ports:,remove,run,ssl_cert:,ssl_cert_key:,stop,update,use_https'
 
 set +e
@@ -303,11 +339,11 @@ while [ $# -gt 0 ]; do
         -h | --help)          print_help ;;
         -p | --ports)         export EXPOSE_PORT="$2" ;;
         -r | --run)           CMD="run"; [ ! -f "$CFG_DIR/$CMP_FILE" ] && export CLEAN_START="yes" ;;
-             --ssl_cert)      export SSL_CERT_FILE=$(readlink -f "$2") ;;
-             --ssl_cert_key)  export SSL_CERT_KEY=$(readlink -f "$2") ;;
+        -c | --ssl_cert)      export SSL_CERT_FILE=$(readlink -f "$2") ;;
+        -k | --ssl_cert_key)  export SSL_CERT_KEY=$(readlink -f "$2") ;;
         -s | --stop)          CMD="stop" ;;
         -u | --update)        CMD="update"; export SERVICE_UPDATE="yes" ;;
-             --use_https)     export WEB_SERVER_USE_HTTPS="true" ;;
+        -e | --use_https)     export WEB_SERVER_USE_HTTPS="true" ;;
         --)                   shift; break ;;
     esac
     shift
@@ -327,8 +363,6 @@ if [ -n "$CMD" ]; then
         echo -e " [\e[1;37mINFO\e[0m] :: Downloading and starting application containers."
         if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
             echo -e "           This may take a moment..."
-            # TODO: Remove "docker login" after making app image publicly available
-            docker login
             docker_compose pull
         fi
         if [ $? -eq 0 ]; then
@@ -337,11 +371,6 @@ if [ -n "$CMD" ]; then
             echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
             echo -e " [\e[1;37mINFO\e[0m] :: Please try again."
             exit 4
-        fi
-        if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
-            # TODO: Remove "docker logout" after making app image publicly available
-            docker logout >/dev/null
-            echo
         fi
     elif [ "$CMD" == "remove" ]; then
         docker_compose down -v
