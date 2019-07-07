@@ -24,7 +24,7 @@ describe TablesController, :type => :controller do
             get :show, params: { id: 'users', table_name: 'users', table: 'users'}
           end
 
-          expect(response).to render_template('tables/bad_connection')
+          expect(response).to render_template('layouts/bad_connection')
         end
       end
 
@@ -53,7 +53,7 @@ describe TablesController, :type => :controller do
             get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
           end
 
-          expect(response).to render_template('tables/bad_connection')
+          expect(response).to render_template('layouts/bad_connection')
         end
       end
 

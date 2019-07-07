@@ -104,7 +104,7 @@ describe DashboardController, :type => :controller do
 
           subject
 
-          expect(response).to render_template('tables/bad_connection')
+          expect(response).to render_template('layouts/bad_connection')
         end
       end
 
