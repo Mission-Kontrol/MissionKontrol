@@ -141,7 +141,7 @@ describe LayoutBuilderController, type: :controller do
         end
 
         it 'renders the bad connection template' do
-          expect(response).to render_template('tables/bad_connection')
+          expect(response).to render_template('layouts/bad_connection')
         end
       end
     end
@@ -158,7 +158,7 @@ describe LayoutBuilderController, type: :controller do
           get :edit, params: { use_route: 'layouts/' }
         end
 
-        expect(response).to render_template('tables/bad_connection')
+        expect(response).to render_template('layouts/bad_connection')
       end
     end
   end
@@ -174,7 +174,7 @@ describe LayoutBuilderController, type: :controller do
           get :preview, params: { use_route: 'layouts/' }
         end
 
-        expect(response).to render_template('tables/bad_connection')
+        expect(response).to render_template('layouts/bad_connection')
       end
     end
   end
