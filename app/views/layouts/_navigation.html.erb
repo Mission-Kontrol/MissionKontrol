@@ -51,30 +51,32 @@
         </ul>
       </li>
 
-      <li class="<%= active_controller?('task_queues') %>">
-        <%= link_to task_queues_path do %>
-          <i class="fa fa-list" aria-hidden="true"></i>
-          <span class="nav-label" data-i18n="nav.queues">Task Queues</span> <span class="fa arrow"></span>
-        <% end %>
+      <% if Rails.environment.development? %>
+        <li class="<%= active_controller?('task_queues') %>">
+          <%= link_to task_queues_path do %>
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span class="nav-label" data-i18n="nav.queues">Task Queues</span> <span class="fa arrow"></span>
+          <% end %>
 
-        <ul class="nav nav-second-level collapse">
-          <li>
-            <%= link_to "Create Task Queue", task_queues_path %>
-          </li>
-
-          <% if @task_queues.present? %>
+          <ul class="nav nav-second-level collapse">
             <li>
-              <a href="#" class="divider"></a>
+              <%= link_to "Create Task Queue", task_queues_path %>
             </li>
-          <% end %>
 
-          <% @task_queues.each do |q| %>
-            <li class="">
-              <%= link_to q.name, edit_task_queue_path(q) %>
-            </li>
-          <% end %>
-        </ul>
-      </li>
+            <% if @task_queues.present? %>
+              <li>
+                <a href="#" class="divider"></a>
+              </li>
+            <% end %>
+
+            <% @task_queues.each do |q| %>
+              <li class="">
+                <%= link_to q.name, edit_task_queue_path(q) %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
 
       <li class="<%= active_controller?('layout_builder') %> hide">
         <%= link_to layouts_path do %>
