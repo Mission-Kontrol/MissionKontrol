@@ -80,7 +80,7 @@ describe TablesController, :type => :controller do
               get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
             end
 
-            expect(response).to redirect_to(new_layout_url)
+            expect(response).to redirect_to(new_layout_url(table: 'users'))
           end
         end
       end
