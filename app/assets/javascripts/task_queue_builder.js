@@ -383,7 +383,7 @@ loadEditPage = function () {
         success(response, status, request) {
           let columns = response.columns;
 
-          if (columns !== undefined) {
+          if (typeof columns !== "undefined") {
             loadTaskQueuePreviewDataTable(columns);
           }
 
