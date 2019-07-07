@@ -27,3 +27,5 @@ config/sensitive_data/*
 .env
 .ruby-version
 .DS_Store
+
+coverage/

@@ -2,7 +2,9 @@
 
 require 'webmock/rspec'
 require 'vcr'
+require 'codacy-coverage'
 
+Codacy::Reporter.start
 # WebMock.disable_net_connect!(allow_localhost: true)
 
 VCR.configure do |config|
