@@ -19,6 +19,6 @@
 //= require dotjs/doT.min.js
 //= require query-builder/query-builder.min.js
 //= require_tree ./app
-// = require draggable
-// = require layout_builder
-// = require task_queue_builder
+//= require draggable
+//= require layout_builder
+//= require task_queue_builder

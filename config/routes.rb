@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     member do
       post 'outcome'
       get 'record'
+      get 'preview'
     end
   end
 

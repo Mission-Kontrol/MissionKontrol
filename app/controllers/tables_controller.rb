@@ -92,7 +92,7 @@ class TablesController < ApplicationController
   end
 
   def render_preview_html
-    redirect_to new_layout_path unless table_has_layout?(@current_table)
+    redirect_to new_layout_path(table: @current_table) unless table_has_layout?(@current_table)
 
     @target_db_repo.table = @current_table
     @activity = Activity.new

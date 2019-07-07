@@ -12,6 +12,7 @@ class LayoutBuilderController < ApplicationController
     @available_tables = available_tables
     @tables_with_layouts = tables_with_layouts
     @view_builder = ViewBuilder.new
+    @view_builder.table_name = params[:table] if params[:table]
   end
 
   def show
