@@ -41,10 +41,11 @@ $(document).ready(function() {
   }
 
   if (isCurrentControllerLayout && isCurrentActionEdit) {
-    drake = dragula([document.querySelector('#draggable-list-of-relatable-tables'), document.querySelector('#droppable-list-of-relatable-tables')]);
+    drake = dragula([...document.querySelectorAll('.draggable-list-for-relatable-table'), document.querySelector('#droppable-list-of-relatable-tables')]);
 
     drake.on('drop', (el) => {
-      $(el).find(".remove-related-table").removeClass("hide")
+      $(el).find(".remove-related-table").removeClass("hide");
+      $(el).find('i.fa-times').show();
       updateLayoutRelatedTables(el);
     })
   }
@@ -71,20 +72,20 @@ $(document).ready(function() {
 
     $('.layout_builder_selected_table_name').click(function(evt) {
       evt.preventDefault();
-      $(".related-table-notice").addClass('hide');
-      $(".draggable-list-item-for-relatable-table").addClass('hide');
-
       let clickedTable = $(this).data().tableName;
       let clickedTableClass = ".draggable-list-item-for-" + clickedTable;
       let primaryTable = $(this).data().primaryTable;
       let header = "Fields / " + clickedTable;
 
+      $(".related-table-notice").addClass('hide');
+      $("[id^=draggable-list-for-relatable-table-]").not("#draggable-list-for-relatable-table-" + clickedTable).addClass('hide');
       $('#layout_builder_selected_table_name').html(header);
       showFieldSettingsFormScreen2();
       rebuildDraggable(clickedTable);
 
       if (clickedTable != primaryTable) {
         $(".related-table-notice").removeClass('hide');
+        $(clickedTableClass).parent().removeClass('hide');
         $(clickedTableClass).removeClass('hide');
         setTimeout(function(){
           $("#layout-builder-draggable-fields-container .layout-builder-draggable-field" ).css( 'background-color', '#c2c2c2' );
@@ -615,6 +616,7 @@ function updateCallableFields() {
 
 function removeRelatedTable() {
   let clickedTable = event.target.parentElement.parentElement;
+  let containerId = "#" + "draggable-list-for-relatable-table-" + clickedTable.dataset.table;
   let data = {};
   let layoutID = location.pathname.split("/")[2];
   data['related_table'] = clickedTable.dataset.table;
@@ -627,7 +629,8 @@ function removeRelatedTable() {
         alert("Failed: "+ errorTextStatus+" ;"+error);
      },
     success: function(response, status, request){
-      clickedTable.remove();
+      $(clickedTable).find('i.fa-times').hide();
+      $(clickedTable).appendTo(containerId);
     }
   })
 }

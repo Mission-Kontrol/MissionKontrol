@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class TaskQueuesController < ApplicationController
+  include TaskQueuePreview
   layout 'task_queue'
   before_action :load_available_tables, :set_activities
 
@@ -12,7 +13,8 @@ class TaskQueuesController < ApplicationController
   def edit
     @task_queue = TaskQueue.find(params[:id])
     repo = Kuwinda::Repository::TargetDB.new(table: @task_queue.table)
-    result = repo.query(@task_queue.to_sql, 1)
+    result = repo.query(@task_queue.to_sql, 10, 0)
+    @task_queue_headers = result.columns
     @row = result.first
     @activity = Activity.new
   end
@@ -36,6 +38,25 @@ class TaskQueuesController < ApplicationController
     render action: 'update/success', json: data
   rescue StandardError
     render action: 'update/error', status: 422, json: {}
+  end
+
+  def preview
+    @task_queue = TaskQueue.find(params[:id])
+    offset = params['start']
+    limit = params['length']
+    columns = []
+    sql_result = build_query_for_preview(@task_queue, limit, offset)
+    sql_result.columns.each do |c|
+      columns << { data: c }
+    end
+
+    render json: {
+      data: sql_result.to_hash,
+      columns: columns,
+      draw: params['draw'].to_i,
+      recordsTotal: @target_db_repo.count.rows[0][0],
+      recordsFiltered: sql_result.count
+    }
   end
 
   def outcome
@@ -90,56 +111,6 @@ class TaskQueuesController < ApplicationController
   def handle_success(action:, js_func:, notice:)
     flash[:notice] = notice
     render(action: action, js: js_func)
-  end
-
-  def build_row_data_for_preview(query)
-    rows = []
-
-    query.to_hash.each do |row|
-      next unless time_to_reappear?(row)
-
-      rows << { options: { expanded: true, classes: 'task-queue-item' }, value: row }
-    end
-
-    rows
-  end
-
-  def build_column_data_for_preview(query)
-    columns = []
-
-    query.columns.each do |col|
-      columns << { 'name': col, 'title': col }
-    end
-
-    columns
-  end
-
-  def build_response_for_preview(query)
-    return {} if query.empty?
-
-    data = {}
-    columns = build_column_data_for_preview(query)
-    rows = build_row_data_for_preview(query)
-    data[:rows] = rows
-    data[:columns] = columns
-    data
-  end
-
-  def build_query_for_preview(task_queue)
-    repo = Kuwinda::Repository::TargetDB.new(table: task_queue.table)
-
-    if !task_queue.raw_sql.blank?
-      repo.query(task_queue.raw_sql, 5)
-    elsif !task_queue.to_sql.blank?
-      repo.query(task_queue.to_sql, 5)
-    else
-      {}
-    end
-  end
-
-  def data_for_preview(task_queue)
-    query = build_query_for_preview(task_queue)
-    build_response_for_preview(query)
   end
 
   def time_to_reappear?(row)

@@ -58,8 +58,8 @@
   <div class="col-sm-12">
     <div class="layout-placeholder" id="droppable-list-of-relatable-tables">
       <% @view_builder.related_tables.each do |relative| %>
-        <div class="droppable-list-item-for-relatable-table" style="" data-table="<%= relative %>">
-          <span><i class="fa fa-arrows fa-2x" aria-hidden="true"></i> Create table - <%= relative %></span>
+        <div class="draggable-list-item draggable-list-item-for-<%= relative %>" style="" data-table="<%= relative %>">
+          <span><i class="fa fa-arrows" aria-hidden="true"></i> Create table - <%= relative %></span>
           <span class="pull-right remove-related-table" onclick="removeRelatedTable()"><i class="fa fa-times" aria-hidden="true"></i></span>
         </div>
       <% end %>

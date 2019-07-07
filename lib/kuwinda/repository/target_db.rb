@@ -35,8 +35,15 @@ module Kuwinda
         result.nil? ? result : result.first
       end
 
-      def find_all_related(foreign_key_title, foreign_key_value, limit = 10)
-        sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit};"
+      def find_all_related(foreign_key_title, foreign_key_value, limit = 10, offset = nil)
+        if limit && offset
+          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit} offset #{offset};"
+        elsif limit
+          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit};"
+        else
+          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
+        end
+
         conn.exec_query(sql)
       end
 
@@ -50,13 +57,26 @@ module Kuwinda
         conn.exec_query(sql)
       end
 
-      def query(sql, limit)
-        query_string = sql.split(';').join(" limit #{limit};") if limit
+      def query(sql, limit, offset)
+        if limit && offset
+          query_string = sql.split(';')
+          query_string = "#{query_string[0]} limit #{limit} offset #{offset};"
+        elsif limit
+          query_string = sql.split(';')
+          query_string = "#{query_string[0]} limit #{limit};"
+        else
+          query_string = sql
+        end
         conn.exec_query(query_string)
       end
 
       def count
         sql = "SELECT COUNT(*) FROM #{table};"
+        conn.exec_query(sql)
+      end
+
+      def count_related(foreign_key_title, foreign_key_value)
+        sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
       end
     end

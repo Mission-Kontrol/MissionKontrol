@@ -41,7 +41,7 @@
   text-align: right;
 }
 
-#draggable-list-of-relatable-tables, #droppable-list-of-relatable-tables {
+.draggable-list-item, #droppable-list-of-relatable-tables {
   cursor: pointer;
 }
 
@@ -56,8 +56,8 @@
   background-color: #c2c2c2;
 }
 
-.draggable-list-item-for-relatable-table {
+.draggable-list-item {
   margin: 10px;
-  padding: 10px 5px;
+  padding: 10px 10px;
   background-color: #c2c2c2;
 }

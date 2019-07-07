@@ -17,13 +17,12 @@ Rails.application.routes.draw do
     member do
       post 'outcome'
       get 'record'
+      get 'preview'
     end
   end
 
   resources :tables, only: %i[show]
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'
-  patch 'tables/:table_name/hide-column', to: 'tables#hide_column', as: 'table_hide_column'
-  patch 'tables/:table_name/show-column', to: 'tables#show_column', as: 'table_show_column'
 
   patch 'table_field', to: 'tables#update_table_field', as: 'update_table_field'
   patch 'related_table_field', to: 'tables#update_related_table_field', as: 'update_related_table_field'
@@ -53,4 +52,7 @@ Rails.application.routes.draw do
   get 'license', to: 'dashboard#license'
   post 'license/verify', to: 'dashboard#verify_license'
   get 'license/verify', to: 'dashboard#verify_license', as: 'verify_license'
+
+  get 'data_table_states/load'
+  post 'data_table_states/save'
 end
