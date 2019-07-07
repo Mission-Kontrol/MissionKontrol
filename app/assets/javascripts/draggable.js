@@ -77,7 +77,7 @@ buildDraggableField = function (field) {
       "<div class='col-sm-7'>" +
         "<div class = 'layout-builder-draggable-item-handle'>" +
           "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
-          "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
+          "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  " class='no-select'>" + field.title + "</span>" +
         "</div>" +
       "</div>" +
 
@@ -102,7 +102,7 @@ buildDraggableField = function (field) {
         "<div class='col-sm-7'>" +
           "<div class = 'layout-builder-draggable-item-handle'>" +
             "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
-            "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  ">" + field.title + "</span>" +
+            "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  " class='no-select'>" + field.title + "</span>" +
           "</div>" +
         "</div>" +
 
@@ -195,7 +195,7 @@ initializeDraggable = function () {
 
   window.draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: ".layout-builder-draggable-item",
-    handle: ".layout-builder-draggable-item-handle"
+    handle: ".layout-builder-draggable-item"
   });
 
   const fieldsContainer = document.querySelectorAll("#layout-builder-draggable-fields-container")[0];

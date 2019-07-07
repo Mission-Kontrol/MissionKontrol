@@ -3,23 +3,25 @@
     <ul class="nav metismenu" id="side-menu">
       <li class="nav-header ">
         <div class="dropdown profile-element">
-          <span>
-            <img alt="image" class="" src="<%= image_url '/assets/images/Kuwinda_logo_full-blue-260.png' %>" style="width: 100px"/>
-          </span>
+          <%= link_to dashboard_path, :class => 'navbar-link left-layout-link' do %>
+            <span>
+              <img alt="image" class="" src="<%= image_url '/assets/images/Kuwinda_logo_full-blue-260.png' %>" style="width: 100px"/>
+            </span>
 
-          <a>
-            <span class="clear">
-              <span class="block m-t-xs">
-                <% if current_admin_user %>
-                  <strong class="font-bold"><%= current_admin_user.full_name %></strong>
+            <a>
+              <span class="clear">
+                <span class="block m-t-xs">
+                  <% if current_admin_user %>
+                    <strong class="font-bold"><%= current_admin_user.full_name %></strong>
+                  <% end %>
+                </span>
+
+                <% if demo_app %>
+                  <span class="text-muted text-xs block">Demo</span>
                 <% end %>
               </span>
-
-              <% if demo_app %>
-                <span class="text-muted text-xs block">Demo</span>
-              <% end %>
-            </span>
-          </a>
+            </a>
+          <% end %>
         </div>
 
         <div class="logo-element">
