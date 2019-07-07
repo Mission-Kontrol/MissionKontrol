@@ -51,7 +51,7 @@
         </ul>
       </li>
 
-      <% if Rails.environment.development? %>
+      <% if Rails.env.development? %>
         <li class="<%= active_controller?('task_queues') %>">
           <%= link_to task_queues_path do %>
             <i class="fa fa-list" aria-hidden="true"></i>
