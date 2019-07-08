@@ -7,8 +7,10 @@
 
   .navbar-static-side {
     z-index: 2001;
-    position: absolute;
     width: $sidebar-width;
+    position: fixed;
+    overflow: scroll;
+    height: 100vh;
   }
 
   .navbar-top-links .dropdown-messages,
