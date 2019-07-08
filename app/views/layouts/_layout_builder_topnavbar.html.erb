@@ -21,10 +21,11 @@
             <li>
               <%= link_to "Table: #{@view_builder.table_name.humanize}", table_path(@view_builder.table_name, table: @view_builder.table_name) %>
             </li>
-
-            <li>
-              <%= link_to "Layout: #{@view_builder.table_name.humanize}", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: 1) %>
-            </li>
+            <% if @view_builder.persisted? %>
+              <li>
+                <%= link_to "Layout: #{@view_builder.table_name.humanize}", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: @row) %>
+              </li>
+            <% end %>
           <% end %>
         </ol>
       </li>

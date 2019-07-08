@@ -12,18 +12,18 @@
   </head>
 
   <body class="gray-bg">
-    <div class="container-fluid">
-      <div class="row">
-        <div class='col-sm-12'>
-          <%= render 'layouts/layout_builder_topnavbar' %>
-        </div>
+    <div class="top-nav">
+      <div class='col-sm-12'>
+        <%= render 'layouts/layout_builder_topnavbar' %>
+      </div>
+    </div>
+
+    <div>
+      <div class="col-sm-5 col-md-4 col-lg-3 side-nav">
+        <%= render 'layouts/layout_builder_navigation' %>
       </div>
 
-      <div class="row">
-        <div class="col-sm-5 col-md-4 col-lg-3">
-          <%= render 'layouts/layout_builder_navigation' %>
-        </div>
-
+      <div class="layout-builder--content">
         <div class="col-sm-7 col-md-8 col-lg-9">
           <%= render 'shared/flash_message' %>
 

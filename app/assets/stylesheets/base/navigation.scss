@@ -574,3 +574,24 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
   display: block;
   width: 220px;
 }
+
+.top-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+  background-color: #f3f3f4;
+}
+
+.side-nav {
+  position: fixed;
+  width: 351px;
+  height:100vh;
+  overflow: scroll;
+}
+
+.layout-builder--content {
+  margin: 76px 0 0 351px;
+  overflow: scroll;
+  width: 100%;
+}
