@@ -3,11 +3,13 @@
 <div class="table-responsive">
   <table id="task-queue-preview-table" class="table hide" data-paging="true"  data-table-name="<%= @task_queue.table %>">
     <thead>
-      <tr>
-        <% @task_queue_headers.each do |header|%>
-          <th class='column-<%= header %>'><%= header.humanize %></th>
-        <% end %>
-      </tr>
+      <% if @task_queue_headers %>
+        <tr>
+          <% @task_queue_headers.each do |header|%>
+            <th class='column-<%= header %>'><%= header.humanize %></th>
+          <% end %>
+        </tr>
+      <% end %>
     </thead>
 
     <tbody></tbody>
