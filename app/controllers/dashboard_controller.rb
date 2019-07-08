@@ -11,7 +11,9 @@ class DashboardController < ApplicationController
 
   def show; end
 
-  def license; end
+  def license
+    redirect_to dashboard_path if current_admin_user
+  end
 
   def verify_license
     license_key, activation_id = verify_license!(params[:license_key], 'trial')
