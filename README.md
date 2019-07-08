@@ -143,3 +143,23 @@ NGINX Web Server configuration:
 * `WEB_SERVER_PORT` - allows to override the default HTTP port - `80/tcp`;
 * `WEB_SERVER_HTTPS_PORT` - allows to override the default HTTPS port - `443/tcp`;
 * `WEB_SERVER_STATIC_FILES` - enables serving static files by web server - should be used in combination with `RAILS_ENV=production` and `RAILS_SERVE_STATIC_FILES=true`.
+
+#### Twilio configuration  
+
+In order to use twilio there are four pieces of information required. They are
+
+* Account SID
+* Application SID
+* Auth token
+* Caller ID
+
+They can all be found in your twilio dashboard. Here is how to retrieve them.
+
+Account SID and  Auth token
+Dashboard > Settings > Under API credentials you can find your account SID and auth token
+
+Application SID
+Dashboard > Programmable voice > TwiML > TwiML Apps > Create new app or choose existing app > Application SID can be found under properties
+
+Caller ID
+Dashboard > Programmable voice > Numbers > Mange numbers > select existing number or buy new number

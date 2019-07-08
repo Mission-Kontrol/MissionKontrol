@@ -18,31 +18,43 @@
             <%= devise_error_messages! %>
 
             <!-- twilio settings -->
-            <div class="">
+            <div>
               <div class="form-group">
-                <%= f.label :twilio_caller_id, "Twilio caller ID" %>
-                <%= f.text_field :twilio_caller_id, autofocus: true, class: "form-control" %>
+                <div>
+                  <%= f.label :twilio_account_sid %>
+                  <i class="fa fa-info-circle" title="You can find your Account SID and Auth token in your Twilio settings page, under API credentials"></i>
+                </div>
+                <%= f.text_field :twilio_account_sid, autofocus: true, class: "form-control" %>
               </div>
             </div>
 
-            <div class="">
+            <div>
               <div class="form-group">
-                <%= f.label :twilio_auth_token %>
+                <div>
+                  <%= f.label :twilio_auth_token %>
+                  <i class="fa fa-info-circle" title="You can find your Account SID and Auth token in your Twilio settings page, under API credentials"></i>
+                </div>
                 <%= f.text_field :twilio_auth_token, autofocus: true, class: "form-control" %>
               </div>
             </div>
 
-            <div class="">
+            <div>
               <div class="form-group">
-                <%= f.label :twilio_application_sid %>
-                <%= f.text_field :twilio_application_sid, autofocus: true, class: "form-control" %>
+                <div>
+                  <%= f.label :twilio_caller_id, "Twilio caller ID" %>
+                  <i class="fa fa-info-circle" title="You can find your Caller ID in your Twilio Programmable voice settings, under Numbers > Manage numbers > select existing number or buy new number"></i>
+                </div>
+                <%= f.text_field :twilio_caller_id, autofocus: true, class: "form-control" %>
               </div>
             </div>
 
-            <div class="">
+            <div>
               <div class="form-group">
-                <%= f.label :twilio_account_sid %>
-                <%= f.text_field :twilio_account_sid, autofocus: true, class: "form-control" %>
+                <div>
+                  <%= f.label :twilio_application_sid %>
+                  <i class="fa fa-info-circle" title="You can find your Caller ID in your Twilio Programmable voice settings, under TwiML > TwiML Apps > Create new app or chose existing app > Application SID can be found under properties"></i>
+                </div>
+                <%= f.text_field :twilio_application_sid, autofocus: true, class: "form-control" %>
               </div>
             </div>
             <!-- twilio settings -->
@@ -73,7 +85,7 @@
 
               <div class="form-group">
                 <%= f.label :target_database_password %>
-                <%= f.password_field :target_database_password, autofocus: true, class: "form-control" %>
+                <%= f.password_field :target_database_password, autofocus: true, class: "form-control", value: resource.target_database_password %>
               </div>
 
               <div class="form-group">
