@@ -372,12 +372,12 @@ function updateLayoutRelatedTables(el) {
 
 function goToNextScreen() {
   $('#layout-builder-modal-screen-1').toggleClass('hide');
-  $('#layout-builder-modal-screen-2').toggleClass('hide');
+  // $('#layout-builder-modal-screen-2').toggleClass('hide');
 }
 
 function goToPreviousScreen() {
   $('#layout-builder-modal-screen-1').toggleClass('hide');
-  $('#layout-builder-modal-screen-2').toggleClass('hide');
+  // $('#layout-builder-modal-screen-2').toggleClass('hide');
 }
 
 function showFieldSettingsFormScreen2() {
