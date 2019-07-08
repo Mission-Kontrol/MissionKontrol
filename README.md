@@ -146,15 +146,16 @@ NGINX Web Server configuration:
 
 #### Twilio configuration  
 
-In order to use twilio there are four pieces of information required. They are   
-- Account SID  
-- Application SID  
-- Auth token  
-- Caller ID   
+In order to use twilio there are four pieces of information required. They are
+
+* Account SID
+* Application SID
+* Auth token
+* Caller ID
 
 They can all be found in your twilio dashboard. Here is how to retrieve them.
 
-Account SID and  Auth token 
+Account SID and  Auth token
 Dashboard > Settings > Under API credentials you can find your account SID and auth token
 
 Application SID
