@@ -23,7 +23,7 @@
             </li>
 
             <li>
-              <%= link_to "Layout: #{@view_builder.table_name.humanize}", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: 1) %>
+              <%= link_to "Layout: #{@view_builder.table_name.humanize}", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: @row) %>
             </li>
           <% end %>
         </ol>

@@ -71,6 +71,8 @@ class LayoutBuilderController < ApplicationController
     @view_builder = ViewBuilder.find(params[:id])
     @relatable_tables = relatable_tables(@view_builder.table_name)
     @fields_with_type = list_table_fields_with_type(@view_builder.table_name)
+    @target_db_repo = Kuwinda::Repository::TargetDB.new(@view_builder.table_name)
+    @row = @target_db_repo.all(1).rows.first.first
   end
 
   def preview
