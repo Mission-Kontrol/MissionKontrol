@@ -1433,3 +1433,11 @@ body.mini-navbar.fixed-sidebar .logo-element {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.align-right {
+  text-align: right;
+}
+
+.btn-right {
+  margin: 0 0 0 auto;
+}

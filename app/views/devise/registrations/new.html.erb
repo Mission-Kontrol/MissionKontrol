@@ -1,41 +1,11 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 m-t-xl m-b-xl">
-      <p>
-        <% if admin_user_signed_in? %>
-          Logged in as <strong><%= current_admin_user.email %></strong>.
-          <%= link_to 'Edit profile', edit_admin_user_registration_path, :class => 'navbar-link' %> |
-          <%= link_to "Logout", destroy_admin_user_session_path, method: :delete, :class => 'navbar-link'  %>
-        <% else %>
-          <%= link_to "Login", new_admin_user_session_path, :class => 'navbar-link'  %>
-        <% end %>
-      </p>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "m-t"}) do |f| %>
+        <%= devise_error_messages! %>
 
-      <div class="ibox float-e-margins">
-        <div class="ibox-content">
-          <div class="text-center">
-            <div class="logo-wrapper">
-              <img src="/assets/images/Kuwinda_logo_full-blue-260.png" alt="">
-            </div>
-          </div>
-
-          <div class="m-t-lg">
-            <p class="underline_light">Welcome</p>
-            <p>Welcome to the installation process. Just fill in the information below and you’ll be on your way to using the best admin tool in the world.</p>
-          </div>
-
-          <div class="m-t-lg">
-            <p class="underline_light">Information needed</p>
-            <p>Please provide the following information. Don’t worry you can always change these settings later.</p>
-          </div>
-
-          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "m-t"}) do |f| %>
-            <%= devise_error_messages! %>
-
-            <%= render 'form_content', f: f %>
-          <% end %>
-        </div>
-      </div>
+        <%= render 'form_content', f: f %>
+      <% end %>
     </div>
   </div>
 </div>
