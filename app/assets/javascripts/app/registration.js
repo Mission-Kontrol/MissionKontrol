@@ -16,9 +16,9 @@ function checkPasswordMatch() {
 }
 
 $(document).ready(function () {
-  $('#password-mismatch').hide()
+  $("#password-mismatch").hide();
   $("#admin_user_password, #admin_user_password_confirmation").keyup(function() {
-    checkPasswordMatch()
+    checkPasswordMatch();
   });
 });
 
