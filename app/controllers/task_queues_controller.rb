@@ -19,8 +19,6 @@ class TaskQueuesController < ApplicationController
     @activity = Activity.new
   end
 
-  def new; end
-
   def create
     @task_queue = TaskQueue.new(task_queue_params)
 
