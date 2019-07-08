@@ -1,0 +1,81 @@
+<div class="ibox float-e-margins" id="registration-step-1">
+  <div class="ibox-content">
+    <div class="text-center">
+      <div class="logo-wrapper">
+        <img src="/assets/images/Kuwinda_logo_full-blue-260.png" alt="">
+        <h4>Setup step 1 of 2: Administrator user set-up</h4>
+      </div>
+    </div>
+
+    <div class="m-t-lg">
+      <p>Please enter credentials below to create an administrator user.</p>
+      <p>Don't worry you can always change these settings later.</p>
+    </div>
+
+      <div class="form-group">
+        <%= f.hidden_field :activation_id, autofocus: true, value: params[:activation_id], class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.hidden_field :license_key, autofocus: true, value: params[:license_key], class: "form-control" %>
+      </div>
+
+      <% if params[:full_license] %>
+        <div class="form-group">
+          <%= f.hidden_field :full_license, autofocus: true, value: params[:full_license], class: "form-control" %>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :first_name %>
+        <%= f.text_field :first_name, autofocus: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :last_name %>
+        <%= f.text_field :last_name, autofocus: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :company_name %>
+        <%= f.text_field :company_name, autofocus: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group" id="password-mismatch">
+        <p class="alert alert-danger">Password do not match</p>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password %>
+        <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="actions">
+        <div class="align-right">
+          <button type="button" name="button" class="btn btn-primary m-b" onclick="goToRegistrationStep(2)" id="next-registration-step" disabled>Next</button>
+        </div>
+      </div>
+
+    <%# render 'form_content_admin_db', f: f %>
+
+    <%= f.hidden_field(:admin_database_host, value: ENV['KUWINDA_DATABASE_HOST']) %>
+    <%= f.hidden_field(:admin_database_username, value: ENV['KUWINDA_DATABASE_USER']) %>
+    <%= f.hidden_field(:admin_database_password, value: ENV['KUWINDA_DATABASE_PASSWORD']) %>
+    <%= f.hidden_field(:admin_database_port, value: ENV['KUWINDA_DATABASE_PORT']) %>
+    <%= f.hidden_field(:admin_database_name, value: 'kuwinda') %>
+    <%= f.hidden_field(:admin_database_type, value: 'postgresql') %>
+  </div>
+</div>
