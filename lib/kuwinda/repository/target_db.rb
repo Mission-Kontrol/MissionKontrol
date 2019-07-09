@@ -79,6 +79,27 @@ module Kuwinda
         sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
       end
+
+      def datatable_filter(search_value = nil, columns = nil, limit = nil, offset = nil)
+        return all(limit, offset) if search_value.blank? || columns.nil?
+
+        result = nil
+
+        columns.each do |_key, value|
+          next unless value['searchable']
+
+          filter = query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+          next if filter.rows.empty?
+
+          if result.nil?
+            result = filter
+          else
+            result.rows << filter.rows.flatten
+          end
+        end
+
+        result
+      end
     end
   end
 end

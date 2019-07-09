@@ -74,9 +74,11 @@ class TablesController < ApplicationController
   def render_show_js
     offset = params['start']
     limit = params['length']
+    search = params.dig('search', 'value')
+    searchable_columns = params['columns']
     columns = []
 
-    sql_result = @target_db_repo.all(limit, offset)
+    sql_result = @target_db_repo.datatable_filter(search, searchable_columns, limit, offset)
 
     sql_result.columns.each do |c|
       columns << { data: c }
