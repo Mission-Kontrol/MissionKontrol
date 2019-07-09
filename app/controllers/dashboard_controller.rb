@@ -12,7 +12,7 @@ class DashboardController < ApplicationController
   def show; end
 
   def license
-    redirect_to dashboard_path if current_admin_user
+    redirect_to dashboard_path if license_valid?
   end
 
   def verify_license
