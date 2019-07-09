@@ -154,14 +154,14 @@ In order to use twilio there are four pieces of information required. They are
 
 They can all be found in your twilio dashboard. Here is how to retrieve them.
 
-Account SID and  Auth token
+#### Account SID and  Auth token
 
 Dashboard > Settings > Under API credentials you can find your account SID and auth token
 
-Application SID  
+#### Application SID  
 
 Dashboard > Programmable voice > TwiML > TwiML Apps > Create new app or choose existing app > Application SID can be found under properties
 
-Caller ID  
+#### Caller ID  
 
 Dashboard > Programmable voice > Numbers > Mange numbers > select existing number or buy new number
