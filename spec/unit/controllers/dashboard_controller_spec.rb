@@ -109,7 +109,7 @@ describe DashboardController, :type => :controller do
       end
 
       context 'when open ssl error is raised' do
-        it 'renders the bad connection template' do
+        it 'renders the show template' do
           allow(controller).to receive(:show).and_raise(OpenSSL::SSL::SSLError.new)
 
           subject
