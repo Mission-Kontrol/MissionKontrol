@@ -94,7 +94,7 @@ module Kuwinda
           if result.nil?
             result = filter
           else
-            result.rows << filter.rows
+            result.rows << filter.rows.flatten
           end
         end
 
