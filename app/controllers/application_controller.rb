@@ -34,10 +34,11 @@ class ApplicationController < ActionController::Base
   def handle_openssl_error
     license_key = current_admin_user.license_key
 
-    if !license_key.blank
-      cache_key = "license-#{current_admin_user.license_key}"
+    unless license_key.blank?
+      cache_key = "license-#{license_key}"
       Rails.cache.fetch(cache_key, expires_in: 10.minutes) { cache_key }
     end
+    render '/dashboard/show'
   end
 
   def after_sign_in_path_for(resource)
