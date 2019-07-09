@@ -17,6 +17,6 @@ module ApplicationHelper
   end
 
   def demo_app
-    request.host_with_port == 'demo.kuwinda.io'
+    request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
 end

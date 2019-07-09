@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def referred_from_demo?
-    request.host_with_port == 'demo.kuwinda.io'
+    request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
 
   protected
