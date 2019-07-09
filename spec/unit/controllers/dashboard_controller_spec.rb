@@ -108,6 +108,16 @@ describe DashboardController, :type => :controller do
         end
       end
 
+      context 'when open ssl error is raised' do
+        it 'renders the show template' do
+          allow(controller).to receive(:show).and_raise(OpenSSL::SSL::SSLError.new)
+
+          subject
+
+          expect(response).to render_template('dashboard/show')
+        end
+      end
+
       context 'when client database connection is valid' do
         it 'renders the show template' do
           subject
