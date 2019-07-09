@@ -7,10 +7,13 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
+
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
               PG::ConnectionBad,
-              Mysql2::Error, :with => :handle_invalid_client_db_error
+              Mysql2::Error,
+              SocketError, :with => :handle_invalid_client_db_error
 
   def check_license
     redirect_to license_path unless license_valid?
@@ -26,6 +29,16 @@ class ApplicationController < ActionController::Base
     @available_tables = []
     @task_queues = []
     render '/layouts/bad_connection'
+  end
+
+  def handle_openssl_error
+    license_key = current_admin_user.license_key
+
+    unless license_key.blank?
+      cache_key = "license-#{license_key}"
+      Rails.cache.fetch(cache_key, expires_in: 10.minutes) { cache_key }
+    end
+    render '/dashboard/show'
   end
 
   def after_sign_in_path_for(resource)

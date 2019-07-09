@@ -27,7 +27,7 @@ module License
   end
 
   def license_valid?
-    return false unless current_admin_user
+    return false unless current_admin_user && !current_admin_user.license_key.blank?
 
     cache_key = "license-#{current_admin_user.license_key}"
 
