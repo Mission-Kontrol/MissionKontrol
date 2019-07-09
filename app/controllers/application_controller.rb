@@ -10,7 +10,9 @@ class ApplicationController < ActionController::Base
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
               PG::ConnectionBad,
-              Mysql2::Error, :with => :handle_invalid_client_db_error
+              Mysql2::Error,
+              SocketError, :with => :handle_invalid_client_db_error
+
 
   def check_license
     redirect_to license_path unless license_valid?
