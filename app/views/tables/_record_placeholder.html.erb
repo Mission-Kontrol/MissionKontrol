@@ -68,13 +68,15 @@
     <% end %>
 
     <% if @activities %>
-      <div class="col-sm-7 pull-right">
-        <div class="row white-bg">
-          <div class="p-sm enjoyhint-table-detail-handler">
-            <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
+      <% if current_admin_user.twilio_setup_complete? || layout_builder.commentable %>
+        <div class="col-sm-7 pull-right">
+          <div class="row white-bg">
+            <div class="p-sm enjoyhint-table-detail-handler">
+              <%= render 'shared/activity_history', feedable_type: @target_db_repo.table, feedable_id: @row["id"] %>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
 
     <div class="clearfix"></div>
