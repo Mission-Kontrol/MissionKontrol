@@ -15,6 +15,10 @@ test:
   <<: *default
   database: kuwinda_test
 
+staging:
+  <<: *default
+  database: kuwinda_staging
+
 production:
   <<: *default
   database: kuwinda_production
