@@ -13,9 +13,13 @@ class TaskQueuesController < ApplicationController
   def edit
     @task_queue = TaskQueue.find(params[:id])
     repo = Kuwinda::Repository::TargetDB.new(table: @task_queue.table)
-    result = repo.query(@task_queue.to_sql, 10, 0)
-    @task_queue_headers = result.columns
-    @row = result.first
+
+    unless @task_queue.to_sql.blank?
+      result = repo.query(@task_queue.to_sql, 10, 0)
+      @task_queue_headers = result.columns
+      @row = result.first
+    end
+
     @activity = Activity.new
   end
 
