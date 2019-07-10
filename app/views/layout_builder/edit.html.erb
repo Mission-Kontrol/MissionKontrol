@@ -6,8 +6,8 @@
 
 <div class="row border-bottom white-bg m-b">
   <div class="col-sm-12">
-    <div class="text-right p-h-xs hide">
-      <%= link_to 'Preview', layout_builder_preview_path, remote: true, class: 'preview-layout' %>
+    <div class="text-right p-h-xs">
+      <%= link_to "Preview", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: @row) %>
     </div>
   </div>
 </div>
