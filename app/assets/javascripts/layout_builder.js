@@ -1,5 +1,4 @@
 var draggable;
-var slider;
 var drake;
 
 $(document).ready(function() {
@@ -16,23 +15,7 @@ $(document).ready(function() {
   $("body").on('click', '.clickable-row' , function() {
       window.location = $(this).data("href");
   });
-
-  if (isCurrentControllerLayout && isCurrentActionPreview) {
-    slider = simpleslider.getSlider({
-      paused: true,
-      prop: 'right',
-      onChangeEnd: updateSliderCurrentIndex
-    });
-
-    var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
-    $('#layout-preview-row-id').text(currentRowId);
-
-    function updateSliderCurrentIndex() {
-      var currentRowId = $('#layout-preview-slider-container').children()[slider.currentIndex()].dataset.rowId
-      $('#layout-preview-row-id').text(currentRowId);
-    }
-  }
-
+  
   if (isCurrentControllerLayout && isCurrentActionNew) {
     $('#layout-builder-modal').modal({
       backdrop: 'static',
