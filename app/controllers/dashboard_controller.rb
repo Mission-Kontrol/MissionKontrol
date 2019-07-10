@@ -5,7 +5,8 @@ class DashboardController < ApplicationController
   before_action :load_available_tables,
                 :load_admin_db_config,
                 :load_task_queues,
-                :check_license, only: [:show]
+                :check_license,
+                :check_target_db_connection, only: [:show]
 
   layout 'license', only: %i[license verify_license]
 
