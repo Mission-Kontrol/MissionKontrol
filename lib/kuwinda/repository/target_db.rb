@@ -84,12 +84,22 @@ module Kuwinda
         return all(limit, offset) if search_value.blank? || columns.nil?
 
         result = nil
+        admin_user = AdminUser.last
+        table_columns = conn.columns(table)
 
         columns.each do |_key, value|
           next unless value['searchable']
 
-          filter = query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
-          next if filter.rows.empty?
+          if admin_user.target_database_type == 'postgresql'
+            column = table_columns.select { |c| c.name == value['data'] }.first
+
+            next if column.sql_type_metadata.type != :string
+
+            filter = query("SELECT FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
+          else
+            filter = query("SELECT FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+          end
+          next if filter.nil? || filter.rows.empty?
 
           if result.nil?
             result = filter
@@ -98,7 +108,7 @@ module Kuwinda
           end
         end
 
-        result
+        result ? result : all(limit, offset)
       end
     end
   end
