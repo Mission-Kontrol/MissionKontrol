@@ -90,6 +90,12 @@ describe DashboardController, :type => :controller do
 
     context 'when admin has a valid license' do
       let(:subject) do
+        admin_user_with_license.target_database_type = "mysql"
+        admin_user_with_license.target_database_port = "3306"
+        admin_user_with_license.target_database_name = "name"
+        admin_user_with_license.target_database_username = "username"
+        admin_user_with_license.target_database_password = "password"
+        admin_user_with_license.target_database_host = "db@host.com"
         sign_in admin_user_with_license
         VCR.use_cassette('license_key/activation_success') do
           VCR.use_cassette('license_key/validation_success') do

@@ -103,4 +103,13 @@ class ApplicationController < ActionController::Base
 
     @relatable_tables
   end
+
+  def check_target_db_connection
+    raise InvalidClientDatabaseError.new if current_admin_user.target_database_type.blank? ||
+    current_admin_user.target_database_host.blank? ||
+    current_admin_user.target_database_username.blank? ||
+    current_admin_user.target_database_password.blank? ||
+    current_admin_user.target_database_name.blank? ||
+    current_admin_user.target_database_port.blank?
+  end
 end
