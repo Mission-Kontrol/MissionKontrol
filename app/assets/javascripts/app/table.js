@@ -174,11 +174,9 @@ function loadTaskQueuePreviewDataTable (columns) {
       }
     ],
     "createdRow": function( row, data, dataIndex ) {
-      let table = $(this).data("table-name");
       let id = data.id;
-      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      $(row).addClass( "clickable-row" );
-      $(row).attr( "data-href",  previewUrl);
+      $(row).addClass( "task-queue-item" );
+      $(row).attr( "data-task-queue-item-primary-key", id);
     }
   });
 
