@@ -192,6 +192,7 @@ updateTaskQueueDraggableFields = function (containerId, containerItems) {
     },
     success(response, status, request){
       window.toastr.info("Task queue fields successfully updated.");
+      refreshTaskQueuePreviewSettings();
     }
   });
 }
@@ -393,8 +394,8 @@ loadEditPage = function () {
     });
 
     $(document).on('click','.task-queue-item', function() {
-      let taskQueueTable = $(this).parent().parent().data().taskQueueTable;
-      let taskQueueItemPrimaryKey = $(this).data().taskQueueItemId;
+      let taskQueueTable = $(this).parent().parent().data().tableName;
+      let taskQueueItemPrimaryKey = $(this).data().taskQueueItemPrimaryKey;
       let taskQueueId = $('#task-queue-item-modal').data().taskQueueId;
 
       $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
@@ -424,17 +425,4 @@ $(document).ready(() => {
 
   loadIndexPage();
   loadEditPage();
-
-  // modify foo table to add the id of each row as a data attribute
-  (function($, F){
-    // Extend the Row.$create method to add an id attribute to each <tr>.
-    F.Row.extend("$create", function(){
-        // call the original method
-        this._super();
-        // get the current row values
-        var values = this.val();
-        // then add whatever attributes are required
-        this.$el.attr("data-task-queue-item-id", values["id"]);
-    });
-  })(jQuery, FooTable);
 });
