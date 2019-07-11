@@ -4,6 +4,8 @@ let iconForFieldType;
 let containerDataContainsField;
 let containerContainsDraggableItem;
 let buildDraggableField;
+let buildTaskQueuePreviewFieldSetting;
+let refreshTaskQueuePreviewSettings;
 let saveDraggableContainer;
 let updateDraggableFieldsContainer;
 let isDataContainer;
@@ -124,6 +126,33 @@ buildDraggableField = function (field) {
   }
 
   return item;
+}
+
+buildTaskQueuePreviewFieldSetting = function (title) {
+  let el = "<p><b>" + title + "</b></p>" +
+  "<div class='divider'></div>";
+  return el;
+}
+
+refreshTaskQueuePreviewSettings = function () {
+  $('#task-queue-field-settings-preview-container').empty();
+
+  $.ajax({
+    url: "/task_queues/" + window.location.pathname.split("/")[2] + "/field_settings",
+    type: "GET",
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+      window.toastr.error("Something went wrong, please try again.");
+    },
+    success(data){
+      for (var i = 0; i < data.fields.length; i++) {
+        let field = data.fields[i];
+        let fieldSetting = buildTaskQueuePreviewFieldSetting(field.title);
+        $('#task-queue-field-settings-preview-container').append(fieldSetting);
+      }
+    }
+  });
 }
 
 saveDraggableContainer = function (dragEvent, containerId) {
