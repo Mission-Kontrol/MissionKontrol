@@ -309,11 +309,11 @@ input:checked + .slider:before {
   width:100%;
 }
 
-.clickable-row {
+.clickable-row, .task-queue-item {
   cursor: pointer;
 }
 
-.clickable-row:hover {
+.clickable-row:hover, .task-queue-item:hover {
   background-color: #eaeaea;
 }
 
