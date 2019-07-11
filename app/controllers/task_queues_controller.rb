@@ -134,7 +134,7 @@ class TaskQueuesController < ApplicationController
 
   def field_visible?(task_queue, field)
     return task_queue.draggable_fields unless task_queue.draggable_fields.present?
-    
+
     task_queue.draggable_fields.values.map { |f| f['title'] }.include?(field)
   end
 
