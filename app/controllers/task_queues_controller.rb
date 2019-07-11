@@ -17,7 +17,6 @@ class TaskQueuesController < ApplicationController
     unless @task_queue.to_sql.blank?
       result = repo.query(@task_queue.to_sql, 10, 0)
       @task_queue_headers = result.columns
-      @row = result.first
     end
 
     @activity = Activity.new
@@ -86,6 +85,11 @@ class TaskQueuesController < ApplicationController
     render json: { row: data, activities: activities, author: current_admin_user.full_name }
   end
 
+  def field_settings
+    task_queue = TaskQueue.find(params[:id])
+    render json: { fields: helpers.task_queue_draggable_field_settings_container(task_queue).values }
+  end
+
   private
 
   # rubocop:disable Metrics/AbcSize
@@ -129,6 +133,7 @@ class TaskQueuesController < ApplicationController
   end
 
   def field_visible?(task_queue, field)
+    return task_queue.draggable_fields unless task_queue.draggable_fields.present?
     task_queue.draggable_fields.values.map { |f| f['title'] }.include?(field)
   end
 
@@ -137,7 +142,6 @@ class TaskQueuesController < ApplicationController
     repo.table = @task_queue.table
     row = repo.find(params['task_queue_item_primary_key'])
     record = {}
-
     row.each do |k, v|
       next unless field_visible?(@task_queue, k)
 
