@@ -2,6 +2,7 @@
 
 class TaskQueuesController < ApplicationController
   include TaskQueuePreview
+  include TaskQueueRecordActivity
   layout 'task_queue'
   before_action :load_available_tables, :set_activities
 
@@ -12,14 +13,9 @@ class TaskQueuesController < ApplicationController
 
   def edit
     @task_queue = TaskQueue.find(params[:id])
-    repo = Kuwinda::Repository::TargetDB.new(table: @task_queue.table)
-
-    unless @task_queue.to_sql.blank?
-      result = repo.query(@task_queue.to_sql, 10, 0)
-      @task_queue_headers = result.columns
-    end
-
-    @activity = Activity.new
+    @repo = Kuwinda::Repository::TargetDB.new(@task_queue.table)
+    result = @task_queue.to_sql.blank? ? @repo.all(10, 0) : @repo.query(@task_queue.to_sql, 10, 0)
+    @task_queue_headers = result.columns
   end
 
   def create
@@ -80,9 +76,11 @@ class TaskQueuesController < ApplicationController
 
   def record
     @task_queue = TaskQueue.find(params[:id])
-    activities = Activity.where(feedable_type: @task_queue.table, feedable_id: params['task_queue_item_primary_key'])
+    @repo = Kuwinda::Repository::TargetDB.new(@task_queue.table)
+    @row = params['task_queue_item_primary_key'].to_i
+    set_activities_for_task_queue_record
     data = build_data_for_record
-    render json: { row: data, activities: activities, author: current_admin_user.full_name }
+    render json: { row: data, activities: @activities_for_task_queue_record, author: current_admin_user.full_name }
   end
 
   def field_settings

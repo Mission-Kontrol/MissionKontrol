@@ -1,5 +1,5 @@
 <div>
-  <%= form_with(model: @activity, local: false, data: { 'activity-form' => true }, html: { id: 'task-queue-record-activity-form' }) do |form| %>
+  <%= form_with(model: @activity, local: false, scope: 'activity', html: { id: 'task-queue-record-activity-form' }, url: activities_path) do |form| %>
     <div class="form-group">
       <%= form.text_area :content, class: "form-control" %>
     </div>
