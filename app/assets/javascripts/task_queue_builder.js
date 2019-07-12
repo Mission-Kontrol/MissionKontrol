@@ -11,6 +11,7 @@ let loadQueryBuilder;
 let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
+let refreshTaskQueuePreviewSettings;
 let updateTaskQueueDraggableFields;
 let updateTaskQueueItemFeed;
 let addToTaskQueueActivityStream;
@@ -165,6 +166,26 @@ saveTaskQueue = function (params) {
       window.toastr.info("Task queue saved.");
       let redirectURL = "/task_queues/" + response.id + "/edit";
       window.location.replace(redirectURL);
+    }
+  });
+}
+
+refreshTaskQueuePreviewSettings = function () {
+  $('#task-queue-field-settings-preview-container').empty();
+
+  $.ajax({
+    url: "/task_queues/" + window.location.pathname.split("/")[2] + "/field_settings",
+    type: "GET",
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+      window.toastr.error("Something went wrong, please try again.");
+    },
+    success(data){
+      for (var i = 0; i < data.fields.length; i++) {
+        let fieldSetting = buildTaskQueuePreviewFieldSetting(data.fields[i].title);
+        $("#task-queue-field-settings-preview-container").append(fieldSetting);
+      }
     }
   });
 }
