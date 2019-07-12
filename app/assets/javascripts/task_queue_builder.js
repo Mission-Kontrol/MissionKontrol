@@ -11,6 +11,7 @@ let loadQueryBuilder;
 let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
+let buildTaskQueuePreviewFieldSetting;
 let refreshTaskQueuePreviewSettings;
 let updateTaskQueueDraggableFields;
 let updateTaskQueueItemFeed;
@@ -168,6 +169,12 @@ saveTaskQueue = function (params) {
       window.location.replace(redirectURL);
     }
   });
+}
+
+buildTaskQueuePreviewFieldSetting = function (title) {
+  let el = "<p><b>" + title + "</b></p>" +
+  "<div class='divider'></div>";
+  return el;
 }
 
 refreshTaskQueuePreviewSettings = function () {

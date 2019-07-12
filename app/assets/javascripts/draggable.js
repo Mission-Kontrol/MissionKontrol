@@ -4,7 +4,6 @@ let iconForFieldType;
 let containerDataContainsField;
 let containerContainsDraggableItem;
 let buildDraggableField;
-let buildTaskQueuePreviewFieldSetting;
 let saveDraggableContainer;
 let updateDraggableFieldsContainer;
 let isDataContainer;
@@ -125,12 +124,6 @@ buildDraggableField = function (field) {
   }
 
   return item;
-}
-
-buildTaskQueuePreviewFieldSetting = function (title) {
-  let el = "<p><b>" + title + "</b></p>" +
-  "<div class='divider'></div>";
-  return el;
 }
 
 saveDraggableContainer = function (dragEvent, containerId) {
