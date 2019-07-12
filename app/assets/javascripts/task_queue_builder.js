@@ -171,7 +171,7 @@ saveTaskQueue = function (params) {
 }
 
 refreshTaskQueuePreviewSettings = function () {
-  $('#task-queue-field-settings-preview-container').empty();
+  $("#task-queue-field-settings-preview-container").empty();
 
   $.ajax({
     url: "/task_queues/" + window.location.pathname.split("/")[2] + "/field_settings",
