@@ -189,10 +189,6 @@ refreshTaskQueuePreviewSettings = function () {
       window.toastr.error("Something went wrong, please try again.");
     },
     success(data){
-      // for (var i = 0; i < data.fields.length; i++) {
-      //   $("#task-queue-field-settings-preview-container").append(buildTaskQueuePreviewFieldSetting(data.fields[i].title));
-      // }
-
       data.fields.forEach(function(field, index) {
         $("#task-queue-field-settings-preview-container").append(buildTaskQueuePreviewFieldSetting(field.title));
       })
