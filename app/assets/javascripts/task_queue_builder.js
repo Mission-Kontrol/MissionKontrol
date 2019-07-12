@@ -190,8 +190,7 @@ refreshTaskQueuePreviewSettings = function () {
     },
     success(data){
       for (var i = 0; i < data.fields.length; i++) {
-        let fieldSetting = buildTaskQueuePreviewFieldSetting(data.fields[i].title);
-        $("#task-queue-field-settings-preview-container").append(fieldSetting);
+        $("#task-queue-field-settings-preview-container").append(buildTaskQueuePreviewFieldSetting(data.fields[i].title));
       }
     }
   });
@@ -276,10 +275,10 @@ addToTaskQueueActivityStream = function(kind, content, time, author) {
 
   if (kind === 'note') {
     $('#task-queue-record-note-activity-stream').append(stream);
-  } else if (kind === 'call') {
+  }
+
+  if (kind === 'call') {
     $('#task-queue-record-call-activity-stream').append(stream);
-  } else {
-    $('#task-queue-record-meeting-activity-stream').append(stream);
   }
 }
 
