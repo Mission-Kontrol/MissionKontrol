@@ -18,6 +18,7 @@
 //= require extendext/jQuery.extendext.min.js
 //= require dotjs/doT.min.js
 //= require query-builder/query-builder.min.js
+//= require dataTable/datatables.min.js
 //= require_tree ./app
 //= require draggable
 //= require layout_builder

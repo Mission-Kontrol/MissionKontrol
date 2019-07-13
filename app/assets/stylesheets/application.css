@@ -13,6 +13,7 @@
  *= require footable-bootstrap/footable.bootstrap.min.css
  *= require enjoyhint/enjoyhint.css
  *= require query-builder/query-builder.default.min.css
+ *= require dataTable/datatables.scss
  *= require font-awesome
  *= require site
  *= require devise
