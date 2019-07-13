@@ -14,8 +14,13 @@
       <div class="panel-body">
         <%= render 'activities/task_queue_record_activity_form', feedable_type: feedable_type %>
 
+
         <div class="activity-stream" id="task-queue-record-activity-stream">
-          <p class="default-message">No activity has been recored for this task queue record.</p>
+          <% if @activities.all.size > 0 %>
+            <%= render 'shared/activity_stream', activities: @activities.all %>
+          <% else %>
+            <p class="default-message">No activity has been recored for this <%= feedable_type %>.</p>
+          <% end %>
         </div>
 
         <button type="button" class="btn btn-block btn-primary margin-top-20 hide" disabled>Show more</button>

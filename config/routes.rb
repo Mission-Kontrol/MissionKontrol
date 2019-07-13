@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       post 'outcome'
       get 'record'
       get 'preview'
+      get 'field_settings'
     end
   end
 

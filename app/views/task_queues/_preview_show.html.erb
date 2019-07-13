@@ -1,15 +1,12 @@
 <div id="task-queue-preview-container">
-  <% if @row %>
-    <div class="task-queue-preview-item" data-row-id='<%= @row['id'] %>'>
+    <div class="task-queue-preview-item">
       <div class="row min-height-100vh no-margin">
         <div class="col-sm-4 min-height-100vh">
           <div class="" style="">
             <br>
-            <div>
+            <div class="" id="task-queue-field-settings-preview-container">
               <% task_queue_draggable_field_settings_container(@task_queue).each do |field| %>
-                <% @field = field[1]["title"] %>
-                <p><b><%= @field %></b></p>
-                <p><%= @row[@field] %></p>
+                <p><b><%= field[1]["title"] %></b></p>
                 <div class="divider"></div>
               <% end %>
             </div>
@@ -22,5 +19,4 @@
         </div>
       </div>
     </div>
-  <% end %>
 </div>

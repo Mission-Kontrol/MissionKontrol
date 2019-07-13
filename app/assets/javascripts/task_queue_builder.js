@@ -11,6 +11,8 @@ let loadQueryBuilder;
 let getFieldsWithType;
 let disableElementbyId;
 let saveTaskQueue;
+let buildTaskQueuePreviewFieldSetting;
+let refreshTaskQueuePreviewSettings;
 let updateTaskQueueDraggableFields;
 let updateTaskQueueItemFeed;
 let addToTaskQueueActivityStream;
@@ -169,6 +171,31 @@ saveTaskQueue = function (params) {
   });
 }
 
+buildTaskQueuePreviewFieldSetting = function (title) {
+  let el = "<p><b>" + title + "</b></p>" +
+  "<div class='divider'></div>";
+  return el;
+}
+
+refreshTaskQueuePreviewSettings = function () {
+  $("#task-queue-field-settings-preview-container").empty();
+
+  $.ajax({
+    url: "/task_queues/" + window.location.pathname.split("/")[2] + "/field_settings",
+    type: "GET",
+    async: true,
+    dataType: "json",
+    error(XMLHttpRequest, errorTextStatus, error){
+      window.toastr.error("Something went wrong, please try again.");
+    },
+    success(data){
+      data.fields.forEach(function(field, index) {
+        $("#task-queue-field-settings-preview-container").append(buildTaskQueuePreviewFieldSetting(field.title));
+      })
+    }
+  });
+}
+
 updateTaskQueueDraggableFields = function (containerId, containerItems) {
   let containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3";
   var url = window.location.href;
@@ -192,6 +219,7 @@ updateTaskQueueDraggableFields = function (containerId, containerItems) {
     },
     success(response, status, request){
       window.toastr.info("Task queue fields successfully updated.");
+      refreshTaskQueuePreviewSettings();
     }
   });
 }
@@ -245,12 +273,12 @@ addToTaskQueueActivityStream = function(kind, content, time, author) {
 
   $('#task-queue-record-activity-stream').append(stream);
 
-  if (kind === 'note') {
+  if (kind === "note") {
     $('#task-queue-record-note-activity-stream').append(stream);
-  } else if (kind === 'call') {
+  }
+
+  if (kind === "call") {
     $('#task-queue-record-call-activity-stream').append(stream);
-  } else {
-    $('#task-queue-record-meeting-activity-stream').append(stream);
   }
 }
 
@@ -393,8 +421,8 @@ loadEditPage = function () {
     });
 
     $(document).on('click','.task-queue-item', function() {
-      let taskQueueTable = $(this).parent().parent().data().taskQueueTable;
-      let taskQueueItemPrimaryKey = $(this).data().taskQueueItemId;
+      let taskQueueTable = $(this).parent().parent().data().tableName;
+      let taskQueueItemPrimaryKey = $(this).data().taskQueueItemPrimaryKey;
       let taskQueueId = $('#task-queue-item-modal').data().taskQueueId;
 
       $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
@@ -424,17 +452,4 @@ $(document).ready(() => {
 
   loadIndexPage();
   loadEditPage();
-
-  // modify foo table to add the id of each row as a data attribute
-  (function($, F){
-    // Extend the Row.$create method to add an id attribute to each <tr>.
-    F.Row.extend("$create", function(){
-        // call the original method
-        this._super();
-        // get the current row values
-        var values = this.val();
-        // then add whatever attributes are required
-        this.$el.attr("data-task-queue-item-id", values["id"]);
-    });
-  })(jQuery, FooTable);
 });
