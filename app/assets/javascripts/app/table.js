@@ -84,7 +84,7 @@ function loadDataTable (columns) {
     "initComplete": function(settings, json) {
       $('[id ^="target-table-"][id $="_filter"] input').unbind();
       $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
-        if(e.keyCode == 13) {
+        if(e.keyCode === 13) {
           searchableTable.search( this.value ).draw();
         }
       });
@@ -148,7 +148,7 @@ function loadRelatedDataTable (columns, id, ajax) {
     "initComplete": function(settings, json) {
       $('[id ^="target-table-"][id $="_filter"] input').unbind();
       $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
-        if(e.keyCode == 13) {
+        if(e.keyCode === 13) {
           searchableRelatedTable.search( this.value ).draw();
         }
       });
