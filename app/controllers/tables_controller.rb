@@ -80,12 +80,16 @@ class TablesController < ApplicationController
 
     sql_result = @target_db_repo.datatable_filter(search, searchable_columns, limit, offset)
 
-    sql_result.columns.each do |c|
+    result_columns = sql_result.nil? ? @target_db_repo.table_columns : sql_result.columns
+
+    result_columns.each do |c|
       columns << { data: c }
     end
 
+    data = sql_result.nil? ? {} : sql_result.to_hash
+
     render json: {
-      data: sql_result.to_hash,
+      data: data,
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: @target_db_repo.count.rows[0][0],
