@@ -80,24 +80,60 @@ module Kuwinda
         conn.exec_query(sql)
       end
 
+      def table_columns
+        conn.columns(table)
+      end
+
       def datatable_filter(search_value = nil, columns = nil, limit = nil, offset = nil)
         return all(limit, offset) if search_value.blank? || columns.nil?
 
+        result = search_columns(search_value, columns, limit, offset)
+
+        result
+      end
+
+      private
+
+      def search_columns(search_value = nil, columns = nil, limit = nil, offset = nil)
         result = nil
+        admin_user = AdminUser.last
 
         columns.each do |_key, value|
           next unless value['searchable']
 
-          filter = query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
-          next if filter.rows.empty?
-
-          if result.nil?
-            result = filter
+          if admin_user.target_database_type == 'postgresql'
+            filter = postgres_search(table, value, search_value, limit, offset)
           else
-            result.rows << filter.rows.flatten
+            filter = non_postgres_search(table, value, search_value, limit, offset)
+          end
+          next if filter.nil? || filter.rows.empty?
+
+          result = create_result(filter, result)
+        end
+        result
+      end
+
+      def postgres_search(table, value, search_value, limit = nil, offset = nil)
+        table_columns = conn.columns(table)
+        column = table_columns.select { |c| c.name == value['data'] }.first
+
+        return if column.sql_type_metadata.type != :string
+
+        query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
+      end
+
+      def non_postgres_search(table, value, search_value, limit = nil, offset = nil)
+        query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+      end
+
+      def create_result(filter, result = nil)
+        if result.nil?
+          result = filter
+        else
+          filter.rows.each do |row|
+            result.rows << row unless result.rows.include?(row)
           end
         end
-
         result
       end
     end

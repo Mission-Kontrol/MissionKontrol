@@ -29,12 +29,18 @@ function fetchDataForRelatedTables() {
 }
 
 function loadDataTable (columns) {
-  $(".data-table").DataTable({
+  var searchableTable = $(".data-table").DataTable({
     "colReorder": true,
     "deferRender": true,
     "autoWidth": false,
     "scrollX": true,
     "serverSide": true,
+    "processing": true,
+      "language": {
+        processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
+              "<div class='sk-dot1'></div>" +
+              "<div class='sk-dot2'></div>" +
+            "</div>"},
     "ajax": "/" + (location.pathname+location.search).substr(1),
     "dom": "Bfrtip",
     "columns": columns,
@@ -74,17 +80,31 @@ function loadDataTable (columns) {
         "extend": "csv",
         "className": "btn btn-warning",
       }
-    ]
+    ],
+    "initComplete": function(settings, json) {
+      $('[id ^="target-table-"][id $="_filter"] input').unbind();
+      $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
+        if(e.keyCode === 13) {
+          searchableTable.search( this.value ).draw();
+        }
+      });
+    }
   });
 }
 
 function loadRelatedDataTable (columns, id, ajax) {
-  $("#" + id).DataTable({
+  var searchableRelatedTable = $("#" + id).DataTable({
     "colReorder": true,
     "deferRender": true,
     "autoWidth": false,
     "scrollX": true,
     "serverSide": true,
+    "processing": true,
+      "language": {
+        processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
+              "<div class='sk-dot1'></div>" +
+              "<div class='sk-dot2'></div>" +
+            "</div>"},
     "ajax": ajax,
     "dom": "Bfrtip",
     "columns": columns,
@@ -124,6 +144,14 @@ function loadRelatedDataTable (columns, id, ajax) {
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
       $(row).addClass( "clickable-row" );
       $(row).attr( "data-href",  previewUrl);
+    },
+    "initComplete": function(settings, json) {
+      $('[id ^="target-table-"][id $="_filter"] input').unbind();
+      $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
+        if(e.keyCode === 13) {
+          searchableRelatedTable.search( this.value ).draw();
+        }
+      });
     }
   });
 }
