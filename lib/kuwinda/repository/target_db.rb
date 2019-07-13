@@ -95,16 +95,18 @@ module Kuwinda
 
             next if column.sql_type_metadata.type != :string
 
-            filter = query("SELECT FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
+            filter = query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
           else
-            filter = query("SELECT FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+            filter = query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
           end
           next if filter.nil? || filter.rows.empty?
 
           if result.nil?
             result = filter
           else
-            result.rows << filter.rows.flatten
+            filter.rows.each do |row|
+              result.rows << row unless result.rows.include?(row)
+            end
           end
         end
 
