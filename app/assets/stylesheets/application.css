@@ -14,6 +14,11 @@
  *= require enjoyhint/enjoyhint.css
  *= require query-builder/query-builder.default.min.css
  *= require dataTable/datatables.scss
+ *= require metisMenu/metismenu.scss
+ *= require jQueryUI/jquery-ui.css
+ *= require dragula/dragula.min.css
+ *= require animate/animate.min.css
+ *= require bootstrap/bootstrap-datepicker.min.css
  *= require font-awesome
  *= require site
  *= require devise
