@@ -93,67 +93,69 @@ function loadDataTable (columns) {
 }
 
 function loadRelatedDataTable (columns, id, ajax) {
-  var searchableRelatedTable = $("#" + id).DataTable({
-    "colReorder": true,
-    "deferRender": true,
-    "autoWidth": false,
-    "scrollX": true,
-    "serverSide": true,
-    "processing": true,
-      "language": {
-        processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
-              "<div class='sk-dot1'></div>" +
-              "<div class='sk-dot2'></div>" +
-            "</div>"},
-    "ajax": ajax,
-    "dom": "Bfrtip",
-    "columns": columns,
-    "stateSave": true,
-    "stateSaveCallback": function (settings, data) {
-      if ( settings.iDraw <= 1 ) {
-        return;
-      }
+  var searchableRelatedTable = { [id]:
+    $("#" + id).DataTable({
+      "colReorder": true,
+      "deferRender": true,
+      "autoWidth": false,
+      "scrollX": true,
+      "serverSide": true,
+      "processing": true,
+        "language": {
+          processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
+                "<div class='sk-dot1'></div>" +
+                "<div class='sk-dot2'></div>" +
+              "</div>"},
+      "ajax": ajax,
+      "dom": "Bfrtip",
+      "columns": columns,
+      "stateSave": true,
+      "stateSaveCallback": function (settings, data) {
+        if ( settings.iDraw <= 1 ) {
+          return;
+        }
 
-      $.ajax({
-        "url": "/data_table_states/save?table=" + $(this).data("table-name"),
-        "data": { "state": data },
-        "dataType": "json",
-        "type": "POST",
-        "success": function () {}
-      });
-    },
-    "stateLoadCallback": function (settings, callback) {
-      $.ajax({
-        "url": "/data_table_states/load?table=" + $(this).data("table-name"),
-        "dataType": "json",
-        "success": function (json) {
-          callback( json );
+        $.ajax({
+          "url": "/data_table_states/save?table=" + $(this).data("table-name"),
+          "data": { "state": data },
+          "dataType": "json",
+          "type": "POST",
+          "success": function () {}
+        });
+      },
+      "stateLoadCallback": function (settings, callback) {
+        $.ajax({
+          "url": "/data_table_states/load?table=" + $(this).data("table-name"),
+          "dataType": "json",
+          "success": function (json) {
+            callback( json );
+          }
+        });
+      },
+      "buttons": [
+        "colvis",
+        {
+          "extend": "csv",
+          "className": "btn btn-warning",
         }
-      });
-    },
-    "buttons": [
-      "colvis",
-      {
-        "extend": "csv",
-        "className": "btn btn-warning",
+      ],
+      "createdRow": function( row, data, dataIndex ) {
+        let table = $(this).data("table-name");
+        let id = data.id;
+        let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
+        $(row).addClass( "clickable-row" );
+        $(row).attr( "data-href",  previewUrl);
+      },
+      "initComplete": function(settings, json) {
+        $("#" + id + "_filter input").unbind();
+        $("#" + id + "_filter input").bind("keyup", function(e) {
+          if(e.keyCode === 13) {
+            searchableRelatedTable[id].search( this.value ).draw();
+          }
+        });
       }
-    ],
-    "createdRow": function( row, data, dataIndex ) {
-      let table = $(this).data("table-name");
-      let id = data.id;
-      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      $(row).addClass( "clickable-row" );
-      $(row).attr( "data-href",  previewUrl);
-    },
-    "initComplete": function(settings, json) {
-      $('[id ^="target-table-"][id $="_filter"] input').unbind();
-      $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
-        if(e.keyCode === 13) {
-          searchableRelatedTable.search( this.value ).draw();
-        }
-      });
-    }
-  });
+    })
+  };
 }
 
 function loadTaskQueuePreviewDataTable (columns) {

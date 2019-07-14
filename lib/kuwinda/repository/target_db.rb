@@ -12,15 +12,7 @@ module Kuwinda
       end
 
       def all(limit = nil, offset = nil)
-        if limit && offset
-          sql = "select * from #{table} limit #{limit} offset #{offset};"
-        elsif limit
-          sql = "select * from #{table} limit #{limit};"
-        else
-          sql = "select * from #{table};"
-        end
-
-        conn.exec_query(sql)
+        query("select * from #{table};", limit, offset)
       end
 
       def find(id)
@@ -36,15 +28,7 @@ module Kuwinda
       end
 
       def find_all_related(foreign_key_title, foreign_key_value, limit = 10, offset = nil)
-        if limit && offset
-          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit} offset #{offset};"
-        elsif limit
-          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value} limit #{limit};"
-        else
-          sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
-        end
-
-        conn.exec_query(sql)
+        query("select * from #{table} where #{foreign_key_title}=#{foreign_key_value}", limit, offset)
       end
 
       def update_record(table, field, value, id)
@@ -92,6 +76,18 @@ module Kuwinda
         result
       end
 
+      # rubocop:disable Metrics/ParameterLists
+      def find_all_related_search(search_value, foreign_key_title, foreign_key_value, columns = nil, limit = 10, offset = nil)
+        all = find_all_related(foreign_key_title, foreign_key_value, limit, offset)
+
+        return all if search_value.blank? || columns.nil?
+
+        result = search_columns_related_table(search_value, foreign_key_title, foreign_key_value, columns, limit, offset)
+
+        result
+      end
+      # rubocop:enable Metrics/ParameterLists
+
       private
 
       def search_columns(search_value = nil, columns = nil, limit = nil, offset = nil)
@@ -113,6 +109,27 @@ module Kuwinda
         result
       end
 
+      # rubocop:disable Metrics/ParameterLists
+      def search_columns_related_table(search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
+        result = nil
+        admin_user = AdminUser.last
+
+        columns.each do |_key, value|
+          next unless value['searchable']
+
+          if admin_user.target_database_type == 'postgresql'
+            filter = postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
+          else
+            filter = non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
+          end
+          next if filter.nil? || filter.rows.empty?
+
+          result = create_result(filter, result)
+        end
+        result
+      end
+      # rubocop:enable Metrics/ParameterLists
+
       def postgres_search(table, value, search_value, limit = nil, offset = nil)
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
@@ -122,9 +139,26 @@ module Kuwinda
         query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
       end
 
+      # rubocop:disable Metrics/ParameterLists
+      def postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = nil, offset = nil)
+        table_columns = conn.columns(table)
+        column = table_columns.select { |c| c.name == value['data'] }.first
+
+        return if column.sql_type_metadata.type != :string
+
+        query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
+      end
+      # rubocop:enable Metrics/ParameterLists
+
       def non_postgres_search(table, value, search_value, limit = nil, offset = nil)
         query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
       end
+
+      # rubocop:disable Metrics/ParameterLists
+      def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = nil, offset = nil)
+        query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+      end
+      # rubocop:enable Metrics/ParameterLists
 
       def create_result(filter, result = nil)
         if result.nil?
