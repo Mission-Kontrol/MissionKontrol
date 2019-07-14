@@ -108,27 +108,36 @@ class TablesController < ApplicationController
     set_activities_for_table
   end
 
+  # rubocop:disable Metrics/MethodLength
   def render_preview_js
     offset = params['start']
     limit = params['length']
     columns = []
+    search = params.dig('search', 'value')
+    searchable_columns = params['columns']
     @target_db_repo.table = params['table']
     foreign_key_title = helpers.get_foreign_key(params[:table_name])
     foreign_key_value = params[:record_id]
-    sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value, limit, offset)
 
-    sql_result.columns.each do |c|
+    sql_result = @target_db_repo.find_all_related_search(search, foreign_key_title, foreign_key_value, searchable_columns, limit, offset)
+
+    result_columns = sql_result.nil? ? @target_db_repo.table_columns : sql_result.columns
+
+    result_columns.each do |c|
       columns << { data: c }
     end
 
+    data = sql_result.nil? ? {} : sql_result.to_hash
+
     render json: {
-      data: sql_result.to_hash,
+      data: data,
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: @target_db_repo.count_related(foreign_key_title, foreign_key_value).rows[0][0],
       recordsFiltered: @target_db_repo.count_related(foreign_key_title, foreign_key_value).rows[0][0]
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   def set_target_db_repo
     @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
