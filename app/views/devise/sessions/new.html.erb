@@ -35,12 +35,6 @@
       </div>
     <% end %>
 
-    <div class="">
-      <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-      <small>
-        <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-      </small>
-      <% end -%>
-    </div>
+    <%-# replace devise password forgotten link when devise email settings fixed -%>
   </div>
 </div>
