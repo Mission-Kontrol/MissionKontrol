@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   include License
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+  before_action :set_cache_headers
   protect_from_forgery with: :exception
   rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
 
@@ -111,5 +112,13 @@ class ApplicationController < ActionController::Base
     current_admin_user.target_database_password.blank? ||
     current_admin_user.target_database_name.blank? ||
     current_admin_user.target_database_port.blank?
+  end
+
+  def set_cache_headers
+    if request.xhr?
+      response.headers["Cache-Control"] = "no-cache, no-store"
+      response.headers["Pragma"] = "no-cache"
+      response.headers["Expires"] = "Mon, 01 Jan 1990 00:00:00 GMT"
+    end
   end
 end
