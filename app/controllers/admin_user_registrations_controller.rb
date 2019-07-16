@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AdminUserRegistrationsController < Devise::RegistrationsController
+  before_action :check_admin_user_exists, only: [:new]
   before_action :configure_permitted_parameters, if: :devise_controller?
   layout 'application', only: [:new]
 
@@ -65,5 +66,11 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
       database: current_admin_user.target_database_name,
       port: current_admin_user.target_database_port
     ).connection
+  end
+
+  private
+
+  def check_admin_user_exists
+    redirect_to new_admin_user_session_path if AdminUser.any?
   end
 end
