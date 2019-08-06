@@ -1,4 +1,5 @@
 <div class="wrapper white-bg page-heading m-b">
+  <% layout_available = table_has_layout?(@current_table) %>
   <div class="row">
     <div class="col-lg-10">
       <h2><%= @current_table.capitalize %></h2>
@@ -12,34 +13,45 @@
           <%= link_to @current_table.capitalize, table_path(table: @current_table, id: @current_table.downcase) %>
         </li>
 
-        <li class="active">
-          <span><%= @row["id"] %></span>
-        </li>
+        <% if layout_available %>
+          <li class="active">
+            <span><%= @row["id"] %></span>
+          </li>
+        <% end %>
       </ol>
     </div>
 
-    <% if @layout_builder %>
-      <div class="col-lg-2">
-        <div class="text-right" style='padding: 30px 0 0 0'>
+    <div class="col-lg-2">
+      <div class="text-right" style='padding: 30px 0 0 0'>
+        <% if @layout_builder %>
           <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-outline btn-primary edit-layout-btn" }) %>
-        </div>
+        <% else %>
+          <%= link_to('New layout', new_layout_path(table: @current_table), html_options = { class: "btn btn-outline btn-primary edit-layout-btn" }) %>
+        <% end %>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>
 
-<div>
-  <% if @layout_builder %>
-    <div class="m-t">
-      <%= render 'record_placeholder', layout_builder: @layout_builder %>
-    </div>
-  <% else %>
-    <div class="wrapper wrapper-content animated fadeInRight">
-      <div class="row">
-        <div class="col-lg-4">
-          <%= render 'record_summary' %>
+<% if @layout_builder %>
+  <div class="m-t">
+    <%= render 'record_placeholder', layout_builder: @layout_builder %>
+  </div>
+<% else %>
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-xs-12 text-center">
+                <h1>This layout is empty. Add fields to view in your layout <%= link_to('here', new_layout_path(table: @current_table)) %></h1>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

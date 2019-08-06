@@ -72,7 +72,7 @@ describe TablesController, :type => :controller do
         end
 
         context 'when layout does not exist for table' do
-          it 'redirects to the new layout template' do
+          it 'renders the preview template' do
             ViewBuilder.where(table_name: 'users').delete_all
             sign_in admin_with_license
 
@@ -80,7 +80,7 @@ describe TablesController, :type => :controller do
               get :preview, params: { id: 'users', table_name: 'users', record_id: 1, table: 'users'}
             end
 
-            expect(response).to redirect_to(new_layout_url(table: 'users'))
+            expect(response).to render_template('preview')
           end
         end
       end

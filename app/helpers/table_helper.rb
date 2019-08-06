@@ -74,6 +74,10 @@ module TableHelper
     current_row &&  !current_row[field["title"]].blank?
   end
 
+  def table_has_layout?(table)
+    ViewBuilder.where(table_name: table).size > 0
+  end
+
   private
 
   def convert_table_name(table)
