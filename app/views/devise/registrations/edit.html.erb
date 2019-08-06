@@ -61,6 +61,30 @@
             </div>
             <!-- twilio settings -->
 
+            <!-- profile settings -->
+            <div class="form-group" id="password-mismatch">
+              <p class="alert-password">Password do not match</p>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
+              <% if @minimum_password_length %>
+                <em>(<%= @minimum_password_length %> characters minimum)</em>
+              <% end %><br />
+              <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :password_confirmation %><br />
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+              <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+            </div>
+            <!-- profile settings -->
+
             <!-- target database settings -->
             <div class="">
               <div class="m-t-lg m-b-lg">

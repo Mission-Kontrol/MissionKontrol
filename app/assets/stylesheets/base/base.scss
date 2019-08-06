@@ -1442,3 +1442,17 @@ body.mini-navbar.fixed-sidebar .logo-element {
 .btn-right {
   margin: 0 0 0 auto;
 }
+
+.alert-password {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  border-radius: 4px;
+}
