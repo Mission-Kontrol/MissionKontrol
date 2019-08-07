@@ -11,8 +11,13 @@ class LayoutBuilderController < ApplicationController
   def new
     @available_tables = available_tables
     @tables_with_layouts = tables_with_layouts
-    @view_builder = ViewBuilder.new
-    @view_builder.table_name = params[:table] if params[:table]
+    @view_builder = ViewBuilder.new(table_name: field_params[:table])
+
+    if current_admin_user.ignore_layout_modal?
+      if @view_builder.save!
+        redirect_to action: 'edit', id: @view_builder.id
+      end
+    end
   end
 
   def show
@@ -25,10 +30,12 @@ class LayoutBuilderController < ApplicationController
   end
 
   def create
-    @view_builder = ViewBuilder.new(view_name: params[:view_name],
-                                    table_name: field_params[:table])
+    @view_builder = ViewBuilder.find_or_create_by(table_name: field_params[:table])
 
     if @view_builder.save!
+      if current_admin_user.ignore_layout_modal.to_s != field_params[:ignore_modal]
+        current_admin_user.update_attribute(:ignore_layout_modal, field_params[:ignore_modal])
+      end
       render json: @view_builder
     end
   end
@@ -112,7 +119,7 @@ class LayoutBuilderController < ApplicationController
   end
 
   def field_params
-    params.permit(:view_name, :table, selectedOptions: [])
+    params.permit(:view_name, :table, :ignore_modal, selectedOptions: [])
   end
 
   def update_attributes(view_builder, params)

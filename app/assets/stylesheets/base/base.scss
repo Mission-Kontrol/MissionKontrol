@@ -191,7 +191,7 @@ video {
 }
 
 .wrapper {
-  padding: 0 20px;
+  padding: 0 15px;
 }
 
 .wrapper-content {
@@ -290,7 +290,8 @@ body.body-small .footer.fixed {
 
 .page-heading {
   border-top: 0;
-  padding: 0 10px 20px 10px;
+  padding: 0 15px 20px 15px;
+  margin-top: 12px;
 }
 
 .panel-heading h1, .panel-heading h2 {
@@ -1440,4 +1441,18 @@ body.mini-navbar.fixed-sidebar .logo-element {
 
 .btn-right {
   margin: 0 0 0 auto;
+}
+
+.alert-password {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  border-radius: 4px;
 }

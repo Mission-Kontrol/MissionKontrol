@@ -8,7 +8,12 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   protected
 
   def update_resource(resource, params)
-    resource.update_without_password(params)
+    if params["password"]&.present?
+      update_target_db_connection
+      return super
+    end
+
+    resource.update_without_password(params.except("current_password"))
     update_target_db_connection
   end
 
