@@ -11,6 +11,8 @@
 // Bootstrap
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "dualListbox/bootstrap-duallistbox.min.css";
+
 
 // Variables, Mixins
 @import "base/variables";
@@ -27,7 +29,7 @@
 @import "base/base";
 @import "base/pages";
 // @import "base/chat";
-@import "base/metismenu";
+// @import "base/metismenu";
 @import "base/spinners";
 
 @import "components/tables";
@@ -51,7 +53,6 @@
 // Media query style
 @import "base/media";
 
-@import "datatables";
 
 // Custom style
 // Your custom style to override base style
