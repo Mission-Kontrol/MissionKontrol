@@ -171,4 +171,8 @@ class AdminUser < ApplicationRecord
   def target_database_type=(type)
     SensitiveData.set_target_database_credential(:database_type, type)
   end
+
+  def ignore_layout_modal?
+    ignore_layout_modal
+  end
 end

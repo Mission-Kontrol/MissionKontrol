@@ -97,9 +97,10 @@ $(document).ready(function() {
     })
 
     $('#layout-builder-modal-save-button').click(function() {
+      var ignoreModal = $('#layout-builder-modal-ignore-checkbox').is(':checked');
       var layoutName = document.getElementById('layout-builder-modal-form-name').value;
       var layoutPrimaryTable = document.getElementById('layout-builder-modal-form-primary-table').value;
-      saveLayout(layoutName, layoutPrimaryTable);
+      saveLayout(layoutName, layoutPrimaryTable, ignoreModal);
     })
 
     let currentTable = $('#view_builder_table_name').data('table-name');
@@ -316,7 +317,7 @@ function getContainerParam(containerId) {
   }
 }
 
-function saveLayout(name, primaryTable) {
+function saveLayout(name, primaryTable, ignoreModal) {
   var layoutID;
   var redirectURL;
 
@@ -325,7 +326,8 @@ function saveLayout(name, primaryTable) {
     type: 'POST',
     data: {
       table: primaryTable,
-      view_name: name
+      view_name: name,
+      ignore_modal: ignoreModal
     },
     error: function(XMLHttpRequest, errorTextStatus, error){
               alert("Failed: "+ errorTextStatus+" ;"+error);
