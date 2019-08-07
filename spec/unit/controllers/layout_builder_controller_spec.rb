@@ -48,7 +48,6 @@ describe LayoutBuilderController, type: :controller do
       end
 
       it 'will create the view builder' do
-        expect(assigns(:view_builder).view_name).to eq 'name of view'
         expect(assigns(:view_builder).table_name).to eq 'Users'
       end
 
