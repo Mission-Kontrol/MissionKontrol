@@ -19,4 +19,8 @@ module ApplicationHelper
   def demo_app
     request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
+
+  def current_organisation
+    OrganisationSetting.last
+  end
 end

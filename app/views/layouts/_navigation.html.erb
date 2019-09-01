@@ -85,11 +85,20 @@
         <% end %>
       </li>
 
-      <li class="<%= active_controller?('admin_user_registrations') || active_controller?('edit')%>">
-        <%= link_to edit_admin_user_registration_path do %>
-          <i class="fa fa-sliders"></i>
-          <span class="nav-label" data-i18n="nav.layouts">Settings</span>
-        <% end %>
+      <li class="<%= active_controller?('organisation_settings') || active_controller?('edit') %>">
+        <a href="" id="nav-link-for-tables">
+          <i class="fa fa-sliders" aria-hidden="true"></i>
+          <span class="nav-label" data-i18n="nav.layouts">Settings</span> <span class="fa arrow"></span>
+        </a>
+
+        <ul class="nav nav-second-level collapse">
+          <li class="">
+            <%= link_to 'General', edit_organisation_setting_path(current_organisation), id: "nav-link-for-general-settings" %>
+          </li>
+          <li class="">
+            <%= link_to 'Users', edit_admin_user_registration_path, id: "nav-link-for-user-settings" %>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>

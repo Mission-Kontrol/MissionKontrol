@@ -24,6 +24,10 @@ class ApplicationController < ActionController::Base
     request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
 
+  def current_organisation
+    OrganisationSetting.last
+  end
+
   protected
 
   def handle_invalid_client_db_error
@@ -33,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_openssl_error
-    license_key = current_admin_user.license_key
+    license_key = current_organisation.license_key
 
     unless license_key.blank?
       cache_key = "license-#{license_key}"

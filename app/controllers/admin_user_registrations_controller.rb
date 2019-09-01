@@ -42,12 +42,8 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   def configure_permitted_parameters
     db_params = permitted_admin_db_params + permitted_target_db_params
     keys = %w[
-      license_key
-      activation_id
-      full_license
       first_name
       last_name
-      company_name
       twilio_caller_id
       twilio_auth_token
       twilio_account_sid
