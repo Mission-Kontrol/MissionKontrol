@@ -1,0 +1,15 @@
+<div class="panel-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <table id="target-table-admin-users" class="data-table table" data-table-name='admin-users'>
+        <thead>
+          <tr>
+            <% @headers.each do |header|%>
+              <th class='column-<%= header %>'><%= header.humanize %></th>
+            <% end %>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>

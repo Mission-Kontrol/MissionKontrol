@@ -41,7 +41,10 @@ Rails.application.routes.draw do
   resources :view_builder
   resources :activities, only: :create
 
-  resources :organisation_settings
+  resources :organisation_settings, only: %i[edit update]
+  resources :admin_users, only: :index
+
+  resource :roles
 
   get 'dashboard', to: 'dashboard#show'
   post 'add-sql-filter', to: 'work_lists#add_sql_filter'

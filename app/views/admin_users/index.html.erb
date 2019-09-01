@@ -1,0 +1,50 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Users</h2>
+
+    <ol class="breadcrumb">
+      <li>
+        <span>Home</span>
+      </li>
+
+      <li class="active">
+        <strong>Users</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="tabs-container">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="active"><a class="nav-link active" data-toggle="tab" href="#settings-tab--users">Users</a></li>
+                  <li><a class="nav-link" data-toggle="tab" href="#settings-tab--roles">Roles</a></li>
+                  <li><a class="nav-link" data-toggle="tab" href="#settings-tab--permissions">Permissions</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div role="tabpanel" id="settings-tab--users" class="tab-pane active">
+                    <%= render 'users_table' %>
+                  </div>
+
+                  <div role="tabpanel" id="settings-tab--roles" class="tab-pane">
+                    <%= render 'roles' %>
+                  </div>
+
+                  <div role="tabpanel" id="settings-tab--permissions" class="tab-pane">
+                    <%= render 'permissions' %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

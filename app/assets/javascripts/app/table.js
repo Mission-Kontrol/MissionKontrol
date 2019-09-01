@@ -216,10 +216,15 @@ function loadTaskQueuePreviewDataTable (columns) {
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerTables = metaTag.attr("controller") === "tables";
+  let isCurrentControllerAdminUsers = metaTag.attr("controller") === "admin_users";
   let isCurrentActionShow = metaTag.attr("action") === "show";
   let isCurrentActionPreview = metaTag.attr("action") === "preview";
 
   if (isCurrentControllerTables && isCurrentActionShow) {
+    fetchDataForTable();
+  }
+
+  if (isCurrentControllerAdminUsers) {
     fetchDataForTable();
   }
 
