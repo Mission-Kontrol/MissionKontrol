@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AdminUser < ApplicationRecord
+  rolify
   DATABASE_TYPES = [
     ['PostgreSQL', 'postgresql'],
     ['MySQL', 'mysql2']
@@ -10,6 +11,8 @@ class AdminUser < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  has_many :permissions
 
   include SensitiveData
 
