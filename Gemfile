@@ -47,6 +47,7 @@ group :test do
   gem 'capybara-selenium'
   gem 'capybara-screenshot', '~> 1.0', '>= 1.0.22'
   gem 'codacy-coverage', require: false
+  gem 'database_cleaner'
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'ffaker'
   gem 'rails-controller-testing'

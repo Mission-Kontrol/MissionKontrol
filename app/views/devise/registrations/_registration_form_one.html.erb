@@ -13,20 +13,6 @@
     </div>
 
       <div class="form-group">
-        <%= f.hidden_field :activation_id, autofocus: true, value: params[:activation_id], class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.hidden_field :license_key, autofocus: true, value: params[:license_key], class: "form-control" %>
-      </div>
-
-      <% if params[:full_license] %>
-        <div class="form-group">
-          <%= f.hidden_field :full_license, autofocus: true, value: params[:full_license], class: "form-control" %>
-        </div>
-      <% end %>
-
-      <div class="form-group">
         <%= f.label :first_name %>
         <%= f.text_field :first_name, autofocus: true, class: "form-control" %>
       </div>
@@ -34,11 +20,6 @@
       <div class="form-group">
         <%= f.label :last_name %>
         <%= f.text_field :last_name, autofocus: true, class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :company_name %>
-        <%= f.text_field :company_name, autofocus: true, class: "form-control" %>
       </div>
 
       <div class="form-group">

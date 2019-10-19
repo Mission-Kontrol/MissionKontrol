@@ -83,6 +83,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
+    database_cleaner (1.7.0)
     devise (4.6.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -363,6 +364,7 @@ DEPENDENCIES
   clockwork (~> 2.0, >= 2.0.3)
   codacy-coverage
   coffee-rails
+  database_cleaner
   devise (>= 4.6.0)
   dotenv-rails
   factory_bot_rails (~> 4.8.2)
