@@ -43,7 +43,7 @@ Rails.application.routes.draw do
 
   resources :organisation_settings, only: %i[edit update]
   resources :admin_users, only: :index
-
+  resources :permissions
   resource :roles
 
   get 'dashboard', to: 'dashboard#show'

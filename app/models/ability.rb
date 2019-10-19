@@ -3,7 +3,13 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(admin_user)
+  def initialize(user)
+    can do |action, subject_class, subject|
+      user.permissions.where(action: aliases_for_action(action)).any? do |permission|
+        permission.subject_class == subject_class.to_s &&
+          (subject.nil? || permission.subject_id.nil? || permission.subject_id == subject.id)
+      end
+    end
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

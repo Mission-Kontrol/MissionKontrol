@@ -43,7 +43,7 @@
         </a>
 
         <ul class="nav nav-second-level collapse">
-          <% @available_tables.each do |t| %>
+          <% @available_tables&.each do |t| %>
             <li class="">
               <%= link_to t.humanize, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
             </li>
@@ -69,7 +69,7 @@
               </li>
             <% end %>
 
-            <% @task_queues.each do |q| %>
+            <% @task_queues&.each do |q| %>
               <li class="">
                 <%= link_to q.name, edit_task_queue_path(q) %>
               </li>
@@ -85,7 +85,7 @@
         <% end %>
       </li>
 
-      <li class="<%= active_controller?('organisation_settings') || active_controller?('edit') || active_controller?('admin_users') %>">
+      <li class="<%= active_controller?('organisation_settings') || active_controller?('edit') || active_controller?('admin_users') %> || <%= active_controller?('permissions') %>">
         <a href="" id="nav-link-for-tables">
           <i class="fa fa-sliders" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.layouts">Settings</span> <span class="fa arrow"></span>
@@ -95,8 +95,11 @@
           <li class="">
             <%= link_to 'General', edit_organisation_setting_path(current_organisation), id: "nav-link-for-general-settings" %>
           </li>
-          <li class="">
+          <li class="<%= active_controller?('admin_users') %>">
             <%= link_to 'Users', admin_users_path, id: "nav-link-for-user-settings" %>
+          </li>
+          <li class="<%= active_controller?('permissions') %>">
+            <%= link_to 'Permissions', permissions_path, id: "nav-link-for-user-settings" %>
           </li>
         </ul>
       </li>

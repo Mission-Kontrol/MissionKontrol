@@ -217,6 +217,7 @@ $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerTables = metaTag.attr("controller") === "tables";
   let isCurrentControllerAdminUsers = metaTag.attr("controller") === "admin_users";
+  let isCurrentControllerPermissions = metaTag.attr("controller") === "permissions";
   let isCurrentActionShow = metaTag.attr("action") === "show";
   let isCurrentActionPreview = metaTag.attr("action") === "preview";
 
@@ -225,6 +226,10 @@ $(document).ready(function() {
   }
 
   if (isCurrentControllerAdminUsers) {
+    fetchDataForTable();
+  }
+
+  if (isCurrentControllerPermissions) {
     fetchDataForTable();
   }
 
