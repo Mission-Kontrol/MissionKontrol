@@ -55,7 +55,7 @@ class DashboardController < ApplicationController
     OrganisationSetting.create!(
       license_key: license_key,
       activation_id: activation_id,
-      full_license: false
+      full_license: full_license
     )
   end
 

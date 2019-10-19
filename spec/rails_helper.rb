@@ -24,7 +24,7 @@ RSpec.configure do |config|
 
   config.use_transactional_fixtures = false
   config.before(:each) do
-    DatabaseCleaner.strategy = :truncation, {:only => %w[admin_users organisation_settings]}
+    DatabaseCleaner.strategy = :truncation, { only: %w[admin_users organisation_settings] }
   end
 
   config.before(:each) do

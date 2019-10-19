@@ -33,10 +33,6 @@ class AdminUsersController < ApplicationController
   end
 
   def render_show_js
-    offset = params['start']
-    limit = params['length']
-    search = params.dig('search', 'value')
-    searchable_columns = params['columns']
     columns = []
 
     result_columns = field_names

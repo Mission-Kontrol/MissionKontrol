@@ -27,7 +27,7 @@ module License
   end
 
   def license_valid?
-    return false unless current_organisation && current_organisation.license_key_present?
+    return false unless current_organisation&.license_key_present?
 
     cache_key = "license-#{current_organisation.license_key}"
 

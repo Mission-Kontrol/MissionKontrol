@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganisationSettingsController < ApplicationController
   layout 'dashboard'
 
@@ -12,10 +14,10 @@ class OrganisationSettingsController < ApplicationController
   def update
     @organisation = OrganisationSetting.find params[:id]
 
-    if @organisation.update!(organisation_params)
-      respond_to do |format|
-        format.js { }
-      end
+    return unless @organisation.update!(organisation_params)
+
+    respond_to do |format|
+      format.js {}
     end
   end
 
