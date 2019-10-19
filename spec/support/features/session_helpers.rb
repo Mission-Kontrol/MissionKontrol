@@ -3,7 +3,8 @@
 module Features
   module SessionHelpers
     def sign_in_as_admin_with_license
-      user = create(:admin_user, :with_license)
+      create(:organisation_setting)
+      user = create(:admin_user)
       visit root_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: 'password'

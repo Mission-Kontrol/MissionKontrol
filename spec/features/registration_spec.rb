@@ -13,12 +13,12 @@ feature 'Installation' do
   end
 end
 
-feature 'License Key' do
+feature 'Entering License Key' do
   background do
     allow(AdminUser).to receive(:any?).and_return(false)
   end
 
-  scenario 'entering a valid license key' do
+  scenario 'with a valid license key' do
     visit root_path
     VCR.use_cassette('license_key/activation_success') do
       VCR.use_cassette('license_key/validation_success') do
@@ -28,15 +28,31 @@ feature 'License Key' do
     end
     expect(page).to have_current_path(new_admin_user_registration_path)
   end
+end
 
-  xscenario 'creating admin user' do
-    add_license_key
-    within('#user_form') do
-      fill_in :email
-      fill_in :password
-    end
-    click_button 'Save'
-    expect(page).to have_content('well done')
-    expect(page).to have_current_path(dashboard_path)
+xfeature 'Creating an Admin User' do
+  background do
+    create(:organisation_setting)
   end
+
+  scenario 'when valid license key present' do
+    add_license_key
+    visit root_path
+    within('#new_admin_user') do
+      fill_in 'First name', with: 'Test'
+      fill_in 'Last name', with: 'User'
+      fill_in 'Email', with: 'test_user@example.com'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+    end
+    click_button 'Submit'
+    expect(page).to have_content('Welcome! You have signed up successfully')
+    expect(page).to have_current_path(dashboard_path)
+    binding.pry
+  end
+end
+
+def add_license_key
+  cache_key = "license-#{OrganisationSetting.last.license_key}"
+  Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key }
 end
