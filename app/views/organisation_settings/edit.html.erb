@@ -37,6 +37,8 @@
                           <%= f.label :company_name %>
                           <%= f.text_field :company_name, class: "form-control" %>
                         </div>
+
+                        <%= f.submit "Submit", class: "btn btn-primary m-b pull-right" %>
                       <% end %>
                     </div>
                   </div>
@@ -44,11 +46,11 @@
                   <div role="tabpanel" id="settings-tab--target" class="tab-pane">
                     <div class="panel-body">
                       <p>These are your application's database settings</p>
-                      <%= form_for(current_admin_user, url: registration_path(AdminUser), html: { method: :put, class: "m-t" }) do |f| %>
+                      <%= form_for(current_organisation, html: { method: :put, class: "m-t" }) do |f| %>
 
                         <div class="form-group">
                           <label for="">Database type</label>
-                          <%= f.select(:target_database_type, AdminUser::DATABASE_TYPES,
+                          <%= f.select(:target_database_type, OrganisationSetting::DATABASE_TYPES,
                                                               {prompt: "Select your database type"},
                                                               {class: 'form-control'}) %>
                         </div>
@@ -77,6 +79,8 @@
                           <%= f.label :target_database_port %>
                           <%= f.text_field :target_database_port, autofocus: true, class: "form-control" %>
                         </div>
+
+                        <%= f.submit "Submit", class: "btn btn-primary m-b pull-right" %>
                       <% end %>
                     </div>
                   </div>
@@ -90,6 +94,8 @@
                           <%= f.label :license_key %>
                           <%= f.text_field :license_key, class: "form-control" %>
                         </div>
+
+                        <%= f.submit "Submit", class: "btn btn-primary m-b pull-right" %>
                       <% end %>
                     </div>
                   </div>

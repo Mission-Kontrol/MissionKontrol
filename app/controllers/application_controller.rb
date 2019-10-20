@@ -33,7 +33,14 @@ class ApplicationController < ActionController::Base
   def handle_invalid_client_db_error
     @available_tables = []
     @task_queues = []
-    render '/layouts/bad_connection'
+
+    render_view = if request.path == edit_organisation_setting_path(current_organisation)
+                    'organisation_settings/edit'
+                  else
+                    '/layouts/bad_connection'
+                  end
+
+    render render_view
   end
 
   def handle_openssl_error
@@ -110,12 +117,12 @@ class ApplicationController < ActionController::Base
   end
 
   def check_target_db_connection
-    raise InvalidClientDatabaseError.new if current_admin_user.target_database_type.blank? ||
-    current_admin_user.target_database_host.blank? ||
-    current_admin_user.target_database_username.blank? ||
-    current_admin_user.target_database_password.blank? ||
-    current_admin_user.target_database_name.blank? ||
-    current_admin_user.target_database_port.blank?
+    raise InvalidClientDatabaseError.new if current_organisation.target_database_type.blank? ||
+    current_organisation.target_database_host.blank? ||
+    current_organisation.target_database_username.blank? ||
+    current_organisation.target_database_password.blank? ||
+    current_organisation.target_database_name.blank? ||
+    current_organisation.target_database_port.blank?
   end
 
   def set_cache_headers

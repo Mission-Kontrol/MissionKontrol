@@ -29,24 +29,6 @@ class DashboardController < ApplicationController
     else
       render 'verify_license'
     end
-
-    # if current_admin_user
-    #   if license_key && activation_id
-    #     verify_license_as_trial(license_key, activation_id)
-    #     redirect_to dashboard_path
-    #   elsif full_license_key && full_activation_id
-    #     verify_license_as_full(full_license_key, full_activation_id)
-    #     redirect_to dashboard_path
-    #   else
-    #     render 'verify_license'
-    #   end
-    # elsif license_key && activation_id
-    #   redirect_to controller: 'admin_user_registrations', action: 'new', license_key: license_key, activation_id: activation_id
-    # elsif full_license_key && full_activation_id
-    #   redirect_to controller: 'admin_user_registrations', action: 'new', license_key: license_key, activation_id: activation_id, full_license: true
-    # else
-    #   render 'verify_license'
-    # end
   end
 
   private

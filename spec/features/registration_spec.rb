@@ -48,7 +48,6 @@ xfeature 'Creating an Admin User' do
     click_button 'Submit'
     expect(page).to have_content('Welcome! You have signed up successfully')
     expect(page).to have_current_path(dashboard_path)
-    binding.pry
   end
 end
 
