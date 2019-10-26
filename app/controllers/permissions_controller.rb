@@ -62,10 +62,21 @@ class PermissionsController < ApplicationController
     grouped_permissions.each do |table|
       table_data = { 'Table' => table.first.to_s }
       @roles.each do |role|
-        table_data.merge!(role.name.to_s => (table.last & role.permissions).any?)
+        table_data.merge!(role.name.to_s => role_permissions_level(table.last, role))
       end
       data << table_data
     end
     data
+  end
+
+  def role_permissions_level(table, role)
+    permissions = (table & role.permissions)
+    if permissions.empty?
+      "<img src='/assets/images/icons/circle-with-cross.png'>"
+    elsif permissions.length == table.length
+      "<img src='/assets/images/icons/circle-with-check-symbol.png'>"
+    else
+      "<img src='/assets/images/icons/circle-with-contrast.png'>"
+    end
   end
 end
