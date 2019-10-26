@@ -4,7 +4,6 @@ function fetchDataForTable() {
     url: "/" + (location.pathname+location.search).substr(1),
     success: function(d) {
       loadDataTable(d.columns);
-      loadPermissionsDataTable(d.columns);
     }
   });
 }
@@ -82,65 +81,6 @@ function loadDataTable (columns) {
         "className": "btn btn-warning",
       }
     ],
-    "initComplete": function(settings, json) {
-      $('[id ^="target-table-"][id $="_filter"] input').unbind();
-      $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
-        if(e.keyCode === 13) {
-          searchableTable.search( this.value ).draw();
-        }
-      });
-    }
-  });
-}
-
-function loadPermissionsDataTable (columns) {
-  var searchableTable = $(".data-table-permissions").DataTable({
-    "colReorder": true,
-    "paging": false,
-    "info": false,
-    "searching": false,
-    "deferRender": true,
-    "autoWidth": false,
-    "scrollX": true,
-    "serverSide": true,
-    "processing": true,
-      "language": {
-        processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
-              "<div class='sk-dot1'></div>" +
-              "<div class='sk-dot2'></div>" +
-            "</div>"},
-    "ajax": "/" + (location.pathname+location.search).substr(1),
-    "columns": columns,
-    "stateSave": true,
-    "stateSaveCallback": function (settings, data) {
-      if ( settings.iDraw <= 1 ) {
-        return;
-      }
-
-      $.ajax({
-        "url": "/data_table_states/save?table=" + $(this).data("table-name"),
-        "data": { "state": data },
-        "dataType": "json",
-        "type": "POST",
-        "success": function () {}
-      });
-    },
-    "stateLoadCallback": function (settings, callback) {
-      $.ajax({
-        "url": "/data_table_states/load?table=" + $(this).data("table-name"),
-        "dataType": "json",
-        "success": function (json) {
-          callback( json );
-        }
-      });
-    },
-    "createdRow": function( row, data, dataIndex ) {
-      let table = $(this).data("table-name");
-      let id = data.id;
-      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      $(row).addClass( "clickable-row" );
-      $(row).attr( "data-href",  previewUrl);
-    },
     "initComplete": function(settings, json) {
       $('[id ^="target-table-"][id $="_filter"] input').unbind();
       $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
@@ -277,7 +217,6 @@ $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerTables = metaTag.attr("controller") === "tables";
   let isCurrentControllerAdminUsers = metaTag.attr("controller") === "admin_users";
-  let isCurrentControllerPermissions = metaTag.attr("controller") === "permissions";
   let isCurrentActionShow = metaTag.attr("action") === "show";
   let isCurrentActionPreview = metaTag.attr("action") === "preview";
 
@@ -286,10 +225,6 @@ $(document).ready(function() {
   }
 
   if (isCurrentControllerAdminUsers) {
-    fetchDataForTable();
-  }
-
-  if (isCurrentControllerPermissions) {
     fetchDataForTable();
   }
 

@@ -63,6 +63,12 @@ class PermissionsController < ApplicationController
       table_data = { 'Table' => table.first.to_s }
       @roles.each do |role|
         table_data.merge!(role.name.to_s => role_permissions_level(table.last, role))
+        table.last.each do |permission|
+          data_key = role.name + '_' + permission.action
+          data_value = role_has_permission?(permission, role)
+          table_data.merge!(data_key => data_value)
+        end
+        table_data.merge!('role_name' => role.name)
       end
       data << table_data
     end
@@ -78,5 +84,9 @@ class PermissionsController < ApplicationController
     else
       "<img src='/assets/images/icons/circle-with-contrast.png'>"
     end
+  end
+
+  def role_has_permission?(permission, role)
+    role.permissions.include? permission
   end
 end

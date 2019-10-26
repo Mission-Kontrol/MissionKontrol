@@ -32,4 +32,45 @@
       }
     }
   }
+
+  .clickable-row-permissions {
+    cursor: pointer;
+
+    &.shown tr td {
+      padding-top: 50px;
+    }
+  }
+
+  #permissions--nested-table {
+    width: 100%;
+
+    tbody {
+      tr {
+        td {
+          vertical-align: middle;
+          padding-left: 40px;
+          font-size: 12px;
+          color: $purple;
+        }
+
+        td:first-child {
+          text-align: right;
+          border-right: solid 1px $light-purple;
+          padding-right: 2px;
+
+          p {
+            padding-right: 9px;
+            font-size: 12px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: $purple;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
 }
