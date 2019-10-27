@@ -23,7 +23,35 @@ class PermissionsController < ApplicationController
     end
   end
 
+  def add_to_role
+    @permission = Permission.find_by(subject_class: permission_params[:table],
+                                    action: permission_params[:permission])
+    @role = Role.find_by(name: permission_params[:role])
+
+    @role.permissions << @permission unless @role.permissions.include? @permission
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def remove_from_role
+    @permission = Permission.find_by(subject_class: permission_params[:table],
+                                     action: permission_params[:permission])
+    @role = Role.find_by(name: permission_params[:role])
+
+    @role.permissions.delete(@permission) if @role.permissions.include? @permission
+
+    respond_to do |format|
+      format.js { render 'remove_role' }
+    end
+  end
+
   private
+
+  def permission_params
+    params.permit(:permission, :role, :table)
+  end
 
   def render_show_html
     render :index
@@ -68,7 +96,6 @@ class PermissionsController < ApplicationController
           data_value = role_has_permission?(permission, role)
           table_data.merge!(data_key => data_value)
         end
-        table_data.merge!('role_name' => role.name)
       end
       data << table_data
     end

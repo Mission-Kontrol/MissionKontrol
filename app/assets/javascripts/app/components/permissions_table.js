@@ -8,39 +8,39 @@ function fetchDataForPermissionsTable() {
   });
 }
 
-function displayCheckbox (data) {
-  if (data === true) {
-    return "<img src='/assets/images/icons/black-check-box-with-white-check.png'>"
+function displayCheckbox (value, role_name, action) {
+  if (value === true) {
+    return "<img class='filled-checkbox' src='/assets/images/icons/black-check-box-with-white-check.png' data-role='"+role_name+"' data-action='"+action+"'>"
   } else {
-    return "<img src='/assets/images/icons/black-checkbox-empty.svg'>"
+    return "<img class='empty-checkbox' src='/assets/images/icons/black-checkbox-empty.svg' data-role='"+role_name+"' data-action='"+action+"'>"
   }
 }
 
 function formatNestedColumns ( d ) {
-  return '<table id="permissions--nested-table" cellpadding="5" cellspacing="0" border="0">'+
+  return '<table id="permissions--nested-table" data-table="'+d.Table+'">'+
       '<tr>'+
-          '<td><p>View</p></td>'+
-          '<td>'+ displayCheckbox(d.Admin_view) +'</td>'+
-          '<td>'+ displayCheckbox(d.Sales_view) +'</td>'+
-          '<td>'+ displayCheckbox(d.Team_Lead_view) +'</td>'+
+          '<td class="permissions--nested-table-data"><p>View</p></td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_view, 'Admin', 'view') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_view, 'Sales', 'view') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_view, 'Team Lead', 'view') +'</td>'+
       '</tr>'+
       '<tr>'+
-          '<td><p>Create</p></td>'+
-          '<td>'+ displayCheckbox(d.Admin_create) +'</td>'+
-          '<td>'+ displayCheckbox(d.Sales_create) +'</td>'+
-          '<td>'+ displayCheckbox(d.Team_Lead_create) +'</td>'+
+          '<td class="permissions--nested-table-data"><p>Create</p></td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_create, 'Admin', 'create') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_create, 'Sales', 'create') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_create, 'Team Lead', 'create') +'</td>'+
       '</tr>'+
       '<tr>'+
-          '<td><p>Edit</p></td>'+
-          '<td>'+ displayCheckbox(d.Admin_edit) +'</td>'+
-          '<td>'+ displayCheckbox(d.Sales_edit) +'</td>'+
-          '<td>'+ displayCheckbox(d.Team_Lead_edit) +'</td>'+
+          '<td class="permissions--nested-table-data"><p>Edit</p></td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_edit, 'Admin', 'edit') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_edit, 'Sales', 'edit') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_edit, 'Team Lead', 'edit') +'</td>'+
       '</tr>'+
       '<tr>'+
-          '<td><p>Delete</p></td>'+
-          '<td>'+ displayCheckbox(d.Admin_delete) +'</td>'+
-          '<td>'+ displayCheckbox(d.Sales_delete) +'</td>'+
-          '<td>'+ displayCheckbox(d.Team_Lead_delete) +'</td>'+
+          '<td class="permissions--nested-table-data"><p>Delete</p></td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_delete, 'Admin', 'delete') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_delete, 'Sales', 'delete') +'</td>'+
+          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_delete, 'Team Lead', 'delete') +'</td>'+
       '</tr>'+
   '</table>';
 }
@@ -118,6 +118,35 @@ function loadPermissionsDataTable (columns) {
   })
 }
 
+function addRolePermission (role, permission, table) {
+  $.post({
+    dataType: "json",
+    url: "/permissions/add_to_role.js",
+    data:
+      {
+        role: role,
+        permission: permission,
+        table: table
+      },
+    success: function(d) {
+    }
+  });
+}
+
+function removeRolePermission (role, permission, table) {
+  $.post({
+    dataType: "json",
+    url: "/permissions/remove_from_role",
+    data:
+      {
+        role: role,
+        permission: permission,
+        table: table
+      },
+    success: function(d) {
+    }
+  });
+}
 
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
@@ -126,4 +155,20 @@ $(document).ready(function() {
   if (isCurrentControllerPermissions) {
     fetchDataForPermissionsTable();
   }
+
+  $('body').on('click', '#target-table-permissions .empty-checkbox', function () {
+    var role = $(this).data('role')
+    var permission = $(this).data('action')
+    var table = $(this).closest('table').data('table')
+
+    addRolePermission(role, permission, table)
+  });
+
+  $('body').on('click', '#target-table-permissions .filled-checkbox', function () {
+    var role = $(this).data('role')
+    var permission = $(this).data('action')
+    var table = $(this).closest('table').data('table')
+
+    removeRolePermission(role, permission, table)
+  });
 })

@@ -43,7 +43,11 @@ Rails.application.routes.draw do
 
   resources :organisation_settings, only: %i[edit update]
   resources :admin_users, only: :index
-  resources :permissions
+  resources :permissions, only: :index
+
+  post 'permissions/add_to_role', to: 'permissions#add_to_role', as: 'add_to_role', format: :js
+  post 'permissions/remove_from_role', to: 'permissions#remove_from_role'
+
   resource :roles
 
   get 'dashboard', to: 'dashboard#show'
