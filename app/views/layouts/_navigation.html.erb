@@ -31,14 +31,12 @@
 
       <li class="<%= active_controller?('dashboard') || active_controller?('show')%>">
         <%= link_to dashboard_path do %>
-          <i class="fa fa-th-large"></i>
           <span class="nav-label dashboard-nav-link" data-i18n="nav.layouts">Dashboard</span>
         <% end %>
       </li>
 
       <li class="<%= active_controller?('tables') && active_action?('show') %>">
         <a href="" id="nav-link-for-tables">
-          <i class="fa fa-table" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.dashboard">Tables</span> <span class="fa arrow"></span>
         </a>
 
@@ -82,26 +80,30 @@
 
       <li class="<%= active_controller?('layout_builder') %> hide">
         <%= link_to layouts_path do %>
-          <i class="fa fa-th"></i>
           <span class="nav-label" data-i18n="nav.layouts">Layouts</span>
         <% end %>
       </li>
 
       <li class="<%= active_controller?('organisation_settings') || active_controller?('edit') || active_controller?('admin_users') %> || <%= active_controller?('permissions') %>">
         <a href="" id="nav-link-for-tables">
-          <i class="fa fa-sliders" aria-hidden="true"></i>
           <span class="nav-label" data-i18n="nav.layouts">Settings</span> <span class="fa arrow"></span>
         </a>
 
         <ul class="nav nav-second-level collapse">
           <li class="">
-            <%= link_to 'General', edit_organisation_setting_path(current_organisation), id: "nav-link-for-general-settings" %>
+            <%= link_to edit_organisation_setting_path(current_organisation), id: "nav-link-for-general-settings" do %>
+              <%= image_tag('/assets/images/icons/settings-1.png') %>  General
+            <% end %>
           </li>
           <li class="<%= active_controller?('admin_users') %>">
-            <%= link_to 'Users', admin_users_path, id: "nav-link-for-user-settings" %>
+            <%= link_to admin_users_path, id: "nav-link-for-user-settings" do %>
+              <%= image_tag('/assets/images/icons/group-3.png') %>  Users
+            <% end %>
           </li>
           <li class="<%= active_controller?('permissions') %>">
-            <%= link_to 'Permissions', permissions_path, id: "nav-link-for-user-settings" %>
+            <%= link_to permissions_path, id: "nav-link-for-user-settings" do %>
+              <%= image_tag('/assets/images/icons/database-1.png') %>  Permissions
+            <% end %>
           </li>
         </ul>
       </li>

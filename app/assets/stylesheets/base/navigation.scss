@@ -1,8 +1,13 @@
 .nav > li > a {
-  color: $nav-text-color;
-  font-weight: 600;
+  color: white;
+  font-weight: bold;
   padding: 14px 20px 14px 25px;
   display: block;
+  font-size: 14px;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
 }
 
 .nav.navbar-right > li > a {
@@ -175,6 +180,11 @@
 
 ul.nav-second-level {
   background: darken($nav-bg, 3%);
+
+  li > a {
+    font-weight: normal;
+    opacity: 80%;
+  }
 }
 
 .nav > li.active {
@@ -257,7 +267,11 @@ ul.nav-second-level {
 
 .nav-second-level li a {
   padding: 7px 10px 7px 10px;
-  padding-left: 52px;
+  padding-left: 25px;
+
+  img {
+    padding-right: 10px;
+  }
 }
 
 .nav-third-level li a {

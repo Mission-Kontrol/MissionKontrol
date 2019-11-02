@@ -89,7 +89,7 @@ class PermissionsController < ApplicationController
     grouped_permissions = permissions.group_by(&:subject_class)
     data = []
     grouped_permissions.each do |table|
-      table_data = { 'Table' => table.first.to_s }
+      table_data = { 'Table' => table.first.to_s.humanize }
       @roles.each do |role|
         table_data.merge!(role.name.to_s => role_permissions_level(table.last, role))
         table.last.each do |permission|

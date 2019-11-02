@@ -55,6 +55,16 @@ function loadPermissionsDataTable (columns) {
     "autoWidth": false,
     "scrollX": true,
     "serverSide": true,
+    "ordering": true,
+    columnDefs: [
+    {
+        "orderable": true,
+        "targets": 0,
+    },
+    {
+      orderable: false,
+      targets: [1, 2, 3]
+    }],
     "processing": true,
       "language": {
         processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +

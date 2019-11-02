@@ -1,34 +1,43 @@
 .data-table-permissions {
   thead {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-
     tr {
-      background-color: $purple;
-      color: white;
+      background-color: $gray;
+      color: $purple;
       height: 37px;
       th {
         padding-left: 40px;
         vertical-align: middle;
+        width: 15% !important;
       }
 
       th:first-child {
         border-right: solid 1px $light-purple;
+        width: 20% !important;
       }
     }
-
-    .sorting, .sorting_asc, .sorting_desc {
-      background : none;
-    }
+    // .sorting_asc {
+    //   background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
+    // }
+    // .sorting_desc {
+    //   background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
+    // }
+    // .sorting {
+    //   background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
+    // }
   }
 
   tbody {
+    background: rgba(255, 255, 255, .5);
+
     tr {
+      opacity: 1;
       height: 42px;
       td {
         vertical-align: middle;
         padding-left: 40px;
         font-size: 12px;
         color: $purple;
+        font-weight: 500;
       }
 
       td:first-child {
@@ -52,8 +61,7 @@
   }
 
   #permissions--nested-table {
-    width: 95%;
-    right: 18px;
+    width: 100%;
 
     tbody {
       tr {
