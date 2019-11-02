@@ -15,6 +15,10 @@
         border-right: solid 1px $light-purple;
       }
     }
+
+    .sorting, .sorting_asc, .sorting_desc {
+      background : none;
+    }
   }
 
   tbody {
@@ -38,6 +42,12 @@
 
     &.shown tr td {
       padding-top: 50px;
+    }
+
+    td:first-child::before {
+      font-family: FontAwesome;
+      padding-right: 5px;
+      content: "\f0da";
     }
   }
 

@@ -136,7 +136,7 @@ function addRolePermission (role, permission, table) {
 function removeRolePermission (role, permission, table) {
   $.post({
     dataType: "json",
-    url: "/permissions/remove_from_role",
+    url: "/permissions/remove_from_role.js",
     data:
       {
         role: role,

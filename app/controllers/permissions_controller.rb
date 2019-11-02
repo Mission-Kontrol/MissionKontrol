@@ -30,8 +30,9 @@ class PermissionsController < ApplicationController
 
     @role.permissions << @permission unless @role.permissions.include? @permission
 
+    # render js: 'add_to_role'
     respond_to do |format|
-      format.js
+      format.js {}
     end
   end
 
@@ -43,7 +44,7 @@ class PermissionsController < ApplicationController
     @role.permissions.delete(@permission) if @role.permissions.include? @permission
 
     respond_to do |format|
-      format.js { render 'remove_role' }
+      format.js {}
     end
   end
 

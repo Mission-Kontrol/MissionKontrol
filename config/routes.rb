@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   resources :admin_users, only: :index
   resources :permissions, only: :index
 
-  post 'permissions/add_to_role', to: 'permissions#add_to_role', as: 'add_to_role', format: :js
+  post 'permissions/add_to_role', to: 'permissions#add_to_role', as: 'add_to_role'
   post 'permissions/remove_from_role', to: 'permissions#remove_from_role'
 
   resource :roles
