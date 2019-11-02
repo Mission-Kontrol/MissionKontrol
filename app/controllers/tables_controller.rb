@@ -15,6 +15,7 @@ class TablesController < ApplicationController
   before_action :load_task_queues, only: %i[show preview]
   before_action :set_relatable_tables, only: %i[preview]
   before_action :set_layout_for_table, only: %i[show]
+  before_action :check_user_permissions, only: %i[show]
 
   def show
     respond_to do |format|
@@ -64,6 +65,10 @@ class TablesController < ApplicationController
   end
 
   private
+
+  def check_user_permissions
+    redirect_to(root_path) unless current_admin_user.has_permission?(:view, @current_table)
+  end
 
   def render_show_html
     sql_result = @target_db_repo.all

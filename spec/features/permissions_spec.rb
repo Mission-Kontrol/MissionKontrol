@@ -27,6 +27,12 @@ feature 'Permissions' do
     expect(page).not_to have_link('Events')
     remove_connection_to_target_database
   end
+
+  scenario 'user with sales role without permissions to view table cannot view table page' do
+    visit table_path(table: 'events', id: 'events')
+    expect(page).to have_current_path(dashboard_path)
+    remove_connection_to_target_database
+  end
 end
 
 def give_user_sales_role
