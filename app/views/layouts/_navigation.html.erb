@@ -45,7 +45,9 @@
         <ul class="nav nav-second-level collapse">
           <% @available_tables&.each do |t| %>
             <li class="">
-              <%= link_to t.humanize, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
+              <% if current_admin_user.has_permission?(:view, t) %>
+                <%= link_to t.humanize, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
+              <% end %>
             </li>
           <% end %>
         </ul>
