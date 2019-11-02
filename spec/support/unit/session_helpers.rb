@@ -31,7 +31,7 @@ module Unit
       )
     end
 
-    def add_role_to_user(role)
+    def add_role_to_user(_role)
       @role = create(:role, :sales)
       @user.roles << @role
     end

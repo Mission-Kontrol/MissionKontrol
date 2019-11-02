@@ -3,8 +3,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
-  end
+  def initialize(user); end
 
   def can?(user, action, subject_class)
     roles = user.roles.map do |role|

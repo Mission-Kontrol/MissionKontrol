@@ -67,7 +67,7 @@ class TablesController < ApplicationController
   private
 
   def check_user_permissions
-    redirect_to(root_path) unless current_admin_user.has_permission?(:view, @current_table)
+    redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table)
   end
 
   def render_show_html

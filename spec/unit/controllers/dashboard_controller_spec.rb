@@ -7,6 +7,7 @@ describe DashboardController, :type => :controller do
   let(:license_key) { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
   let(:params) { { license_key: license_key } }
 
+  # rubocop:disable Metrics/BlockLength
   xdescribe 'POST verify_license' do
     xcontext 'when admin is signed in' do
       context 'when license key is present' do
@@ -64,6 +65,7 @@ describe DashboardController, :type => :controller do
       end
     end
   end
+  # rubocop:enable Metrics/BlockLength
 
   describe 'GET show' do
     context 'when admin is not present' do

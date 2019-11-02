@@ -25,7 +25,7 @@ class PermissionsController < ApplicationController
 
   def add_to_role
     @permission = Permission.find_by(subject_class: permission_params[:table],
-                                    action: permission_params[:permission])
+                                     action: permission_params[:permission])
     @role = Role.find_by(name: permission_params[:role])
 
     @role.permissions << @permission unless @role.permissions.include? @permission
