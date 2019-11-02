@@ -29,11 +29,6 @@ class PermissionsController < ApplicationController
     @role = Role.find_by(name: permission_params[:role])
 
     @role.permissions << @permission unless @role.permissions.include? @permission
-
-    # render js: 'add_to_role'
-    respond_to do |format|
-      format.js {}
-    end
   end
 
   def remove_from_role
@@ -42,10 +37,6 @@ class PermissionsController < ApplicationController
     @role = Role.find_by(name: permission_params[:role])
 
     @role.permissions.delete(@permission) if @role.permissions.include? @permission
-
-    respond_to do |format|
-      format.js {}
-    end
   end
 
   private

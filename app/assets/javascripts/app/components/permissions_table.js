@@ -8,6 +8,10 @@ function fetchDataForPermissionsTable() {
   });
 }
 
+function deHumanizeString (str) {
+  return str.replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase();
+}
+
 function displayCheckbox (value, role_name, action) {
   if (value === true) {
     return "<img class='filled-checkbox' src='/assets/images/icons/black-check-box-with-white-check.png' data-role='"+role_name+"' data-action='"+action+"'>"
@@ -129,33 +133,25 @@ function loadPermissionsDataTable (columns) {
 }
 
 function addRolePermission (role, permission, table) {
-  $.post({
-    dataType: "json",
-    url: "/permissions/add_to_role.js",
-    data:
-      {
-        role: role,
-        permission: permission,
-        table: table
-      },
-    success: function(d) {
+  $.post(
+    "/permissions/add_to_role",
+    {
+      role: role,
+      permission: permission,
+      table: deHumanizeString(table)
     }
-  });
+  );
 }
 
 function removeRolePermission (role, permission, table) {
-  $.post({
-    dataType: "json",
-    url: "/permissions/remove_from_role.js",
-    data:
-      {
-        role: role,
-        permission: permission,
-        table: table
-      },
-    success: function(d) {
+  $.post(
+    "/permissions/remove_from_role",
+    {
+      role: role,
+      permission: permission,
+      table: deHumanizeString(table)
     }
-  });
+  );
 }
 
 $(document).ready(function() {

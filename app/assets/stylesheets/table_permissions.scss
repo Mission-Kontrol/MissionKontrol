@@ -62,8 +62,11 @@
 
   #permissions--nested-table {
     width: 100%;
+    background: rgba(255, 255, 255, .5);
 
     tbody {
+      background: rgba(255, 255, 255, .5);
+
       tr {
         td {
           vertical-align: middle;
