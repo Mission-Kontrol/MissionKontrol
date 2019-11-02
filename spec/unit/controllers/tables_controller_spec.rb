@@ -3,10 +3,11 @@
 require 'rails_helper'
 
 describe TablesController, :type => :controller do
-  let(:admin_with_license) { create(:admin_user, :with_license) }
+  let(:admin_with_license) { create(:admin_user) }
+  let(:organisation_settings) { create(:organisation_setting) }
 
   before do
-    Rails.cache.write("license-#{admin_with_license.license_key}", expires_in: 2.hours)
+    Rails.cache.write("license-#{organisation_settings.license_key}", expires_in: 2.hours)
   end
 
   after do

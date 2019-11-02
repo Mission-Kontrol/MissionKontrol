@@ -23,16 +23,20 @@ RSpec.configure do |config|
   ]
 
   config.use_transactional_fixtures = false
-  config.before(:each) do
-    DatabaseCleaner.strategy = :truncation, { only: %w[admin_users organisation_settings] }
-  end
+  # config.before(:each) do
+  #   DatabaseCleaner.strategy = :truncation, { only: %w[admin_users organisation_settings] }
+  # end
 
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
+  # config.before(:each) do
+  #   DatabaseCleaner.start
+  # end
 
   config.after(:each) do
-    DatabaseCleaner.clean
+    AdminUser.all.each(&:delete)
+    OrganisationSetting.all.each(&:delete)
+    Role.all.each(&:delete)
+    Permission.all.each(&:delete)
+    # DatabaseCleaner.clean
   end
 
   config.infer_spec_type_from_file_location!

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe LayoutBuilderController, type: :controller do
-  let(:admin_with_license) { create(:admin_user, :with_license) }
+  let(:admin_with_license) { create(:admin_user) }
 
   before do
     Rails.cache.write("license-#{admin_with_license.license_key}", expires_in: 2.hours)

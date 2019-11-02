@@ -13,8 +13,6 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_and_belongs_to_many :roles, join_table: :admin_users_roles
-
   include SensitiveData
 
   def twilio_setup_complete?
