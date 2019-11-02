@@ -36,6 +36,7 @@ RSpec.configure do |config|
     OrganisationSetting.all.each(&:delete)
     Role.all.each(&:delete)
     Permission.all.each(&:delete)
+    ViewBuilder.all.each(&:delete)
     # DatabaseCleaner.clean
   end
 
