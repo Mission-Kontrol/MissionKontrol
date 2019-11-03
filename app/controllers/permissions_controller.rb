@@ -112,11 +112,11 @@ class PermissionsController < ApplicationController
     permissions = (table & role.permissions)
 
     if permissions.empty?
-      "<img src='/assets/images/icons/circle-with-cross.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='"+role.name+"' data-table='"+table.first.subject_class+"'>"
+      "<img src='/assets/images/icons/circle-with-cross.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "'>"
     elsif permissions.length == table.length
-      "<img src='/assets/images/icons/circle-with-check-symbol.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='"+role.name+"' data-table='"+table.first.subject_class+"'>"
+      "<img src='/assets/images/icons/circle-with-check-symbol.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "'>"
     else
-      "<img src='/assets/images/icons/circle-with-contrast.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='"+role.name+"' data-table='"+table.first.subject_class+"'>"
+      "<img src='/assets/images/icons/circle-with-contrast.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "'>"
     end
   end
 
