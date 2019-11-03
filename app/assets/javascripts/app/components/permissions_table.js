@@ -12,12 +12,32 @@ function deHumanizeString (str) {
   return str.replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase();
 }
 
+function humanizeString (str) {
+  var restOfStr = str.slice(1).replace(/_/g, ' ')
+
+  return str.charAt(0).toUpperCase() + restOfStr
+}
+
 function displayCheckbox (value, role_name, action) {
   if (value === true) {
     return "<img class='filled-checkbox' src='/assets/images/icons/black-check-box-with-white-check.png' data-role='"+role_name+"' data-action='"+action+"'>"
   } else {
     return "<img class='empty-checkbox' src='/assets/images/icons/black-checkbox-empty.svg' data-role='"+role_name+"' data-action='"+action+"'>"
   }
+}
+
+function amendAllRelatedPermissions (role, table, action) {
+  var humanizedTable = humanizeString(table)
+
+  $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+humanizedTable+"']").each (function () {
+    var checkbox = $(this).children()
+
+    if (action === 'enable') {
+      checkbox.attr({ "src": "/assets/images/icons/black-check-box-with-white-check.png" })
+    } else if (action === 'disable') {
+      checkbox.attr({ "src": "/assets/images/icons/black-checkbox-empty.svg" })
+    }
+  })
 }
 
 function enableTooltipOnContentClick () {
@@ -34,6 +54,8 @@ function enableTooltipOnContentClick () {
       }
     );
 
+    amendAllRelatedPermissions(role, table, 'enable');
+
     $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": "/assets/images/icons/circle-with-check-symbol.png" });
   });
 
@@ -43,12 +65,14 @@ function enableTooltipOnContentClick () {
     var table = $(this).data('table');
 
     $.post(
-      "/permissions/enable_all",
+      "/permissions/disable_all",
       {
         role: role,
         table: table
       }
     );
+
+    amendAllRelatedPermissions(role, table, 'disable');
 
     $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": "/assets/images/icons/circle-with-cross.png" });
   });
@@ -62,9 +86,7 @@ function activateTooltipster () {
     $(this).tooltipster({
       theme: ['tooltipster-shadow', 'tooltipster-shadow-customized'],
       side: 'bottom',
-      triggerOpen: {
-        click: true
-      },
+      trigger: 'click',
       interactive: true,
       contentAsHTML: true,
       content: $('<div class="tooltip_templates">'+
