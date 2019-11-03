@@ -47,6 +47,8 @@ Rails.application.routes.draw do
 
   post 'permissions/add_to_role', to: 'permissions#add_to_role', as: 'add_to_role'
   post 'permissions/remove_from_role', to: 'permissions#remove_from_role'
+  post 'permissions/enable_all', to: 'permissions#enable_all'
+  post 'permissions/disable_all', to: 'permissions#disable_all'
 
   resource :roles
 

@@ -25,6 +25,7 @@
 //= require shopify/draggable.bundle.js
 //= require shopify/sortable.js
 //= require bootstrap/bootstrap-datepicker.js
+//= require tooltipster/tooltipster.bundle.min.js
 //= require_tree ./app
 //= require draggable
 //= require layout_builder

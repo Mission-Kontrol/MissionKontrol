@@ -20,6 +20,17 @@ function displayCheckbox (value, role_name, action) {
   }
 }
 
+function activateTooltipster () {
+  $('.tooltipster-tooltip').tooltipster({
+    theme: ['tooltipster-shadow', 'tooltipster-shadow-customized'],
+    side: 'bottom',
+    triggerOpen: {
+      click: true
+    },
+    interactive: true
+  });
+}
+
 function formatNestedColumns ( d ) {
   return '<table id="permissions--nested-table" data-table="'+d.Table+'">'+
       '<tr>'+
@@ -62,8 +73,8 @@ function loadPermissionsDataTable (columns) {
     "ordering": true,
     columnDefs: [
     {
-        "orderable": true,
-        "targets": 0,
+      "orderable": true,
+      "targets": 0,
     },
     {
       orderable: false,
@@ -104,7 +115,7 @@ function loadPermissionsDataTable (columns) {
       let table = $(this).data("table-name");
       let id = data.id;
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      $(row).addClass( "clickable-row-permissions" );
+      $(row).addClass( "original-row-permissions" );
       $(row).attr( "data-href",  previewUrl);
     },
     "initComplete": function(settings, json) {
@@ -114,11 +125,12 @@ function loadPermissionsDataTable (columns) {
           searchableTable.search( this.value ).draw();
         }
       });
+      activateTooltipster();
     }
   });
 
-  $('body').on('click', '#target-table-permissions > tbody > tr.clickable-row-permissions', function () {
-    var tr = $(this);
+  $('body').on('click', '#target-table-permissions > tbody > tr.original-row-permissions > td:first-child', function () {
+    var tr = $(this).closest('tr');
     var row = searchableTable.row(tr);
 
     if ( row.child.isShown() ) {
@@ -154,6 +166,16 @@ function removeRolePermission (role, permission, table) {
   );
 }
 
+function enableOrDisablePermissions (role, table) {
+  $.post(
+    "/permissions/enable_disable",
+    {
+      role: role,
+      table: table
+    }
+  );
+}
+
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerPermissions = metaTag.attr("controller") === "permissions";
@@ -176,5 +198,12 @@ $(document).ready(function() {
     var table = $(this).closest('table').data('table')
 
     removeRolePermission(role, permission, table)
+  });
+
+  $('body').on('click', '#target-table-permissions .clickable-row-permissions > td > img', function () {
+    var role = $(this).data('role')
+    var table = $(this).data('table')
+
+    enableOrDisablePermissions(role, table)
   });
 })

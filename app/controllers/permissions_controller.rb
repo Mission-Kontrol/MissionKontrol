@@ -39,6 +39,16 @@ class PermissionsController < ApplicationController
     @role.permissions.delete(@permission) if @role.permissions.include? @permission
   end
 
+  def enable_all
+    @role = Role.find_by(name: permission_params[:role])
+    existing_permissions = @role.permissions.where(subject_class)
+  end
+
+  def disable_all
+    @role = Role.find_by(name: permission_params[:role])
+    existing_permissions = @role.permissions.where(subject_class)
+  end
+
   private
 
   def permission_params
@@ -96,12 +106,13 @@ class PermissionsController < ApplicationController
 
   def role_permissions_level(table, role)
     permissions = (table & role.permissions)
+
     if permissions.empty?
-      "<img src='/assets/images/icons/circle-with-cross.png'>"
+      "<img src='/assets/images/icons/circle-with-cross.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='"+role.name+"' data-table='"+table.first.subject_class+"'>"
     elsif permissions.length == table.length
-      "<img src='/assets/images/icons/circle-with-check-symbol.png'>"
+      "<img src='/assets/images/icons/circle-with-check-symbol.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='"+role.name+"' data-table='"+table.first.subject_class+"'>"
     else
-      "<img src='/assets/images/icons/circle-with-contrast.png'>"
+      "<img src='/assets/images/icons/circle-with-contrast.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='"+role.name+"' data-table='"+table.first.subject_class+"'>"
     end
   end
 
