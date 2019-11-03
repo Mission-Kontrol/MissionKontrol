@@ -1,4 +1,4 @@
-  .data-table-permissions {
+.data-table-permissions {
   thead {
     tr {
       background-color: $gray;
@@ -44,36 +44,20 @@
         border-right: solid 1px $light-purple;
         cursor: pointer;
       }
-
-      // cursor: pointer;
-
-      // &.shown tr td {
-      //   padding-top: 50px;
-      // }
-
-      // td:first-child::before {
-      //   font-family: FontAwesome;
-      //   padding-right: 5px;
-      //   content: "\f0da";
-      // }
     }
-  }
-
-  .clickable-row-permissions {
-    
   }
 
   #permissions--nested-table {
     width: 100%;
-    background: rgba(255, 255, 255, .5);
+    margin-left: -1px;
 
     tbody {
-      background: rgba(255, 255, 255, .5);
+      background: none;
 
       tr {
         td {
           vertical-align: middle;
-          padding-left: 40px;
+          padding-left: 4%;
           font-size: 12px;
           color: $purple;
         }
@@ -95,6 +79,10 @@
             color: $purple;
             vertical-align: middle;
           }
+        }
+
+        td:last-child {
+          padding-left: 4.25%;
         }
       }
     }

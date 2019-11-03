@@ -83,27 +83,27 @@ function formatNestedColumns ( d ) {
   return '<table id="permissions--nested-table" data-table="'+d.Table+'">'+
       '<tr>'+
           '<td class="permissions--nested-table-data"><p>View</p></td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_view, 'Admin', 'view') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_view, 'Sales', 'view') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_view, 'Team Lead', 'view') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Admin" data-action="view" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_view, 'Admin', 'view') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Sales" data-action="view" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_view, 'Sales', 'view') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Team Lead" data-action="view" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_view, 'Team Lead', 'view') +'</td>'+
       '</tr>'+
       '<tr>'+
           '<td class="permissions--nested-table-data"><p>Create</p></td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_create, 'Admin', 'create') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_create, 'Sales', 'create') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_create, 'Team Lead', 'create') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Admin" data-action="create" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_create, 'Admin', 'create') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Sales" data-action="create" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_create, 'Sales', 'create') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Team Lead" data-action="create" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_create, 'Team Lead', 'create') +'</td>'+
       '</tr>'+
       '<tr>'+
           '<td class="permissions--nested-table-data"><p>Edit</p></td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_edit, 'Admin', 'edit') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_edit, 'Sales', 'edit') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_edit, 'Team Lead', 'edit') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Admin" data-action="edit" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_edit, 'Admin', 'edit') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Sales" data-action="edit" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_edit, 'Sales', 'edit') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Team Lead" data-action="edit" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_edit, 'Team Lead', 'edit') +'</td>'+
       '</tr>'+
       '<tr>'+
           '<td class="permissions--nested-table-data"><p>Delete</p></td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Admin_delete, 'Admin', 'delete') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Sales_delete, 'Sales', 'delete') +'</td>'+
-          '<td class="permissions--nested-table-data">'+ displayCheckbox(d.Team_Lead_delete, 'Team Lead', 'delete') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Admin" data-action="delete" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_delete, 'Admin', 'delete') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Sales" data-action="delete" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_delete, 'Sales', 'delete') +'</td>'+
+          '<td class="permissions--nested-table-data" data-role="Team Lead" data-action="delete" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_delete, 'Team Lead', 'delete') +'</td>'+
       '</tr>'+
   '</table>';
 }
@@ -192,6 +192,18 @@ function loadPermissionsDataTable (columns) {
   })
 }
 
+function updateTablePermissionsImg (role, table, action) {
+  var table = deHumanizeString(table)
+  var current_image_src = $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr("src");
+  var image = current_image_src.substr(current_image_src.length - 5)
+
+  if (image === 'l.png' && action == 'remove') {
+    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": "/assets/images/icons/circle-with-contrast.png" });
+  } else if (image === 's.png' && action === 'add') {
+    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": "/assets/images/icons/circle-with-contrast.png" });
+  }
+}
+
 function addRolePermission (role, permission, table) {
   $.post(
     "/permissions/add_to_role",
@@ -201,6 +213,9 @@ function addRolePermission (role, permission, table) {
       table: deHumanizeString(table)
     }
   );
+
+  $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children().attr({ "src": "/assets/images/icons/black-check-box-with-white-check.png" });
+  updateTablePermissionsImg(role, table, 'add')
 }
 
 function removeRolePermission (role, permission, table) {
@@ -212,6 +227,9 @@ function removeRolePermission (role, permission, table) {
       table: deHumanizeString(table)
     }
   );
+
+  $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children().attr({ "src": "/assets/images/icons/black-checkbox-empty.svg" });
+  updateTablePermissionsImg(role, table, 'remove')
 }
 
 $(document).ready(function() {
