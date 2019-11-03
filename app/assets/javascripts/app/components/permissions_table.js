@@ -20,15 +20,63 @@ function displayCheckbox (value, role_name, action) {
   }
 }
 
-function activateTooltipster () {
-  $('.tooltipster-tooltip').tooltipster({
-    theme: ['tooltipster-shadow', 'tooltipster-shadow-customized'],
-    side: 'bottom',
-    triggerOpen: {
-      click: true
-    },
-    interactive: true
+function enableTooltipOnContentClick () {
+  $('body').on('click', '.permissions-enable-all', function (e) {
+    e.preventDefault();
+    var role = $(this).data('role');
+    var table = $(this).data('table');
+
+    $.post(
+      "/permissions/enable_all",
+      {
+        role: role,
+        table: table
+      }
+    );
+
+    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": "/assets/images/icons/circle-with-check-symbol.png" });
   });
+
+  $('body').on('click', '.permissions-disable-all', function (e) {
+    e.preventDefault();
+    var role = $(this).data('role');
+    var table = $(this).data('table');
+
+    $.post(
+      "/permissions/enable_all",
+      {
+        role: role,
+        table: table
+      }
+    );
+
+    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": "/assets/images/icons/circle-with-cross.png" });
+  });
+}
+
+function activateTooltipster () {
+  $('.tooltipster-tooltip').each(function () {
+    var role = $(this).data('role');
+    var table = $(this).data('table');
+
+    $(this).tooltipster({
+      theme: ['tooltipster-shadow', 'tooltipster-shadow-customized'],
+      side: 'bottom',
+      triggerOpen: {
+        click: true
+      },
+      interactive: true,
+      contentAsHTML: true,
+      content: $('<div class="tooltip_templates">'+
+        '<span id="tooltip_content">'+
+        '<a href="#" class="permissions-enable-all" data-role="'+role+'" data-table="'+table+'">Enable</a>'+
+        '<br>'+
+        '<a href="#" class="permissions-disable-all" data-role="'+role+'" data-table="'+table+'">Disable</a>'+
+        '</span>'+
+        '</div>'
+      ),
+    });
+  })
 }
 
 function formatNestedColumns ( d ) {
@@ -166,16 +214,6 @@ function removeRolePermission (role, permission, table) {
   );
 }
 
-function enableOrDisablePermissions (role, table) {
-  $.post(
-    "/permissions/enable_disable",
-    {
-      role: role,
-      table: table
-    }
-  );
-}
-
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerPermissions = metaTag.attr("controller") === "permissions";
@@ -200,10 +238,5 @@ $(document).ready(function() {
     removeRolePermission(role, permission, table)
   });
 
-  $('body').on('click', '#target-table-permissions .clickable-row-permissions > td > img', function () {
-    var role = $(this).data('role')
-    var table = $(this).data('table')
-
-    enableOrDisablePermissions(role, table)
-  });
+  enableTooltipOnContentClick();
 })
