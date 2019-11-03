@@ -294,7 +294,13 @@ function removeRolePermission (role, permission, table) {
   );
 
   $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children().attr({ "src": emptyCheckboxIcon });
-  updateTablePermissionsImg(role, table, permission, 'remove')
+
+  if (permission === 'view') {
+    amendAllRelatedPermissions(role, table, 'disable');
+    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+deHumanizeString(table)+"']").attr({ "src": emptyCircleIcon });
+  } else {
+    updateTablePermissionsImg(role, table, permission, 'remove')
+  }
 }
 
 $(document).ready(function() {

@@ -32,11 +32,18 @@ class PermissionsController < ApplicationController
   end
 
   def remove_from_role
-    @permission = Permission.find_by(subject_class: permission_params[:table],
-                                     action: permission_params[:permission])
     @role = Role.find_by(name: permission_params[:role])
 
-    @role.permissions.delete(@permission) if @role.permissions.include? @permission
+    if permission_params[:permission] == 'view'
+      existing_permissions = @role.permissions.where(subject_class: permission_params[:table])
+
+      existing_permissions.each { |permission| @role.permissions.delete(permission) }
+    else
+      @permission = Permission.find_by(subject_class: permission_params[:table],
+                                      action: permission_params[:permission])
+
+      @role.permissions.delete(@permission) if @role.permissions.include? @permission
+    end
   end
 
   def enable_all
