@@ -280,6 +280,12 @@ function addRolePermission (role, permission, table) {
   );
 
   $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children().attr({ "src": filledCheckboxIcon });
+  var viewPermission = $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='view']").children()
+
+  if (permission !== 'view' && viewPermission.attr('src') !== filledCheckboxIcon) {
+    viewPermission.attr({ "src": filledCheckboxIcon })
+  }
+
   updateTablePermissionsImg(role, table, permission, 'add')
 }
 

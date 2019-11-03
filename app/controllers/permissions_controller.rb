@@ -24,9 +24,15 @@ class PermissionsController < ApplicationController
   end
 
   def add_to_role
+    @role = Role.find_by(name: permission_params[:role])
+
     @permission = Permission.find_by(subject_class: permission_params[:table],
                                      action: permission_params[:permission])
-    @role = Role.find_by(name: permission_params[:role])
+
+    if permission_params[:permission] != 'view'
+      view_permission = Permission.find_by(subject_class: permission_params[:table], action: 'view')
+      @role.permissions << view_permission unless @role.permissions.include? view_permission
+    end
 
     @role.permissions << @permission unless @role.permissions.include? @permission
   end
@@ -40,7 +46,7 @@ class PermissionsController < ApplicationController
       existing_permissions.each { |permission| @role.permissions.delete(permission) }
     else
       @permission = Permission.find_by(subject_class: permission_params[:table],
-                                      action: permission_params[:permission])
+                                       action: permission_params[:permission])
 
       @role.permissions.delete(@permission) if @role.permissions.include? @permission
     end
