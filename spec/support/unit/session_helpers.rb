@@ -36,8 +36,8 @@ module Unit
       @user.roles << @role
     end
 
-    def add_permission_to_role(_action, table)
-      view_permission = create(:permission, subject_class: table)
+    def add_permission_to_role(action, table)
+      view_permission = create(:permission, subject_class: table, action: action)
       @role.permissions << view_permission
     end
   end
