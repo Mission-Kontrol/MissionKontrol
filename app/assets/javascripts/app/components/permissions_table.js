@@ -40,8 +40,12 @@ function amendAllRelatedPermissions (role, table, action) {
 
     if (action === 'enable') {
       checkbox.attr({ "src": filledCheckboxIcon })
+      checkbox.removeClass('empty-checkbox')
+      checkbox.addClass('filled-checkbox')
     } else if (action === 'disable') {
       checkbox.attr({ "src": emptyCheckboxIcon })
+      checkbox.removeClass('filled-checkbox')
+      checkbox.addClass('empty-checkbox')
     }
   })
 }
@@ -63,6 +67,7 @@ function enableTooltipOnContentClick () {
     amendAllRelatedPermissions(role, table, 'enable');
 
     $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": fullCircleIcon });
+    enableTooltipOnContentClick();
   });
 
   $('body').on('click', '.permissions-disable-all', function (e) {
@@ -81,6 +86,7 @@ function enableTooltipOnContentClick () {
     amendAllRelatedPermissions(role, table, 'disable');
 
     $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": emptyCircleIcon });
+    enableTooltipOnContentClick();
   });
 }
 
@@ -279,7 +285,11 @@ function addRolePermission (role, permission, table) {
     }
   );
 
-  $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children().attr({ "src": filledCheckboxIcon });
+  var checkbox = $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children();
+  checkbox.attr({ "src": filledCheckboxIcon });
+  checkbox.removeClass('empty-checkbox');
+  checkbox.addClass('filled-checkbox');
+
   var viewPermission = $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='view']").children()
 
   if (permission !== 'view' && viewPermission.attr('src') !== filledCheckboxIcon) {
@@ -299,7 +309,10 @@ function removeRolePermission (role, permission, table) {
     }
   );
 
-  $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children().attr({ "src": emptyCheckboxIcon });
+  var checkbox = $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='"+permission+"']").children();
+  checkbox.attr({ "src": emptyCheckboxIcon });
+  checkbox.removeClass('filled-checkbox');
+  checkbox.addClass('empty-checkbox');
 
   if (permission === 'view') {
     amendAllRelatedPermissions(role, table, 'disable');
@@ -307,6 +320,26 @@ function removeRolePermission (role, permission, table) {
   } else {
     updateTablePermissionsImg(role, table, permission, 'remove')
   }
+}
+
+function emptyCheckbox() {
+  $('body').on('click', '#target-table-permissions .filled-checkbox', function () {
+    var role = $(this).data('role')
+    var permission = $(this).data('action')
+    var table = $(this).closest('table').data('table')
+
+    removeRolePermission(role, permission, table)
+  });
+}
+
+function fillCheckbox() {
+  $('body').on('click', '#target-table-permissions .empty-checkbox', function () {
+    var role = $(this).data('role')
+    var permission = $(this).data('action')
+    var table = $(this).closest('table').data('table')
+
+    addRolePermission(role, permission, table);
+  });
 }
 
 $(document).ready(function() {
@@ -317,21 +350,8 @@ $(document).ready(function() {
     fetchDataForPermissionsTable();
   }
 
-  $('body').on('click', '#target-table-permissions .empty-checkbox', function () {
-    var role = $(this).data('role')
-    var permission = $(this).data('action')
-    var table = $(this).closest('table').data('table')
-
-    addRolePermission(role, permission, table)
-  });
-
-  $('body').on('click', '#target-table-permissions .filled-checkbox', function () {
-    var role = $(this).data('role')
-    var permission = $(this).data('action')
-    var table = $(this).closest('table').data('table')
-
-    removeRolePermission(role, permission, table)
-  });
+  emptyCheckbox();
+  fillCheckbox();
 
   enableTooltipOnContentClick();
 })
