@@ -52,7 +52,7 @@ class AdminUsersController < ApplicationController
   end
 
   def field_names
-    AdminUser.attribute_names - ['last_sign_in_at', 'current_sign_in_at', 'encrypted_password', 'reset_password_token', 'reset_password_sent_at', 'remember_created_at', 'sign_in_count']
+    ['email', 'first_name', 'last_name']
   end
 
   def load_roles

@@ -1,3 +1,42 @@
+.target-table-admin-users {
+  thead {
+    tr {
+      background-color: $gray;
+      color: $purple;
+      height: 37px;
+      // th {
+      //   padding-left: 40px;
+      //   vertical-align: middle;
+      //   width: 15% !important;
+      // }
+
+      // th:first-child {
+      //   border-right: solid 1px $light-purple;
+      //   width: 20% !important;
+      // }
+    }
+  }
+
+  tbody {
+    background: rgba(255, 255, 255, .5);
+  }
+}
+
+#target-table-admin-users_filter {
+  label {
+    font-size: 0;
+    float: left;
+  }
+
+  input {
+    width: 392px;
+    height: 30px;
+    border-radius: 2px;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+    background-color: #ffffff;
+  }
+}
+
 .header-container1-content {
   font-size: 24px;
   color: #726d73;

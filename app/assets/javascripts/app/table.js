@@ -75,11 +75,11 @@ function loadDataTable (columns) {
       $(row).attr( "data-href",  previewUrl);
     },
     "buttons": [
-      "colvis",
-      {
-        "extend": "csv",
-        "className": "btn btn-warning",
-      }
+      // "colvis",
+      // {
+      //   "extend": "csv",
+      //   "className": "btn btn-warning",
+      // }
     ],
     "initComplete": function(settings, json) {
       $('[id ^="target-table-"][id $="_filter"] input').unbind();
