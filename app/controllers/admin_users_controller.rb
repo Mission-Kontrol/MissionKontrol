@@ -10,8 +10,7 @@ class AdminUsersController < ApplicationController
   def index
     @users = AdminUser.all
     @headers = field_names
-
-    @roles = Role.all
+    @admin_user_roles = admin_user_roles
 
     respond_to do |format|
       format.html do
@@ -53,6 +52,20 @@ class AdminUsersController < ApplicationController
   end
 
   def field_names
-    AdminUser.attribute_names - ['encrypted_password', 'reset_password_token', 'reser_password_sent_at', 'remember_created_at']
+    AdminUser.attribute_names - ['last_sign_in_at', 'current_sign_in_at', 'encrypted_password', 'reset_password_token', 'reset_password_sent_at', 'remember_created_at', 'sign_in_count']
+  end
+
+  def load_roles
+    @roles = Role.all
+  end
+
+  def admin_user_roles
+    @roles = Role.all
+
+    admin_user_roles = {}
+    @roles.each do |role|
+      admin_user_roles[role.name] = AdminUser.with_role(role.name.to_sym).count
+    end
+    admin_user_roles
   end
 end

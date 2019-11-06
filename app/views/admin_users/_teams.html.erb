@@ -1,0 +1,20 @@
+<div class="users--teams--container">
+  <div class="users-teams--header">
+    <h5>Teams</h5>
+    <h5 class="float-right">+ Add</h5>
+  </div>
+  <div class="users-teams--table">
+    <table>
+      <% @admin_user_roles.each do |role, users_count| %>
+        <tr>
+          <td class="users-teams--table-data">
+            <%= role %>
+          </td>
+          <td class="float-right">
+            <%= pluralize users_count, "users" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

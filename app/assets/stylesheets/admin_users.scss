@@ -1,0 +1,24 @@
+.users-teams--header {
+  h5 {
+    display: inline;
+  }
+}
+
+.users-teams--table {
+  table {
+    width: 100%;
+
+    tr {
+      border-bottom: solid 1px $dark-gray;
+    }
+
+    td {
+      padding: 8px 0;
+    }
+  }
+
+  .users-teams--table-data {
+    color: $purple;
+    font-weight: 500;
+  }
+}
