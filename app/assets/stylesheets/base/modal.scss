@@ -1,0 +1,89 @@
+.users--edit-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
+
+  .modal--container {
+    position: absolute;
+    background-color: white;
+    margin: auto;
+    width: 35%;
+    height: 100%;
+    right: 0;
+    border-radius: 0;
+    border: solid 0.5px #979797;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+
+  .modal--close-btn {
+    padding: 14px;
+    float: right;
+    font-size: 18px;
+  }
+
+  .modal--content-container {
+    padding: 60px 40px;
+  }
+
+  .modal--header {
+    h3 {
+      font-weight: 500;
+    }
+  }
+
+  .modal--content {
+    padding-top: 20px;
+
+    &:first-child {
+      margin-bottom: -20px;
+    }
+
+    .row {
+      margin: 20px -15px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    h6 {
+      margin: 0;
+    }
+  }
+
+  .user--activate-toggle {
+    float: right;
+  }
+
+  .user--team-dropdown {
+    float: right;
+  }
+
+  .user--delete-btn {
+    float: right;
+
+    .btn--delete-user {
+      width: 137px;
+      border-radius: 5px;
+      background-color: #c25959;
+    }
+  }
+
+  @-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
+}

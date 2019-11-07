@@ -31,6 +31,10 @@ class AdminUser < ApplicationRecord
     "admin"
   end
 
+  def name
+    first_name + ' ' + last_name
+  end
+
   def trial_license_key_not_activated?
     !activation_id.present? && !full_license
   end
