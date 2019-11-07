@@ -1,10 +1,14 @@
-.users-teams--header {
+.users-teams--container, .users-status--container {
+  padding-top: 21px;
+}
+
+.users-teams--header, .users-status--header {
   h5 {
     display: inline;
   }
 }
 
-.users-teams--table {
+.users-teams--table, .users-status--table {
   table {
     width: 100%;
 
@@ -17,7 +21,7 @@
     }
   }
 
-  .users-teams--table-data {
+  .users-teams--table-data, .users-status--table-data {
     color: $purple;
     font-weight: 500;
   }

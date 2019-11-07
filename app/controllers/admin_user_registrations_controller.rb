@@ -40,6 +40,7 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
     keys = %w[
       first_name
       last_name
+      status
       twilio_caller_id
       twilio_auth_token
       twilio_account_sid

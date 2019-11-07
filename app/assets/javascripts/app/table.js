@@ -40,9 +40,18 @@ function loadDataTable (columns) {
         processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
               "<div class='sk-dot1'></div>" +
               "<div class='sk-dot2'></div>" +
-            "</div>"},
+            "</div>",
+        "paginate": {
+          "first":      "First",
+          "last":       "Last",
+          "next":       "Next >",
+          "previous":   "< Prev"
+        },
+        "info": "of _MAX_ results",
+      },
     "ajax": "/" + (location.pathname+location.search).substr(1),
-    "dom": "Bfrtip",
+    // "dom": "pBfrti",
+    "dom": 'f<"table--info"piB>rt<"clear">',
     "columns": columns,
     "stateSave": true,
     "stateSaveCallback": function (settings, data) {
@@ -75,11 +84,21 @@ function loadDataTable (columns) {
       $(row).attr( "data-href",  previewUrl);
     },
     "buttons": [
-      // "colvis",
-      // {
-      //   "extend": "csv",
-      //   "className": "btn btn-warning",
-      // }
+      {
+        "extend": "csv",
+        "className": "table--import",
+        text: 'Import'
+      },
+      {
+        "extend": "csv",
+        "className": "table--export",
+        text: 'Export'
+      },
+      {
+        "extend": "csv",
+        "className": "table--add",
+        text: 'Add'
+      }
     ],
     "initComplete": function(settings, json) {
       $('[id ^="target-table-"][id $="_filter"] input').unbind();

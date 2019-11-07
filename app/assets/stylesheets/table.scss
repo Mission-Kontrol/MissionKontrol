@@ -22,18 +22,68 @@
   }
 }
 
+div.dataTables_wrapper div.dataTables_filter input {
+  width: 80% !important;
+  margin-left: 0;
+}
+
 #target-table-admin-users_filter {
   label {
     font-size: 0;
     float: left;
+    width: 100%;
   }
 
   input {
-    width: 392px;
     height: 30px;
     border-radius: 2px;
     box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
+  }
+}
+
+.table--info {
+  #target-table-admin-users_paginate {
+    display: inline;
+  }
+
+  #target-table-admin-users_info {
+    display: inline;
+    line-height: 32px;
+    vertical-align: top;
+  }
+
+  .dt-buttons.btn-group {
+    float: right;
+  }
+
+  .table--import {
+    background: url(/assets/images/icons/import.png) no-repeat center left;
+    padding: 6px 20px;
+  }
+
+  .table--export {
+    background: url(/assets/images/icons/export.png) no-repeat center left;
+    padding: 6px 20px;
+  }
+
+  .table--add {
+    background: url(/assets/images/icons/plus.png) no-repeat center left;
+    padding: 6px 20px;
+  }
+}
+
+div.dataTables_wrapper div.dt-buttons .buttons-csv {
+  border: none;
+  background-color: inherit;
+}
+
+#target-table-admin-users_paginate {
+  .pagination > li > a {
+    border: none;
+    background-color: inherit;
+    color: $purple;
+    font-weight: 500;
   }
 }
 
