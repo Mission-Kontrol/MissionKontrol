@@ -66,10 +66,8 @@ class AdminUsersController < ApplicationController
       columns << { data: c }
     end
 
-    data = AdminUser.all
-
     render json: {
-      data: data,
+      data: table_data,
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: AdminUser.all.count,
@@ -78,7 +76,7 @@ class AdminUsersController < ApplicationController
   end
 
   def field_names
-    ['email', 'first_name', 'last_name', 'active']
+    ['name', 'email', 'team', 'active']
   end
 
   def load_roles
@@ -100,5 +98,21 @@ class AdminUsersController < ApplicationController
       active: AdminUser.active.count,
       inactive: AdminUser.inactive.count
     }
+  end
+
+  def table_data
+    table_data = []
+
+    AdminUser.all.each do |user|
+      table_data << {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        team: user.roles.first.name,
+        active: user.active
+      }
+    end
+
+    table_data
   end
 end
