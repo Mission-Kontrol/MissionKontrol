@@ -43,19 +43,17 @@ function loadUserDataTable (columns) {
     "scrollX": true,
     "serverSide": true,
     "processing": true,
-      "language": {
-        processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
-              "<div class='sk-dot1'></div>" +
-              "<div class='sk-dot2'></div>" +
-            "</div>",
-        "paginate": {
-          "first":      "First",
-          "last":       "Last",
-          "next":       "Next >",
-          "previous":   "< Prev"
-        },
-        "info": "of _MAX_ results",
+    "language": {
+      processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
+            "<div class='sk-dot1'></div>" +
+            "<div class='sk-dot2'></div>" +
+          "</div>",
+      "paginate": {
+        "next":       "Next >",
+        "previous":   "< Prev"
       },
+      "info": "of _MAX_ results",
+    },
     "ajax": "/" + (location.pathname+location.search).substr(1),
     "dom": 'f<"table--info"piB>rt<"clear">',
     "columns": columns,

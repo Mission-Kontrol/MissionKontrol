@@ -85,6 +85,7 @@ class AdminUsersController < ApplicationController
 
   def render_show_js
     columns = []
+    search = params.dig('search', 'value')
 
     result_columns = field_names
 
@@ -93,7 +94,7 @@ class AdminUsersController < ApplicationController
     end
 
     render json: {
-      data: table_data,
+      data: table_data(search, columns),
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: AdminUser.all.count,
@@ -126,10 +127,20 @@ class AdminUsersController < ApplicationController
     }
   end
 
-  def table_data
+  def table_data(search, columns)
     table_data = []
 
-    AdminUser.all.each do |user|
+    result = []
+    if search
+      ['first_name', 'last_name', 'email'].each do |value|
+        result << search_admin_users(value, search)
+      end
+      result = result.flatten.uniq
+    else
+      result = AdminUser.all
+    end
+
+    result.each do |user|
       table_data << {
         id: user.id,
         name: user.name,
@@ -140,5 +151,9 @@ class AdminUsersController < ApplicationController
     end
 
     table_data
+  end
+
+  def search_admin_users(value, search_value)
+    AdminUser.where("#{value} ILIKE ?", "%#{search_value}%")
   end
 end
