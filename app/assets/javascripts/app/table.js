@@ -29,7 +29,6 @@ function fetchDataForRelatedTables() {
 }
 
 function loadDataTable (columns) {
-  columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"})
   var searchableTable = $(".data-table").DataTable({
     "colReorder": true,
     "deferRender": true,
@@ -48,7 +47,7 @@ function loadDataTable (columns) {
           "next":       "Next >",
           "previous":   "< Prev"
         },
-        "info": "of _MAX_ results",
+        "info": "of _MAX_ results"
       },
     "ajax": "/" + (location.pathname+location.search).substr(1),
     "dom": 'f<"table--info"piB>rt<"clear">',
@@ -58,6 +57,7 @@ function loadDataTable (columns) {
       if ( settings.iDraw <= 1 ) {
         return;
       }
+
       $.ajax({
         "url": "/data_table_states/save?table=" + $(this).data("table-name"),
         "data": { "state": data },
@@ -78,32 +78,15 @@ function loadDataTable (columns) {
     "createdRow": function( row, data, dataIndex ) {
       let table = $(this).data("table-name");
       let id = data.id;
-      let previewUrl = '/users/edit/?id=' + id
-      let editLink = row.lastChild.firstChild
-      console.log(row.closest('.user--edit-link'))
-      // let testingUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      // $(row).addClass( "clickable-row" );
-      // console.log(previewUrl)
-      // console.log(testingUrl)
-      // console.log(id)
-      $(editLink).attr( "href",  previewUrl);
-      // $(row).attr("data-remote", true);
+      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
+      $(row).addClass( "clickable-row" );
+      $(row).attr( "data-href",  previewUrl);
     },
     "buttons": [
+      "colvis",
       {
         "extend": "csv",
-        "className": "table--import",
-        text: 'Import'
-      },
-      {
-        "extend": "csv",
-        "className": "table--export",
-        text: 'Export'
-      },
-      {
-        "extend": "csv",
-        "className": "table--add",
-        text: 'Add'
+        "className": "btn btn-warning",
       }
     ],
     "initComplete": function(settings, json) {
@@ -241,15 +224,11 @@ function loadTaskQueuePreviewDataTable (columns) {
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerTables = metaTag.attr("controller") === "tables";
-  let isCurrentControllerAdminUsers = metaTag.attr("controller") === "admin_users";
   let isCurrentActionShow = metaTag.attr("action") === "show";
   let isCurrentActionPreview = metaTag.attr("action") === "preview";
 
   if (isCurrentControllerTables && isCurrentActionShow) {
     fetchDataForTable();
-  }
-
-  if (isCurrentControllerAdminUsers) {
   }
 
   if (isCurrentControllerTables && isCurrentActionPreview) {

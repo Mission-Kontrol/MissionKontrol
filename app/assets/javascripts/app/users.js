@@ -1,9 +1,9 @@
-function fetchDataForTable() {
+function fetchDataForUserTable() {
   $.ajax({
     dataType: "json",
     url: "/" + (location.pathname+location.search).substr(1),
     success: function(d) {
-      loadDataTable(d.columns);
+      loadUserDataTable(d.columns);
     }
   });
 }
@@ -34,7 +34,7 @@ function submitTeamChange () {
   })
 }
 
-function loadDataTable (columns) {
+function loadUserDataTable (columns) {
   columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"})
   var searchableTable = $("#target-table-admin-users").DataTable({
     "colReorder": true,
@@ -129,7 +129,7 @@ $(document).ready(function() {
   let isCurrentControllerAdminUsers = metaTag.attr("controller") === "admin_users";
 
   if (isCurrentControllerAdminUsers) {
-    fetchDataForTable();
+    fetchDataForUserTable();
   }
 
   submitStatusChange();

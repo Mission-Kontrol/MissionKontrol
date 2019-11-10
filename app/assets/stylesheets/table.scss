@@ -1,14 +1,14 @@
-.target-table-admin-users {
+.ibox-content.tables-view {
+  background-color: inherit;
+  border: none;
+}
+
+.data-table {
   thead {
     tr {
       background-color: $gray;
       color: $purple;
       height: 37px;
-
-      th:last-child {
-        color: #f3f3f4;
-        width: 50px;
-      }
     }
   }
 
@@ -17,12 +17,27 @@
   }
 }
 
+.target-table-admin-users {
+  thead {
+    tr {
+      th:last-child {
+        color: #f3f3f4;
+        width: 50px;
+      }
+    }
+  }
+}
+
 div.dataTables_wrapper div.dataTables_filter input {
   width: 80% !important;
   margin-left: 0;
 }
 
-#target-table-admin-users_filter {
+div.dataTables_wrapper div.dataTables_filter label {
+  font-size: 0;
+}
+
+#target-table-admin-users_filter, .dataTables_filter {
   label {
     font-size: 0;
     float: left;
@@ -50,11 +65,11 @@ div.dataTables_wrapper div.dataTables_filter input {
 }
 
 .table--info {
-  #target-table-admin-users_paginate {
+  #target-table-admin-users_paginate, .dataTables_paginate {
     display: inline;
   }
 
-  #target-table-admin-users_info {
+  #target-table-admin-users_info, .dataTables_info {
     display: inline;
     line-height: 32px;
     vertical-align: top;
@@ -85,7 +100,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
   background-color: inherit;
 }
 
-#target-table-admin-users_paginate {
+#target-table-admin-users_paginate, .dataTables_paginate {
   .pagination > li > a {
     border: none;
     background-color: inherit;
