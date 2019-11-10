@@ -1,2 +1,3 @@
 toastr.success('Status has been successfully updated.');
-$('#users--status-partial').html("<%= j render("status")%>")
+$('#users--status-partial').html("<%= j render("status")%>");
+$("#target-table-admin-users").DataTable().ajax.reload();

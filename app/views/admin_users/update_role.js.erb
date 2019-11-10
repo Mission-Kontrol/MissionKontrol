@@ -1,2 +1,3 @@
 toastr.success('Team has been successfully updated.');
-$('#users--team-partial').html("<%= j render("teams")%>")
+$('#users--team-partial').html("<%= j render("teams")%>");
+$("#target-table-admin-users").DataTable().ajax.reload();

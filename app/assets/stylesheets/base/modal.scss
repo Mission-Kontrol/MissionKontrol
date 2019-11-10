@@ -17,9 +17,9 @@
     right: 0;
     border-radius: 0;
     border: solid 0.5px #979797;
-    -webkit-animation-name: animatetop;
+    -webkit-animation-name: animate-right;
     -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
+    animation-name: animate-right;
     animation-duration: 0.4s
   }
 
@@ -79,13 +79,13 @@
     }
   }
 
-  @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
-    to {top:0; opacity:1}
+  @-webkit-keyframes animate-right {
+    from {right:-300px; opacity:0} 
+    to {right:0; opacity:1}
   }
 
-  @keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+  @keyframes animate-right {
+    from {right:-300px; opacity:0}
+    to {right:0; opacity:1}
   }
 }
