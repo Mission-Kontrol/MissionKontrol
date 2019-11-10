@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20191107072022) do
     t.string "first_name"
     t.string "last_name"
     t.boolean "ignore_layout_modal", default: false
-    t.string "status"
+    t.boolean "active"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end

@@ -18,10 +18,10 @@
   <div class="row">
     <div class="col-sm-3">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" id="users--team-partial">
           <%= render partial: 'teams' %>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12" id="users--status-partial">
           <%= render partial: 'status' %>
         </div>
       </div>
@@ -36,9 +36,6 @@
   </div>
 </div>
 
-<%= link_to "edit user temp", edit_admin_user_registration_path({id: 1}), remote: true, class: 'popuplink' %>
-
-
 <div id="users--edit-modal">
-</div> 
+</div>
 

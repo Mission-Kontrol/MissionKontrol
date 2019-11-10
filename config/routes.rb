@@ -38,6 +38,11 @@ Rails.application.routes.draw do
   get 'view_builder/view', to: 'view_builder#view_page'
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
+  get 'users/edit', to: 'admin_users#edit'
+  patch 'users/edit', to: 'admin_users#update'
+  post 'admin_users/update_role', to: 'admin_users#update_role'
+  post 'admin_users/update_status', to: 'admin_users#update_status'
+
   resources :view_builder
   resources :activities, only: :create
 

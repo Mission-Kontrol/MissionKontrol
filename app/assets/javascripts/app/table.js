@@ -29,6 +29,7 @@ function fetchDataForRelatedTables() {
 }
 
 function loadDataTable (columns) {
+  columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"})
   var searchableTable = $(".data-table").DataTable({
     "colReorder": true,
     "deferRender": true,
@@ -50,7 +51,6 @@ function loadDataTable (columns) {
         "info": "of _MAX_ results",
       },
     "ajax": "/" + (location.pathname+location.search).substr(1),
-    // "dom": "pBfrti",
     "dom": 'f<"table--info"piB>rt<"clear">',
     "columns": columns,
     "stateSave": true,
@@ -79,9 +79,16 @@ function loadDataTable (columns) {
     "createdRow": function( row, data, dataIndex ) {
       let table = $(this).data("table-name");
       let id = data.id;
-      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      $(row).addClass( "clickable-row" );
-      $(row).attr( "data-href",  previewUrl);
+      let previewUrl = '/users/edit/?id=' + id
+      let editLink = row.lastChild.firstChild
+      console.log(row.closest('.user--edit-link'))
+      // let testingUrl = "/tables/" + table + "/" + id + "?table=" + table;
+      // $(row).addClass( "clickable-row" );
+      // console.log(previewUrl)
+      // console.log(testingUrl)
+      // console.log(id)
+      $(editLink).attr( "href",  previewUrl);
+      // $(row).attr("data-remote", true);
     },
     "buttons": [
       {

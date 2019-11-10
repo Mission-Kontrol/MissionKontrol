@@ -1,14 +1,14 @@
 <div class="users--edit-modal hide">
   <div class="modal--container">
     <div class="modal--close-btn">
-        x
+        <img src="/assets/images/icons/close.png">
       </div>
     <div class="modal--content-container">
       <div class="modal--header">
         <div class="row">
           <div class="col-sm-12">
-            <h3><%= @admin_user.name %></h3>
-            <h5><%= @admin_user.email %></h5>
+            <h3><%= @user.name %></h3>
+            <h5><%= @user.email %></h5>
           </div>
         </div>
       </div>
@@ -27,6 +27,7 @@
             <div class="user--activate-toggle">
               <label class="switch">
                 <div class='toggle'>
+                  <%= check_box_tag 'active', @user.active, @user.active, {class: 'form-control toggle-state', id: 'user--edit-status', "data-user" => @user.id } %>
                   <div class='toggle-inner'>
                     <div class='indicator'></div>
                   </div>
@@ -43,7 +44,9 @@
           </div>
           <div class="col-sm-4">
             <div class="user--team-dropdown">
-              dropdown
+              <div class="form-control dropdown">
+                <%= select_tag "dropdown", options_from_collection_for_select(@roles, 'id', 'name', @role.id), {class: "user--team-select", "data-user" => @user.id} %>
+              </div>
             </div>
           </div>
         </div>

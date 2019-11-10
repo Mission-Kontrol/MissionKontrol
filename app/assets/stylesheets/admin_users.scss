@@ -26,3 +26,49 @@
     font-weight: 500;
   }
 }
+
+.user--team-dropdown {
+  .dropdown {
+    border: none;
+
+    select {
+      border: none;
+      border-bottom: solid 0.5px #979797;
+      width: 100px;
+      padding-bottom: 3px;
+      background: url(/assets/images/icons/triangle.svg) no-repeat;
+      background-position: 85px 8px;
+    }
+
+    #dropdown {
+      -webkit-appearance: none;
+      /* for webkit browsers */
+      -moz-appearance: none;
+      /* for firefox */
+      appearance: none;
+      /* for modern browsers */
+    }
+
+    #dropdown::-ms-expand {
+      display: none;
+    }
+
+    #dropdown:focus:invalid {
+      border-color: #FD6347;
+    }
+
+    #dropdown:required:valid {
+      border-color: #006400;
+    }
+  }
+}
+
+.user--edit-link {
+  float: right;
+  padding-right: 20px;
+
+  img {
+    height: 14px;
+    width: 14px;
+  }
+}

@@ -4,16 +4,11 @@
       background-color: $gray;
       color: $purple;
       height: 37px;
-      // th {
-      //   padding-left: 40px;
-      //   vertical-align: middle;
-      //   width: 15% !important;
-      // }
 
-      // th:first-child {
-      //   border-right: solid 1px $light-purple;
-      //   width: 20% !important;
-      // }
+      th:last-child {
+        color: #f3f3f4;
+        width: 50px;
+      }
     }
   }
 
@@ -39,6 +34,18 @@ div.dataTables_wrapper div.dataTables_filter input {
     border-radius: 2px;
     box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
+    background-position-x: left;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-image: url("/assets/images/icons/magnifying-glass.png");
+    background-size: auto;
+    background-origin: content-box;
+    background-clip: border-box;
+  }
+
+  input:focus {
+    background-image: none;
   }
 }
 

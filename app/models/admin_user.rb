@@ -13,6 +13,9 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+
   include SensitiveData
 
   def twilio_setup_complete?

@@ -3,7 +3,7 @@
 class AdminUsersController < ApplicationController
   layout 'dashboard'
 
-  STATUSES = ['active', 'inactive', 'suspended'].freeze
+  STATUSES = ['active', 'inactive'].freeze
 
   before_action :load_available_tables,
                 :load_task_queues,
@@ -11,7 +11,6 @@ class AdminUsersController < ApplicationController
 
   def index
     @users = AdminUser.all
-    @headers = field_names
     @admin_user_roles = admin_user_roles
     @admin_user_statuses = admin_user_statuses
 
@@ -26,11 +25,35 @@ class AdminUsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = AdminUser.find(params[:id])
+    @role = @user.roles.first
+    @roles = Role.all
+  end
+
+  def update_role
+    @user = AdminUser.find(params[:id])
+    @role = Role.find(params[:role])
+
+    @user.roles.clear
+    @user.roles << @role
+    @admin_user_roles = admin_user_roles
+  end
+
+  def update_status
+    @user = AdminUser.find(params[:id])
+    new_status = @user.active ? false : true
+
+    @user.update_attribute(:active, new_status)
+    @user.save!
+
+    @admin_user_statuses = admin_user_statuses
+  end
+
   private
 
   def render_show_html
-    @headers = field_names
-    @roles = Role.all
+    @headers = field_names << 'actions'
     render :index
   end
 
@@ -55,7 +78,7 @@ class AdminUsersController < ApplicationController
   end
 
   def field_names
-    ['email', 'first_name', 'last_name', 'status']
+    ['email', 'first_name', 'last_name', 'active']
   end
 
   def load_roles
@@ -73,12 +96,9 @@ class AdminUsersController < ApplicationController
   end
 
   def admin_user_statuses
-    admin_user_statuses = {}
-    STATUSES.each do |status|
-      count = AdminUser.where(status: status).count
-      admin_user_statuses[status] = count
-    end
-
-    admin_user_statuses
+    {
+      active: AdminUser.active.count,
+      inactive: AdminUser.inactive.count
+    }
   end
 end
