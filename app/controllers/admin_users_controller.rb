@@ -9,6 +9,22 @@ class AdminUsersController < ApplicationController
                 :load_task_queues,
                 :check_target_db_connection, only: [:index]
 
+  def new
+    @user = AdminUser.new
+    @roles = Role.all
+  end
+
+  def create_new
+    @user = AdminUser.create(user_params)
+    @user.password_confirmation = user_params[:password]
+    @role = Role.find(params[:team])
+    @user.roles << @role
+
+    @user.save!
+    @admin_user_roles = admin_user_roles
+    @admin_user_statuses = admin_user_statuses
+  end
+
   def index
     @users = AdminUser.all
     @admin_user_roles = admin_user_roles
@@ -51,6 +67,16 @@ class AdminUsersController < ApplicationController
   end
 
   private
+
+  def user_params
+    params.require(:admin_user).permit(
+      :first_name,
+      :last_name,
+      :email,
+      :active,
+      :password
+    )
+  end
 
   def render_show_html
     @headers = field_names << 'actions'

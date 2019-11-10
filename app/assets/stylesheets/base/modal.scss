@@ -1,4 +1,4 @@
-.users--edit-modal {
+.users--edit-modal, .users--new-modal {
   position: fixed;
   left: 0;
   top: 0;
@@ -65,18 +65,34 @@
     padding-right: 10px;
   }
 
-  .user--team-dropdown {
+  .user--team-dropdown, .user--password-field {
     float: right;
+
+    #admin_user_password {
+      width: 100%;
+    }
   }
 
-  .user--delete-btn {
+  .user--delete-btn, .user--save-btn {
     float: right;
 
-    .btn--delete-user {
+    .btn--delete-user, .btn--save-user {
       width: 137px;
       border-radius: 5px;
+    }
+
+    .btn--delete-user {
       background-color: #c25959;
     }
+  }
+
+  .user--modal-input {
+    cursor: auto;
+    background: none;
+    border: none;
+    border-bottom: 1px solid $gray;
+    width: 30%;
+    font-weight: normal;
   }
 
   @-webkit-keyframes animate-right {

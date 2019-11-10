@@ -99,18 +99,17 @@ function loadUserDataTable (columns) {
     "buttons": [
       {
         "extend": "csv",
-        "className": "table--import",
-        text: 'Import'
-      },
-      {
-        "extend": "csv",
         "className": "table--export",
         text: 'Export'
       },
       {
-        "extend": "csv",
-        "className": "table--add",
-        text: 'Add'
+        text: 'Add',
+        className: 'table--add',
+        action: function () {
+          $.ajax({
+            "url": "/admin_users/new"
+          });
+        }
       }
     ],
     "initComplete": function(settings, json) {
@@ -124,6 +123,28 @@ function loadUserDataTable (columns) {
   });
 }
 
+function saveNewUser () {
+  // $('#some-form').submit(function(e) {
+  //   e.preventDefault();    
+  
+  //   $('#more-inputs input').each(function() {
+  //     var el = $(this);
+  //     $('<input type="hidden" name="' + el.attr('name') + '" />')
+  //         .val(el.val())
+  //         .appendTo('#some-form');
+  //   });
+  
+  //   $.get('http://yoururl.com', $('#some-form').serialize(), function (data) {
+  //       alert('handle your data here: ' + data);
+  //   });
+  
+  // });
+  // $('body').on('submit', '#new-user-form', function (evt) {
+  //   evt.preventDefault
+  //   debugger
+  // })
+}
+
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerAdminUsers = metaTag.attr("controller") === "admin_users";
@@ -134,4 +155,5 @@ $(document).ready(function() {
 
   submitStatusChange();
   submitTeamChange();
+  saveNewUser();
 })

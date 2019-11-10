@@ -92,6 +92,8 @@ div.dataTables_wrapper div.dataTables_filter label {
   .table--add {
     background: url(/assets/images/icons/plus.png) no-repeat center left;
     padding: 6px 20px;
+    border: none;
+    background-color: inherit;
   }
 }
 

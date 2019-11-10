@@ -39,15 +39,15 @@ Rails.application.routes.draw do
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
   get 'users/edit', to: 'admin_users#edit'
-  patch 'users/edit', to: 'admin_users#update'
   post 'admin_users/update_role', to: 'admin_users#update_role'
   post 'admin_users/update_status', to: 'admin_users#update_status'
+  post 'admin_users/create_new', to: 'admin_users#create_new'
 
   resources :view_builder
   resources :activities, only: :create
 
   resources :organisation_settings, only: %i[edit update]
-  resources :admin_users, only: :index
+  resources :admin_users, only: %i[index new]
   resources :permissions, only: :index
 
   post 'permissions/add_to_role', to: 'permissions#add_to_role', as: 'add_to_role'

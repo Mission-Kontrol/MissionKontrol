@@ -40,7 +40,7 @@
       background-position: 85px 8px;
     }
 
-    #dropdown {
+    #dropdown, #team {
       -webkit-appearance: none;
       /* for webkit browsers */
       -moz-appearance: none;
@@ -49,15 +49,15 @@
       /* for modern browsers */
     }
 
-    #dropdown::-ms-expand {
+    #dropdown::-ms-expand, #team::-ms-expand {
       display: none;
     }
 
-    #dropdown:focus:invalid {
+    #dropdown:focus:invalid, #team:focus:invalid {
       border-color: #FD6347;
     }
 
-    #dropdown:required:valid {
+    #dropdown:required:valid, #team:required:valid {
       border-color: #006400;
     }
   }

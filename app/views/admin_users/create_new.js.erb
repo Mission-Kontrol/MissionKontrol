@@ -1,0 +1,6 @@
+toastr.success('New user has been successfully created.');
+$('#users--team-partial').html("<%= j render("teams")%>");
+$('#users--status-partial').html("<%= j render("status")%>");
+$("#target-table-admin-users").DataTable().ajax.reload();
+$('.users--new-modal').removeClass('show');
+$('.users--new-modal').addClass('hide');
