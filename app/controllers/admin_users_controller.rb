@@ -94,7 +94,7 @@ class AdminUsersController < ApplicationController
     end
 
     render json: {
-      data: table_data(search, columns),
+      data: table_data(search),
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: AdminUser.all.count,
@@ -127,7 +127,7 @@ class AdminUsersController < ApplicationController
     }
   end
 
-  def table_data(search, columns)
+  def table_data(search)
     table_data = []
 
     result = []

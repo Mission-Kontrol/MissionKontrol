@@ -101,7 +101,7 @@ describe PermissionsController, type: :controller, js: true do
         it 'does not remove view permission for the table from the role' do
           subject
 
-          expect(@user.roles.first.permissions).to include(@view_permission)  
+          expect(@user.roles.first.permissions).to include(@view_permission)
         end
       end
     end

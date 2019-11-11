@@ -17,7 +17,6 @@ class RolesController < ApplicationController
       @role.update_attribute(:export_limit, role_params[:limit])
     end
 
-
     @role.save!
   end
 
