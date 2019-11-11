@@ -1,4 +1,4 @@
-.users--edit-modal, .users--new-modal {
+.users--edit-modal, .users--new-modal, .roles--edit-modal {
   position: fixed;
   left: 0;
   top: 0;
@@ -60,7 +60,7 @@
     }
   }
 
-  .user--activate-toggle {
+  .user--activate-toggle, .role--setting-toggle {
     float: right;
     padding-right: 10px;
   }
@@ -86,7 +86,7 @@
     }
   }
 
-  .user--modal-input {
+  .user--modal-input, .role--modal-input {
     cursor: auto;
     background: none;
     border: none;
@@ -95,8 +95,14 @@
     font-weight: normal;
   }
 
+  .role--modal-input {
+    width: 80%;
+    text-align: right;
+    padding-right: 0px;
+  }
+
   @-webkit-keyframes animate-right {
-    from {right:-300px; opacity:0} 
+    from {right:-300px; opacity:0}
     to {right:0; opacity:1}
   }
 

@@ -14,4 +14,15 @@ class Role < ApplicationRecord
             allow_nil: true
 
   scopify
+
+  def setting(setting_name)
+    case setting_name
+    when 'administrator'
+      administrator? ? false : true
+    when 'editor'
+      editor? ? false : true
+    when 'export'
+      export? ? false : true
+    end
+  end
 end

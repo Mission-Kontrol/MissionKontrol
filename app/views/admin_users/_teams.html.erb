@@ -5,10 +5,10 @@
   </div>
   <div class="users-teams--table">
     <table>
-      <% @admin_user_roles.each do |role, users_count| %>
+      <% @admin_user_roles.sort.each do |role, users_count| %>
         <tr>
           <td class="users-teams--table-data">
-            <%= role %>
+            <%= link_to role, edit_roles_path(name: role), remote: true %>
           </td>
           <td class="float-right">
             <%= pluralize users_count, "user" %>

@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   post 'permissions/enable_all', to: 'permissions#enable_all'
   post 'permissions/disable_all', to: 'permissions#disable_all'
 
-  resource :roles
+  resource :roles, only: %i[edit update]
 
   get 'dashboard', to: 'dashboard#show'
   post 'add-sql-filter', to: 'work_lists#add_sql_filter'
