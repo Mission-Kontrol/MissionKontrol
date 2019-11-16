@@ -5,10 +5,5 @@ FactoryBot.define do
     email { FFaker::Internet.email }
     password { 'password' }
     password_confirmation { 'password' }
-
-    trait :with_license do
-      activation_id { '1559143878' }
-      license_key { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
-    end
   end
 end

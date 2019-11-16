@@ -10,6 +10,12 @@ class VerifyLicenseKeyService
     def verify(license_key, type)
       activation = activate(license_key, type)
       validation = validate(license_key, activation, type)
+
+      if validation
+        cache_key = "license-#{license_key}"
+        Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key }
+      end
+
       return license_key, activation if activation && validation
 
       [nil, nil]

@@ -1,0 +1,24 @@
+<div class="panel-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <table id="target-table-roles" class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @roles.each do |role| %>
+            <tr>
+              <td><%= role.id %></td>
+              <td><%= role.name %></td>
+              <td>action buttons</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

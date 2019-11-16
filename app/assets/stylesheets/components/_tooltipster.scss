@@ -1,0 +1,28 @@
+.tooltip_templates {
+  position: relative;
+  opacity: 1;
+}
+
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-shadow-customized {
+  .tooltipster-content {
+    width: 125px;
+    height: 64px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-size: 14px;
+  }
+
+  #tooltip_content {
+    vertical-align: middle;
+    padding-top: 6px;
+
+    a {
+      color: $link-gray;
+
+      &:hover {
+        color: $purple;
+        font-weight: bold;
+      }
+    }
+  }
+}

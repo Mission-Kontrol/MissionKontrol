@@ -1,0 +1,19 @@
+<div class="users-status--container">
+  <div class="users-status--header">
+    <h5>STATUS</h5>
+  </div>
+  <div class="users-status--table">
+    <table>
+      <% @admin_user_statuses.each do |status, users_count| %>
+        <tr>
+          <td class="users-status--table-data">
+            <%= status.capitalize %>
+          </td>
+          <td class="float-right">
+            <%= pluralize users_count, "user" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

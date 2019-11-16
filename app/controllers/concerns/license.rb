@@ -11,11 +11,11 @@ module License
   end
 
   def validate_trial_license
-    VerifyLicenseKeyService.validate(current_admin_user.license_key, current_admin_user.activation_id, 'trial')
+    VerifyLicenseKeyService.validate(current_organisation.license_key, current_organisation.activation_id, 'trial')
   end
 
   def validate_full_license
-    VerifyLicenseKeyService.validate(current_admin_user.license_key, current_admin_user.activation_id, 'full')
+    VerifyLicenseKeyService.validate(current_organisation.license_key, current_organisation.activation_id, 'full')
   end
 
   def fetch_license_cache(cache_key)
@@ -27,13 +27,13 @@ module License
   end
 
   def license_valid?
-    return false unless current_admin_user && !current_admin_user.license_key.blank?
+    return false unless current_organisation&.license_key_present?
 
-    cache_key = "license-#{current_admin_user.license_key}"
+    cache_key = "license-#{current_organisation.license_key}"
 
     if fetch_license_cache(cache_key)
       true
-    elsif validate_trial_license || validate_full_license
+    elsif validate_trial_license || validate_full_license || Rails.env.development?
       cache_license(cache_key)
       true
     else

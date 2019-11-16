@@ -20,20 +20,12 @@ class DashboardController < ApplicationController
     license_key, activation_id = verify_license!(params[:license_key], 'trial')
     full_license_key, full_activation_id = verify_license!(params[:license_key], 'full') unless license_key && activation_id
 
-    if current_admin_user
-      if license_key && activation_id
-        verify_license_as_trial(license_key, activation_id)
-        redirect_to dashboard_path
-      elsif full_license_key && full_activation_id
-        verify_license_as_full(full_license_key, full_activation_id)
-        redirect_to dashboard_path
-      else
-        render 'verify_license'
-      end
-    elsif license_key && activation_id
-      redirect_to controller: 'admin_user_registrations', action: 'new', license_key: license_key, activation_id: activation_id
+    if license_key && activation_id
+      save_license(license_key: license_key, activation_id: activation_id, full_license: false)
+      redirect_to new_admin_user_registration_path
     elsif full_license_key && full_activation_id
-      redirect_to controller: 'admin_user_registrations', action: 'new', license_key: license_key, activation_id: activation_id, full_license: true
+      save_license(license_key: license_key, activation_id: activation_id, full_license: false)
+      redirect_to admin_user_registration_path
     else
       render 'verify_license'
     end
@@ -41,17 +33,12 @@ class DashboardController < ApplicationController
 
   private
 
-  def verify_license_as_trial(license_key, activation_id)
-    current_admin_user.license_key = license_key
-    current_admin_user.activation_id = activation_id
-    current_admin_user.save
-  end
-
-  def verify_license_as_full(full_license_key, full_activation_id)
-    current_admin_user.license_key = full_license_key
-    current_admin_user.activation_id = full_activation_id
-    current_admin_user.full_license = true
-    current_admin_user.save
+  def save_license(license_key:, activation_id:, full_license:)
+    OrganisationSetting.create!(
+      license_key: license_key,
+      activation_id: activation_id,
+      full_license: full_license
+    )
   end
 
   def load_admin_db_config

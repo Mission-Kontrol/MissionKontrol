@@ -1,0 +1,69 @@
+<div class="users--edit-modal hide">
+  <div class="modal--container">
+    <div class="modal--close-btn">
+        <img src="/assets/images/icons/close.png">
+      </div>
+    <div class="modal--content-container">
+      <div class="modal--header">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3><%= @user.name %></h3>
+            <h5><%= @user.email %></h5>
+          </div>
+        </div>
+      </div>
+      <div class="modal--content">
+        <div class="row">
+          <div class="col-sm-12">
+            <h5>ACCOUNT</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-8">
+            <p>Active</p>
+            <h6>Enable/Disable user account without deleting it</h6>
+          </div>
+          <div class="col-sm-4">
+            <div class="user--activate-toggle">
+              <label class="switch">
+                <div class='toggle'>
+                  <%= check_box_tag 'active', @user.active, @user.active, {class: 'form-control toggle-state', id: 'user--edit-status', "data-user" => @user.id } %>
+                  <div class='toggle-inner'>
+                    <div class='indicator'></div>
+                  </div>
+                  <div class='active-bg'></div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-8">
+            <p>Team</p>
+            <h6>Set user's team, this defines permissions</h6>
+          </div>
+          <div class="col-sm-4">
+            <div class="user--team-dropdown">
+              <div class="form-control dropdown">
+                <%= select_tag "dropdown", options_from_collection_for_select(@roles, 'id', 'name', @role.id), {class: "user--team-select", "data-user" => @user.id} %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <h5>PASSWORD</h5>
+            <p>Should we allow admins to set a user’s password here or build settings that would allow them to easily set an email server?</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="user--delete-btn">
+              <button class="btn btn-danger btn--delete-user">Delete user</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

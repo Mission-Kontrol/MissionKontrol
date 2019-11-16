@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190807161323) do
+ActiveRecord::Schema.define(version: 20191111185000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,13 +40,18 @@ ActiveRecord::Schema.define(version: 20190807161323) do
     t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
-    t.string "company_name"
-    t.string "license_key"
-    t.string "activation_id"
-    t.boolean "full_license", default: false
     t.boolean "ignore_layout_modal", default: false
+    t.boolean "active"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "admin_users_roles", id: false, force: :cascade do |t|
+    t.bigint "admin_user_id"
+    t.bigint "role_id"
+    t.index ["admin_user_id", "role_id"], name: "index_admin_users_roles_on_admin_user_id_and_role_id"
+    t.index ["admin_user_id"], name: "index_admin_users_roles_on_admin_user_id"
+    t.index ["role_id"], name: "index_admin_users_roles_on_role_id"
   end
 
   create_table "data_table_states", force: :cascade do |t|
@@ -54,6 +59,45 @@ ActiveRecord::Schema.define(version: 20190807161323) do
     t.jsonb "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "organisation_settings", force: :cascade do |t|
+    t.string "license_key"
+    t.string "activation_id"
+    t.boolean "full_license", default: false
+    t.string "company_name"
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.string "name"
+    t.string "subject_class"
+    t.integer "subject_id"
+    t.string "action"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "administrator"
+    t.boolean "editor"
+    t.boolean "export"
+    t.integer "export_limit"
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
+  end
+
+  create_table "roles_permissions", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "permission_id"
+    t.index ["permission_id"], name: "index_roles_permissions_on_permission_id"
+    t.index ["role_id", "permission_id"], name: "index_roles_permissions_on_role_id_and_permission_id"
+    t.index ["role_id"], name: "index_roles_permissions_on_role_id"
   end
 
   create_table "task_queue_outcomes", force: :cascade do |t|

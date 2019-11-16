@@ -8,13 +8,9 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   protected
 
   def update_resource(resource, params)
-    if params["password"]&.present?
-      update_target_db_connection
-      return super
-    end
+    return super if params["password"]&.present?
 
     resource.update_without_password(params.except("current_password"))
-    update_target_db_connection
   end
 
   def permitted_admin_db_params
@@ -42,12 +38,9 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   def configure_permitted_parameters
     db_params = permitted_admin_db_params + permitted_target_db_params
     keys = %w[
-      license_key
-      activation_id
-      full_license
       first_name
       last_name
-      company_name
+      status
       twilio_caller_id
       twilio_auth_token
       twilio_account_sid
@@ -62,20 +55,15 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
     dashboard_path
   end
 
-  def update_target_db_connection
-    ActiveRecord::Base.establish_connection(
-      adapter: adapter_for_db(current_admin_user.target_database_type),
-      host: current_admin_user.target_database_host,
-      username: current_admin_user.target_database_username,
-      password: current_admin_user.target_database_password,
-      database: current_admin_user.target_database_name,
-      port: current_admin_user.target_database_port
-    ).connection
-  end
-
   private
 
   def check_admin_user_exists
-    redirect_to new_admin_user_session_path if AdminUser.any?
+    redirect_path = if OrganisationSetting.any? && AdminUser.any?
+                      new_admin_user_session_path
+                    elsif OrganisationSetting.none?
+                      license_path
+                    end
+
+    redirect_to redirect_path if redirect_path.present?
   end
 end

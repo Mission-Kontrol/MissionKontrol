@@ -42,7 +42,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (8.0.0)
     ast (2.4.0)
-    autoprefixer-rails (9.5.1.1)
+    autoprefixer-rails (9.7.1)
       execjs
     bcrypt (3.1.12)
     bindex (0.7.0)
@@ -51,6 +51,7 @@ GEM
       sassc (>= 2.0.0)
     builder (3.2.3)
     byebug (11.0.1)
+    cancancan (3.0.1)
     capybara (2.17.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -82,6 +83,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.4)
+    database_cleaner (1.7.0)
     devise (4.6.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -228,6 +230,7 @@ GEM
     responders (2.4.1)
       actionpack (>= 4.2.0, < 6.0)
       railties (>= 4.2.0, < 6.0)
+    rolify (5.2.0)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -282,9 +285,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sassc (2.0.1)
+    sassc (2.2.1)
       ffi (~> 1.9)
-      rake
     selenium-webdriver (3.142.3)
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
@@ -353,13 +355,14 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap-sass (>= 3.4.1)
-  byebug
+  cancancan
   capybara (~> 2.17.0)
   capybara-screenshot (~> 1.0, >= 1.0.22)
   capybara-selenium
   clockwork (~> 2.0, >= 2.0.3)
   codacy-coverage
   coffee-rails
+  database_cleaner
   devise (>= 4.6.0)
   dotenv-rails
   factory_bot_rails (~> 4.8.2)
@@ -379,6 +382,7 @@ DEPENDENCIES
   rails-controller-testing
   rails-ujs (~> 0.1.0)
   recursive-open-struct (= 1.1.0)
+  rolify
   rspec-activemodel-mocks (~> 1.0.2)
   rspec-collection_matchers
   rspec-its (~> 1.2.0)

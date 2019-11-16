@@ -1,0 +1,16 @@
+<div class="panel-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Users</h3>
+      <table id="target-table-admin-users" class="target-table-admin-users data-table table" data-table-name='admin-users'>
+        <thead>
+          <tr>
+            <% @headers.each do |header|%>
+              <th class='column-<%= header %>'><%= header.humanize %></th>
+            <% end %>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>

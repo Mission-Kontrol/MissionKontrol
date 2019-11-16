@@ -2075,7 +2075,6 @@ a.forum-item-title:hover {
 
   .panel-body {
     background: #fff;
-    border: 1px solid $border-color;
     border-radius: 2px;
     padding: 20px;
     position: relative;
@@ -2084,8 +2083,6 @@ a.forum-item-title:hover {
   .nav-tabs > li.active > a,
   .nav-tabs > li.active > a:hover,
   .nav-tabs > li.active > a:focus {
-    border: 1px solid $border-color;
-    border-bottom-color: transparent;
     background-color: #fff;
   }
 
@@ -2099,8 +2096,7 @@ a.forum-item-title:hover {
   }
 
   .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    border: 1px solid $border-color;
-    border-bottom-color: transparent;
+    border: transparent;
   }
 
   .nav-tabs {

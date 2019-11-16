@@ -1,0 +1,113 @@
+.users--edit-modal, .users--new-modal, .roles--edit-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5000;
+
+  .modal--container {
+    position: absolute;
+    background-color: white;
+    margin: auto;
+    width: 35%;
+    height: 100%;
+    right: 0;
+    border-radius: 0;
+    border: solid 0.5px #979797;
+    -webkit-animation-name: animate-right;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animate-right;
+    animation-duration: 0.4s
+  }
+
+  .modal--close-btn {
+    padding: 14px;
+    float: right;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .modal--content-container {
+    padding: 60px 40px;
+  }
+
+  .modal--header {
+    h3 {
+      font-weight: 500;
+    }
+  }
+
+  .modal--content {
+    padding-top: 20px;
+
+    &:first-child {
+      margin-bottom: -20px;
+    }
+
+    .row {
+      margin: 20px -15px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    h6 {
+      margin: 0;
+    }
+  }
+
+  .user--activate-toggle, .role--setting-toggle {
+    float: right;
+    padding-right: 10px;
+  }
+
+  .user--team-dropdown, .user--password-field {
+    float: right;
+
+    #admin_user_password {
+      width: 100%;
+    }
+  }
+
+  .user--delete-btn, .user--save-btn {
+    float: right;
+
+    .btn--delete-user, .btn--save-user {
+      width: 137px;
+      border-radius: 5px;
+    }
+
+    .btn--delete-user {
+      background-color: #c25959;
+    }
+  }
+
+  .user--modal-input, .role--modal-input {
+    cursor: auto;
+    background: none;
+    border: none;
+    border-bottom: 1px solid $gray;
+    width: 30%;
+    font-weight: normal;
+  }
+
+  .role--modal-input {
+    width: 80%;
+    text-align: right;
+    padding-right: 0px;
+  }
+
+  @-webkit-keyframes animate-right {
+    from {right:-300px; opacity:0}
+    to {right:0; opacity:1}
+  }
+
+  @keyframes animate-right {
+    from {right:-300px; opacity:0}
+    to {right:0; opacity:1}
+  }
+}

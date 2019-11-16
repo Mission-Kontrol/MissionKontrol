@@ -1,3 +1,116 @@
+.ibox-content.tables-view {
+  background-color: inherit;
+  border: none;
+}
+
+.data-table {
+  thead {
+    tr {
+      background-color: $gray;
+      color: $purple;
+      height: 37px;
+    }
+  }
+
+  tbody {
+    background: rgba(255, 255, 255, .5);
+  }
+}
+
+.target-table-admin-users {
+  thead {
+    tr {
+      th:last-child {
+        color: #f3f3f4;
+        width: 50px;
+      }
+    }
+  }
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+  width: 80% !important;
+  margin-left: 0;
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+  font-size: 0;
+}
+
+#target-table-admin-users_filter, .dataTables_filter {
+  label {
+    font-size: 0;
+    float: left;
+    width: 100%;
+  }
+
+  input {
+    height: 30px;
+    border-radius: 2px;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+    background-color: #ffffff;
+    background-position-x: left;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-image: url("/assets/images/icons/magnifying-glass.png");
+    background-size: auto;
+    background-origin: content-box;
+    background-clip: border-box;
+  }
+
+  input:focus {
+    background-image: none;
+  }
+}
+
+.table--info {
+  #target-table-admin-users_paginate, .dataTables_paginate {
+    display: inline;
+  }
+
+  #target-table-admin-users_info, .dataTables_info {
+    display: inline;
+    line-height: 32px;
+    vertical-align: top;
+  }
+
+  .dt-buttons.btn-group {
+    float: right;
+  }
+
+  .table--import {
+    background: url(/assets/images/icons/import.png) no-repeat center left;
+    padding: 6px 20px;
+  }
+
+  .table--export {
+    background: url(/assets/images/icons/export.png) no-repeat center left;
+    padding: 6px 20px;
+  }
+
+  .table--add {
+    background: url(/assets/images/icons/plus.png) no-repeat center left;
+    padding: 6px 20px;
+    border: none;
+    background-color: inherit;
+  }
+}
+
+div.dataTables_wrapper div.dt-buttons .buttons-csv {
+  border: none;
+  background-color: inherit;
+}
+
+#target-table-admin-users_paginate, .dataTables_paginate {
+  .pagination > li > a {
+    border: none;
+    background-color: inherit;
+    color: $purple;
+    font-weight: 500;
+  }
+}
+
 .header-container1-content {
   font-size: 24px;
   color: #726d73;

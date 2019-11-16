@@ -1,0 +1,94 @@
+.data-table-permissions {
+  thead {
+    tr {
+      background-color: $gray;
+      color: $purple;
+      height: 37px;
+      th {
+        padding-left: 40px;
+        vertical-align: middle;
+        width: 15% !important;
+      }
+
+      th:first-child {
+        border-right: solid 1px $light-purple;
+        width: 20% !important;
+      }
+    }
+    // .sorting_asc {
+    //   background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
+    // }
+    // .sorting_desc {
+    //   background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
+    // }
+    // .sorting {
+    //   background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
+    // }
+  }
+
+  tbody {
+    background: rgba(255, 255, 255, .5);
+
+    tr {
+      opacity: 1;
+      height: 42px;
+      td {
+        vertical-align: middle;
+        padding-left: 40px;
+        font-size: 12px;
+        color: $purple;
+        font-weight: 500;
+      }
+
+      td:first-child {
+        border-right: solid 1px $light-purple;
+        cursor: pointer;
+      }
+    }
+  }
+
+  #permissions--nested-table {
+    width: 100%;
+    margin-left: -1px;
+
+    tbody {
+      background: none;
+
+      tr {
+        td {
+          vertical-align: middle;
+          padding-left: 4%;
+          font-size: 12px;
+          color: $purple;
+        }
+
+        td:first-child {
+          text-align: right;
+          border-right: solid 1px $light-purple;
+          padding-right: 2px;
+          width: 24%;
+
+          p {
+            padding-right: 9px;
+            font-size: 12px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: $purple;
+            vertical-align: middle;
+          }
+        }
+
+        td:last-child {
+          padding-left: 4.25%;
+        }
+      }
+    }
+  }
+
+  .permissions--nested-table-data {
+    width: 20%;
+  }
+}

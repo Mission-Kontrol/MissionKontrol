@@ -28,6 +28,7 @@
 @import "base/sidebar";
 @import "base/base";
 @import "base/pages";
+@import "base/modal";
 // @import "base/chat";
 // @import "base/metismenu";
 @import "base/spinners";
@@ -36,7 +37,11 @@
 
 @import "view_builder";
 @import "views";
+@import "admin_users";
+@import 'table';
 
+@import 'table_permissions';
+@import 'components/tooltipster';
 // Landing page
 // @import "base/landing";
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AdminUser < ApplicationRecord
+  rolify
+
   DATABASE_TYPES = [
     ['PostgreSQL', 'postgresql'],
     ['MySQL', 'mysql2']
@@ -11,6 +13,9 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+
   include SensitiveData
 
   def twilio_setup_complete?
@@ -20,8 +25,17 @@ class AdminUser < ApplicationRecord
       !twilio_caller_id.blank?
   end
 
+  def permission?(action, table)
+    ability = Ability.new(self)
+    ability.can? self, action, table
+  end
+
   def role
     "admin"
+  end
+
+  def name
+    first_name + ' ' + last_name
   end
 
   def trial_license_key_not_activated?

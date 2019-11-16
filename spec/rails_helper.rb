@@ -7,6 +7,7 @@ require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is in production mode!') if Rails.env.production?
 require 'rspec/rails'
+require 'capybara'
 require 'selenium/webdriver'
 require 'capybara-screenshot/rspec'
 
@@ -22,6 +23,23 @@ RSpec.configure do |config|
   ]
 
   config.use_transactional_fixtures = false
+  # config.before(:each) do
+  #   DatabaseCleaner.strategy = :truncation, { only: %w[admin_users organisation_settings] }
+  # end
+
+  # config.before(:each) do
+  #   DatabaseCleaner.start
+  # end
+
+  config.after(:each) do
+    AdminUser.all.each(&:delete)
+    OrganisationSetting.all.each(&:delete)
+    Role.all.each(&:delete)
+    Permission.all.each(&:delete)
+    ViewBuilder.all.each(&:delete)
+    # DatabaseCleaner.clean
+  end
+
   config.infer_spec_type_from_file_location!
   config.default_formatter = 'doc' if config.files_to_run.one?
 

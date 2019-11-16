@@ -38,8 +38,24 @@ Rails.application.routes.draw do
   get 'view_builder/view', to: 'view_builder#view_page'
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
+  get 'users/edit', to: 'admin_users#edit'
+  post 'admin_users/update_role', to: 'admin_users#update_role'
+  post 'admin_users/update_status', to: 'admin_users#update_status'
+  post 'admin_users/create_new', to: 'admin_users#create_new'
+
   resources :view_builder
   resources :activities, only: :create
+
+  resources :organisation_settings, only: %i[edit update]
+  resources :admin_users, only: %i[index new]
+  resources :permissions, only: :index
+
+  post 'permissions/add_to_role', to: 'permissions#add_to_role', as: 'add_to_role'
+  post 'permissions/remove_from_role', to: 'permissions#remove_from_role'
+  post 'permissions/enable_all', to: 'permissions#enable_all'
+  post 'permissions/disable_all', to: 'permissions#disable_all'
+
+  resource :roles, only: %i[edit update]
 
   get 'dashboard', to: 'dashboard#show'
   post 'add-sql-filter', to: 'work_lists#add_sql_filter'
