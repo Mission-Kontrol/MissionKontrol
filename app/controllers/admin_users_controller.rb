@@ -54,8 +54,10 @@ class AdminUsersController < ApplicationController
     @user = AdminUser.find(params[:id])
     @role = Role.find(params[:role])
 
-    @user.roles.clear
-    @user.roles << @role
+    ActiveRecord::Base.transaction do
+      @user.roles.clear
+      @user.roles << @role
+    end
     @admin_user_roles = admin_user_roles
   end
 

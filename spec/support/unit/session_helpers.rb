@@ -15,6 +15,11 @@ module Unit
       add_permission_to_role(action, table)
     end
 
+    def create_user_with_role(role)
+      create_user
+      @user.roles << role
+    end
+
     def add_license_key
       cache_key = "license-#{OrganisationSetting.last.license_key}"
       Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key }
@@ -32,7 +37,7 @@ module Unit
     end
 
     def add_role_to_user(role)
-      @role = create(:role, role.to_sym)
+      @role = create(:role, role.to_sym, administrator: true)
       @user.roles << @role
     end
 

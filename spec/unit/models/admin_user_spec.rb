@@ -62,29 +62,29 @@ end
 describe AdminUser do
   let(:an_admin_user) { described_class.new }
 
-  admin_db_credentials_getters.each do |credential|
-    it "responds to ##{credential}" do
-      expect(an_admin_user).to respond_to(credential.to_sym)
-    end
-  end
+  # admin_db_credentials_getters.each do |credential|
+  #   it "responds to ##{credential}" do
+  #     expect(an_admin_user).to respond_to(credential.to_sym)
+  #   end
+  # end
 
-  admin_db_credentials_setters.each do |credential|
-    it "responds to ##{credential}" do
-      expect(an_admin_user).to respond_to(credential.to_sym)
-    end
-  end
+  # admin_db_credentials_setters.each do |credential|
+  #   it "responds to ##{credential}" do
+  #     expect(an_admin_user).to respond_to(credential.to_sym)
+  #   end
+  # end
 
-  target_db_credentials_getters.each do |credential|
-    it "responds to ##{credential}" do
-      expect(an_admin_user).to respond_to(credential.to_sym)
-    end
-  end
+  # target_db_credentials_getters.each do |credential|
+  #   it "responds to ##{credential}" do
+  #     expect(an_admin_user).to respond_to(credential.to_sym)
+  #   end
+  # end
 
-  target_db_credentials_setters.each do |credential|
-    it "responds to ##{credential}" do
-      expect(an_admin_user).to respond_to(credential.to_sym)
-    end
-  end
+  # target_db_credentials_setters.each do |credential|
+  #   it "responds to ##{credential}" do
+  #     expect(an_admin_user).to respond_to(credential.to_sym)
+  #   end
+  # end
 
   twilio_credentials.each do |credential|
     it "responds to #{credential}" do

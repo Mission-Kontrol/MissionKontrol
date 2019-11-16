@@ -20,6 +20,7 @@ end
 describe SensitiveData do
   let(:sensitive_data) { described_class }
   let(:admin_user) { build(:admin_user) }
+  let(:organisation) { build(:organisation_setting) }
 
   describe '.encrypt' do
     it 'returns an encrypted string and salt' do
@@ -82,7 +83,7 @@ describe SensitiveData do
       it 'returns nil' do
         clear_admin_db_credentials
 
-        actual = admin_user.admin_database_name
+        actual = organisation.admin_database_name
 
         expect(actual).to eq(nil)
       end
@@ -118,7 +119,7 @@ describe SensitiveData do
       it 'returns nil' do
         clear_target_db_credentials
 
-        actual = admin_user.target_database_name
+        actual = organisation.target_database_name
 
         expect(actual).to eq(nil)
       end
