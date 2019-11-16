@@ -14,8 +14,10 @@ describe PermissionsController, type: :controller, js: true do
 
   describe '#add_to_role' do
     context 'when action is view' do
+      subject { post :add_to_role, params: { role: role, table: table, permission: 'view' }, format: :js }
+
       it 'adds view permission for the table to the role' do
-        post :add_to_role, params: { role: role, table: table, permission: 'view' }, format: :js
+        subject
 
         expect(@user.roles.first.permissions).to include(@view_permission)
       end
