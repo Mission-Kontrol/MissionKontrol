@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 namespace :setup_org_and_roles do
   desc 'setup org'
   task setup_all: :environment do
@@ -8,26 +9,28 @@ namespace :setup_org_and_roles do
       full_license: false,
       company_name: 'Kuwinda Test'
     )
-    Role.create!(
-      name: 'Admin',
-      administrator: true,
-      editor: true,
-      export: true,
-      export_limit: 0
-    )
-    Role.create!(
-      name: 'Sales',
-      administrator: false,
-      editor: false,
-      export: false,
-      export_limit: nil
-    )
-    Role.create!(
-      name: 'Team Lead',
-      administrator: false,
-      editor: false,
-      export: false,
-      export_limit: nil
-    )
+    create_admin
+    create_roles('Sales')
+    create_roles('Team Lead')
   end
+end
+
+def create_admin
+  Role.create!(
+    name: 'Admin',
+    administrator: true,
+    editor: true,
+    export: true,
+    export_limit: 0
+  )
+end
+
+def create_roles(role)
+  Role.create!(
+    name: role,
+    administrator: false,
+    editor: false,
+    export: false,
+    export_limit: nil
+  )
 end
