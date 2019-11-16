@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AdminUsersController < ApplicationController
+  include UserAbilities
+
   layout 'dashboard'
 
   STATUSES = ['active', 'inactive'].freeze
@@ -8,6 +10,7 @@ class AdminUsersController < ApplicationController
   before_action :load_available_tables,
                 :load_task_queues,
                 :check_target_db_connection, only: [:index]
+  before_action :check_user_admin_abilities
 
   def new
     @user = AdminUser.new

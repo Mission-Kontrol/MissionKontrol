@@ -34,7 +34,7 @@
 
     <ul>
       <li>
-        <div data-toggle='tooltip' data-placement='top' title ='<%= current_admin_user.target_database_host %>' class="text-truncate">
+        <div data-toggle='tooltip' data-placement='top' title ='<%= @admin_database.host %>' class="text-truncate">
           Database host:
           <%= @admin_database.host %>
         </div>
@@ -53,15 +53,15 @@
 
     <ul>
       <li>
-        <div data-toggle='tooltip' data-placement='top' title ='<%= current_admin_user.target_database_host %>' class="text-truncate">
+        <div data-toggle='tooltip' data-placement='top' title ='<%= current_organisation.target_database_host %>' class="text-truncate">
           Database host:
-          <%= current_admin_user.target_database_host %>
+          <%= current_organisation.target_database_host %>
         </div>
       </li>
-      <li>Database type: <%= current_admin_user.target_database_type %></li>
-      <li>Database port: <%= current_admin_user.target_database_port %></li>
-      <li>Database name: <%= current_admin_user.target_database_name %></li>
-      <li>Database username: <%= current_admin_user.target_database_username %></li>
+      <li>Database type: <%= current_organisation.target_database_type %></li>
+      <li>Database port: <%= current_organisation.target_database_port %></li>
+      <li>Database name: <%= current_organisation.target_database_name %></li>
+      <li>Database username: <%= current_organisation.target_database_username %></li>
       <li>Database password: **********</li>
     </ul>
   </div>

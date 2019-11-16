@@ -5,6 +5,7 @@ require 'rails_helper'
 describe LayoutBuilderController, type: :controller do
   before do
     create_user
+    add_role_to_user('admin')
     sign_in @user
   end
 

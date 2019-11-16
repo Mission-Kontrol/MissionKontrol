@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12">
       <h3>Users</h3>
-      <table id="target-table-admin-users" class="target-table-admin-users data-table table" data-table-name='admin-users'>
+      <table id="target-table-admin-users" class="target-table-admin-users data-table table" data-table-name='admin-users' data-can-export="<%= current_admin_user.export_abilities? %>">
         <thead>
           <tr>
             <% @headers.each do |header|%>

@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 class LayoutBuilderController < ApplicationController
+  include UserAbilities
+
   layout 'layout_builder', only: [:new, :edit]
   layout 'dashboard', only: [:index, :preview]
   skip_before_action :verify_authenticity_token
   before_action :load_available_tables,
                 :authenticate_admin_user!
   before_action :load_task_queues, only: %i[show preview]
+  before_action :check_user_editor_abilities
 
   def new
     @available_tables = available_tables
