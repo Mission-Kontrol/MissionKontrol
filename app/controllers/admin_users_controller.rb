@@ -12,7 +12,6 @@ class AdminUsersController < ApplicationController
                 :check_target_db_connection, only: [:index]
   before_action :check_user_admin_abilities
 
-
   def new
     @user = AdminUser.new
     @roles = Role.all

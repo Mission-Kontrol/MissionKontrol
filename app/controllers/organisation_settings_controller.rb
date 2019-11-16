@@ -10,7 +10,6 @@ class OrganisationSettingsController < ApplicationController
                 :check_target_db_connection, except: [:update]
   before_action :check_user_admin_abilities, only: %i[edit]
 
-
   def edit
     @organisation = OrganisationSetting.find params[:id]
   end

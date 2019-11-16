@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 namespace :setup_org_and_roles do
   desc 'setup org'
   task setup_all: :environment do
