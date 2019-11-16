@@ -27,7 +27,6 @@ gem 'clockwork', '~> 2.0', '>= 2.0.3'
 gem 'twilio-ruby', '~> 5.17.0'
 
 group :development, :test do
-  gem 'byebug'
   gem 'dotenv-rails'
   gem 'pry-byebug'
   gem 'pry-rails'

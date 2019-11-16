@@ -1,39 +1,3 @@
-function fetchDataForUserTable() {
-  $.ajax({
-    dataType: "json",
-    url: "/" + (location.pathname+location.search).substr(1),
-    success: function(d) {
-      loadUserDataTable(d.columns);
-    }
-  });
-}
-
-function submitStatusChange () {
-  $('body').on("change", "#user--edit-status:checkbox", function (e) {
-    var id = $(this).data('user')
-    $.post(
-      "/admin_users/update_status",
-      {
-        id: id
-      }
-    )
-  });
-}
-
-function submitTeamChange () {
-  $('body').on("change", ".user--team-select", function () {
-    var id = $(this).data('user');
-    var role = $(this).val();
-    $.post(
-      "/admin_users/update_role",
-      {
-        id: id,
-        role: role,
-      }
-    )
-  })
-}
-
 function loadUserDataTable (columns) {
   columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"})
   var searchableTable = $("#target-table-admin-users").DataTable({
@@ -81,12 +45,12 @@ function loadUserDataTable (columns) {
     },
     "createdRow": function( row, data, dataIndex ) {
       let id = data.id;
-      let previewUrl = '/users/edit/?id=' + id
+      let previewUrl = "/users/edit/?id=" + id
       let editLink = row.lastChild.firstChild
       var statusField = row.children[3]
       var userStatus = statusField.innerHTML
 
-      if (userStatus === 'false') {
+      if (userStatus === "false") {
         statusField.innerHTML = '<img src="/assets/images/icons/circle-with-cross.png">'
       } else {
         statusField.innerHTML = '<img src="/assets/images/icons/circle-with-check-symbol.png">'
@@ -98,11 +62,11 @@ function loadUserDataTable (columns) {
       {
         "extend": "csv",
         "className": "table--export",
-        text: 'Export'
+        text: "Export"
       },
       {
-        text: 'Add',
-        className: 'table--add',
+        text: "Add",
+        className: "table--add",
         action: function () {
           $.ajax({
             "url": "/admin_users/new"
@@ -121,26 +85,40 @@ function loadUserDataTable (columns) {
   });
 }
 
-function saveNewUser () {
-  // $('#some-form').submit(function(e) {
-  //   e.preventDefault();    
-  
-  //   $('#more-inputs input').each(function() {
-  //     var el = $(this);
-  //     $('<input type="hidden" name="' + el.attr('name') + '" />')
-  //         .val(el.val())
-  //         .appendTo('#some-form');
-  //   });
-  
-  //   $.get('http://yoururl.com', $('#some-form').serialize(), function (data) {
-  //       alert('handle your data here: ' + data);
-  //   });
-  
-  // });
-  // $('body').on('submit', '#new-user-form', function (evt) {
-  //   evt.preventDefault
-  //   debugger
-  // })
+function fetchDataForUserTable() {
+  $.ajax({
+    dataType: "json",
+    url: "/" + (location.pathname+location.search).substr(1),
+    success(d) {
+      loadUserDataTable(d.columns);
+    }
+  });
+}
+
+function submitStatusChange () {
+  $("body").on("change", "#user--edit-status:checkbox", function (e) {
+    var id = $(this).data("user");
+    $.post(
+      "/admin_users/update_status",
+      {
+        id: id
+      }
+    );
+  });
+}
+
+function submitTeamChange () {
+  $("body").on("change", ".user--team-select", function () {
+    var id = $(this).data("user");
+    var role = $(this).val();
+    $.post(
+      "/admin_users/update_role",
+      {
+        id: id,
+        role: role,
+      }
+    );
+  });
 }
 
 $(document).ready(function() {
@@ -153,5 +131,4 @@ $(document).ready(function() {
 
   submitStatusChange();
   submitTeamChange();
-  saveNewUser();
 })

@@ -29,3 +29,5 @@ config/sensitive_data/*
 .DS_Store
 
 coverage/
+
+node_modules/
