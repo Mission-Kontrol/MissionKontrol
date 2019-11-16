@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class PermissionsController < ApplicationController
+  include UserAbilities
+
   layout 'dashboard'
 
   before_action :load_available_tables,
                 :load_task_queues,
                 :check_target_db_connection
+  before_action :check_user_admin_abilities
 
   def index
     @headers = ['Table'] + roles.map(&:name)

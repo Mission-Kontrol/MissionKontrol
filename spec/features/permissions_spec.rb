@@ -3,7 +3,6 @@
 feature 'Permissions' do
   background do
     sign_in_as_user_with_license
-    give_user_sales_role
     connect_to_target_database
   end
 
@@ -35,12 +34,7 @@ feature 'Permissions' do
   end
 end
 
-def give_user_sales_role
-  @sales_role = create(:role, :sales)
-  @user.roles << @sales_role
-end
-
 def give_sales_role_permissions_to_view_events_table
   view_permission = create(:permission)
-  @sales_role.permissions << view_permission
+  @role.permissions << view_permission
 end

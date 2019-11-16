@@ -30,6 +30,21 @@ class AdminUser < ApplicationRecord
     ability.can? self, action, table
   end
 
+  def admin_abilities?
+    role = roles.first
+    role.administrator?
+  end
+
+  def editor_abilities?
+    role = roles.first
+    role.editor?
+  end
+
+  def export_abilities?
+    role = roles.first
+    role.export?
+  end
+
   def role
     "admin"
   end

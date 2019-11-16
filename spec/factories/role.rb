@@ -3,8 +3,15 @@
 FactoryBot.define do
   factory :role do
     name { 'Admin' }
+    administrator { true }
+    editor { true }
+    export { false }
 
-    trait :sales do
+    trait :admin do
+      name { 'Admin' }
+    end
+
+    trait :Sales do
       name { 'Sales' }
     end
 

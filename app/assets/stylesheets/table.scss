@@ -87,6 +87,10 @@ div.dataTables_wrapper div.dataTables_filter label {
   .table--export {
     background: url(/assets/images/icons/export.png) no-repeat center left;
     padding: 6px 20px;
+
+    &.false {
+      display: none;
+    }
   }
 
   .table--add {

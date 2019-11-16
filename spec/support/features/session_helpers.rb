@@ -15,9 +15,11 @@ module Features
 
     def sign_in_as_user_with_license
       @organisation = create(:organisation_setting)
+      @role = create(:role)
       update_organisation_db_settings
       add_license_key
       @user = create(:admin_user)
+      @user.roles << @role
       visit root_path
       fill_in 'Email', with: @user.email
       fill_in 'Password', with: 'password'

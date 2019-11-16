@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 class OrganisationSettingsController < ApplicationController
+  include UserAbilities
+
   layout 'dashboard'
 
   before_action :load_available_tables,
                 :load_task_queues,
                 :check_target_db_connection, except: [:update]
+  before_action :check_user_admin_abilities, only: %i[edit]
+
 
   def edit
     @organisation = OrganisationSetting.find params[:id]

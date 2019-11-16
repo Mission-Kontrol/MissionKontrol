@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class RolesController < ApplicationController
+  include UserAbilities
+
   layout 'dashboard'
+
+  before_action :check_user_admin_abilities
 
   def edit
     @role = Role.find_by(name: role_params[:name])
