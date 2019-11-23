@@ -1,0 +1,6 @@
+toastr.success('User has been successfully deleted.');
+$('#users--team-partial').html("<%= j render("teams")%>");
+$('#users--status-partial').html("<%= j render("status")%>");
+$("#target-table-admin-users").DataTable().ajax.reload();
+$('.users--edit-modal').removeClass('show');
+$('.users--edit-modal').addClass('hide');

@@ -88,6 +88,18 @@ class AdminUsersController < ApplicationController
     @admin_user_statuses = admin_user_statuses
   end
 
+  def destroy
+    @user = AdminUser.find(params[:id])
+
+    if last_admin_user?
+      format.js { 'delete_failure' }
+    else
+      @user.delete
+      @admin_user_roles = admin_user_roles
+      @admin_user_statuses = admin_user_statuses
+    end
+  end
+
   private
 
   def user_params
@@ -150,6 +162,14 @@ class AdminUsersController < ApplicationController
       admin_user_roles[role.name] = AdminUser.with_role(role.name.to_sym).count
     end
     admin_user_roles
+  end
+
+  def last_admin_user?
+    return false unless @user.roles.first.name == 'Admin'
+
+    return false if admin_user_roles['Admin'] > 1
+
+    true
   end
 
   def admin_user_statuses
