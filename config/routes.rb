@@ -45,12 +45,14 @@ Rails.application.routes.draw do
   post 'admin_users/create_new', to: 'admin_users#create_new'
   patch 'admin_users/create_new', to: 'admin_users#update'
   delete 'users', to: 'admin_users#destroy'
+  get 'users', to: 'admin_users#index'
+
 
   resources :view_builder
   resources :activities, only: :create
 
   resources :organisation_settings, only: %i[edit update]
-  resources :admin_users, only: %i[index new]
+  resources :admin_users, only: %i[new]
   resources :permissions, only: :index
 
   post 'permissions/add_to_role', to: 'permissions#add_to_role', as: 'add_to_role'
