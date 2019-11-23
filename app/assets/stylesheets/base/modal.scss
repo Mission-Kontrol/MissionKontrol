@@ -1,4 +1,4 @@
-.users--edit-modal, .users--new-modal, .roles--edit-modal {
+.users--edit-modal, .users--new-modal, .roles--edit-modal, .table--settings-modal {
   position: fixed;
   left: 0;
   top: 0;
@@ -110,4 +110,8 @@
     from {right:-300px; opacity:0}
     to {right:0; opacity:1}
   }
+}
+
+.table--settings-modal > .modal--container {
+  width: 50%;
 }

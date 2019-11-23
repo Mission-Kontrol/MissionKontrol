@@ -30,6 +30,7 @@ function fetchDataForRelatedTables() {
 
 function loadDataTable (columns) {
   var canExport = $(".data-table").data("can-export");
+  var tableName = $(".data-table").data("table-name");
   var searchableTable = $(".data-table").DataTable({
     "colReorder": true,
     "deferRender": true,
@@ -60,7 +61,6 @@ function loadDataTable (columns) {
       if ( settings.iDraw <= 1 ) {
         return;
       }
-
       $.ajax({
         "url": "/data_table_states/save?table=" + $(this).data("table-name"),
         "data": { "state": data },
@@ -95,6 +95,18 @@ function loadDataTable (columns) {
         extend: "csv",
         className: "table--export " + canExport,
         text: "Export"
+      },
+      {
+        text: "Settings",
+        className: "table--settings",
+        action: function () {
+          $.ajax({
+            "url": "/table/settings",
+            "type": "GET",
+            "data": { "table": tableName },
+            "success": function () {}
+          });
+        }
       }
     ],
     "initComplete": function(settings, json) {

@@ -64,6 +64,18 @@ class TablesController < ApplicationController
    }, status: 400
   end
 
+  def settings
+    @table = @target_db_repo.table
+    @table_settings = TargetTableSetting.find_by(name: @table)
+    @related_tables = relatable_tables(@table)
+  end
+
+  def update_settings
+    @table_settings = TargetTableSetting.find_by(name: params[:table])
+    @table_settings.update_attribute(params[:setting], params[:value])
+    @result = @table_settings.save
+  end
+
   private
 
   def check_user_permissions
@@ -171,5 +183,9 @@ class TablesController < ApplicationController
 
   def set_current_table
     @current_table = params[:table]
+  end
+
+  def relatable_tables(table)
+    Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
   end
 end

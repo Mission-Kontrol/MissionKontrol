@@ -37,6 +37,7 @@ class OrganisationSettingsController < ApplicationController
       port: organisation_params[:target_database_port]
     ).connection
     update_available_permissions if connected
+    # TODO: Add update to target table settings here
   end
 
   def permitted_target_db_params

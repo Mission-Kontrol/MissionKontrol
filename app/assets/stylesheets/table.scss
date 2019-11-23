@@ -87,7 +87,7 @@ div.dataTables_wrapper div.dataTables_filter label {
     min-width: 263px;
 
     button {
-      left: 40%;
+      left: 4%;
     }
 
     .dt-button-collection {
@@ -118,6 +118,13 @@ div.dataTables_wrapper div.dataTables_filter label {
 
   .table--add {
     background: url(/assets/images/icons/plus.png) no-repeat center left;
+    padding: 6px 20px;
+    border: none;
+    background-color: inherit;
+  }
+
+  .table--settings {
+    background: url(/assets/images/icons/settings-1.png) no-repeat center left;
     padding: 6px 20px;
     border: none;
     background-color: inherit;
@@ -200,4 +207,40 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
   margin: 10px;
   padding: 10px 10px;
   background-color: #c2c2c2;
+}
+
+.table--settings-dropdown {
+  .dropdown {
+    border: none;
+
+    select {
+      border: none;
+      border-bottom: solid 0.5px #979797;
+      width: 100px;
+      padding-bottom: 3px;
+      background: url(/assets/images/icons/triangle.svg) no-repeat;
+      background-position: 85px 8px;
+    }
+
+    #dropdown, #team {
+      -webkit-appearance: none;
+      /* for webkit browsers */
+      -moz-appearance: none;
+      /* for firefox */
+      appearance: none;
+      /* for modern browsers */
+    }
+
+    #dropdown::-ms-expand, #team::-ms-expand {
+      display: none;
+    }
+
+    #dropdown:focus:invalid, #team:focus:invalid {
+      border-color: #FD6347;
+    }
+
+    #dropdown:required:valid, #team:required:valid {
+      border-color: #006400;
+    }
+  }
 }
