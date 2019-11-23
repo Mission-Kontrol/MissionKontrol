@@ -31,13 +31,13 @@
 
       <li class="<%= active_controller?('dashboard') || active_controller?('show')%>">
         <%= link_to dashboard_path do %>
-          <span class="nav-label dashboard-nav-link" data-i18n="nav.layouts">Dashboard</span>
+          <span class="nav-label dashboard-nav-link" data-i18n="nav.layouts">DASHBOARD</span>
         <% end %>
       </li>
 
       <li class="<%= active_controller?('tables') && active_action?('show') %>">
         <a href="" id="nav-link-for-tables">
-          <span class="nav-label" data-i18n="nav.dashboard">Tables</span> <span class="fa arrow"></span>
+          <span class="nav-label" data-i18n="nav.dashboard">DATABASE</span> <span class="fa arrow"></span>
         </a>
 
         <ul class="nav nav-second-level collapse">
@@ -87,7 +87,7 @@
       <% if current_admin_user.admin_abilities? %>
         <li class="<%= active_controller?('organisation_settings') || active_controller?('edit') || active_controller?('admin_users') %> || <%= active_controller?('permissions') %>">
           <a href="" id="nav-link-for-tables">
-            <span class="nav-label" data-i18n="nav.layouts">Settings</span> <span class="fa arrow"></span>
+            <span class="nav-label" data-i18n="nav.layouts">SETTINGS</span> <span class="fa arrow"></span>
           </a>
 
           <ul class="nav nav-second-level collapse">

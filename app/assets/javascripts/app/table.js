@@ -29,6 +29,7 @@ function fetchDataForRelatedTables() {
 }
 
 function loadDataTable (columns) {
+  var canExport = $(".data-table").data("can-export");
   var searchableTable = $(".data-table").DataTable({
     "colReorder": true,
     "deferRender": true,
@@ -83,10 +84,15 @@ function loadDataTable (columns) {
       $(row).attr( "data-href",  previewUrl);
     },
     "buttons": [
-      "colvis",
       {
-        "extend": "csv",
-        "className": "btn btn-warning",
+        extend: "colvis",
+        className: "buttons-csv table--colvis",
+        text: "Columns"
+      },
+      {
+        extend: "csv",
+        className: "table--export " + canExport,
+        text: "Export"
       }
     ],
     "initComplete": function(settings, json) {
