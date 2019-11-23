@@ -9,11 +9,16 @@
       background-color: $gray;
       color: $purple;
       height: 37px;
+
+      th {
+        text-overflow: ellipsis;
+      }
     }
   }
 
   tbody {
-    background: rgba(255, 255, 255, .5);
+    background-color: $background-gray;
+    // background-opacity: 0.5;
   }
 }
 
@@ -91,6 +96,11 @@ div.dataTables_wrapper div.dataTables_filter label {
     &.false {
       display: none;
     }
+  }
+
+  .table--colvis {
+    background: url(/assets/images/icons/import.png) no-repeat center left;
+    padding: 6px 20px;
   }
 
   .table--add {
