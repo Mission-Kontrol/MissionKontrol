@@ -23,9 +23,10 @@ class AdminUsersController < ApplicationController
     @role = Role.find(params[:team])
     @user.roles << @role
 
-    @user.save!
-    @admin_user_roles = admin_user_roles
-    @admin_user_statuses = admin_user_statuses
+    if @result = @user.save
+      @admin_user_roles = admin_user_roles
+      @admin_user_statuses = admin_user_statuses
+    end
   end
 
   def update
