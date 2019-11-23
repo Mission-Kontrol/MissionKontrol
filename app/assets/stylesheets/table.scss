@@ -5,6 +5,7 @@
 
 .data-table {
   thead {
+    background-color: #f3f3f4;
     tr {
       background-color: $gray;
       color: $purple;
@@ -12,6 +13,7 @@
 
       th {
         text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }
@@ -82,6 +84,17 @@ div.dataTables_wrapper div.dataTables_filter label {
 
   .dt-buttons.btn-group {
     float: right;
+    min-width: 263px;
+
+    button {
+      left: 40%;
+    }
+
+    .dt-button-collection {
+      left: 5% !important;
+      max-height: 400px;
+      overflow-x: scroll;
+    }
   }
 
   .table--import {
