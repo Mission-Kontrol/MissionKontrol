@@ -53,7 +53,7 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="user--delete-btn">
-              <button class="btn btn-danger btn--delete-user">Delete user</button>
+              <%= link_to 'Delete user', users_path({id: @user.id}), class: "btn btn-danger btn--delete-user", remote: true, method: :delete, disabled: @user == @current_admin_user %>
             </div>
           </div>
         </div>

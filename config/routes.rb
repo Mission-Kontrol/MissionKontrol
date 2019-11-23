@@ -44,7 +44,9 @@ Rails.application.routes.draw do
   post 'admin_users/update_status', to: 'admin_users#update_status'
   post 'admin_users/create_new', to: 'admin_users#create_new'
   patch 'admin_users/create_new', to: 'admin_users#update'
+  delete 'users', to: 'admin_users#destroy'
   get 'users', to: 'admin_users#index'
+
 
   resources :view_builder
   resources :activities, only: :create
