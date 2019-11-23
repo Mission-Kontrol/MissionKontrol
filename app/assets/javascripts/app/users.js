@@ -122,6 +122,23 @@ function submitTeamChange () {
   });
 }
 
+function validateForm () {
+  var password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+  $("body").on("keyup", "#admin_user_first_name, #admin_user_last_name, #admin_user_email, #admin_user_password", function () {
+    var fieldsFilled = $('#admin_user_first_name').val().length > 0 &&
+    $('#admin_user_last_name').val().length > 0 &&
+    $('#admin_user_email').val().length > 0 &&
+    $('#admin_user_password').val().length > 0
+
+    if (fieldsFilled && $('#admin_user_password').val().match(password) ) {
+      $("input[type=submit]").prop("disabled", false);
+    } else {
+      $("input[type=submit]").prop("disabled", true);
+    }
+  });
+}
+
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerAdminUsers = metaTag.attr("controller") === "admin_users";
@@ -132,4 +149,6 @@ $(document).ready(function() {
 
   submitStatusChange();
   submitTeamChange();
+
+  validateForm();
 })
