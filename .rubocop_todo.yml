@@ -224,6 +224,8 @@ Metrics/BlockLength:
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
   Max: 141
+  Exclude:
+    - 'app/controllers/admin_users_controller.rb'
 
 # Offense count: 1
 Metrics/CyclomaticComplexity:

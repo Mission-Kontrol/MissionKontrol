@@ -46,7 +46,7 @@ function loadUserDataTable (columns) {
     },
     "createdRow": function( row, data, dataIndex ) {
       let id = data.id;
-      let previewUrl = "/users/edit/?id=" + id
+      let previewUrl = "/users/" + id
       let editLink = row.lastChild.firstChild
       var statusField = row.children[3]
       var userStatus = statusField.innerHTML
@@ -128,14 +128,34 @@ function validateForm () {
   $("body").on("keyup", "#admin_user_first_name, #admin_user_last_name, #admin_user_email, #admin_user_password", function () {
     var fieldsFilled = $('#admin_user_first_name').val().length > 0 &&
     $('#admin_user_last_name').val().length > 0 &&
-    $('#admin_user_email').val().length > 0 &&
-    $('#admin_user_password').val().length > 0
+    $('#admin_user_email').val().length > 0
 
-    if (fieldsFilled && $('#admin_user_password').val().match(password) ) {
+    var create = $('.user--form-action').val() === "create";
+    var update = $('.user--form-action').val() === "update";
+    var passwordEmpty = $('#admin_user_password').val().length == 0;
+    var passwordValid = $('#admin_user_password').val().match(password);
+
+    var validForm = (create && fieldsFilled && passwordValid) || (update && fieldsFilled && passwordEmpty) || (update && fieldsFilled && !passwordEmpty && passwordValid)
+
+    if (validForm) {
       $("input[type=submit]").prop("disabled", false);
     } else {
       $("input[type=submit]").prop("disabled", true);
     }
+  });
+}
+
+function editFields () {
+  $("body").on("click", ".user--modal-edit-button", function () {
+    var id = $(this).data("user");
+    var role = $(this).val();
+
+    $.ajax({
+      url: "/users/edit",
+      data: { id: id },
+      type: "GET",
+      success: function () {}
+    });
   });
 }
 
@@ -151,4 +171,6 @@ $(document).ready(function() {
   submitTeamChange();
 
   validateForm();
+
+  editFields();
 })
