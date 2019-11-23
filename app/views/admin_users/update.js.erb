@@ -1,6 +1,10 @@
-toastr.success('User has been successfully updated.');
-$('#users--team-partial').html("<%= j render("teams")%>");
-$('#users--status-partial').html("<%= j render("status")%>");
-$("#target-table-admin-users").DataTable().ajax.reload();
-$('.users--edit-modal').removeClass('show');
-$('.users--edit-modal').addClass('hide');
+<% if @result %>
+  toastr.success('User has been successfully updated.');
+  $('#users--team-partial').html("<%= j render("teams")%>");
+  $('#users--status-partial').html("<%= j render("status")%>");
+  $("#target-table-admin-users").DataTable().ajax.reload();
+  $('.users--edit-modal').removeClass('show');
+  $('.users--edit-modal').addClass('hide');
+<% else %>
+  toastr.error('Unable to update user. Please check email is not already in use.');
+<% end %>
