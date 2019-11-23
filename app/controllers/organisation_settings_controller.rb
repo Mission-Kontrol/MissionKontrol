@@ -19,10 +19,6 @@ class OrganisationSettingsController < ApplicationController
 
     update_target_db_connection if organisation_params[:target_database_host].present?
     return unless @organisation.update!(organisation_params)
-
-    respond_to do |format|
-      format.js {}
-    end
   end
 
   private
@@ -37,7 +33,7 @@ class OrganisationSettingsController < ApplicationController
       port: organisation_params[:target_database_port]
     ).connection
     update_available_permissions if connected
-    # TODO: Add update to target table settings here
+    update_target_table_settings if connected
   end
 
   def permitted_target_db_params
@@ -62,6 +58,16 @@ class OrganisationSettingsController < ApplicationController
       next if database_permissions.include? table
 
       create_action_permissions(table)
+    end
+  end
+
+  def update_target_table_settings
+    available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call.to_a
+    target_table_settings = TargetTableSetting.all.map(&:name)
+    available_tables.each do |table|
+      next if target_table_settings.include? table
+
+      TargetTableSetting.create!(name: table)
     end
   end
 
