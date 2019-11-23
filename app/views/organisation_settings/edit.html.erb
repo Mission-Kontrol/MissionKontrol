@@ -46,7 +46,7 @@
                   <div role="tabpanel" id="settings-tab--target" class="tab-pane">
                     <div class="panel-body">
                       <p>These are your application's database settings</p>
-                      <%= form_for(current_organisation, html: { method: :put, class: "m-t" }) do |f| %>
+                      <%= form_for(current_organisation, html: { method: :put, class: "m-t" }, remote: true) do |f| %>
 
                         <div class="form-group">
                           <label for="">Database type</label>
