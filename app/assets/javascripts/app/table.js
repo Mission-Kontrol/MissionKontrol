@@ -99,7 +99,7 @@ function loadDataTable (columns) {
       {
         text: "Settings",
         className: "table--settings",
-        action: function () {
+        action () {
           $.ajax({
             "url": "/table/settings",
             "type": "GET",
