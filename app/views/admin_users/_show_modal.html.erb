@@ -7,7 +7,7 @@
       <div class="modal--header">
         <div class="row">
           <div class="col-sm-12">
-            <h3><%= @user.name %></h3>
+            <h3><%= @user.name %><div class="user--modal-edit-button" data-user="<%= @user.id %>"><img src="/assets/images/icons/edit.png"></div></h3>
             <h5><%= @user.email %></h5>
           </div>
         </div>
@@ -48,12 +48,6 @@
                 <%= select_tag "dropdown", options_from_collection_for_select(@roles, 'id', 'name', @role.id), {class: "user--team-select", "data-user" => @user.id} %>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <h5>PASSWORD</h5>
-            <p>Should we allow admins to set a user’s password here or build settings that would allow them to easily set an email server?</p>
           </div>
         </div>
         <div class="row">

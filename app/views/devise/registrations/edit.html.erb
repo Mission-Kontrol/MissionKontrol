@@ -85,45 +85,7 @@
             </div>
             <!-- profile settings -->
 
-            <!-- target database settings -->
-            <div class="">
-              <div class="m-t-lg m-b-lg">
-                <h3>Target application database</h3>
-                <p>This is your application's database.</p>
-              </div>
-
-              <div class="form-group">
-                <label for="">Database type</label>
-                <%= f.select(:target_database_type, AdminUser::DATABASE_TYPES,
-                                                    {prompt: "Select your database type"},
-                                                    {class: 'form-control'}) %>
-              </div>
-
-              <div class="form-group">
-                <%= f.label :target_database_name %>
-                <%= f.text_field :target_database_name, autofocus: true, class: "form-control" %>
-              </div>
-
-              <div class="form-group">
-                <%= f.label :target_database_username %>
-                <%= f.text_field :target_database_username, autofocus: true, class: "form-control" %>
-              </div>
-
-              <div class="form-group">
-                <%= f.label :target_database_password %>
-                <%= f.password_field :target_database_password, autofocus: true, class: "form-control", value: resource.target_database_password, required: true %>
-              </div>
-
-              <div class="form-group">
-                <%= f.label :target_database_host %>
-                <%= f.text_field :target_database_host, autofocus: true, class: "form-control" %>
-              </div>
-
-              <div class="form-group">
-                <%= f.label :target_database_port %>
-                <%= f.text_field :target_database_port, autofocus: true, class: "form-control" %>
-              </div>
-            </div>
+            
 
             <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
               <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>

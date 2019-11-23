@@ -28,6 +28,21 @@ class AdminUsersController < ApplicationController
     @admin_user_statuses = admin_user_statuses
   end
 
+  def update
+    @user = AdminUser.find_by(email: user_params[:email])
+    @user.update_attributes(user_params.except(:password))
+    unless user_params[:password].empty?
+      @user.password = user_params[:password]
+      @user.password_confirmation = user_params[:password]
+    end
+
+    @role = Role.find(params[:team])
+    update_user_role
+
+    @user.save!
+    @admin_user_statuses = admin_user_statuses
+  end
+
   def index
     @users = AdminUser.all
     @admin_user_roles = admin_user_roles
@@ -44,6 +59,12 @@ class AdminUsersController < ApplicationController
     end
   end
 
+  def show_modal
+    @user = AdminUser.find(params[:id])
+    @role = @user.roles.first
+    @roles = Role.all
+  end
+
   def edit
     @user = AdminUser.find(params[:id])
     @role = @user.roles.first
@@ -54,11 +75,7 @@ class AdminUsersController < ApplicationController
     @user = AdminUser.find(params[:id])
     @role = Role.find(params[:role])
 
-    ActiveRecord::Base.transaction do
-      @user.roles.clear
-      @user.roles << @role
-    end
-    @admin_user_roles = admin_user_roles
+    update_user_role
   end
 
   def update_status
@@ -115,6 +132,14 @@ class AdminUsersController < ApplicationController
 
   def load_roles
     @roles = Role.all
+  end
+
+  def update_user_role
+    ActiveRecord::Base.transaction do
+      @user.roles.clear
+      @user.roles << @role
+    end
+    @admin_user_roles = admin_user_roles
   end
 
   def admin_user_roles
