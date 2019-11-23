@@ -1,0 +1,67 @@
+<div class="table--settings-modal hide">
+  <div class="modal--container">
+    <div class="modal--close-btn">
+        <img src="/assets/images/icons/close.png">
+      </div>
+    <div class="modal--content-container">
+      <div class="modal--header">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3><%= @table.humanize %></h3>
+          </div>
+        </div>
+      </div>
+      <div class="modal--content">
+        <div class="row">
+            <div class="col-sm-12">
+              <h5>GENERAL</h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Nested table</p>
+              <h6>See the data of a related table inline with this table</h6>
+            </div>
+            <div class="col-sm-4">
+              <div class="table--settings-dropdown">
+                <div class="form-control dropdown">
+                  <% if @related_tables.empty? %>
+                    <p>No related tables available</p>
+                  <% else %>
+                    <%= select_tag "dropdown", options_for_select(@related_tables, @table_settings.nested_table), {class: "table--settings-nested-select", "data-table" => @table, "data-setting" => "nested_table"} %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Create entry</p>
+              <h6>Allow users who have permission to create an entry</h6>
+            </div>
+            <div class="col-sm-4">
+              <div class="table--settings-dropdown">
+                <div class="form-control dropdown">
+                  <%= select_tag "dropdown", options_for_select([ "Database", "API" ], @table_settings.create_destination), {class: "table--settings-create-select", "data-table" => @table, "data-setting" => "create_destination"} %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Delete entry</p>
+              <h6>Allow users who have permission to delete an entry</h6>
+            </div>
+            <div class="col-sm-4">
+              <div class="table--settings-dropdown">
+                <div class="form-control dropdown">
+                  <%= select_tag "dropdown", options_for_select([ "Database", "API" ], @table_settings.delete_destination), {class: "table--settings-delete-select", "data-table" => @table, "data-setting" => "delete_destination"} %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

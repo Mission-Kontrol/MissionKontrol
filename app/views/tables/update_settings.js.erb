@@ -1,0 +1,6 @@
+<% if @result %>
+  toastr.success('Table settings have been successfully updated.');
+  $(".data-table").DataTable().ajax.reload();
+<% else %>
+  toastr.error('Unable to update table settings.');
+<% end %>

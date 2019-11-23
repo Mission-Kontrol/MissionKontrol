@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
   resources :tables, only: %i[show]
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'
+  get 'table/settings', to: 'tables#settings'
+  post 'table/update_settings', to: 'tables#update_settings'
 
   patch 'table_field', to: 'tables#update_table_field', as: 'update_table_field'
   patch 'related_table_field', to: 'tables#update_related_table_field', as: 'update_related_table_field'

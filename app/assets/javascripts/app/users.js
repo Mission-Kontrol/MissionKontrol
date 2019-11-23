@@ -68,7 +68,7 @@ function loadUserDataTable (columns) {
       {
         text: "Add",
         className: "table--add",
-        action: function () {
+        action () {
           $.ajax({
             "url": "/admin_users/new"
           });

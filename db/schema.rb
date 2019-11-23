@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191111185000) do
+ActiveRecord::Schema.define(version: 20191123165832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,13 @@ ActiveRecord::Schema.define(version: 20191111185000) do
     t.index ["permission_id"], name: "index_roles_permissions_on_permission_id"
     t.index ["role_id", "permission_id"], name: "index_roles_permissions_on_role_id_and_permission_id"
     t.index ["role_id"], name: "index_roles_permissions_on_role_id"
+  end
+
+  create_table "target_table_settings", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "nested_table"
+    t.string "create_destination"
+    t.string "delete_destination"
   end
 
   create_table "task_queue_outcomes", force: :cascade do |t|
