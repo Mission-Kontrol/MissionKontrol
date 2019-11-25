@@ -4,6 +4,7 @@ feature 'Permissions' do
   background do
     sign_in_as_user_with_license
     connect_to_target_database
+    create(:target_table_setting, name: 'events')
   end
 
   scenario 'user with sales role with permissions to view table can view table navigation' do

@@ -8,14 +8,14 @@ class TablesController < ApplicationController
 
   before_action :authenticate_admin_user!,
                 :set_target_db_repo,
-                :set_activities,
                 :set_current_table,
-                :load_available_tables,
                 :check_license
 
+  before_action :set_nested_table
   before_action :load_task_queues, only: %i[show preview]
-  before_action :set_relatable_tables, only: %i[preview]
+  before_action :set_relatable_tables, :set_activities, only: %i[preview]
   before_action :set_layout_for_table, only: %i[show]
+  before_action :load_available_tables, only: %i[show preview]
   before_action :check_user_permissions, only: %i[show]
 
   def show
@@ -49,8 +49,8 @@ class TablesController < ApplicationController
                                   table_field_params[:id])
   rescue ActiveRecord::StatementInvalid => e
     render json: {
-     error: e.to_s
-   }, status: 400
+      error: e.to_s
+    }, status: 400
   end
 
   def update_related_table_field
@@ -61,8 +61,8 @@ class TablesController < ApplicationController
                                   related_table_field_params[:foreign_key_value])
   rescue ActiveRecord::StatementInvalid => e
     render json: {
-     error: e.to_s
-   }, status: 400
+      error: e.to_s
+    }, status: 400
   end
 
   def settings
@@ -89,17 +89,17 @@ class TablesController < ApplicationController
 
   def table_field_params
     params.require(:table_field).permit(:id,
-                                     :field,
-                                     :table,
-                                     :value)
+                                        :field,
+                                        :table,
+                                        :value)
   end
 
   def related_table_field_params
     params.require(:related_table_field).permit(:foreign_key_value,
-                                     :foreign_key_title,
-                                     :field,
-                                     :table,
-                                     :value)
+                                                :foreign_key_title,
+                                                :field,
+                                                :table,
+                                                :value)
   end
 
   def table_has_layout?(table)
@@ -112,6 +112,24 @@ class TablesController < ApplicationController
 
   def set_current_table
     @current_table = params[:table]
+  end
+
+  def set_nested_table
+    @current_table_settings = TargetTableSetting.find_by(name: params[:table])
+    nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
+
+    @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []
+  end
+
+  def nested_column_names(nested_table_state)
+    nested_column_names = []
+    nested_db_repo = Kuwinda::Repository::TargetDB.new(@current_table_settings.nested_table)
+
+    nested_table_state.visible_columns.each do |value|
+      nested_column_names << nested_db_repo.table_columns[value.to_i].name
+    end
+
+    nested_column_names
   end
 
   def relatable_tables(table)
