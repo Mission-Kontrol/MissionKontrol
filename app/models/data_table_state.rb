@@ -20,4 +20,14 @@ class DataTableState < ApplicationRecord
       columns: columns
     }
   end
+
+  def visible_columns
+    visible_columns = []
+
+    state['columns'].each do |key, value|
+      visible_columns << key if value['visible'] == 'true'
+    end
+
+    visible_columns
+  end
 end

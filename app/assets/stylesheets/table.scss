@@ -21,6 +21,10 @@
   tbody {
     background-color: $background-gray;
     // background-opacity: 0.5;
+
+    tr > td > .dataTables_wrapper {
+      display: none;
+    }
   }
 }
 

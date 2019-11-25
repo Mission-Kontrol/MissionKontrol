@@ -29,7 +29,6 @@ function fetchDataForRelatedTables() {
 }
 
 function fetchDataForNestedTable(recordId, nestedTable, tableName) {
-  let nestedTableObject = $(".nested-data-table");
   let url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable;
 
   $.ajax({
@@ -47,10 +46,11 @@ function loadNestedDataTable(columns, data) {
     info: false,
     paging: false,
     columns: columns,
-    autoWidth: false,
+    autoWidth: true,
     dom: '',
     data: data,
     stateSave: true,
+    scrollX: true,
     stateSaveCallback(settings, data) {
       if ( settings.iDraw <= 1 ) {
         return;
@@ -79,6 +79,10 @@ function loadNestedDataTable(columns, data) {
 function loadDataTable (columns) {
   var canExport = $(".data-table").data("can-export");
   var tableName = $(".data-table").data("table-name");
+  var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
+  if (nestedVisibleColumns.length > 0) {
+    columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img src='/assets/images/icons/triangle.svg'></a>"})
+  }
   var searchableTable = $(".data-table").DataTable({
     colReorder: true,
     "deferRender": true,
@@ -174,10 +178,10 @@ function loadDataTable (columns) {
     searchableTable.state.save().ajax.reload();
   });
 
-  $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row", function () {
-    var tr = $(this);
+  $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row > td:first-child", function () {
+    var tr = $(this).closest('tr');
     var row = searchableTable.row(tr);
-    var nestedTable = this.attributes['data-nested-table'].nodeValue;
+    var nestedTable = tr.data('nested-table');
 
     if (nestedTable === null) {
       return
@@ -188,30 +192,28 @@ function loadDataTable (columns) {
       tr.removeClass('shown');
     }
     else {
-      row.child( formatNestedTableColumns(row.data(), tableName, nestedTable) ).show();
+      row.child( formatNestedTableColumns(row.data(), tableName, nestedTable, nestedVisibleColumns) ).show();
       tr.addClass('shown');
     }
   });
 }
 
-function formatNestedTableColumns (data, tableName, nestedTable) {
-  console.log(data)
-  console.log(data.id)
-  var newTable = "<table id='target-table-"+ nestedTable +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
+function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleColumns) {
+  var newTableStart = "<table id='target-table-"+ nestedTable +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
     "<thead>"+
       "<tr>"+
-        "<th class='column-id'>id</th>"+
-        "<th class='column-event_id'>event_id</th>"+
-        "<th class='column-user_id'>user_id</th>"+
-        "<th class='column-created_at'>created_at</th>"+
-        "<th class='column-updated_at'>updated_at</th>"+
+        "<th>"
+
+  var headers = nestedVisibleColumns.join('</th><th>')
+
+  var newTableEnd = "</th>"+
       "</tr>"+
     "</thead>"+
   "</table>"
 
   fetchDataForNestedTable(data.id, nestedTable, tableName)
 
-  return newTable
+  return newTableStart + headers + newTableEnd
 }
 
 function loadRelatedDataTable (columns, id, ajax) {

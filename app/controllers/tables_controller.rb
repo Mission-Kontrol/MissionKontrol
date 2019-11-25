@@ -113,6 +113,19 @@ class TablesController < ApplicationController
   def set_current_table
     @current_table = params[:table]
     @current_table_settings = TargetTableSetting.find_by(name: params[:table])
+    nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
+    if nested_table_state
+      @nested_table_columns = nested_table_state.visible_columns || []
+      nested_column_names = []
+      nested_db_repo = Kuwinda::Repository::TargetDB.new(@current_table_settings.nested_table)
+      @nested_table_columns.each do |value|
+        nested_column_names << nested_db_repo.table_columns[value.to_i].name
+      end
+
+      @nested_column_names = nested_column_names
+    else
+      @nested_column_names = []
+    end
   end
 
   def relatable_tables(table)
