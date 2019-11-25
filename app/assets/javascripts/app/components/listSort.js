@@ -23,7 +23,7 @@ ready = function(){
         updatedOrder.push({ value: $(this).data("value"), position: i+1 });
       });
     });
-  };
+  }
 }
 
 $(document).ready(ready);

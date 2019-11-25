@@ -28,6 +28,40 @@ function showWarningModalDialog(yesCallback, noCallback) {
     });
 }
 
+function addPaddingToContainer(draggedItems) {
+  $(draggedItems).each(function () {
+    $(this).css({"margin": "10px -2px"});
+  })
+  $(draggedItems.first()).css({"margin-top": "-2px"});
+  $(draggedItems.last()).css({"margin-bottom": "-2px"});
+}
+
+function addPaddingToDraggableItems(containers) {
+  var containerArray = containers.split(" ");
+  let withoutLastContainer = containerArray.pop();
+  $(containerArray).each(function () {
+    var container = this.slice(0, -1);
+    var draggedItems = $(container).children(".layout-builder-draggable-field");
+    if (draggedItems.length > 1) {
+      addPaddingToContainer(draggedItems);
+    } else {
+      $(draggedItems).each(function () {
+        $(this).css({"margin": "-2px"});
+      });
+    }
+  });
+
+  var lastContainer = $("#layout-builder-draggable-main-container3");
+  var draggedItemsFinal = lastContainer.children(".layout-builder-draggable-field");
+  if (draggedItemsFinal.length > 1) {
+    addPaddingToContainer(draggedItemsFinal);
+  } else {
+    $(draggedItemsFinal).each(function () {
+      $(this).css({"margin": "-2px"});
+    });
+  }
+}
+
 function rebuildDraggable(table) {
   if (draggable) {
     draggable.destroy();
@@ -68,11 +102,11 @@ function rebuildDraggableDataContainers() {
 }
 
 function isNotTrashContainer(containerId) {
-  return containerId != "layout-builder-draggable-trash-container";
+  return containerId !== "layout-builder-draggable-trash-container";
 }
 
 function isNotFieldsContainer(containerId) {
-  return containerId != "layout-builder-draggable-fields-container";
+  return containerId !== "layout-builder-draggable-fields-container";
 }
 
 function updateLayoutBuilderContainer (containerId, containerItems) {
@@ -269,11 +303,11 @@ function updateTableField(evt, table, field, id) {
   }
 
   let data = {};
-  data["table_field"] = {}
-  data["table_field"]["table"] = table
-  data["table_field"]["id"] = id
-  data["table_field"]["field"] = field
-  data["table_field"]["value"] = newValue
+  data["table_field"] = {};
+  data["table_field"]["table"] = table;
+  data["table_field"]["id"] = id;
+  data["table_field"]["field"] = field;
+  data["table_field"]["value"] = newValue;
 
   $.ajax({
     url: "/table_field",
@@ -361,40 +395,6 @@ function prepareNormalToast() {
     preventDuplicates: true,
     positionClass: "toast-bottom-right"
   };
-}
-
-function addPaddingToDraggableItems(containers) {
-  var containerArray = containers.split(" ");
-  let withoutLastContainer = containerArray.pop();
-  $(containerArray).each(function () {
-    var container = this.slice(0, -1);
-    var draggedItems = $(container).children(".layout-builder-draggable-field");
-    if (draggedItems.length > 1) {
-      addPaddingToContainer(draggedItems);
-    } else {
-      $(draggedItems).each(function () {
-        $(this).css({"margin": "-2px"});
-      });
-    }
-  });
-
-  var lastContainer = $("#layout-builder-draggable-main-container3");
-  var draggedItemsFinal = lastContainer.children(".layout-builder-draggable-field");
-  if (draggedItemsFinal.length > 1) {
-    addPaddingToContainer(draggedItemsFinal);
-  } else {
-    $(draggedItemsFinal).each(function () {
-      $(this).css({"margin": "-2px"});
-    });
-  }
-}
-
-function addPaddingToContainer(draggedItems) {
-  $(draggedItems).each(function () {
-    $(this).css({"margin": "10px -2px"});
-  })
-  $(draggedItems.first()).css({"margin-top": "-2px"});
-  $(draggedItems.last()).css({"margin-bottom": "-2px"});
 }
 
 function updateCallableFields() {
