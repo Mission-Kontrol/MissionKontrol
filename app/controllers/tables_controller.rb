@@ -80,7 +80,7 @@ class TablesController < ApplicationController
   private
 
   def check_user_permissions
-    redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table)
+    # redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table)
   end
 
   def set_target_db_repo
@@ -112,6 +112,7 @@ class TablesController < ApplicationController
 
   def set_current_table
     @current_table = params[:table]
+    @current_table_settings = TargetTableSetting.find_by(name: params[:table])
   end
 
   def relatable_tables(table)

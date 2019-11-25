@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <table id="target-table-<%= @target_db_repo.table.downcase %>" class="data-table table" data-table-name='<%= current_table %>' data-can-export="<%= current_admin_user.export_abilities? %>">
+    <table id="target-table-<%= @target_db_repo.table.downcase %>" class="data-table table" data-table-name='<%= current_table %>' data-nested-table='<%= table_settings.nested_table %>' data-can-export="<%= current_admin_user.export_abilities? %>">
       <thead>
         <tr>
           <% @headers.each do |header|%>

@@ -28,11 +28,59 @@ function fetchDataForRelatedTables() {
   }
 }
 
+function fetchDataForNestedTable(recordId, nestedTable, tableName) {
+  let nestedTableObject = $(".nested-data-table");
+  let url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable;
+
+  $.ajax({
+    dataType: "json",
+    url: url,
+    success: function(d) {
+      loadNestedDataTable(d.columns, d.data);
+    }
+  });
+}
+
+function loadNestedDataTable(columns, data) {
+  var nestedTable = $(".nested-data-table").DataTable({
+    colReorder: false,
+    info: false,
+    paging: false,
+    columns: columns,
+    autoWidth: false,
+    dom: '',
+    data: data,
+    stateSave: true,
+    stateSaveCallback(settings, data) {
+      if ( settings.iDraw <= 1 ) {
+        return;
+      }
+      $.ajax({
+        "url": "/data_table_states/save?table=" + $(this).data("table-name"),
+        "data": { "state": data },
+        "dataType": "json",
+        "type": "POST",
+        "success": function () {
+        }
+      });
+    },
+    stateLoadCallback(settings, callback) {
+      $.ajax({
+        "url": "/data_table_states/load?table=" + $(this).data("table-name"),
+        "dataType": "json",
+        "success": function (json) {
+          callback( json );
+        }
+      });
+    }
+  })
+}
+
 function loadDataTable (columns) {
   var canExport = $(".data-table").data("can-export");
   var tableName = $(".data-table").data("table-name");
   var searchableTable = $(".data-table").DataTable({
-    "colReorder": true,
+    colReorder: true,
     "deferRender": true,
     "autoWidth": false,
     "scrollX": true,
@@ -56,8 +104,8 @@ function loadDataTable (columns) {
     "ajax": "/" + (location.pathname+location.search).substr(1),
     "dom": 'f<"table--info"piB>rt<"clear">',
     "columns": columns,
-    "stateSave": true,
-    "stateSaveCallback": function (settings, data) {
+    stateSave: true,
+    stateSaveCallback(settings, data) {
       if ( settings.iDraw <= 1 ) {
         return;
       }
@@ -66,10 +114,11 @@ function loadDataTable (columns) {
         "data": { "state": data },
         "dataType": "json",
         "type": "POST",
-        "success": function () {}
+        "success": function () {
+        }
       });
     },
-    "stateLoadCallback": function (settings, callback) {
+    stateLoadCallback(settings, callback) {
       $.ajax({
         "url": "/data_table_states/load?table=" + $(this).data("table-name"),
         "dataType": "json",
@@ -80,15 +129,17 @@ function loadDataTable (columns) {
     },
     "createdRow": function( row, data, dataIndex ) {
       let table = $(this).data("table-name");
+      let nestedTable = $(this).data("nested-table")
       let id = data.id;
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      $(row).addClass( "clickable-row" );
+      $(row).addClass( "table--nested-row" );
       $(row).attr( "data-href",  previewUrl);
+      $(row).attr( "data-nested-table", nestedTable )
     },
     "buttons": [
       {
         extend: "colvis",
-        className: "buttons-csv table--colvis",
+        className: "table--colvis",
         text: "Columns"
       },
       {
@@ -118,6 +169,49 @@ function loadDataTable (columns) {
       });
     }
   });
+
+  $("body").on("click", ".buttons-columnVisibility a", function () {
+    searchableTable.state.save().ajax.reload();
+  });
+
+  $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row", function () {
+    var tr = $(this);
+    var row = searchableTable.row(tr);
+    var nestedTable = this.attributes['data-nested-table'].nodeValue;
+
+    if (nestedTable === null) {
+      return
+    }
+
+    if ( row.child.isShown() ) {
+      row.child.hide();
+      tr.removeClass('shown');
+    }
+    else {
+      row.child( formatNestedTableColumns(row.data(), tableName, nestedTable) ).show();
+      tr.addClass('shown');
+    }
+  });
+}
+
+function formatNestedTableColumns (data, tableName, nestedTable) {
+  console.log(data)
+  console.log(data.id)
+  var newTable = "<table id='target-table-"+ nestedTable +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
+    "<thead>"+
+      "<tr>"+
+        "<th class='column-id'>id</th>"+
+        "<th class='column-event_id'>event_id</th>"+
+        "<th class='column-user_id'>user_id</th>"+
+        "<th class='column-created_at'>created_at</th>"+
+        "<th class='column-updated_at'>updated_at</th>"+
+      "</tr>"+
+    "</thead>"+
+  "</table>"
+
+  fetchDataForNestedTable(data.id, nestedTable, tableName)
+
+  return newTable
 }
 
 function loadRelatedDataTable (columns, id, ajax) {
