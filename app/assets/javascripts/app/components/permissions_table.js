@@ -18,29 +18,71 @@ function activateTooltipster () {
       },
       interactive: true,
       contentAsHTML: true,
-      content: $('<div class="tooltip_templates">'+
-        '<span id="tooltip_content">'+
-        '<a href="#" class="permissions-enable-all" data-role="'+role+'" data-table="'+table+'">Enable</a>'+
-        '<br>'+
-        '<a href="#" class="permissions-disable-all" data-role="'+role+'" data-table="'+table+'">Disable</a>'+
-        '</span>'+
-        '</div>'
+      content: $("<div class='tooltip_templates'>"+
+        "<span id='tooltip_content'>"+
+        "<a href='#' class='permissions-enable-all' data-role='"+role+"' data-table='"+table+"'>Enable</a>"+
+        "<br>"+
+        "<a href='#' class='permissions-disable-all' data-role='"+role+"' data-table='"+table+"'>Disable</a>"+
+        "</span>"+
+        "</div>"
       ),
     });
   });
 }
 
+function displayCheckbox (value, roleName, action) {
+  if (value === true) {
+    return "<img class='filled-checkbox' src='"+filledCheckboxIcon+"' data-role='"+roleName+"' data-action='"+action+"'>";
+  } else {
+    return "<img class='empty-checkbox' src='"+emptyCheckboxIcon+"' data-role='"+roleName+"' data-action='"+action+"'>";
+  }
+}
+
+function formatNestedColumns ( d ) {
+  var permissionsClass = 'class="permissions--nested-table-data"';
+  var adminTd = permissionsClass+' data-role="Admin"';
+  var salesTd = permissionsClass+' data-role="Sales"';
+  var teamLeadTd = permissionsClass+' data-role="Team Lead"';
+
+  return "<table id='permissions--nested-table' data-table='"+d.Table+"'>"+
+      "<tr>"+
+          "<td "+permissionsClass+"><p>View</p></td>"+
+          "<td "+adminTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_view, "Admin", "view") +"</td>"+
+          "<td "+salesTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_view, "Sales", "view") +"</td>"+
+          "<td "+teamLeadTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_view, "Team Lead", "view") +"</td>"+
+      "</tr>"+
+      "<tr>"+
+          "<td "+permissionsClass+"><p>Create</p></td>"+
+          "<td "+adminTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_create, "Admin", "create") +"</td>"+
+          "<td "+salesTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_create, "Sales", "create") +"</td>"+
+          "<td "+teamLeadTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_create, "Team Lead", "create") +"</td>"+
+      "</tr>"+
+      "<tr>"+
+          "<td "+permissionsClass+"><p>Edit</p></td>"+
+          "<td "+adminTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_edit, "Admin", "edit") +"</td>"+
+          "<td "+salesTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_edit, "Sales", "edit") +"</td>"+
+          "<td "+teamLeadTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_edit, "Team Lead", "edit") +"</td>"+
+      "</tr>"+
+      "<tr>"+
+          "<td "+permissionsClass+"><p>Delete</p></td>"+
+          "<td "+adminTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_delete, "Admin", "delete") +"</td>"+
+          "<td "+salesTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_delete, "Sales", "delete") +"</td>"+
+          "<td "+teamLeadTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_delete, "Team Lead", "delete") +"</td>"+
+      "</tr>"+
+  "</table>";
+}
+
 function loadPermissionsDataTable (columns) {
   var searchableTable = $(".data-table-permissions").DataTable({
-    "colReorder": true,
-    "paging": false,
-    "info": false,
-    "searching": false,
-    "deferRender": true,
-    "autoWidth": false,
-    "scrollX": true,
-    "serverSide": true,
-    "ordering": true,
+    colReorder: true,
+    paging: false,
+    info: false,
+    searching: false,
+    deferRender: true,
+    autoWidth: false,
+    scrollX: true,
+    serverSide: true,
+    ordering: true,
     columnDefs: [
     {
       "orderable": true,
@@ -50,27 +92,27 @@ function loadPermissionsDataTable (columns) {
       orderable: false,
       targets: [1, 2, 3]
     }],
-    "processing": true,
-      "language": {
+    processing: true,
+      language: {
         processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
               "<div class='sk-dot1'></div>" +
               "<div class='sk-dot2'></div>" +
             "</div>"},
-    "ajax": "/" + (location.pathname+location.search).substr(1),
-    "columns": columns,
-    "stateSave": true,
+    ajax: "/" + (location.pathname+location.search).substr(1),
+    columns,
+    stateSave: true,
     stateSaveCallback(settings, data) {
       stateSaveCallbackFunction(settings, data, $(this));
     },
     stateLoadCallback(settings, callback) {
       stateLoadCallbackFunction($(this), callback);
     },
-    "createdRow": function( row, data, dataIndex ) {
+    createdRow(row, data, dataIndex) {
       let table = $(this).data("table-name");
       let id = data.id;
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-      $(row).addClass( "original-row-permissions" );
-      $(row).attr( "data-href",  previewUrl);
+      $(row).addClass("original-row-permissions");
+      $(row).attr("data-href",  previewUrl);
     },
     initComplete(settings, json) {
       initCompleteFunction(settings, json, searchableTable);
@@ -78,17 +120,17 @@ function loadPermissionsDataTable (columns) {
     }
   });
 
-  $('body').on('click', '#target-table-permissions > tbody > tr.original-row-permissions > td:first-child', function () {
-    var tr = $(this).closest('tr');
+  $("body").on("click", "#target-table-permissions > tbody > tr.original-row-permissions > td:first-child", function () {
+    var tr = $(this).closest("tr");
     var row = searchableTable.row(tr);
 
     if ( row.child.isShown() ) {
       row.child.hide();
-      tr.removeClass('shown');
+      tr.removeClass("shown");
     }
     else {
       row.child( formatNestedColumns(row.data()) ).show();
-      tr.addClass('shown');
+      tr.addClass("shown");
     }
   });
 }
@@ -106,17 +148,9 @@ function fetchDataForPermissionsTable() {
 function deHumanizeString (str) {
   function innerString() {
     return /[-\s]+/g;
-  };
+  }
 
   return str.replace(/([a-z\d])([A-Z]+)/g, "$1_$2").replace(innerString(), "_").toLowerCase();
-}
-
-function displayCheckbox (value, roleName, action) {
-  if (value === true) {
-    return "<img class='filled-checkbox' src='"+filledCheckboxIcon+"' data-role='"+roleName+"' data-action='"+action+"'>";
-  } else {
-    return "<img class='empty-checkbox' src='"+emptyCheckboxIcon+"' data-role='"+roleName+"' data-action='"+action+"'>";
-  }
 }
 
 function amendAllRelatedPermissions (role, table, action) {
@@ -177,48 +211,14 @@ function enableTooltipOnContentClick () {
   });
 }
 
-function formatNestedColumns ( d ) {
-  var permissionsClass = 'class="permissions--nested-table-data"';
-  var adminTd = permissionsClass+' data-role="Admin"';
-  var salesTd = permissionsClass+' data-role="Sales"';
-  var teamLeadTd = permissionsClass+' data-role="Team Lead"';
-
-  return '<table id="permissions--nested-table" data-table="'+d.Table+'">'+
-      '<tr>'+
-          '<td '+permissionsClass+'><p>View</p></td>'+
-          '<td '+adminTd+' data-action="view" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_view, 'Admin', 'view') +'</td>'+
-          '<td '+salesTd+' data-action="view" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_view, 'Sales', 'view') +'</td>'+
-          '<td '+teamLeadTd+' data-action="view" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_view, 'Team Lead', 'view') +'</td>'+
-      '</tr>'+
-      '<tr>'+
-          '<td '+permissionsClass+'><p>Create</p></td>'+
-          '<td '+adminTd+' data-action="create" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_create, 'Admin', 'create') +'</td>'+
-          '<td '+salesTd+' data-action="create" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_create, 'Sales', 'create') +'</td>'+
-          '<td '+teamLeadTd+' data-action="create" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_create, 'Team Lead', 'create') +'</td>'+
-      '</tr>'+
-      '<tr>'+
-          '<td '+permissionsClass+'><p>Edit</p></td>'+
-          '<td '+adminTd+' data-action="edit" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_edit, 'Admin', 'edit') +'</td>'+
-          '<td '+salesTd+' data-action="edit" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_edit, 'Sales', 'edit') +'</td>'+
-          '<td '+teamLeadTd+' data-action="edit" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_edit, 'Team Lead', 'edit') +'</td>'+
-      '</tr>'+
-      '<tr>'+
-          '<td '+permissionsClass+'><p>Delete</p></td>'+
-          '<td '+adminTd+' data-action="delete" data-table="'+d.Table+'">'+ displayCheckbox(d.Admin_delete, 'Admin', 'delete') +'</td>'+
-          '<td '+salesTd+' data-action="delete" data-table="'+d.Table+'">'+ displayCheckbox(d.Sales_delete, 'Sales', 'delete') +'</td>'+
-          '<td '+teamLeadTd+' data-action="delete" data-table="'+d.Table+'">'+ displayCheckbox(d.Team_Lead_delete, 'Team Lead', 'delete') +'</td>'+
-      '</tr>'+
-  '</table>';
-}
-
 function getUniqueRelatedPermissions (role, table, permission) {
   var relatedPermissions = [];
 
   $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"']").each (function () {
     var checkbox = $(this).children().attr("src");
 
-    if ($(this).data('action') === permission) {
-      return
+    if ($(this).data("action") === permission) {
+      return;
     } else if (checkbox === emptyCheckboxIcon) {
       relatedPermissions.push(false);
     } else if (checkbox === filledCheckboxIcon) {
