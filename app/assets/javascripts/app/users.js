@@ -25,26 +25,11 @@ function loadUserDataTable (columns) {
     "dom": 'f<"table--info"piB>rt<"clear">',
     "columns": columns,
     "stateSave": true,
-    "stateSaveCallback": function (settings, data) {
-      if ( settings.iDraw <= 1 ) {
-        return;
-      }
-      $.ajax({
-        "url": "/data_table_states/save?table=" + $(this).data("table-name"),
-        "data": { "state": data },
-        "dataType": "json",
-        "type": "POST",
-        "success": function () {}
-      });
+    stateSaveCallback(settings, data) {
+      stateSaveCallbackFunction(settings, data, $(this));
     },
-    "stateLoadCallback": function (settings, callback) {
-      $.ajax({
-        "url": "/data_table_states/load?table=" + $(this).data("table-name"),
-        "dataType": "json",
-        "success": function (json) {
-          callback( json );
-        }
-      });
+    stateLoadCallback(settings, callback) {
+      stateLoadCallbackFunction($(this), callback);
     },
     "createdRow": function( row, data, dataIndex ) {
       let id = data.id;
@@ -77,13 +62,8 @@ function loadUserDataTable (columns) {
         }
       }
     ],
-    "initComplete": function(settings, json) {
-      $('[id ^="target-table-"][id $="_filter"] input').unbind();
-      $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function(e) {
-        if(e.keyCode === 13) {
-          searchableTable.search( this.value ).draw();
-        }
-      });
+    initComplete(settings, json) {
+      initCompleteFunction(settings, json, searchableTable);
     }
   });
 }
