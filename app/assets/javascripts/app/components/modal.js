@@ -1,11 +1,13 @@
+"use strict";
+
 function closeModal() {
   $("body").on("click", ".modal--close-btn", function () {
-    var modal = $(this).parent().parent();
-    modal.removeClass("show");
-    modal.addClass("hide");
-  });
+        var modal = $(this).parent().parent();
+        modal.removeClass("show");
+        modal.addClass("hide");
+    });
 }
 
-$(document).ready(function() {
-  closeModal();
+$(document).ready(function () {
+    closeModal();
 });
