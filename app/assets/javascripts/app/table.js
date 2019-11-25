@@ -1,5 +1,27 @@
 "use strict";
 
+function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleColumns) {
+  var newTableStart = "<table id='target-table-"+ nestedTable +"-"+ data.id +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
+    "<thead>"+
+      "<tr>"+
+        "<th>";
+
+  var newArray = [];
+  nestedVisibleColumns.forEach(function (column) {
+    newArray.push(humanizeString(column));
+  });
+  var headers = newArray.join("</th><th>");
+
+  var newTableEnd = "</th>"+
+      "</tr>"+
+    "</thead>"+
+  "</table>";
+
+  fetchDataForNestedTable(data.id, nestedTable, tableName);
+
+  return newTableStart + headers + newTableEnd;
+}
+
 function fetchDataForTable() {
   $.ajax({
     dataType: "json",
@@ -30,27 +52,15 @@ function fetchDataForRelatedTables() {
   }
 }
 
-function fetchDataForNestedTable(recordId, nestedTable, tableName) {
-  let url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable;
-
-  $.ajax({
-    dataType: "json",
-    url: url,
-    success: function(d) {
-      loadNestedDataTable(d.columns, d.data, nestedTable, recordId);
-    }
-  });
-}
-
 function loadNestedDataTable(columns, data, nestedTable, recordId) {
-  var nestedTable = $("#target-table-" + nestedTable + "-" + recordId).DataTable({
+  $("#target-table-" + nestedTable + "-" + recordId).DataTable({
     colReorder: false,
     info: false,
     paging: false,
-    columns: columns,
+    columns,
     autoWidth: true,
-    dom: '',
-    data: data,
+    dom: "",
+    data,
     stateSave: true,
     scrollX: true,
     stateSaveCallback(settings, data) {
@@ -75,7 +85,19 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
         }
       });
     }
-  })
+  });
+}
+
+function fetchDataForNestedTable(recordId, nestedTable, tableName) {
+  let url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable;
+
+  $.ajax({
+    dataType: "json",
+    url: url,
+    success: function(d) {
+      loadNestedDataTable(d.columns, d.data, nestedTable, recordId);
+    }
+  });
 }
 
 function loadDataTable (columns) {
@@ -83,7 +105,7 @@ function loadDataTable (columns) {
   var tableName = $(".data-table").data("table-name");
   var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
   if (nestedVisibleColumns.length > 0) {
-    columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img src='/assets/images/icons/triangle.svg'></a>"})
+    columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img src='/assets/images/icons/triangle.svg'></a>"});
   }
   var searchableTable = $(".data-table").DataTable({
     colReorder: true,
@@ -120,8 +142,7 @@ function loadDataTable (columns) {
         "data": { "state": data },
         "dataType": "json",
         "type": "POST",
-        "success": function () {
-        }
+        "success"() {}
       });
     },
     stateLoadCallback(settings, callback) {
@@ -135,12 +156,12 @@ function loadDataTable (columns) {
     },
     "createdRow": function( row, data, dataIndex ) {
       let table = $(this).data("table-name");
-      let nestedTable = $(this).data("nested-table")
+      let nestedTable = $(this).data("nested-table");
       let id = data.id;
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
       $(row).addClass( "table--nested-row" );
       $(row).attr( "data-href",  previewUrl);
-      $(row).attr( "data-nested-table", nestedTable )
+      $(row).attr( "data-nested-table", nestedTable );
     },
     "buttons": [
       {
@@ -181,21 +202,21 @@ function loadDataTable (columns) {
   });
 
   $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row > td:first-child", function () {
-    var tr = $(this).closest('tr');
+    var tr = $(this).closest("tr");
     var row = searchableTable.row(tr);
-    var nestedTable = tr.data('nested-table');
+    var nestedTable = tr.data("nested-table");
 
     if (nestedTable === null) {
-      return
+      return;
     }
 
     if ( row.child.isShown() ) {
       row.child.hide();
-      tr.removeClass('shown');
+      tr.removeClass("shown");
     }
     else {
       row.child( formatNestedTableColumns(row.data(), tableName, nestedTable, nestedVisibleColumns) ).show();
-      tr.addClass('shown');
+      tr.addClass("shown");
     }
   });
 }
@@ -204,28 +225,6 @@ function humanizeString (str) {
   var restOfStr = str.slice(1).replace(/_/g, " ");
 
   return str.charAt(0).toUpperCase() + restOfStr;
-}
-
-function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleColumns) {
-  var newTableStart = "<table id='target-table-"+ nestedTable +"-"+ data.id +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
-    "<thead>"+
-      "<tr>"+
-        "<th>";
-
-  var newArray = [];
-  nestedVisibleColumns.forEach(function (column) {
-    newArray.push(humanizeString(column));
-  });
-  var headers = newArray.join('</th><th>');
-
-  var newTableEnd = "</th>"+
-      "</tr>"+
-    "</thead>"+
-  "</table>";
-
-  fetchDataForNestedTable(data.id, nestedTable, tableName);
-
-  return newTableStart + headers + newTableEnd;
 }
 
 function loadRelatedDataTable (columns, id, ajax) {

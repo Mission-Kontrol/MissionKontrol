@@ -8,14 +8,15 @@ class TablesController < ApplicationController
 
   before_action :authenticate_admin_user!,
                 :set_target_db_repo,
+                :set_current_table,
                 :check_license
 
-  before_action :set_current_table, :set_nested_table
+  before_action :set_nested_table
   before_action :load_task_queues, only: %i[show preview]
   before_action :set_relatable_tables, :set_activities, only: %i[preview]
   before_action :set_layout_for_table, only: %i[show]
   before_action :load_available_tables, only: %i[show preview]
-  before_action :check_user_permissions, only: %i[show preview]
+  before_action :check_user_permissions, only: %i[show]
 
   def show
     respond_to do |format|
