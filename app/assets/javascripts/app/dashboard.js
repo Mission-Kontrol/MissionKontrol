@@ -1,53 +1,7 @@
 var enjoyhint;
 
-$(document).ready(function() {
-  let metaTag = $('meta[name=psj]');
-  let isCurrentControllerDashboard = metaTag.attr('controller') == 'dashboard';
-  let isCurrentControllerTables = metaTag.attr('controller') == 'tables';
-  let isCurrentControllerLayoutBuilder = metaTag.attr('controller') == 'layout_builder';
-  let isCurrentActionShow = metaTag.attr('action') == 'show';
-  let isCurrentActionPreview = metaTag.attr('action') == 'preview';
-  let isCurrentActionEdit = metaTag.attr('action') == 'edit';
-  let tourComplete = (sessionStorage.tourCompleted === 'true');
-  let demoApp = (window.location.hostname === "demo.kuwinda.io");
-
-  loadFlotChart();
-  loadFooTable();
-  loadToastr();
-
-  if (isCurrentControllerDashboard && isCurrentActionShow && demoApp) {
-    if (!tourComplete) {
-      loadEnjoyhint1();
-      enjoyhint.run();
-    }
-  }
-
-  if (isCurrentControllerTables && isCurrentActionShow  && demoApp) {
-    if (!tourComplete) {
-      loadEnjoyhint2();
-      enjoyhint.run();
-    }
-  }
-
-  if (isCurrentControllerTables && isCurrentActionPreview  && demoApp) {
-    loadEnjoyhint3();
-    enjoyhint.run();
-  }
-
-  if (isCurrentControllerLayoutBuilder && isCurrentActionEdit  && demoApp) {
-    if (!tourComplete) {
-      loadEnjoyhint4();
-      enjoyhint.run();
-    }
-  }
-
-  $(".alert").fadeTo(5000, 500).slideUp(500, function(){
-    $(".alert").slideUp(500);
-  });
-});
-
 function loadFooTable () {
-  $('.footable').footable();
+  $(".footable").footable();
 }
 
 function loadFlotChart() {
@@ -85,7 +39,7 @@ function loadFlotChart() {
       clickable: true,
       tickColor: "#d5d5d5",
       borderWidth: 1,
-      color: '#d5d5d5'
+      color: "#d5d5d5"
     },
     colors: ["#563D7C", "#1C84C6"],
     xaxis: {
@@ -101,8 +55,8 @@ function loadFlotChart() {
 function loadToastr() {
   toastr.options = {
       closeButton: true,
-      howMethod: 'fadeIn',
-      hideMethod: 'fadeOut',
+      howMethod: "fadeIn",
+      hideMethod: "fadeOut",
       preventDuplicates: true,
       timeOut: 2000
   };
@@ -110,7 +64,7 @@ function loadToastr() {
 
 function loadEnjoyhint1() {
   enjoyhint = new EnjoyHint({
-    onSkip: function() {
+    onSkip() {
       completeTour();
     }
   });
@@ -119,27 +73,27 @@ function loadEnjoyhint1() {
   "We have the app connected to a dummy database for a very basic events app." + "<br /><br />" +
   "Click on the tables to show tables available from the database" + "</p>";
 
-  let description_tables = "<p>" + "When first setting up Kuwinda, it automatically finds all the tables available to it in your database and presents them here." + "<br/><br />" +
+  let descriptionTables = "<p>" + "When first setting up Kuwinda, it automatically finds all the tables available to it in your database and presents them here." + "<br/><br />" +
   "Click on users to see the users table." + "</p>";
 
-  var enjoyhint_script_steps = [
+  var enjoyhintScriptSteps = [
     {
-      'click #nav-link-for-tables': description,
+      "click #nav-link-for-tables": description,
       showSkip: false
     },
     {
-      description: description_tables,
+      description: descriptionTables,
       selector: "#side-menu",
       showSkip: false
     }
   ];
 
-  enjoyhint.set(enjoyhint_script_steps);
+  enjoyhint.set(enjoyhintScriptSteps);
 }
 
 function loadEnjoyhint2() {
   enjoyhint = new EnjoyHint({
-    onSkip: function() {
+    onSkip() {
       completeTour();
     }
   });
@@ -147,7 +101,7 @@ function loadEnjoyhint2() {
   let description = "<p>" + "By default Kuwinda will show all the fields that it can find in the table, you can change this later." + "<br/>" +
   "Click on the first user to look at that user in a bit more detail." + "</p>";
 
-  var enjoyhint_script_steps = [
+  var enjoyhintScriptSteps = [
     {
       description: description,
       selector: ".table-responsive",
@@ -156,7 +110,7 @@ function loadEnjoyhint2() {
     }
   ];
 
-  enjoyhint.set(enjoyhint_script_steps);
+  enjoyhint.set(enjoyhintScriptSteps);
 }
 
 function loadEnjoyhint3() {
@@ -170,7 +124,7 @@ function loadEnjoyhint3() {
   "We have included the ability to comment on records and will be adding more here soon." + "<br /><br />" +
   "Click on Edit layout to see how a layout is built." + "</p>";
 
-  var enjoyhint_script_steps = [
+  var enjoyhintScriptSteps = [
     {
       description: description,
       selector: ".edit-layout-btn",
@@ -180,7 +134,7 @@ function loadEnjoyhint3() {
     }
   ];
 
-  enjoyhint.set(enjoyhint_script_steps);
+  enjoyhint.set(enjoyhintScriptSteps);
 }
 
 function loadEnjoyhint4() {
@@ -197,10 +151,10 @@ function loadEnjoyhint4() {
   "You can add fields from the main table or fields from related tables." + "<br /><br />" +
   "Try adding some fields yourself. Click end now." + "</p>";
 
-  var enjoyhint_script_steps = [
+  var enjoyhintScriptSteps = [
     {
       description: description,
-      event: 'click',
+      event: "click",
       selector: ".layout_builder_selected_table_name",
       showSkip: false,
       showNext: true,
@@ -208,9 +162,55 @@ function loadEnjoyhint4() {
     }
   ];
 
-  enjoyhint.set(enjoyhint_script_steps);
+  enjoyhint.set(enjoyhintScriptSteps);
 }
 
 function completeTour() {
-  sessionStorage.setItem('tourCompleted', true);
+  sessionStorage.setItem("tourCompleted", true);
 }
+
+$(document).ready(function() {
+  let metaTag = $("meta[name=psj]");
+  let isCurrentControllerDashboard = metaTag.attr("controller") === "dashboard";
+  let isCurrentControllerTables = metaTag.attr("controller") === "tables";
+  let isCurrentControllerLayoutBuilder = metaTag.attr("controller") === "layout_builder";
+  let isCurrentActionShow = metaTag.attr("action") === "show";
+  let isCurrentActionPreview = metaTag.attr("action") === "preview";
+  let isCurrentActionEdit = metaTag.attr("action") === "edit";
+  let tourComplete = (sessionStorage.tourCompleted === "true");
+  let demoApp = (window.location.hostname === "demo.kuwinda.io");
+
+  loadFlotChart();
+  loadFooTable();
+  loadToastr();
+
+  if (isCurrentControllerDashboard && isCurrentActionShow && demoApp) {
+    if (!tourComplete) {
+      loadEnjoyhint1();
+      enjoyhint.run();
+    }
+  }
+
+  if (isCurrentControllerTables && isCurrentActionShow  && demoApp) {
+    if (!tourComplete) {
+      loadEnjoyhint2();
+      enjoyhint.run();
+    }
+  }
+
+  if (isCurrentControllerTables && isCurrentActionPreview  && demoApp) {
+    loadEnjoyhint3();
+    enjoyhint.run();
+  }
+
+  if (isCurrentControllerLayoutBuilder && isCurrentActionEdit  && demoApp) {
+    if (!tourComplete) {
+      loadEnjoyhint4();
+      enjoyhint.run();
+    }
+  }
+
+  $(".alert").fadeTo(5000, 500).slideUp(500, function(){
+    $(".alert").slideUp(500);
+  });
+});
