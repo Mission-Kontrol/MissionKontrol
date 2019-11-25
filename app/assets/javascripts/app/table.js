@@ -1,5 +1,37 @@
 "use strict";
 
+function loadNestedDataTable(columns, data, nestedTable, recordId) {
+  $("#target-table-" + nestedTable + "-" + recordId).DataTable({
+    colReorder: false,
+    info: false,
+    paging: false,
+    columns,
+    autoWidth: true,
+    dom: "",
+    data,
+    stateSave: true,
+    scrollX: true,
+    stateSaveCallback(settings, data) {
+      stateSaveCallbackFunction(settings, data, $(this));
+    },
+    stateLoadCallback(settings, callback) {
+      stateLoadCallbackFunction($(this), callback);
+    }
+  });
+}
+
+function fetchDataForNestedTable(recordId, nestedTable, tableName) {
+  var url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable;
+
+  $.ajax({
+    dataType: "json",
+    url,
+    success(d) {
+      loadNestedDataTable(d.columns, d.data, nestedTable, recordId);
+    }
+  });
+}
+
 function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleColumns) {
   var newTableStart = "<table id='target-table-"+ nestedTable +"-"+ data.id +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
     "<thead>"+
@@ -50,38 +82,6 @@ function fetchDataForRelatedTables() {
       }
     });
   }
-}
-
-function loadNestedDataTable(columns, data, nestedTable, recordId) {
-  $("#target-table-" + nestedTable + "-" + recordId).DataTable({
-    colReorder: false,
-    info: false,
-    paging: false,
-    columns,
-    autoWidth: true,
-    dom: "",
-    data,
-    stateSave: true,
-    scrollX: true,
-    stateSaveCallback(settings, data) {
-      stateSaveCallbackFunction(settings, data, $(this));
-    },
-    stateLoadCallback(settings, callback) {
-      stateLoadCallbackFunction($(this), callback);
-    }
-  });
-}
-
-function fetchDataForNestedTable(recordId, nestedTable, tableName) {
-  var url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable;
-
-  $.ajax({
-    dataType: "json",
-    url,
-    success(d) {
-      loadNestedDataTable(d.columns, d.data, nestedTable, recordId);
-    }
-  });
 }
 
 function loadDataTable (columns) {
@@ -216,7 +216,7 @@ function loadRelatedDataTable (columns, id, ajax) {
           "className": "btn btn-warning",
         }
       ],
-      createdRow: function( row, data, dataIndex ) {
+      createdRow(row, data, dataIndex) {
         var table = $(this).data("table-name");
         var id = data.id;
         var previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
