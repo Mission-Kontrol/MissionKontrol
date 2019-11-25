@@ -3,7 +3,36 @@
   border: none;
 }
 
-.data-table {
+.nested-data-table {
+  padding-left: 25px;
+  background-color: inherit !important;
+
+  thead {
+    background-color: $background-gray !important;
+
+    tr {
+      background-color: $gray;
+      height: 37px;
+
+      th {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  tbody {
+    tr > td:first-child {
+      color: $purple;
+    }
+
+    tr > td:nth-child(2) {
+      color: inherit !important;
+    }
+  }
+}
+
+.data-table-main {
   thead {
     background-color: #f3f3f4;
     tr {
@@ -20,7 +49,10 @@
 
   tbody {
     background-color: $background-gray;
-    // background-opacity: 0.5;
+
+    tr > td:nth-child(2) {
+      color: $purple;
+    }
 
     tr > td > .dataTables_wrapper {
       display: none;
@@ -37,11 +69,6 @@
       }
     }
   }
-}
-
-.nested-data-table {
-  padding-left: 25px;
-  background-color: inherit !important;
 }
 
 div.dataTables_wrapper div.dataTables_filter input {

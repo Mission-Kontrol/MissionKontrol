@@ -1,6 +1,8 @@
+"use strict";
+
 function loadUserDataTable (columns) {
   var canExport = $("#target-table-admin-users").data("can-export");
-  columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"})
+  columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"});
   var searchableTable = $("#target-table-admin-users").DataTable({
     "colReorder": true,
     "deferRender": true,

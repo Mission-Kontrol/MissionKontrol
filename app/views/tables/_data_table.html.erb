@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <table id="target-table-<%= @target_db_repo.table.downcase %>" class="data-table table" data-table-name='<%= current_table %>' data-nested-table='<%= table_settings.nested_table %>' data-can-export="<%= current_admin_user.export_abilities? %>" data-nested-table-columns="<%= @nested_column_names %>">
+    <table id="target-table-<%= @target_db_repo.table.downcase %>" class="data-table data-table-main table" data-table-name='<%= current_table %>' data-nested-table='<%= table_settings.nested_table %>' data-can-export="<%= current_admin_user.export_abilities? %>" data-nested-table-columns="<%= @nested_column_names %>">
       <thead>
         <tr>
           <% unless @nested_column_names.empty? %>

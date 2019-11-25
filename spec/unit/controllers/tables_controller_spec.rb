@@ -5,6 +5,7 @@ require 'rails_helper'
 describe TablesController, :type => :controller do
   before do
     create_user_with_permissions('Sales', :view, 'users')
+    create(:target_table_setting)
   end
 
   describe 'GET show' do

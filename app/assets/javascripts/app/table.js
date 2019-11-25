@@ -1,3 +1,5 @@
+"use strict";
+
 function fetchDataForTable() {
   $.ajax({
     dataType: "json",
@@ -198,22 +200,32 @@ function loadDataTable (columns) {
   });
 }
 
+function humanizeString (str) {
+  var restOfStr = str.slice(1).replace(/_/g, " ");
+
+  return str.charAt(0).toUpperCase() + restOfStr;
+}
+
 function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleColumns) {
   var newTableStart = "<table id='target-table-"+ nestedTable +"-"+ data.id +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
     "<thead>"+
       "<tr>"+
-        "<th>"
+        "<th>";
 
-  var headers = nestedVisibleColumns.join('</th><th>')
+  var newArray = [];
+  nestedVisibleColumns.forEach(function (column) {
+    newArray.push(humanizeString(column));
+  });
+  var headers = newArray.join('</th><th>');
 
   var newTableEnd = "</th>"+
       "</tr>"+
     "</thead>"+
-  "</table>"
+  "</table>";
 
-  fetchDataForNestedTable(data.id, nestedTable, tableName)
+  fetchDataForNestedTable(data.id, nestedTable, tableName);
 
-  return newTableStart + headers + newTableEnd
+  return newTableStart + headers + newTableEnd;
 }
 
 function loadRelatedDataTable (columns, id, ajax) {
@@ -284,7 +296,7 @@ function loadRelatedDataTable (columns, id, ajax) {
 
 function loadTaskQueuePreviewDataTable (columns) {
   if ( $.fn.dataTable.isDataTable( "#task-queue-preview-table" ) ) {
-    let table = $("#task-queue-preview-table").DataTable();
+    var table = $("#task-queue-preview-table").DataTable();
     table.destroy();
   }
 

@@ -37,6 +37,7 @@ RSpec.configure do |config|
     Role.all.each(&:delete)
     Permission.all.each(&:delete)
     ViewBuilder.all.each(&:delete)
+    TargetTableSetting.all.each(&:delete)
     # DatabaseCleaner.clean
   end
 
