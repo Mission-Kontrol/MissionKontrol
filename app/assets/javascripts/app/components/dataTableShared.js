@@ -24,8 +24,8 @@ function stateSaveCallbackFunction(settings, data, object) {
 }
 
 function initCompleteFunction(settings, json, searchableTable) {
-    $('[id ^="target-table-"][id $="_filter"] input').unbind();
-    $('[id ^="target-table-"][id $="_filter"] input').bind('keyup', function (e) {
+    $("[id ^='target-table-'][id $='_filter'] input").unbind();
+    $("[id ^='target-table-'][id $='_filter'] input").bind("keyup", function (e) {
         if (e.keyCode === 13) {
             searchableTable.search(this.value).draw();
         }
