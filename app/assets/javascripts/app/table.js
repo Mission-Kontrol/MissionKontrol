@@ -35,13 +35,13 @@ function fetchDataForNestedTable(recordId, nestedTable, tableName) {
     dataType: "json",
     url: url,
     success: function(d) {
-      loadNestedDataTable(d.columns, d.data);
+      loadNestedDataTable(d.columns, d.data, nestedTable, recordId);
     }
   });
 }
 
-function loadNestedDataTable(columns, data) {
-  var nestedTable = $(".nested-data-table").DataTable({
+function loadNestedDataTable(columns, data, nestedTable, recordId) {
+  var nestedTable = $("#target-table-" + nestedTable + "-" + recordId).DataTable({
     colReorder: false,
     info: false,
     paging: false,
@@ -199,7 +199,7 @@ function loadDataTable (columns) {
 }
 
 function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleColumns) {
-  var newTableStart = "<table id='target-table-"+ nestedTable +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
+  var newTableStart = "<table id='target-table-"+ nestedTable +"-"+ data.id +"' class='nested-data-table table' data-table-name='"+ nestedTable +"' style='width:300px;'>"+
     "<thead>"+
       "<tr>"+
         "<th>"
