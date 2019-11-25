@@ -267,7 +267,7 @@ function addRolePermission (role, permission, table) {
   checkbox.removeClass("empty-checkbox");
   checkbox.addClass("filled-checkbox");
 
-  var viewPermission = $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='view']").children()
+  var viewPermission = $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+table+"'][data-action='view']").children();
 
   if (permission !== "view" && viewPermission.attr("src") !== filledCheckboxIcon) {
     viewPermission.attr({ "src": filledCheckboxIcon });
@@ -280,8 +280,8 @@ function removeRolePermission (role, permission, table) {
   $.post(
     "/permissions/remove_from_role",
     {
-      role: role,
-      permission: permission,
+      role,
+      permission,
       table: deHumanizeString(table)
     }
   );
@@ -305,7 +305,7 @@ function emptyCheckbox() {
     var permission = $(this).data("action");
     var table = $(this).closest("table").data("table");
 
-    removeRolePermission(role, permission, table)
+    removeRolePermission(role, permission, table);
   });
 }
 
@@ -331,4 +331,4 @@ $(document).ready(function() {
   fillCheckbox();
 
   enableTooltipOnContentClick();
-})
+});

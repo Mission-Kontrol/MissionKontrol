@@ -87,11 +87,11 @@ function rebuildDraggableDataContainers() {
     let containerId = dataContainerIds[i];
     let data = JSON.parse($(containerId)[0].dataset.fieldsForContainer);
 
-    if (data != "[]") {
+    if (data !== "[]") {
       let fieldsForContainer = Object.values(data);
 
       for (var j = 0; j < fieldsForContainer.length; j++) {
-        let field = fieldsForContainer[j]
+        let field = fieldsForContainer[j];
         if (!containerContainsDraggableItem(containerId, field.title)) {
           let draggableField = buildDraggableField(field);
           $(containerId).append(draggableField);
@@ -147,12 +147,12 @@ function getContainerItemsJSON(containerId) {
   let containerItemsJSON = [];
 
   for (var i = 0; i < containerItems.length; i++) {
-    let field = {}
-    field["title"] = containerItems[i].innerText.trim()
-    field["table"] = containerItems[i].dataset.fieldTable
-    field["kind"] = containerItems[i].dataset.fieldType
-    field["editable"] = containerItems[i].dataset.fieldEditable
-    containerItemsJSON.push(field)
+    let field = {};
+    field["title"] = containerItems[i].innerText.trim();
+    field["table"] = containerItems[i].dataset.fieldTable;
+    field["kind"] = containerItems[i].dataset.fieldType;
+    field["editable"] = containerItems[i].dataset.fieldEditable;
+    containerItemsJSON.push(field);
   }
 
   return containerItemsJSON;
@@ -162,22 +162,16 @@ function getContainerParam(containerId) {
   switch(containerId) {
     case "layout-builder-draggable-header-container1":
       return "draggable_fields_header_container1";
-      break;
     case "layout-builder-draggable-header-container2":
       return "draggable_fields_header_container2";
-      break;
     case "layout-builder-draggable-main-container1":
       return "draggable_fields_main_container1";
-      break;
     case "layout-builder-draggable-main-container2":
       return "draggable_fields_main_container2";
-      break;
     case "layout-builder-draggable-main-container3":
       return "draggable_fields_main_container3";
-      break;
     case "layout-builder-draggable-side-container":
       return "draggable_fields_side_container";
-      break;
     default:
       console.error("unknown container - " + containerId);
       return;
@@ -312,10 +306,10 @@ function updateTableField(evt, table, field, id) {
   $.ajax({
     url: "/table_field",
     type: "PATCH",
-    data: data,
+    data,
     error: function(XMLHttpRequest, errorTextStatus, error){
       if (XMLHttpRequest.status == 400) {
-        prepareLongToast()
+        prepareLongToast();
         toastr.error(XMLHttpRequest.responseJSON.error);
       }
 
@@ -324,7 +318,7 @@ function updateTableField(evt, table, field, id) {
     success: function(response, status, request){
       refreshEditableContent(editableContent, newValue);
       hideEditable(editableRow);
-      toastr.info('Table field successfully updated.');
+      toastr.info("Table field successfully updated.");
     }
   });
 }
@@ -339,8 +333,8 @@ function updateRelatedTableField(evt, table, field, foreignKeyTitle, foreignKeyV
   let newValue = editableInput.children[0].value;
 
   if (currentValue === newValue) {
-    cancelEditable(evt)
-    return
+    cancelEditable(evt);
+    return;
   }
 
   let data = {};
@@ -356,7 +350,7 @@ function updateRelatedTableField(evt, table, field, foreignKeyTitle, foreignKeyV
     type: "PATCH",
     data,
     error: function(XMLHttpRequest, errorTextStatus, error){
-      if (XMLHttpRequest.status == 400) {
+      if (XMLHttpRequest.status === 400) {
         prepareLongToast();
         toastr.error(XMLHttpRequest.responseJSON.error);
       }
@@ -366,7 +360,7 @@ function updateRelatedTableField(evt, table, field, foreignKeyTitle, foreignKeyV
     success: function(response, status, request){
       refreshEditableContent(editableContent, newValue);
       hideEditable(editableRow);
-      toastr.info('Related table field successfully updated.');
+      toastr.info("Related table field successfully updated.");
     }
   });
 }
@@ -427,7 +421,6 @@ function updateCallableFields() {
       console.error("PATCH /layouts/:id Failed: "+ errorTextStatus+" ;"+error);
     },
     success: function(response, status, request){
-      console.log("PATCH /layouts/:id Success");
     }
   });
 }
@@ -455,11 +448,11 @@ function removeRelatedTable() {
 
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
-  let isCurrentControllerLayout = metaTag.attr("controller") == "layout_builder";
-  let isCurrentActionNew = metaTag.attr("action") == "new";
-  let isCurrentActionEdit = metaTag.attr("action") == "edit";
+  let isCurrentControllerLayout = metaTag.attr("controller") === "layout_builder";
+  let isCurrentActionNew = metaTag.attr("action") === "new";
+  let isCurrentActionEdit = metaTag.attr("action") === "edit";
   let containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3";
-  let isCurrentActionPreview = metaTag.attr("action") == "preview";
+  let isCurrentActionPreview = metaTag.attr("action") === "preview";
 
   prepareNormalToast();
   addPaddingToDraggableItems(containers);
