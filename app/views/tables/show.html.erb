@@ -22,9 +22,6 @@
           <br>
           <%= render 'data_table', current_table: @current_table, table_settings: @current_table_settings %>
         </div>
-        <div class="table--add-record">
-          <%= link_to 'Add Record', table_add_record_path(table: @current_table), remote: true %>
-        </div>
       </div>
     </div>
   </div>

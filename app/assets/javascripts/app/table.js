@@ -128,6 +128,11 @@ function loadDataTable (columns) {
     ],
     initComplete(settings, json) {
       initCompleteFunction(settings, json, searchableTable);
+      var myHtmlContent = "<tr class='table--nested-row'><td><a data-remote='true' href='/table/add_record?table=" + tableName + "'>Add Record</a></td></tr>";
+      var tableRef = $('.dataTable').last().find('tbody')[0];
+
+      var newRow = tableRef.insertRow(tableRef.rows.length);
+      newRow.innerHTML = myHtmlContent;
     }
   });
 
