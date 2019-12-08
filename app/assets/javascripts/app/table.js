@@ -54,36 +54,6 @@ function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleCo
   return newTableStart + headers + newTableEnd;
 }
 
-function fetchDataForTable() {
-  $.ajax({
-    dataType: "json",
-    url: "/" + (location.pathname+location.search).substr(1),
-    success(d) {
-      loadDataTable(d.columns);
-    }
-  });
-}
-
-function fetchDataForRelatedTables() {
-  var recordId = location.pathname.split("/")[3];
-  var primaryTable = location.pathname.split("/")[2];
-  var relatedTables = $(".related-data-table");
-
-  for (var i = 0; i < relatedTables.length; i++) {
-    let relatedTable = relatedTables[i].dataset.tableName;
-    let relatedTableId = relatedTables[i].id;
-    let url = "/tables/" + primaryTable + "/" + recordId + "?table=" + relatedTable;
-
-    $.ajax({
-      dataType: "json",
-      url,
-      success(d) {
-        loadRelatedDataTable(d.columns, relatedTableId, url);
-      }
-    });
-  }
-}
-
 function loadDataTable (columns) {
   var canExport = $(".data-table").data("can-export");
   var tableName = $(".data-table").data("table-name");
@@ -185,6 +155,16 @@ function loadDataTable (columns) {
   });
 }
 
+function fetchDataForTable() {
+  $.ajax({
+    dataType: "json",
+    url: "/" + (location.pathname+location.search).substr(1),
+    success(d) {
+      loadDataTable(d.columns);
+    }
+  });
+}
+
 function loadRelatedDataTable (columns, id, ajax) {
   var searchableRelatedTable = { [id]:
     $("#" + id).DataTable({
@@ -228,6 +208,26 @@ function loadRelatedDataTable (columns, id, ajax) {
       }
     })
   };
+}
+
+function fetchDataForRelatedTables() {
+  var recordId = location.pathname.split("/")[3];
+  var primaryTable = location.pathname.split("/")[2];
+  var relatedTables = $(".related-data-table");
+
+  for (var i = 0; i < relatedTables.length; i++) {
+    let relatedTable = relatedTables[i].dataset.tableName;
+    let relatedTableId = relatedTables[i].id;
+    let url = "/tables/" + primaryTable + "/" + recordId + "?table=" + relatedTable;
+
+    $.ajax({
+      dataType: "json",
+      url,
+      success(d) {
+        loadRelatedDataTable(d.columns, relatedTableId, url);
+      }
+    });
+  }
 }
 
 function loadTaskQueuePreviewDataTable (columns) {
@@ -296,4 +296,4 @@ $(document).ready(function() {
       updateTableField(event, table, field, id);
     }
   })
-})
+});
