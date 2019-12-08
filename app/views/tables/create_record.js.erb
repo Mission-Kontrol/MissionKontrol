@@ -1,0 +1,10 @@
+<% if @error == :NullViolation || @error == :NotUnique %>
+  toastr.error("<%= @error_message %>")
+<% elsif @error == :Unkown %>
+  toastr.error("Unable to save the record. Please check all your fields.")
+<% else %>
+  toastr.success('Record has been successfully updated.');
+  $(".data-table").DataTable().ajax.reload();
+  $('.table--add-record-modal').removeClass('show');
+  $('.table--add-record-modal').addClass('hide');
+<% end %>

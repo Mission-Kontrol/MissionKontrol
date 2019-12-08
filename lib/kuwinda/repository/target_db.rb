@@ -41,6 +41,28 @@ module Kuwinda
         conn.exec_query(sql)
       end
 
+      def create_record(table, record_params)
+        last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+        last_id = conn.exec_query(last_id_sql).rows.first.first
+        fields = '(id, '
+        values = "(#{last_id + 1}, "
+
+        record_params.each do |field, value|
+          column = table_columns.select { |table_column| table_column.name == field }.first
+          fields += "#{field}, "
+          if (column.type == :datetime || column.type == :inet || column.type == :integer) && value == ''
+            values += 'NULL, '
+          else
+            values += "'#{value}', "
+          end
+        end
+        fields += 'created_at, updated_at)'
+
+        values += "'#{DateTime.now}', '#{DateTime.now}')"
+        sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
+        conn.exec_query(sql)
+      end
+
       def query(sql, limit, offset)
         if limit && offset
           query_string = sql.split(';')
