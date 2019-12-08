@@ -6,12 +6,14 @@ class TablesController < ApplicationController
 
   layout 'dashboard'
 
+  IGNORED_COLUMNS = %w[id created_at updated_at user].freeze
+
   before_action :authenticate_admin_user!,
                 :set_target_db_repo,
                 :set_current_table,
                 :check_license
 
-  before_action :set_nested_table
+  before_action :set_nested_table, except: %i[add_record create_record]
   before_action :load_task_queues, only: %i[show preview]
   before_action :set_relatable_tables, :set_activities, only: %i[preview]
   before_action :set_layout_for_table, only: %i[show]
@@ -77,6 +79,26 @@ class TablesController < ApplicationController
     @result = @table_settings.save
   end
 
+  def add_record
+    @table = @target_db_repo.table
+    @table_settings = TargetTableSetting.find_by(name: @table)
+    set_columns_for_form
+  end
+
+  def create_record
+    @target_db_repo.create_record(params[:table], record_params)
+  rescue ActiveRecord::NotNullViolation => e
+    @error = :NullViolation
+    field = e.to_s.split("value in column ").last.split(" violates").first.split("\"").last
+    @error_message = "Unable to save record if #{field} is blank. Please fill in this field and try again."
+  rescue ActiveRecord::RecordNotUnique => e
+    @error = :NotUnique
+    field = e.to_s.split("Key (").last.split(")=").first
+    @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
+  rescue ActiveRecord::ActiveRecordError => e
+    @error = :Unknown
+  end
+
   private
 
   def check_user_permissions
@@ -134,5 +156,23 @@ class TablesController < ApplicationController
 
   def relatable_tables(table)
     Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
+  end
+
+  def set_columns_for_form
+    columns = @target_db_repo.table_columns
+    @inputs = []
+
+    columns.map do |column|
+      next if IGNORED_COLUMNS.include? column.name
+      @inputs << {
+        name: column.name,
+        type: column.type,
+        required: !column.null
+      }
+    end
+  end
+
+  def record_params
+    params.require(:record).permit!
   end
 end

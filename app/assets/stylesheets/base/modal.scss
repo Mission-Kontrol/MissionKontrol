@@ -1,9 +1,10 @@
-.users--edit-modal, .users--new-modal, .roles--edit-modal, .table--settings-modal {
+.users--edit-modal, .users--new-modal, .roles--edit-modal, .table--add-record-modal, .table--settings-modal {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 5000;
@@ -20,7 +21,7 @@
     -webkit-animation-name: animate-right;
     -webkit-animation-duration: 0.4s;
     animation-name: animate-right;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
   }
 
   .modal--close-btn {
@@ -32,6 +33,7 @@
 
   .modal--content-container {
     padding: 60px 40px;
+    background-color: white;
   }
 
   .modal--header {
@@ -86,7 +88,18 @@
     }
   }
 
-  .user--modal-input, .role--modal-input {
+  .record--save-btn {
+    float: right;
+
+    .btn--save-record {
+      width: 137px;
+      border-radius: 5px;
+      background-color: #59c27c;
+      border-color: #59c27c;
+    }
+  }
+
+  .user--modal-input, .role--modal-input, .record--modal-input {
     cursor: auto;
     background: none;
     border: none;
@@ -95,10 +108,14 @@
     font-weight: normal;
   }
 
-  .role--modal-input {
+  .role--modal-input, .record--modal-input {
     width: 80%;
     text-align: right;
     padding-right: 0px;
+  }
+
+  .record--modal-input {
+    border-bottom: 1px solid #979797;
   }
 
   @-webkit-keyframes animate-right {

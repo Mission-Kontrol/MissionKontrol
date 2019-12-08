@@ -1,0 +1,54 @@
+<div class="table--add-record-modal hide">
+  <div class="modal--container">
+    <div class="modal--close-btn">
+        <img src="/assets/images/icons/close.png">
+      </div>
+    <div class="modal--content-container">
+      <div class="modal--header">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3>Add record</h3>
+          </div>
+        </div>
+      </div>
+      <div class="modal--content">
+
+        <%= form_tag("/table/create_record", method: "post", remote: true) do %>
+          <% @inputs.each do |input| %>
+            <div class="row">
+              <div class="col-sm-8 table--add-record--field-label">
+                <p>
+                  <%= label_tag input[:name], input[:name].humanize %>
+                  <% if input[:required] == true %>
+                    <span>*</span>
+                  <% end %>
+                </p>
+              </div>
+              <div class="col-sm-4 table--add-record--field-input">
+                <div class="">
+                  <%= add_record_field_input(input) %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="col-sm-12">
+              <p>
+                * Indicates field is mandatory for import any records missing a mandatory field will be excluded and you will be able to download an exception report.
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="record--save-btn">
+                <%= hidden_field_tag(:table, @current_table) %>
+                <%= submit_tag('Save', class: 'btn btn-primary btn--save-record') %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

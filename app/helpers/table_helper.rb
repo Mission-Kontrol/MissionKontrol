@@ -74,6 +74,17 @@ module TableHelper
     current_row &&  !current_row[field["title"]].blank?
   end
 
+  def add_record_field_input(input)
+    case input[:type]
+    when :integer
+      number_field_tag("record[#{input[:name].to_s}]", nil, { class: "record--modal-input", required: input[:required] })
+    when :datetime
+      datetime_field_tag("record[#{input[:name].to_s}]", nil, { class: "record--modal-input", required: input[:required] })
+    else
+      text_field_tag("record[#{input[:name].to_s}]", nil, { class: "record--modal-input", required: input[:required] })
+    end
+  end
+
   private
 
   def convert_table_name(table)
