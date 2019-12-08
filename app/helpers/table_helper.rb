@@ -77,11 +77,11 @@ module TableHelper
   def add_record_field_input(input)
     case input[:type]
     when :integer
-      number_field_tag("record[#{input[:name].to_s}]", nil, { class: "record--modal-input", required: input[:required] })
+      number_field_tag("record[#{input[:name]}]", nil, class: "record--modal-input", required: input[:required])
     when :datetime
-      datetime_field_tag("record[#{input[:name].to_s}]", nil, { class: "record--modal-input", required: input[:required] })
+      datetime_field_tag("record[#{input[:name]}]", nil, class: "record--modal-input", required: input[:required])
     else
-      text_field_tag("record[#{input[:name].to_s}]", nil, { class: "record--modal-input", required: input[:required] })
+      text_field_tag("record[#{input[:name]}]", nil, class: "record--modal-input", required: input[:required])
     end
   end
 

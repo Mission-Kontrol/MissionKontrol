@@ -226,6 +226,8 @@ Metrics/ClassLength:
   Max: 141
   Exclude:
     - 'app/controllers/admin_users_controller.rb'
+    - 'app/controllers/tables_controller.rb'
+    - 'lib/kuwinda/repository/target_db.rb'
 
 # Offense count: 1
 Metrics/CyclomaticComplexity:

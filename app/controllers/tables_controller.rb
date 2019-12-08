@@ -89,13 +89,13 @@ class TablesController < ApplicationController
     @target_db_repo.create_record(params[:table], record_params)
   rescue ActiveRecord::NotNullViolation => e
     @error = :NullViolation
-    field = e.to_s.split("value in column ").last.split(" violates").first.split("\"").last
+    field = e.to_s.split('value in column ').last.split(' violates').first.split('\"').last
     @error_message = "Unable to save record if #{field} is blank. Please fill in this field and try again."
   rescue ActiveRecord::RecordNotUnique => e
     @error = :NotUnique
-    field = e.to_s.split("Key (").last.split(")=").first
+    field = e.to_s.split('Key (').last.split(')=').first
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
-  rescue ActiveRecord::ActiveRecordError => e
+  rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
   end
 
@@ -164,6 +164,7 @@ class TablesController < ApplicationController
 
     columns.map do |column|
       next if IGNORED_COLUMNS.include? column.name
+
       @inputs << {
         name: column.name,
         type: column.type,
