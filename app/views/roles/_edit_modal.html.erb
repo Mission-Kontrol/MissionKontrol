@@ -1,30 +1,32 @@
 <div class="roles--edit-modal hide">
   <div class="modal--container">
-    <div class="modal--close-btn">
-        <img src="/assets/images/icons/close.png">
-      </div>
     <div class="modal--content-container">
       <div class="modal--header">
         <div class="row">
-          <div class="col-sm-12">
-            <h3><%= @role.name %></h3>
+          <div class="col-sm-10">
+            <h2 class="medium"><%= @role.name %></h2>
             <h5>
               Any users you add to this team will inherit the permissions of
               the team. A user can only be in one team.
             </h5>
+          </div>
+          <div class="col-sm-2">
+            <div class="modal--close-btn">
+              <img src="/assets/images/icons/close.png">
+            </div>
           </div>
         </div>
       </div>
       <div class="modal--content">
         <div class="row">
           <div class="col-sm-12">
-            <h5>TEAM PERMISSIONS</h5>
+            <h4 class="medium">TEAM PERMISSIONS</h4>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-8">
-            <p>Administrator</p>
-            <h6>Access to make any changes within application settings</h6>
+            <h4>Administrator</h4>
+            <h5>Access to make any changes within application settings</h5>
           </div>
           <div class="col-sm-4">
             <div class="role--setting-toggle">
@@ -43,8 +45,8 @@
         </div>
         <div class="row">
           <div class="col-sm-8">
-            <p>Editor</p>
-            <h6>Can edit and manage settings related to tables</h6>
+            <h4>Editor</h4>
+            <h5>Can edit and manage settings related to tables</h5>
           </div>
           <div class="col-sm-4">
             <div class="role--setting-toggle">
@@ -62,8 +64,8 @@
         </div>
         <div class="row">
           <div class="col-sm-8">
-            <p>Export</p>
-            <h6>For any table the role can view they can export as CSV</h6>
+            <h4>Export</h4>
+            <h5>For any table the role can view they can export as CSV</h5>
           </div>
           <div class="col-sm-4">
             <div class="role--setting-toggle">
@@ -81,8 +83,8 @@
         </div>
         <div class="row">
           <div class="col-sm-8">
-            <p>Exportable rows</p>
-            <h6>Number of rows that can be exported. 0 for unlimited.</h6>
+            <h4>Exportable rows</h4>
+            <h5>Number of rows that can be exported. 0 for unlimited.</h5>
           </div>
           <div class="col-sm-4">
             <%= text_field_tag 'export_limit', @role.export_limit, placeholder: '0', class: 'role--modal-input form-control', id: 'role--export-limit', data: {role: @role.id}, disabled: !@role.export %>
