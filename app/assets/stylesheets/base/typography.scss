@@ -76,6 +76,8 @@ p {
 
 a {
   color: $navy;
+  margin-top: 0;
+  margin-bottom: 0;
 
   &.underline {
     text-decoration: underline;

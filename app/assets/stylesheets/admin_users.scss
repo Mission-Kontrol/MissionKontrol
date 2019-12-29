@@ -1,5 +1,9 @@
-.users-teams--container, .users-status--container {
-  padding-top: 21px;
+.users-teams--container {
+  padding-top: 16%;
+}
+
+.users-status--container {
+  padding-top: 10%;
 }
 
 .users-teams--header, .users-status--header {
@@ -22,8 +26,9 @@
   }
 
   .users-teams--table-data, .users-status--table-data {
-    color: $purple;
-    font-weight: 500;
+    color: $blueberry;
+    @extend h5;
+    @extend .medium;
   }
 }
 

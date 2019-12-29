@@ -1,75 +1,71 @@
 <%= form_for(@user, url: admin_users_create_new_path, remote: true, html: {id: 'new-user-form'}) do |f| %>
-  <div class="modal--header">
-    <div class="row">
-      <div class="col-sm-12">
-        <h3>
-          <%= f.text_field :first_name, placeholder: 'First Name', class: 'user--modal-input' %>
-          <%= f.text_field :last_name, placeholder: 'Last Name', class: 'user--modal-input' %>
-        </h3>
-        <h5><%= f.email_field :email, placeholder: 'user email', class: 'user--modal-input' %></h5>
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>
+        <%= f.text_field :first_name, placeholder: 'First Name', class: 'user--modal-input' %>
+        <%= f.text_field :last_name, placeholder: 'Last Name', class: 'user--modal-input' %>
+      </h3>
+      <h5><%= f.email_field :email, placeholder: 'user email', class: 'user--modal-input' %></h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h5>ACCOUNT</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8">
+      <p>Active</p>
+      <h6>Enable/Disable user account without deleting it</h6>
+    </div>
+    <div class="col-sm-4">
+      <div class="user--activate-toggle">
+        <label class="switch">
+          <div class='toggle'>
+            <%= f.check_box :active, class: 'form-control toggle-state' %>
+            <div class='toggle-inner'>
+              <div class='indicator'></div>
+            </div>
+            <div class='active-bg'></div>
+          </div>
+        </label>
       </div>
     </div>
   </div>
-  <div class="modal--content">
-    <div class="row">
-      <div class="col-sm-12">
-        <h5>ACCOUNT</h5>
-      </div>
+  <div class="row">
+    <div class="col-sm-8">
+      <p>Team</p>
+      <h6>Set user's team, this defines permissions</h6>
     </div>
-    <div class="row">
-      <div class="col-sm-8">
-        <p>Active</p>
-        <h6>Enable/Disable user account without deleting it</h6>
-      </div>
-      <div class="col-sm-4">
-        <div class="user--activate-toggle">
-          <label class="switch">
-            <div class='toggle'>
-              <%= f.check_box :active, class: 'form-control toggle-state' %>
-              <div class='toggle-inner'>
-                <div class='indicator'></div>
-              </div>
-              <div class='active-bg'></div>
-            </div>
-          </label>
+    <div class="col-sm-4">
+      <div class="user--team-dropdown">
+        <div class="form-control dropdown">
+          <%= select_tag "team", options_from_collection_for_select(@roles, 'id', 'name'), {class: "user--team-select-new", "data-user" => @user.id} %>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-8">
-        <p>Team</p>
-        <h6>Set user's team, this defines permissions</h6>
-      </div>
-      <div class="col-sm-4">
-        <div class="user--team-dropdown">
-          <div class="form-control dropdown">
-            <%= select_tag "team", options_from_collection_for_select(@roles, 'id', 'name'), {class: "user--team-select-new", "data-user" => @user.id} %>
-          </div>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8">
+      <% if @user.first_name.nil? %>
+        <h5>PASSWORD</h5>
+      <% else %>
+        <p>Password</p>
+        <h6 class="user--edit-password-info">Leave blank if you don't want to change it</h6>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <div class="user--password-field">
+        <h5><%= f.password_field :password, placeholder: 'password', class: 'user--modal-input' %></h5>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-8">
-        <% if @user.first_name.nil? %>
-          <h5>PASSWORD</h5>
-        <% else %>
-          <p>Password</p>
-          <h6 class="user--edit-password-info">Leave blank if you don't want to change it</h6>
-        <% end %>
-      </div>
-      <div class="col-sm-4">
-        <div class="user--password-field">
-          <h5><%= f.password_field :password, placeholder: 'password', class: 'user--modal-input' %></h5>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="user--save-btn">
-          <% action = @user.first_name.nil? ? 'create' : 'update' %>
-          <%= hidden_field_tag(:action, action, {class: "user--form-action"}) %>
-          <%= f.submit 'Save user', class: 'btn btn-primary btn--save-user', disabled: @user.first_name.nil? %>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="user--save-btn">
+        <% action = @user.first_name.nil? ? 'create' : 'update' %>
+        <%= hidden_field_tag(:action, action, {class: "user--form-action"}) %>
+        <%= f.submit 'Save user', class: 'btn btn-primary btn--save-user', disabled: @user.first_name.nil? %>
       </div>
     </div>
   </div>
