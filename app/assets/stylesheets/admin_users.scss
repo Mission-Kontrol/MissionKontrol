@@ -33,6 +33,8 @@
 }
 
 .user--team-dropdown {
+  padding-top: 10px;
+
   .dropdown {
     border: none;
 
@@ -82,4 +84,10 @@
   cursor: pointer;
   display: inline-block;
   padding-left: 11px;
+
+  img {
+    height: 14px;
+    width: 14px;
+    vertical-align: inherit;
+  }
 }

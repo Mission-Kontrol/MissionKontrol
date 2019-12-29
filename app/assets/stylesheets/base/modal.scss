@@ -56,6 +56,10 @@
     }
   }
 
+  .user--activate-toggle {
+    padding-top: 20px;
+  }
+
   .user--activate-toggle, .role--setting-toggle {
     float: right;
     padding-right: 10px;
@@ -125,4 +129,10 @@
 
 .table--settings-modal > .modal--container {
   width: 50%;
+}
+
+.users--edit-modal {
+  .modal--content {
+    padding-top: 0;
+  }
 }
