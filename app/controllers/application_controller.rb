@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   before_action :set_cache_headers
   protect_from_forgery with: :exception
+
   rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
 
   rescue_from InvalidClientDatabaseError,
@@ -117,12 +118,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_target_db_connection
-    raise InvalidClientDatabaseError.new if current_organisation.target_database_type.blank? ||
-    current_organisation.target_database_host.blank? ||
-    current_organisation.target_database_username.blank? ||
-    current_organisation.target_database_password.blank? ||
-    current_organisation.target_database_name.blank? ||
-    current_organisation.target_database_port.blank?
+    Kuwinda::UseCase::DatabaseConnection.new.execute unless ClientRecord.connection.active?
+
+    raise InvalidClientDatabaseError.new unless ClientRecord.connection.active?
   end
 
   def set_cache_headers
