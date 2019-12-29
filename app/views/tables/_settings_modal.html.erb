@@ -1,26 +1,28 @@
 <div class="table--settings-modal hide">
   <div class="modal--container">
-    <div class="modal--close-btn">
-        <img src="/assets/images/icons/close.png">
-      </div>
     <div class="modal--content-container">
       <div class="modal--header">
         <div class="row">
-          <div class="col-sm-12">
+          <div class="col-sm-10">
             <h3><%= @table.humanize %></h3>
+          </div>
+          <div class="col-sm-2">
+            <div class="modal--close-btn">
+              <img src="/assets/images/icons/close.png">
+            </div>
           </div>
         </div>
       </div>
       <div class="modal--content">
         <div class="row">
             <div class="col-sm-12">
-              <h5>GENERAL</h5>
+              <h4>GENERAL</h4>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-8">
-              <p>Nested table</p>
-              <h6>See the data of a related table inline with this table</h6>
+              <h4>Nested table</h4>
+              <p>See the data of a related table inline with this table</p>
             </div>
             <div class="col-sm-4">
               <div class="table--settings-dropdown">
@@ -36,8 +38,8 @@
           </div>
           <div class="row">
             <div class="col-sm-8">
-              <p>Create entry</p>
-              <h6>Allow users who have permission to create an entry</h6>
+              <h4>Create entry</h4>
+              <p>Allow users who have permission to create an entry</p>
             </div>
             <div class="col-sm-4">
               <div class="table--settings-dropdown">
@@ -49,8 +51,8 @@
           </div>
           <div class="row">
             <div class="col-sm-8">
-              <p>Delete entry</p>
-              <h6>Allow users who have permission to delete an entry</h6>
+              <h4>Delete entry</h4>
+              <p>Allow users who have permission to delete an entry</p>
             </div>
             <div class="col-sm-4">
               <div class="table--settings-dropdown">

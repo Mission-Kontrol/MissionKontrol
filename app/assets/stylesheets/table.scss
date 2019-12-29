@@ -120,7 +120,7 @@ div.dataTables_wrapper div.dataTables_filter label {
 
   .dt-buttons.btn-group {
     float: right;
-    min-width: 263px;
+    min-width: 270px;
 
     button {
       left: 4%;
@@ -251,12 +251,14 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
     border: none;
 
     select {
+      float: right;
+      border-radius: 0px;
       border: none;
       border-bottom: solid 0.5px #979797;
-      width: 100px;
+      width: 150px;
       padding-bottom: 3px;
       background: url(/assets/images/icons/triangle.svg) no-repeat;
-      background-position: 85px 8px;
+      background-position: 135px 8px;
     }
 
     #dropdown, #team {
