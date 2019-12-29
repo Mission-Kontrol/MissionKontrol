@@ -1,16 +1,16 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-6">
-    <h2>Layout for <%= @view_builder.view_name %></h2>
+    <h1>Layout for <%= @view_builder.view_name %></h1>
     <ol class="breadcrumb">
-      <li>
+      <li class="breadcrumb-item">
         <%= link_to 'Home', dashboard_path %>
       </li>
 
-      <li>
+      <li class="breadcrumb-item">
         <%= link_to 'Layouts', layouts_path %>
       </li>
 
-      <li class="active">
+      <li class="breadcrumb-item">
         <strong><%= @view_builder.view_name %></strong>
       </li>
     </ol>

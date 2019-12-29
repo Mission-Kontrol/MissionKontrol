@@ -25,21 +25,15 @@
   }
 
   .modal--close-btn {
-    padding: 14px;
+    padding: 0px;
     float: right;
     font-size: 18px;
     cursor: pointer;
   }
 
   .modal--content-container {
-    padding: 60px 40px;
+    padding: 36px 50px;
     background-color: white;
-  }
-
-  .modal--header {
-    h3 {
-      font-weight: 500;
-    }
   }
 
   .modal--content {

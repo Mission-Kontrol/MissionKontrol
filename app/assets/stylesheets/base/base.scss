@@ -1,15 +1,14 @@
 body {
   font-family: "Helvetica Neue", "open sans", Helvetica, Arial, sans-serif;
   background-color: #2f4050;
-  font-size: 13px;
-  color: $text-color;
+  font-size: 12px;
+  color: $purplish-grey;
   overflow-x: hidden;
 
 }
 
 html, body {
   height: 100%;
-
 }
 
 body.full-height-layout #wrapper,

@@ -18,32 +18,32 @@
     <div class="layout-preview-slider-item" data-row-id='<%= @row['id'] %>'>
       <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-          <h2><%= @layout_builder.table_name.capitalize %></h2>
+          <h1><%= @layout_builder.table_name.capitalize %></h1>
 
           <ol class="breadcrumb">
-            <li>
+            <li class="breadcrumb-item">
               <%= link_to 'Home', dashboard_path %>
             </li>
 
-            <li class="">
+            <li class="breadcrumb-item">
               <span>Tables</span>
             </li>
 
-            <li class="">
+            <li class="breadcrumb-item">
               <%= link_to @layout_builder.table_name.capitalize, table_path(table: @layout_builder.table_name, id: @layout_builder.table_name.downcase) %>
             </li>
 
             <% if @row %>
-              <li class="">
+              <li class="breadcrumb-item">
                 <span><%= @row["id"] %></span>
               </li>
             <% else %>
-              <li class="">
+              <li class="breadcrumb-item">
                 <span>--</span>
               </li>
             <% end %>
 
-            <li class="active">
+            <li class="breadcrumb-item">
               <span>Preview</span>
             </li>
           </ol>
