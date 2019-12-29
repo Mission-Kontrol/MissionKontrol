@@ -1,25 +1,30 @@
 <%= form_for(@user, url: admin_users_create_new_path, remote: true, html: {id: 'new-user-form'}) do |f| %>
   <div class="modal--header">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-10">
         <h3>
           <%= f.text_field :first_name, placeholder: 'First Name', class: 'user--modal-input' %>
           <%= f.text_field :last_name, placeholder: 'Last Name', class: 'user--modal-input' %>
         </h3>
         <h5><%= f.email_field :email, placeholder: 'user email', class: 'user--modal-input' %></h5>
       </div>
+      <div class="col-sm-2">
+        <div class="modal--close-btn">
+          <img src="/assets/images/icons/close.png">
+        </div>
+      </div>
     </div>
   </div>
   <div class="modal--content">
     <div class="row">
       <div class="col-sm-12">
-        <h5>ACCOUNT</h5>
+        <h4 class="medium">ACCOUNT</h4>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-8">
-        <p>Active</p>
-        <h6>Enable/Disable user account without deleting it</h6>
+        <h4>Active</h4>
+        <h5>Enable/Disable user account without deleting it</h5>
       </div>
       <div class="col-sm-4">
         <div class="user--activate-toggle">
@@ -37,8 +42,8 @@
     </div>
     <div class="row">
       <div class="col-sm-8">
-        <p>Team</p>
-        <h6>Set user's team, this defines permissions</h6>
+        <h4>Team</h4>
+        <h5>Set user's team, this defines permissions</h5>
       </div>
       <div class="col-sm-4">
         <div class="user--team-dropdown">
@@ -51,10 +56,10 @@
     <div class="row">
       <div class="col-sm-8">
         <% if @user.first_name.nil? %>
-          <h5>PASSWORD</h5>
+          <h4>PASSWORD</h4>
         <% else %>
-          <p>Password</p>
-          <h6 class="user--edit-password-info">Leave blank if you don't want to change it</h6>
+          <h5>Password</h5>
+          <h5 class="user--edit-password-info">Leave blank if you don't want to change it</h5>
         <% end %>
       </div>
       <div class="col-sm-4">

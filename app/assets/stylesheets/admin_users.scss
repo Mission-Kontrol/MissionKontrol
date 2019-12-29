@@ -1,5 +1,9 @@
-.users-teams--container, .users-status--container {
-  padding-top: 21px;
+.users-teams--container {
+  padding-top: 16%;
+}
+
+.users-status--container {
+  padding-top: 10%;
 }
 
 .users-teams--header, .users-status--header {
@@ -22,12 +26,15 @@
   }
 
   .users-teams--table-data, .users-status--table-data {
-    color: $purple;
-    font-weight: 500;
+    color: $blueberry;
+    @extend h5;
+    @extend .medium;
   }
 }
 
 .user--team-dropdown {
+  padding-top: 10px;
+
   .dropdown {
     border: none;
 
@@ -77,4 +84,10 @@
   cursor: pointer;
   display: inline-block;
   padding-left: 11px;
+
+  img {
+    height: 14px;
+    width: 14px;
+    vertical-align: inherit;
+  }
 }

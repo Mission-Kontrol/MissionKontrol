@@ -1,13 +1,20 @@
-h1, h2, h3, h4, h5, h6 {
+p, h1, h2, h3, h4, h5 {
   font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: $purplish-grey;
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 24px;
+  margin-top: 18px;
+  margin-bottom: 5px;
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 18px;
 }
 
 h3 {
@@ -16,27 +23,62 @@ h3 {
 
 h4 {
   font-size: 14px;
+  margin: 0;
 }
 
 h5 {
   font-size: 12px;
+  margin-bottom: 5px;
 }
 
 h6 {
   font-size: 10px;
 }
 
-h3, h4 {
-  margin-top: 5px;
-  font-weight: 500;
-}
-
 p {
   font-size: 12px;
 }
 
+.white {
+  color: $white;
+}
+
+.blueberry {
+  color: $blueberry;
+}
+
+.dark-grey {
+  color: $dark-grey;
+}
+
+.greyish-brown {
+  color: $greyish-brown;
+}
+
+.brown-grey {
+  color: $brown-grey;
+}
+
+.medium {
+  font-weight: 500;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.light {
+  font-weight: 300;
+}
+
+.breadcrumb-item {
+  @extend h4;
+}
+
 a {
   color: $navy;
+  margin-top: 0;
+  margin-bottom: 0;
 
   &.underline {
     text-decoration: underline;

@@ -35,10 +35,12 @@
 .data-table-main {
   thead {
     background-color: #f3f3f4;
+
     tr {
       background-color: $gray;
-      color: $purple;
+      color: $blueberry;
       height: 37px;
+      @extend .bold;
 
       th {
         text-overflow: ellipsis;
@@ -63,10 +65,23 @@
 .target-table-admin-users {
   thead {
     tr {
+      color: $blueberry;
+      height: 37px;
+      @extend .bold;
+
       th:last-child {
         color: #f3f3f4;
         width: 50px;
       }
+    }
+  }
+
+  tbody {
+    background-color: $background-gray;
+
+    tr > td:first-child {
+      color: $blueberry;
+      @extend .medium;
     }
   }
 }
@@ -114,13 +129,16 @@ div.dataTables_wrapper div.dataTables_filter label {
 
   #target-table-admin-users_info, .dataTables_info {
     display: inline;
-    line-height: 32px;
+    line-height: 48px;
     vertical-align: top;
+    @extend h5;
   }
 
   .dt-buttons.btn-group {
     float: right;
-    min-width: 263px;
+    min-width: 270px;
+    display: flex;
+    justify-content: flex-end;
 
     button {
       left: 4%;
@@ -177,8 +195,9 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
   .pagination > li > a {
     border: none;
     background-color: inherit;
-    color: $purple;
-    font-weight: 500;
+    color: $blueberry;
+    @extend .medium;
+    @extend h5;
   }
 }
 
@@ -251,12 +270,14 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
     border: none;
 
     select {
+      float: right;
+      border-radius: 0px;
       border: none;
       border-bottom: solid 0.5px #979797;
-      width: 100px;
+      width: 150px;
       padding-bottom: 3px;
       background: url(/assets/images/icons/triangle.svg) no-repeat;
-      background-position: 85px 8px;
+      background-position: 135px 8px;
     }
 
     #dropdown, #team {
