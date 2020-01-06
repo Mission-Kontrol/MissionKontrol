@@ -1,0 +1,13 @@
+.edit_organisation_setting {
+  label {
+    @extend h5;
+    @extend .medium;
+  }
+
+  input[type=text] {
+    border: none;
+    background: inherit;
+    border-bottom: solid 1px $border-grey;
+    width: 80%;
+  }
+}
