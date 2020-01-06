@@ -12,7 +12,7 @@
 }
 
 .btn-primary.btn-outline {
-  color: $navy;
+  color: $button-green;
 }
 
 .btn-success.btn-outline {
@@ -40,14 +40,19 @@
 }
 
 .btn-primary {
-  background-color: $navy;
-  border-color: $navy;
-  color: #FFFFFF;
+  background-color: $button-green;
+  border-color: $button-green;
+  width: 137px;
+  height: 24px;
+  line-height: 0;
+  @extend h5;
+  @extend .white;
+  @extend .bold;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
-  background-color: darken($navy, 3%);
-  border-color: darken($navy, 3%);
+  background-color: darken($button-green, 3%);
+  border-color: darken($button-green, 3%);
   color: #FFFFFF;
 }
 
@@ -56,8 +61,8 @@
 }
 
 .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary.active[disabled], fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
-  background-color: lighten($navy, 4%);
-  border-color: lighten($navy, 4%);
+  background-color: lighten($button-green, 4%);
+  border-color: lighten($button-green, 4%);
 }
 
 .btn-success {
@@ -145,8 +150,12 @@
 .btn-danger {
   background-color: $red;
   border-color: $red;
-  color: #FFFFFF;
-}
+  width: 137px;
+  height: 24px;
+  line-height: 0.8;
+  @extend h5;
+  @extend .white;
+  @extend .bold;}
 
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger, .btn-danger:active:focus, .btn-danger:active:hover, .btn-danger.active:hover, .btn-danger.active:focus {
   background-color: darken($red, 3%);
