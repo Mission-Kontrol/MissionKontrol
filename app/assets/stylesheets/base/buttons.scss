@@ -115,11 +115,17 @@
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default, .btn-default:active:focus, .btn-default:active:hover, .btn-default.active:hover, .btn-default.active:focus {
   color: inherit;
-  border: 1px solid #d2d2d2;
+  background: inherit;
 }
 
+.btn:active {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+
 .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+  background-image: none;
 }
 
 .btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled]:active, .btn-default.active[disabled], fieldset[disabled] .btn-default, fieldset[disabled] .btn-default:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default.active {
