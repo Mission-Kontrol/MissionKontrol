@@ -13,7 +13,9 @@
       </thead>
     </table>
     <div class="target-table--add-record">
-      <a data-remote='true' href='/table/add_record?table=<%= @target_db_repo.table.downcase %>' class="btn btn-default">Add Record</a>
+      <a data-remote='true' href='/table/add_record?table=<%= @target_db_repo.table.downcase %>' class="btn btn-default">
+        <span><img src="/assets/images/icons/plus.png" alt="plus" class="table--add-record-button">Add Record</span>
+      </a>
     </div>
   </div>
 </div>
