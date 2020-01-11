@@ -3,6 +3,8 @@
 class DatabasesController < ApplicationController
   layout 'dashboard'
 
+  before_action :load_available_databases
+
   def new
     @database = Database.new
   end
@@ -10,10 +12,25 @@ class DatabasesController < ApplicationController
   def create
     if testing?
       @active_connection = test_connection
-      render :test_connection and return
+      render :test_connection && return
     else
       @database = Database.new(database_params)
       @database.password = password_param
+      @result = @database.save!
+    end
+  end
+
+  def edit
+    @database = Database.find(params[:id])
+  end
+
+  def update
+    if testing?
+      @active_connection = test_connection
+      render :test_connection and return
+    else
+      @database = Database.find(params[:id])
+      @database.update_attributes(database_params)
       @result = @database.save!
     end
   end
@@ -26,6 +43,7 @@ class DatabasesController < ApplicationController
                                      :host,
                                      :port,
                                      :name,
+                                     :password,
                                      :username)
   end
 
@@ -34,7 +52,7 @@ class DatabasesController < ApplicationController
   end
 
   def testing?
-    params[:commit] == "Test connection"
+    params[:commit] == 'Test connection'
   end
 
   def test_connection
@@ -48,5 +66,7 @@ class DatabasesController < ApplicationController
     ).connection
 
     connection.active?
+  rescue PG::ConnectionBad
+    false
   end
 end

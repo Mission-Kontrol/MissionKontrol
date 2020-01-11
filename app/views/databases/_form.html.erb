@@ -1,0 +1,102 @@
+
+<div class="wrapper wrapper-content animated">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="tabs-container">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a class="nav-link active" data-toggle="tab" href="#settings-tab--general">General</a></li>
+              <li><a class="nav-link" data-toggle="tab" href="#settings-tab--permissions">Permissions</a></li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" id="settings-tab--general" class="tab-pane active">
+                <div class="panel-body">
+
+                  <%= form_for(@database, remote: true) do |f| %>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <%= f.label :friendly_name %>
+                          <%= f.text_field :friendly_name, autofocus: true, class: "form-control", placeholder: "Enter database name" %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <%= f.label :adapter %>
+                          <%= f.select(:adapter, Database::DATABASE_TYPES,
+                                                              {prompt: "Please select"},
+                                                              {class: 'form-control'}) %>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <%= f.label :name %>
+                          <%= f.text_field :name, autofocus: true, class: "form-control" %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <%= f.label :host %>
+                          <%= f.text_field :host, autofocus: true, class: "form-control", required: true %>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <%= f.label :username %>
+                          <%= f.text_field :username, autofocus: true, class: "form-control" %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <%= f.label :port %>
+                          <%= f.number_field :port, autofocus: true, class: "form-control" %>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <%= f.label :password %>
+                          <%= f.password_field :password, autofocus: true, class: "form-control" %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-11">
+                        <%= f.submit "Test connection", class: "btn btn-primary m-b pull-right" %>
+                        <%= f.submit "Remove database", class: "btn btn-danger m-b pull-right", disabled: true %>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-11">
+                        <%= f.submit "Save", class: "btn btn-primary m-b pull-right" %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+
+              <div role="tabpanel" id="settings-tab--permissions" class="tab-pane">
+                <div class="panel-body">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
