@@ -6,9 +6,10 @@ module Kuwinda
       attr_accessor :table,
                     :conn
 
-      def initialize(table = nil, conn = ClientRecord.connection)
+      def initialize(table = nil, conn = ClientRecord.connection, database = nil)
         @table = table
-        @conn = conn
+        @database = Kuwinda::UseCase::DatabaseConnection.new(database).execute
+        @conn = @database.connection
       end
 
       def all(limit = nil, offset = nil)

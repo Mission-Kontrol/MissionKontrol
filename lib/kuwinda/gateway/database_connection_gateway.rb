@@ -3,12 +3,13 @@
 module Kuwinda
   module Gateway
     class DatabaseConnectionGateway
-      def connect
+      def connect(database = nil)
         unless client_db_is_valid?
           raise InvalidClientDatabaseError.new("Client database is invalid")
         end
 
-        ActiveRecord::Base.establish_connection(client_db)
+        credentials = database ? database_credentials(database) : client_db
+        ActiveRecord::Base.establish_connection(credentials)
       end
 
       private
@@ -22,6 +23,17 @@ module Kuwinda
         else
           raise "don't know how to make adpater for #{scheme}"
         end
+      end
+
+      def database_credentials(database)
+        {
+          adapter: adapter(database.adapter),
+          username: database.username,
+          password: '278d5db10a01380f9437b9ad2e3ba7bc94952f3ac6530f1e470e69e61eef9863',
+          port: database.port,
+          host: database.host,
+          database: database.name
+        }
       end
 
       def client_db

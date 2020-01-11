@@ -5,6 +5,15 @@ class DatabasesController < ApplicationController
 
   before_action :load_available_databases
 
+  def index
+    @databases = Database.all
+    respond_to do |format|
+      format.js {
+         render json: @databases.sort.to_json
+      }
+    end
+  end
+
   def new
     @database = Database.new
   end

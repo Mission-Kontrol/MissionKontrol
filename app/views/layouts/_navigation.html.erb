@@ -36,18 +36,11 @@
       </li>
 
       <li class="<%= active_controller?('tables') && active_action?('show') %>">
-        <a href="" id="nav-link-for-tables">
-          <span class="nav-label" data-i18n="nav.dashboard">DATABASE</span> <span class="fa arrow"></span>
+        <a href="" id="nav-link-for-available-databases">
+          <span class="nav-label" data-i18n="nav.dashboard">DATA</span> <span class="fa arrow"></span>
         </a>
 
-        <ul class="nav nav-second-level collapse">
-          <% @available_tables&.each do |t| %>
-            <li class="">
-              <% if current_admin_user.permission?(:view, t) %>
-                <%= link_to t.humanize, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
-              <% end %>
-            </li>
-          <% end %>
+        <ul class="nav nav-second-level collapse" id="nav-populate-available-databases">
         </ul>
       </li>
 

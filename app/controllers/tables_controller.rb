@@ -9,16 +9,28 @@ class TablesController < ApplicationController
   IGNORED_COLUMNS = %w[id created_at updated_at user].freeze
 
   before_action :authenticate_admin_user!,
-                :set_target_db_repo,
                 :set_current_table,
                 :check_license
 
-  before_action :set_nested_table, except: %i[add_record create_record]
-  before_action :load_task_queues, only: %i[show preview]
+  before_action :set_target_db_repo, except: :index
+  before_action :set_nested_table, except: %i[add_record create_record index]
+  # before_action :load_task_queues, only: %i[show preview]
   before_action :set_relatable_tables, :set_activities, only: %i[preview]
   before_action :set_layout_for_table, only: %i[show]
-  before_action :load_available_tables, only: %i[show preview]
+  # before_action :load_available_tables, only: %i[show preview]
   before_action :check_user_permissions, only: %i[show]
+
+
+  def index
+    database = Database.find(params[:database_id])
+    @database_tables = Kuwinda::Presenter::ListAvailableTables.new(database).call.to_a
+
+    respond_to do |format|
+      format.js {
+         render json: @database_tables.sort.to_json
+      }
+    end
+  end
 
   def show
     respond_to do |format|
@@ -106,7 +118,9 @@ class TablesController < ApplicationController
   end
 
   def set_target_db_repo
-    @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
+    database_params = params[:id] || params[:database_id]
+    @database = Database.find(database_params)
+    @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table], nil, @database)
   end
 
   def table_field_params

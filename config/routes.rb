@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tables, only: %i[show]
+  resources :tables, only: %i[index show]
   get 'tables/:table_name/:record_id', to: 'tables#preview', as: 'table_record_preview'
   get 'table/settings', to: 'tables#settings'
   post 'table/update_settings', to: 'tables#update_settings'
