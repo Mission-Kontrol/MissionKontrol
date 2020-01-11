@@ -114,7 +114,12 @@
                 </span> <span class="fa arrow"></span>
               </a>
 
-              <ul class="nav nav-second-level collapse">
+              <ul class="nav nav-second-level collapse nav-databases">
+                <% @available_databases&.each do |database| %>
+                  <li class="">
+                    <%= link_to database.friendly_name, edit_database_path(database), id: "nav-link-for-database" %>
+                  </li>
+                <% end %>
                 <li class="">
                   <%= link_to 'Add', new_database_path, id: "nav-link-for-add-database" %>
                 </li>

@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   get 'users', to: 'admin_users#index'
 
   resources :databases
+
   resources :view_builder
   resources :activities, only: :create
 

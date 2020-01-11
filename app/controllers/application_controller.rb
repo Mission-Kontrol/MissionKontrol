@@ -68,6 +68,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def load_available_databases
+    @available_databases = Database.all
+  end
+
   def load_available_tables
     @available_tables = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end

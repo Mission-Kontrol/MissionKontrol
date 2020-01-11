@@ -184,6 +184,10 @@ ul.nav-second-level {
     font-weight: normal;
     opacity: 80%;
   }
+
+  &.nav-databases {
+    padding-left: 30px;
+  }
 }
 
 .nav > li.active {

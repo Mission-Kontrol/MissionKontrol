@@ -1,0 +1,5 @@
+<% if @active_connection %>
+  toastr.success('Database connection successful.')
+<% else %>
+  toastr.error('Unable to connect to database. Please check your credentials and try again.');
+<% end %>
