@@ -3,8 +3,6 @@
 class DatabasesController < ApplicationController
   layout 'dashboard'
 
-  before_action :load_available_databases
-
   def index
     @databases = Database.all
     respond_to do |format|

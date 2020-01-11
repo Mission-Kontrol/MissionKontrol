@@ -1,5 +1,5 @@
-function renderAvailableDatabases (databases) {
-  var dropdown = $('#nav-populate-available-databases');
+function renderAvailableDatabases (databases, dropdown) {
+  var dropdown = dropdown.next();
   var availableDatabases = [];
   dropdown[0].innerHTML = '';
 
@@ -21,12 +21,13 @@ function renderAvailableDatabases (databases) {
 }
 
 function loadAvailableDatabases () {
-  $('#nav-link-for-available-databases').click(function() {
+  $('.nav-link-for-available-databases').click(function() {
+    var dropdown = $(this);
     $.ajax({
       dataType: "json",
       url: "/databases",
       success(data) {
-        renderAvailableDatabases(data)
+        renderAvailableDatabases(data, dropdown)
       }
     });
   });
