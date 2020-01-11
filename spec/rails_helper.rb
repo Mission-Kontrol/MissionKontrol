@@ -39,6 +39,7 @@ RSpec.configure do |config|
     ViewBuilder.all.each(&:delete)
     TargetTableSetting.all.each(&:delete)
     DataTableState.all.each(&:delete)
+    Database.all.each(&:delete)
     # DatabaseCleaner.clean
   end
 

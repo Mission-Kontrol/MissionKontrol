@@ -6,7 +6,7 @@ class AddDatabaseTable < ActiveRecord::Migration[5.1]
       t.integer :pool, default: 5
       t.string :host, null: false
       t.string :username, null: false
-      t.string :password, null: false
+      t.string :password_digest, null: false
       t.integer :port, null: false
       t.string :name
       t.string :friendly_name

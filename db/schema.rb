@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20200111093456) do
     t.integer "pool", default: 5
     t.string "host", null: false
     t.string "username", null: false
-    t.string "password", null: false
+    t.string "password_digest", null: false
     t.integer "port", null: false
     t.string "name"
     t.string "friendly_name"
