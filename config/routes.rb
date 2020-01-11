@@ -51,7 +51,7 @@ Rails.application.routes.draw do
   delete 'users', to: 'admin_users#destroy'
   get 'users', to: 'admin_users#index'
 
-
+  resources :databases
   resources :view_builder
   resources :activities, only: :create
 

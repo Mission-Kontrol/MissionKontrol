@@ -5,6 +5,7 @@ ruby '2.5.1'
 
 gem 'rails', '5.1.7'
 
+gem 'bcrypt'
 gem 'bootstrap-sass', '>= 3.4.1'
 gem 'cancancan'
 gem 'coffee-rails'

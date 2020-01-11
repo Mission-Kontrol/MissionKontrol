@@ -106,6 +106,20 @@
                 <%= image_tag('/assets/images/icons/database-1.png') %>  Permissions
               <% end %>
             </li>
+            <li class="<%= active_controller?('databases') %>">
+              <a href="" id="nav-link-for-databases">
+                <span class="nav-label" data-i18n="nav.layouts">
+                  <%= image_tag('/assets/images/icons/database-1.png') %>
+                  Databases
+                </span> <span class="fa arrow"></span>
+              </a>
+
+              <ul class="nav nav-second-level collapse">
+                <li class="">
+                  <%= link_to 'Add', new_database_path, id: "nav-link-for-add-database" %>
+                </li>
+              </ul>
+            </li>
           </ul>
         </li>
       <% end %>

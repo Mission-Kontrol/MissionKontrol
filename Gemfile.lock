@@ -353,6 +353,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   bootstrap-sass (>= 3.4.1)
   cancancan
   capybara (~> 2.17.0)

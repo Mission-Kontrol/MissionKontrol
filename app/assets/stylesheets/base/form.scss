@@ -1,10 +1,10 @@
-.edit_organisation_setting {
+.edit_organisation_setting, #new_database {
   label {
     @extend h5;
     @extend .medium;
   }
 
-  input[type=text] {
+  input[type=text], input[type=number], input[type=password], select {
     border: none;
     background: inherit;
     border-bottom: solid 1px $border-grey;
