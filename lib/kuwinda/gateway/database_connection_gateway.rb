@@ -44,6 +44,7 @@ module Kuwinda
 
       def db_invalid?
         return true if database.nil?
+
         !database.valid?
       end
     end

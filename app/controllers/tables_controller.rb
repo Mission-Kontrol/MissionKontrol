@@ -18,15 +18,11 @@ class TablesController < ApplicationController
   before_action :set_relatable_tables, :set_activities, only: %i[preview]
   before_action :check_user_permissions, only: %i[show]
 
-
   def index
-    database = Database.find(params[:database_id])
     @database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call.to_a
 
     respond_to do |format|
-      format.js {
-         render json: @database_tables.sort.to_json
-      }
+      format.js { render json: @database_tables.sort.to_json }
     end
   end
 

@@ -6,9 +6,7 @@ class DatabasesController < ApplicationController
   def index
     @databases = Database.all
     respond_to do |format|
-      format.js {
-         render json: @databases.sort.to_json
-      }
+      format.js { render json: @databases.sort.to_json }
     end
   end
 
@@ -34,7 +32,7 @@ class DatabasesController < ApplicationController
   def update
     if testing?
       @active_connection = test_connection
-      render :test_connection and return
+      render :test_connection && return
     else
       @database = Database.find(params[:id])
       @database.update_attributes(database_params)

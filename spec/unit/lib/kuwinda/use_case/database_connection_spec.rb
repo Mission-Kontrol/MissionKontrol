@@ -12,7 +12,6 @@ describe Kuwinda::UseCase::DatabaseConnection do
     end
     # TODO: more specific testing of error messages - InvalidClientDatabaseError not valid
 
-
     it 'establishes an active connection' do
       expect(subject.connection.active?).to eq true
     end
