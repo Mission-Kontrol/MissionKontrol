@@ -81,14 +81,14 @@ class LayoutBuilderController < ApplicationController
     @view_builder = ViewBuilder.find(params[:id])
     @relatable_tables = relatable_tables(@view_builder.table_name)
     @fields_with_type = list_table_fields_with_type(@view_builder.table_name)
-    @target_db_repo = Kuwinda::Repository::TargetDB.new(@view_builder.table_name)
-    @row = @target_db_repo.all(1).rows.first.first
+    @target_db = Kuwinda::Repository::TargetDB.new(@view_builder.table_name)
+    @row = @target_db.all(1).rows.first.first
   end
 
   def preview
     @layout_builder = ViewBuilder.find(params[:id])
-    @target_db_repo = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
-    @rows = @target_db_repo.all(5)
+    @target_db = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
+    @rows = @target_db.all(5)
 
     respond_to do |format|
       format.js { render action: 'edit/success' }

@@ -12,10 +12,11 @@ module TableHelper
   end
 
   def get_related_row(primary_table, relatable_table, relatable_id)
-    repo = Kuwinda::Repository::TargetDB.new
+    # repo = Kuwinda::Repository::TargetDB.new
+    repo = @target_db
     repo.table = relatable_table
     foreign_key = get_foreign_key(primary_table)
-    repo.find_related(foreign_key , relatable_id)
+    repo.find_related(primary_table, foreign_key, relatable_id)
   end
 
   def get_foreign_key(primary_table)

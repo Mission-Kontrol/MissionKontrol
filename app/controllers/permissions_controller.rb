@@ -5,14 +5,10 @@ class PermissionsController < ApplicationController
 
   layout 'dashboard'
 
-  before_action :load_available_tables,
-                :load_task_queues,
-                :check_target_db_connection
   before_action :check_user_admin_abilities
 
   def index
     @headers = ['Table'] + roles.map(&:name)
-    @tables = available_tables.to_a
     @roles = roles
 
     respond_to do |format|
@@ -99,10 +95,6 @@ class PermissionsController < ApplicationController
 
   def roles
     Role.all.sort
-  end
-
-  def available_tables
-    Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
 
   def table_permission_data

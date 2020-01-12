@@ -6,7 +6,7 @@ module TableActivity
   private
 
   def set_activities_for_table
-    feedable_type = @target_db_repo.table
+    feedable_type = @target_db.table
     feedable_id = params[:record_id]
 
     @activities_for_table = Activity.where(

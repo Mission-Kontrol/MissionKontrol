@@ -9,6 +9,7 @@ describe Kuwinda::Presenter::RetrieveData do
   let(:database_connection) do
     Kuwinda::UseCase::DatabaseConnection.new(database).execute
   end
+  let(:database) { create(:database) }
   let(:view_builder) { create(:view_builder) }
   let(:query_limiter) { 'WHERE user_id = 3' }
   let(:expected_result) do

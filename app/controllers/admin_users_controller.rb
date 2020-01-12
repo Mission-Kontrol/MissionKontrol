@@ -7,9 +7,6 @@ class AdminUsersController < ApplicationController
 
   STATUSES = ['active', 'inactive'].freeze
 
-  before_action :load_available_tables,
-                :load_task_queues,
-                :check_target_db_connection, only: [:index]
   before_action :check_user_admin_abilities
 
   def new

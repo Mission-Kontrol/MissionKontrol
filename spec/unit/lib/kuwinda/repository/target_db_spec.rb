@@ -6,44 +6,49 @@ module Kuwinda
   module Repository
     describe TargetDB do
       let(:table) { 'events' }
-      let(:a_target_db_repo) { described_class.new(table) }
+      let(:target_db) { described_class.new(table, database_connection) }
+      let(:database_connection) do
+        Kuwinda::UseCase::DatabaseConnection.new(database).execute
+      end
+      let(:database) { create(:database) }
 
-      it 'responds to #table' do
-        expect(a_target_db_repo).to respond_to(:table)
+      it 'responds to #table_columns' do
+        expect(target_db).to respond_to(:table_columns)
       end
 
       it 'responds to #all' do
-        expect(a_target_db_repo).to respond_to(:all)
+        expect(target_db).to respond_to(:all)
       end
 
       it 'responds to #find' do
-        expect(a_target_db_repo).to respond_to(:find)
+        expect(target_db).to respond_to(:find)
       end
 
       it 'responds to #find_related' do
-        expect(a_target_db_repo).to respond_to(:find_related)
+        expect(target_db).to respond_to(:find_related)
       end
 
       it 'responds to #update_record' do
-        expect(a_target_db_repo).to respond_to(:update_record)
+        expect(target_db).to respond_to(:update_record)
       end
 
       it 'responds to #update_related_record' do
-        expect(a_target_db_repo).to respond_to(:update_related_record)
+        expect(target_db).to respond_to(:update_related_record)
       end
 
       describe '#all' do
+        let(:table) { 'users' }
         context "when limit is present" do
-          it 'returns all records' do
-            expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} limit 5;")
-            a_target_db_repo.all(5)
+          it 'returns the number of records in the limit' do
+            expect(target_db.conn).to receive(:exec_query).with("select * from #{table} limit 5;")
+            target_db.all(5)
           end
         end
 
         context "when limit is not present" do
           it 'returns all records' do
-            expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table};")
-            a_target_db_repo.all
+            expect(target_db.conn).to receive(:exec_query).with("select * from #{table};")
+            target_db.all
           end
         end
       end
@@ -51,8 +56,8 @@ module Kuwinda
       describe '#find' do
         it 'returns the first record with a matching id' do
           id = 1
-          expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} where id=#{id};")
-          a_target_db_repo.find(id)
+          expect(target_db.conn).to receive(:exec_query).with("select * from #{table} where id=#{id};")
+          target_db.find(id)
         end
       end
 
@@ -60,8 +65,8 @@ module Kuwinda
         it 'returns the first record with a matching foreign key' do
           id = 1
           foreign_key = "user_id"
-          expect(a_target_db_repo.conn).to receive(:exec_query).with("select * from #{table} where #{foreign_key}=#{id};")
-          a_target_db_repo.find_related(foreign_key, id)
+          expect(target_db.conn).to receive(:exec_query).with("select * from #{table} where #{foreign_key}=#{id};")
+          target_db.find_related(foreign_key, id)
         end
       end
 
@@ -72,10 +77,10 @@ module Kuwinda
           field = "email"
           value = "jknnlkm@fnjnfk.jfknnfk"
 
-          expect(a_target_db_repo.conn).to receive(:exec_query).with(
+          expect(target_db.conn).to receive(:exec_query).with(
             "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
           )
-          a_target_db_repo.update_record(table, field, value, id)
+          target_db.update_record(table, field, value, id)
         end
       end
 
@@ -87,10 +92,10 @@ module Kuwinda
           field = "email"
           value = "jknnlkm@fnjnfk.jfknnfk"
 
-          expect(a_target_db_repo.conn).to receive(:exec_query).with(
+          expect(target_db.conn).to receive(:exec_query).with(
             "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
           )
-          a_target_db_repo.update_related_record(table, field, value, foreign_key_title, foreign_key_value)
+          target_db.update_related_record(table, field, value, foreign_key_title, foreign_key_value)
         end
       end
     end

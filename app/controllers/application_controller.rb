@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_organisation
-    OrganisationSetting.last
+    @current_organisation ||= OrganisationSetting.last
   end
 
   protected
@@ -109,10 +109,10 @@ class ApplicationController < ActionController::Base
     relatable_tables(@current_table).each do |table|
       layout = ViewBuilder.find_by_table_name(table)
       relative = {}
-      @target_db_repo.table = table
+      # @target_db.table = table
       foreign_key_title = helpers.get_foreign_key(params[:table_name])
       foreign_key_value = params[:record_id]
-      sql_result = @target_db_repo.find_all_related(foreign_key_title, foreign_key_value, 10, 0)
+      sql_result = @target_db.find_all_related(table, foreign_key_title, foreign_key_value, 10, 0)
       relative[:headers] = sql_result ? sql_result.columns : []
       relative[:name] = table
       @relatable_tables << relative
@@ -122,9 +122,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_target_db_connection
-    Kuwinda::UseCase::DatabaseConnection.new.execute unless ClientRecord.connection.active?
+    # Kuwinda::UseCase::DatabaseConnection.new.execute unless ClientRecord.connection.active?
 
-    raise InvalidClientDatabaseError.new unless ClientRecord.connection.active?
+    # raise InvalidClientDatabaseError.new unless ClientRecord.connection.active?
   end
 
   def set_cache_headers

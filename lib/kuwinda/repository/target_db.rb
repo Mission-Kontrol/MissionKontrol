@@ -3,35 +3,30 @@
 module Kuwinda
   module Repository
     class TargetDB
-      attr_accessor :table,
+      attr_accessor :database,
                     :conn
 
-      def initialize(table = nil, conn = nil, database = nil)
-        @table = table
-        # binding.pry
-        database = Database.last
-        @database = Kuwinda::UseCase::DatabaseConnection.new(database).execute
-        @conn = @database.connection
+      def initialize(database)
+        @conn = database.connection
       end
 
-      def all(limit = nil, offset = nil)
-        # binding.pry
+      def all(table, limit = nil, offset = nil)
         query("select * from #{table};", limit, offset)
       end
 
-      def find(id)
+      def find(table, id)
         sql = "select * from #{table} where id=#{id};"
         result = conn.exec_query(sql)
         result.nil? ? result : result.first
       end
 
-      def find_related(foreign_key_title, foreign_key_value)
+      def find_related(table, foreign_key_title, foreign_key_value)
         sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
         result = conn.exec_query(sql)
         result.nil? ? result : result.first
       end
 
-      def find_all_related(foreign_key_title, foreign_key_value, limit = 10, offset = nil)
+      def find_all_related(table, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
         query("select * from #{table} where #{foreign_key_title}=#{foreign_key_value}", limit, offset)
       end
 
@@ -80,35 +75,35 @@ module Kuwinda
         conn.exec_query(query_string)
       end
 
-      def count
+      def count(table)
         sql = "SELECT COUNT(*) FROM #{table};"
         conn.exec_query(sql)
       end
 
-      def count_related(foreign_key_title, foreign_key_value)
+      def count_related(table, foreign_key_title, foreign_key_value)
         sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
         conn.exec_query(sql)
       end
 
-      def table_columns
+      def table_columns(table)
         conn.columns(table)
       end
 
-      def datatable_filter(search_value = nil, columns = nil, limit = nil, offset = nil)
-        return all(limit, offset) if search_value.blank? || columns.nil?
+      def datatable_filter(table, search_value = nil, columns = nil, limit = nil, offset = nil)
+        return all(table, limit, offset) if search_value.blank? || columns.nil?
 
-        result = search_columns(search_value, columns, limit, offset)
+        result = search_columns(table, search_value, columns, limit, offset)
 
         result
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def find_all_related_search(search_value, foreign_key_title, foreign_key_value, columns = nil, limit = 10, offset = nil)
-        all = find_all_related(foreign_key_title, foreign_key_value, limit, offset)
+      def find_all_related_search(table, search_value, foreign_key_title, foreign_key_value, columns = nil, limit = 10, offset = nil)
+        all = find_all_related(table, foreign_key_title, foreign_key_value, limit, offset)
 
         return all if search_value.blank? || columns.nil?
 
-        result = search_columns_related_table(search_value, foreign_key_title, foreign_key_value, columns, limit, offset)
+        result = search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit, offset)
 
         result
       end
@@ -116,7 +111,7 @@ module Kuwinda
 
       private
 
-      def search_columns(search_value = nil, columns = nil, limit = nil, offset = nil)
+      def search_columns(table, search_value = nil, columns = nil, limit = nil, offset = nil)
         result = nil
         current_organisation = OrganisationSetting.last
 
@@ -136,7 +131,7 @@ module Kuwinda
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def search_columns_related_table(search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
+      def search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
         result = nil
         current_organisation = OrganisationSetting.last
 

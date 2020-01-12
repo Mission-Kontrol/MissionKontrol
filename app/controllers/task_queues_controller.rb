@@ -51,7 +51,7 @@ class TaskQueuesController < ApplicationController
       data: sql_result.to_hash,
       columns: columns,
       draw: params['draw'].to_i,
-      recordsTotal: @target_db_repo.count.rows[0][0],
+      recordsTotal: @target_db.count.rows[0][0],
       recordsFiltered: sql_result.count
     }
   end

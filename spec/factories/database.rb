@@ -4,10 +4,10 @@ FactoryBot.define do
   factory :database do
     friendly_name { 'Test Company' }
     adapter { 'postgresql' }
-    host { 'localhost' }
+    host { ENV['DEMO_CLIENT_DB_HOST'] }
     port { 5432 }
-    name { 'name' }
-    username { 'username' }
-    password { 'password' }
+    name { ENV['DEMO_CLIENT_DB_NAME'] }
+    username { ENV['DEMO_CLIENT_DB_USER'] }
+    password { ENV['DEMO_CLIENT_DB_PASSWORD'] }
   end
 end
