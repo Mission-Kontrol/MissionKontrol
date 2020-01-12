@@ -6,11 +6,12 @@ describe Kuwinda::Presenter::ListAvailableTables do
   subject { list_tables.call }
 
   let(:list_tables) do
-    described_class.new(client_database)
+    described_class.new(database_connection)
   end
-  let(:client_database) do
-    Kuwinda::UseCase::DatabaseConnection.new.execute
+  let(:database_connection) do
+    Kuwinda::UseCase::DatabaseConnection.new(database).execute
   end
+  let(:database) { create(:database) }
 
   context 'listing tables' do
     it 'displays the available tables' do

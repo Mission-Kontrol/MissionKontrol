@@ -6,11 +6,12 @@ describe Kuwinda::Presenter::ListRelatableTables do
   subject { relatable_tables.call }
 
   let(:relatable_tables) do
-    described_class.new(client_database, table)
+    described_class.new(database_connection, table)
   end
-  let(:client_database) do
-    Kuwinda::UseCase::DatabaseConnection.new.execute
+  let(:database_connection) do
+    Kuwinda::UseCase::DatabaseConnection.new(database).execute
   end
+  let(:database) { create(:database) }
   let(:table) { 'Users' }
 
   context 'listing one to one connections' do

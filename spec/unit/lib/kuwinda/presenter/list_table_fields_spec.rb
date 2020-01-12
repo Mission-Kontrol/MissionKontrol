@@ -6,15 +6,16 @@ describe Kuwinda::Presenter::ListTableFields do
   subject { list_fields.call }
 
   let(:list_fields) do
-    described_class.new(client_database, table)
+    described_class.new(database_connection, table)
   end
-  let(:client_database) do
-    Kuwinda::UseCase::DatabaseConnection.new.execute
+  let(:database_connection) do
+    Kuwinda::UseCase::DatabaseConnection.new(database).execute
   end
+  let(:database) { create(:database) }
   let(:table) { 'Users' }
 
   context 'listing connections' do
-    it 'displays the available tables' do
+    it 'displays the available table fields' do
       expect(subject).to include('email', 'name')
     end
   end

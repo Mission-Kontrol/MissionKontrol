@@ -9,7 +9,6 @@ module Kuwinda
       end
 
       def call
-        database = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
         tables = database.connection.tables - ['schema_migrations']
         tables.map
       end

@@ -6,13 +6,16 @@ module Kuwinda
       attr_accessor :table,
                     :conn
 
-      def initialize(table = nil, conn = ClientRecord.connection, database = nil)
+      def initialize(table = nil, conn = nil, database = nil)
         @table = table
+        # binding.pry
+        database = Database.last
         @database = Kuwinda::UseCase::DatabaseConnection.new(database).execute
         @conn = @database.connection
       end
 
       def all(limit = nil, offset = nil)
+        # binding.pry
         query("select * from #{table};", limit, offset)
       end
 
