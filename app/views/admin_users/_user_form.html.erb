@@ -3,10 +3,10 @@
     <div class="row">
       <div class="col-sm-10">
         <h3>
-          <%= f.text_field :first_name, placeholder: 'First Name', class: 'user--modal-input' %>
-          <%= f.text_field :last_name, placeholder: 'Last Name', class: 'user--modal-input' %>
+          <%= f.text_field :first_name, placeholder: 'First Name', class: 'user--modal-input', data: { lastpass: "disable", lpignore: "true" } %>
+          <%= f.text_field :last_name, placeholder: 'Last Name', class: 'user--modal-input', data: { lastpass: "disable", lpignore: "true" } %>
         </h3>
-        <h5><%= f.email_field :email, placeholder: 'user email', class: 'user--modal-input' %></h5>
+        <h5><%= f.email_field :email, placeholder: 'user email', class: 'user--modal-input', data: { lastpass: "disable", lpignore: "true" } %></h5>
       </div>
       <div class="col-sm-2">
         <div class="modal--close-btn">
@@ -58,14 +58,17 @@
         <% if @user.first_name.nil? %>
           <h4>PASSWORD</h4>
         <% else %>
-          <h5>Password</h5>
+          <h4>Password</h4>
           <h5 class="user--edit-password-info">Leave blank if you don't want to change it</h5>
         <% end %>
       </div>
       <div class="col-sm-4">
         <div class="user--password-field">
-          <h5><%= f.password_field :password, placeholder: 'password', class: 'user--modal-input' %></h5>
+          <h5><%= f.password_field :password, placeholder: 'password', class: 'user--modal-input', data: { lastpass: "disable", lpignore: "true" } %></h5>
         </div>
+      </div>
+      <div class="col-sm-12">
+        <p class="user--password-info">Min 6 char. Must contain a capital character, a special character.</p>
       </div>
     </div>
     <div class="row">
