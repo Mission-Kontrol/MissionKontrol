@@ -6,7 +6,7 @@ module Kuwinda
   module Repository
     describe TargetDB do
       let(:table) { 'events' }
-      let(:target_db) { described_class.new(table, database_connection) }
+      let(:target_db) { described_class.new(database_connection) }
       let(:database_connection) do
         Kuwinda::UseCase::DatabaseConnection.new(database).execute
       end
@@ -41,14 +41,14 @@ module Kuwinda
         context "when limit is present" do
           it 'returns the number of records in the limit' do
             expect(target_db.conn).to receive(:exec_query).with("select * from #{table} limit 5;")
-            target_db.all(5)
+            target_db.all(table, 5)
           end
         end
 
         context "when limit is not present" do
           it 'returns all records' do
             expect(target_db.conn).to receive(:exec_query).with("select * from #{table};")
-            target_db.all
+            target_db.all(table)
           end
         end
       end
@@ -57,7 +57,7 @@ module Kuwinda
         it 'returns the first record with a matching id' do
           id = 1
           expect(target_db.conn).to receive(:exec_query).with("select * from #{table} where id=#{id};")
-          target_db.find(id)
+          target_db.find(table, id)
         end
       end
 
@@ -66,7 +66,7 @@ module Kuwinda
           id = 1
           foreign_key = "user_id"
           expect(target_db.conn).to receive(:exec_query).with("select * from #{table} where #{foreign_key}=#{id};")
-          target_db.find_related(foreign_key, id)
+          target_db.find_related(table, foreign_key, id)
         end
       end
 

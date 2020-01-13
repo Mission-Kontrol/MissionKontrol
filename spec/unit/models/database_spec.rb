@@ -2,6 +2,6 @@
 
 require 'rails_helper'
 
-describe Databse do
+describe Database do
   let(:database) { described_class.new }
 end
