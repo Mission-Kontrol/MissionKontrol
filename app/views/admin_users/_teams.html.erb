@@ -10,8 +10,11 @@
           <td class="users-teams--table-data">
             <%= link_to role, edit_roles_path(name: role), remote: true %>
           </td>
-          <td class="float-right">
+          <td class="users-teams--count">
             <%= pluralize users_count, "user" %>
+          </td>
+          <td class="float-right">
+            <a class='team--edit-link' data-remote='true' href="/roles/edit?name=<%= role %>"><img src='/assets/images/icons/edit.png'></a>
           </td>
         </tr>
       <% end %>

@@ -24,13 +24,7 @@ function loadUserDataTable (columns) {
     ajax: "/" + (location.pathname+location.search).substr(1),
     dom: "f<'table--info'piB>rt<'clear'>",
     columns,
-    stateSave: true,
-    stateSaveCallback(settings, data) {
-      stateSaveCallbackFunction(settings, data, $(this));
-    },
-    stateLoadCallback(settings, callback) {
-      stateLoadCallbackFunction($(this), callback);
-    },
+    stateSave: false,
     createdRow( row, data, dataIndex ) {
       var id = data.id;
       var previewUrl = "/users/" + id;
