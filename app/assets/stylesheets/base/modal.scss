@@ -136,3 +136,13 @@
     padding-top: 0;
   }
 }
+
+.users--new-modal {
+  .user--modal-input {
+    width: 45%;
+  }
+
+  #admin_user_email {
+    width: 90%;
+  }
+}
