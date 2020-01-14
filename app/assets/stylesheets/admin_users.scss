@@ -30,6 +30,10 @@
     @extend h5;
     @extend .medium;
   }
+
+  .users-teams--count {
+    width: 20%;
+  }
 }
 
 .user--team-dropdown {
