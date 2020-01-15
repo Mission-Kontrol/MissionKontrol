@@ -117,9 +117,11 @@ class AdminUsersController < ApplicationController
     render :index
   end
 
+  # rubocop:disable Metrics/MethodLength
   def render_show_js
     columns = []
     search = params.dig('search', 'value')
+    team_filter = params.dig('columns', '2', 'search', 'value')
     offset = params['start']
     limit = params['length']
 
@@ -129,14 +131,21 @@ class AdminUsersController < ApplicationController
       columns << { data: c }
     end
 
+    table_data = if team_filter.present?
+                   table_data_filter(team_filter, limit, offset)
+                 else
+                   table_data(search, limit, offset)
+                 end
+
     render json: {
-      data: table_data(search, limit, offset),
+      data: table_data,
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: AdminUser.all.count,
       recordsFiltered: AdminUser.all.count
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   def field_names
     ['name', 'email', 'team', 'active']
@@ -180,8 +189,6 @@ class AdminUsersController < ApplicationController
   end
 
   def table_data(search, limit = nil, offset = nil)
-    table_data = []
-
     result = []
     if search
       ['first_name', 'last_name', 'email'].each do |value|
@@ -192,7 +199,33 @@ class AdminUsersController < ApplicationController
       result = AdminUser.all
     end
 
-    result.each do |user|
+    table_data = format_results(result)
+
+    table_data
+  end
+
+  def table_data_filter(role, limit = nil, offset = nil)
+    result = filter_admin_users(role, limit, offset)
+
+    table_data = format_results(result)
+
+    table_data
+  end
+
+  def search_admin_users(value, search_value, limit = nil, offset = nil)
+    admin_users = AdminUser.where("#{value} ILIKE ?", "%#{search_value}%")
+    admin_users.limit(limit).offset(offset)
+  end
+
+  def filter_admin_users(role, limit, offset)
+    admin_users = AdminUser.with_role(role)
+    admin_users.limit(limit).offset(offset)
+  end
+
+  def format_results(results)
+    table_data = []
+
+    results.each do |user|
       table_data << {
         id: user.id,
         name: user.name,
@@ -203,10 +236,5 @@ class AdminUsersController < ApplicationController
     end
 
     table_data
-  end
-
-  def search_admin_users(value, search_value, limit = nil, offset = nil)
-    admin_users = AdminUser.where("#{value} ILIKE ?", "%#{search_value}%")
-    admin_users.limit(limit).offset(offset)
   end
 end

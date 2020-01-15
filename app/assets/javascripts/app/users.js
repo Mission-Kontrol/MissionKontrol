@@ -1,5 +1,15 @@
 "use strict";
 
+function filterByTeams (table) {
+  $(".users-teams--table-data").click(function() {
+    var role = $(this).data("role");
+
+    table.column( 2 )
+      .search( role )
+      .draw();
+  })
+}
+
 function loadUserDataTable (columns) {
   var canExport = $("#target-table-admin-users").data("can-export");
   columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"});
@@ -60,6 +70,8 @@ function loadUserDataTable (columns) {
       initCompleteFunction(settings, json, searchableTable);
     }
   });
+
+  filterByTeams(searchableTable);
 }
 
 function fetchDataForUserTable () {

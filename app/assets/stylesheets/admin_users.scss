@@ -27,8 +27,12 @@
 
   .users-teams--table-data, .users-status--table-data {
     color: $blueberry;
-    @extend h5;
+    @extend h4;
     @extend .medium;
+  }
+
+  .users-teams--table-data {
+    cursor: pointer;
   }
 
   .users-teams--count {
