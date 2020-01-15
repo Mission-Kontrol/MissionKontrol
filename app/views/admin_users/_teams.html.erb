@@ -7,8 +7,8 @@
     <table>
       <% @admin_user_roles.sort.each do |role, users_count| %>
         <tr>
-          <td class="users-teams--table-data">
-            <%= link_to role, edit_roles_path(name: role), remote: true %>
+          <td class="users-teams--table-data" data-role="<%= role %>">
+            <%= role %>
           </td>
           <td class="users-teams--count">
             <%= pluralize users_count, "user" %>
