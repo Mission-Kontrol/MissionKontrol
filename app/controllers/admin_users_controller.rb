@@ -205,7 +205,7 @@ class AdminUsersController < ApplicationController
   end
 
   def table_data_filter(multi_filters, limit = nil, offset = nil)
-    filters = multi_filters.split(",")
+    filters = multi_filters.split(',')
     status = filters.first
     role = filters.count > 1 ? filters.last : nil
 
@@ -221,7 +221,7 @@ class AdminUsersController < ApplicationController
     admin_users.limit(limit).offset(offset)
   end
 
-  def filter_admin_users(active = nil, role = nil, limit, offset)
+  def filter_admin_users(active = nil, role = nil, limit = nil, offset = nil)
     if active.present? && role.present?
       admin_users = AdminUser.with_role(role).where(active: active)
     elsif active.present?

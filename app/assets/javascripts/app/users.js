@@ -21,7 +21,7 @@ function removeFilterBar () {
 
 function filterTable (status, role, table) {
   table.columns( [2, 3] )
-    .search("")
+    .search("");
 
   table.columns( [2, 3] )
     .search([status, role])
