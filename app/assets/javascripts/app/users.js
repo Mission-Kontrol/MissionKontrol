@@ -10,6 +10,13 @@ function filterByTeams (table) {
   })
 }
 
+function displayEditLink () {
+  $(".users-teams--count").hover(function() {
+    $(this).children(".team--user-count").toggleClass("hide");
+    $(this).children(".team--edit-link").toggleClass("hide");
+  })
+}
+
 function loadUserDataTable (columns) {
   var canExport = $("#target-table-admin-users").data("can-export");
   columns.push({"data":null,"defaultContent":"<a class='user--edit-link' data-remote='true' href='#'><img src='/assets/images/icons/edit@2x.png'></a>"});
@@ -161,4 +168,6 @@ $(document).ready(function() {
   validateForm();
 
   editFields();
+
+  displayEditLink();
 })
