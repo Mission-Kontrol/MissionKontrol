@@ -1,12 +1,67 @@
 "use strict";
 
+function displayFilterBar (table) {
+  var filterBar = $(".table--filter-bar-container").html();
+  var tableInfo = $(".table--info");
+
+  if (tableInfo.find(".table--filter-bar").length > 0) {
+    if (table.columns([2,3]).search()[0].includes(",")) {
+      $(".filter-bar--selected .white").last().text("2 filters selected");
+    } else {
+      $(".filter-bar--selected .white").last().text("1 filter selected");
+    }
+  } else {
+    tableInfo.append(filterBar);
+  }
+}
+
+function removeFilterBar () {
+  $(".table--filter-bar").last().remove();
+}
+
+function filterTable (status, role, table) {
+  table.columns( [2, 3] )
+    .search("");
+
+  table.columns( [2, 3] )
+    .search([status, role])
+    .draw();
+
+  displayFilterBar(table);
+}
+
 function filterByTeams (table) {
   $(".users-teams--table-data").click(function() {
     var role = $(this).data("role");
+    var statusFilter = table.column(3).search();
 
-    table.column( 2 )
-      .search( role )
+    filterTable(statusFilter, role, table);
+  })
+}
+
+function filterByStatus (table) {
+  $(".users-status--table-data").click(function() {
+    var status = $(this).data("status");
+    var teamFilter = table.column(2).search();
+
+    filterTable(status, teamFilter, table);
+  })
+}
+
+function clearFilters (table) {
+  $("body").on("click", ".filter-bar--clear", function () {
+    table.columns( [2, 3] )
+      .search( "" )
       .draw();
+
+    removeFilterBar();
+  })
+}
+
+function displayEditLink () {
+  $(".users-teams--count").hover(function() {
+    $(this).children(".team--user-count").toggleClass("hide");
+    $(this).children(".team--edit-link").toggleClass("hide");
   })
 }
 
@@ -72,6 +127,8 @@ function loadUserDataTable (columns) {
   });
 
   filterByTeams(searchableTable);
+  filterByStatus(searchableTable);
+  clearFilters(searchableTable);
 }
 
 function fetchDataForUserTable () {
@@ -161,4 +218,6 @@ $(document).ready(function() {
   validateForm();
 
   editFields();
+
+  displayEditLink();
 })

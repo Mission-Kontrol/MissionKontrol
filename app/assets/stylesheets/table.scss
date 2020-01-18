@@ -315,3 +315,20 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
 .table--add-record-button {
   margin: 0 5px 3px 0;
 }
+
+.table--filter-bar {
+  background-color: $cool-blue;
+  height: 34px;
+
+  .filter-bar--info {
+    display: inline-flex;
+  }
+
+  .filter-bar--seperator {
+    padding: 0 10px;
+  }
+
+  .filter-bar--clear {
+    cursor: pointer;
+  }
+}

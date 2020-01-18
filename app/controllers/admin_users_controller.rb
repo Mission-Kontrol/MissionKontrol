@@ -121,7 +121,7 @@ class AdminUsersController < ApplicationController
   def render_show_js
     columns = []
     search = params.dig('search', 'value')
-    team_filter = params.dig('columns', '2', 'search', 'value')
+    filters = params.dig('columns', '2', 'search', 'value')
     offset = params['start']
     limit = params['length']
 
@@ -131,8 +131,8 @@ class AdminUsersController < ApplicationController
       columns << { data: c }
     end
 
-    table_data = if team_filter.present?
-                   table_data_filter(team_filter, limit, offset)
+    table_data = if filters.present?
+                   table_data_filter(filters, limit, offset)
                  else
                    table_data(search, limit, offset)
                  end
@@ -204,8 +204,12 @@ class AdminUsersController < ApplicationController
     table_data
   end
 
-  def table_data_filter(role, limit = nil, offset = nil)
-    result = filter_admin_users(role, limit, offset)
+  def table_data_filter(multi_filters, limit = nil, offset = nil)
+    filters = multi_filters.split(',')
+    status = filters.first
+    role = filters.count > 1 ? filters.last : nil
+
+    result = filter_admin_users(status, role, limit, offset)
 
     table_data = format_results(result)
 
@@ -217,8 +221,15 @@ class AdminUsersController < ApplicationController
     admin_users.limit(limit).offset(offset)
   end
 
-  def filter_admin_users(role, limit, offset)
-    admin_users = AdminUser.with_role(role)
+  def filter_admin_users(active = nil, role = nil, limit = nil, offset = nil)
+    if active.present? && role.present?
+      admin_users = AdminUser.with_role(role).where(active: active)
+    elsif active.present?
+      admin_users = AdminUser.where(active: active)
+    elsif role.present?
+      admin_users = AdminUser.with_role(role)
+    end
+
     admin_users.limit(limit).offset(offset)
   end
 

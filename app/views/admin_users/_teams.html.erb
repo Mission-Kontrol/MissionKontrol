@@ -11,10 +11,10 @@
             <%= role %>
           </td>
           <td class="users-teams--count">
-            <%= pluralize users_count, "user" %>
-          </td>
-          <td class="float-right">
-            <a class='team--edit-link' data-remote='true' href="/roles/edit?name=<%= role %>"><img src='/assets/images/icons/edit.png'></a>
+            <div class="team--user-count">
+              <%= pluralize users_count, "user" %>
+            </div>
+            <a class='team--edit-link hide' data-remote='true' href="/roles/edit?name=<%= role %>"><img src='/assets/images/icons/edit.png'> Edit</a>
           </td>
         </tr>
       <% end %>

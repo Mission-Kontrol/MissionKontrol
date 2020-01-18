@@ -6,7 +6,7 @@
     <table>
       <% @admin_user_statuses.each do |status, users_count| %>
         <tr>
-          <td class="users-status--table-data">
+          <td class="users-status--table-data" data-status="<%= status == :active ? true : false %>">
             <%= status.capitalize %>
           </td>
           <td class="float-right">
