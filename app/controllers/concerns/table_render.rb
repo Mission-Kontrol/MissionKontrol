@@ -53,7 +53,6 @@ module TableRender
     columns = []
     search = params.dig('search', 'value')
     searchable_columns = params['columns']
-    # @target_db.table = params['table']
     table = params['table']
     foreign_key_title = helpers.get_foreign_key(params[:table_name])
     foreign_key_value = params[:record_id]

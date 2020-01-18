@@ -8,14 +8,12 @@ class TablesController < ApplicationController
 
   IGNORED_COLUMNS = %w[id created_at updated_at user].freeze
 
-  before_action :authenticate_admin_user!,
-                :set_current_table,
+  before_action :set_current_table,
                 :check_license
 
   before_action :set_target_db, except: :index
   before_action :set_main_table, only: :show
   before_action :set_nested_table, except: %i[add_record create_record index]
-  before_action :set_relatable_tables, :set_activities, only: %i[preview]
   before_action :check_user_permissions, only: %i[show]
 
   def index
@@ -114,7 +112,7 @@ class TablesController < ApplicationController
   end
 
   def set_target_db
-    @target_db = Kuwinda::Repository::TargetDB.new(database_connection)
+    @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
   end
 
   def set_database
