@@ -21,9 +21,21 @@ function filterByTeams (table) {
   })
 }
 
-function clearTeamFilters (table) {
+function filterByStatus (table) {
+  $(".users-status--table-data").click(function() {
+    var status = $(this).data("status");
+
+    table.column( 3 )
+      .search( status )
+      .draw();
+
+    displayFilterBar();
+  })
+}
+
+function clearFilters (table) {
   $("body").on("click", ".filter-bar--clear", function () {
-    table.column( 2 )
+    table.columns( [2, 3] )
       .search( "" )
       .draw();
 
@@ -100,7 +112,8 @@ function loadUserDataTable (columns) {
   });
 
   filterByTeams(searchableTable);
-  clearTeamFilters(searchableTable);
+  filterByStatus(searchableTable);
+  clearFilters(searchableTable);
 }
 
 function fetchDataForUserTable () {

@@ -122,6 +122,7 @@ class AdminUsersController < ApplicationController
     columns = []
     search = params.dig('search', 'value')
     team_filter = params.dig('columns', '2', 'search', 'value')
+    status_filter = params.dig('columns', '3', 'search', 'value')
     offset = params['start']
     limit = params['length']
 
@@ -133,6 +134,8 @@ class AdminUsersController < ApplicationController
 
     table_data = if team_filter.present?
                    table_data_filter(team_filter, limit, offset)
+                 elsif status_filter.present?
+                  table_data_stataus_filter(status_filter, limit, offset)
                  else
                    table_data(search, limit, offset)
                  end
@@ -212,6 +215,14 @@ class AdminUsersController < ApplicationController
     table_data
   end
 
+  def table_data_stataus_filter(status, limit = nil, offset = nil)
+    result = filter_admin_users_status(status, limit, offset)
+
+    table_data = format_results(result)
+
+    table_data
+  end
+
   def search_admin_users(value, search_value, limit = nil, offset = nil)
     admin_users = AdminUser.where("#{value} ILIKE ?", "%#{search_value}%")
     admin_users.limit(limit).offset(offset)
@@ -219,6 +230,12 @@ class AdminUsersController < ApplicationController
 
   def filter_admin_users(role, limit, offset)
     admin_users = AdminUser.with_role(role)
+    admin_users.limit(limit).offset(offset)
+  end
+
+  def filter_admin_users_status(status, limit, offset)
+    active = status == "active" ? true : false
+    admin_users = AdminUser.where(active: active)
     admin_users.limit(limit).offset(offset)
   end
 
