@@ -1,5 +1,14 @@
 "use strict";
 
+function displayFilterBar () {
+  var filterBar = $(".table--filter-bar-container").html();
+  $(".table--info").append(filterBar);
+}
+
+function removeFilterBar () {
+  $(".table--filter-bar").last().remove();
+}
+
 function filterByTeams (table) {
   $(".users-teams--table-data").click(function() {
     var role = $(this).data("role");
@@ -7,6 +16,18 @@ function filterByTeams (table) {
     table.column( 2 )
       .search( role )
       .draw();
+
+    displayFilterBar();
+  })
+}
+
+function clearTeamFilters (table) {
+  $("body").on("click", ".filter-bar--clear", function () {
+    table.column( 2 )
+      .search( "" )
+      .draw();
+
+    removeFilterBar();
   })
 }
 
@@ -79,6 +100,7 @@ function loadUserDataTable (columns) {
   });
 
   filterByTeams(searchableTable);
+  clearTeamFilters(searchableTable);
 }
 
 function fetchDataForUserTable () {
