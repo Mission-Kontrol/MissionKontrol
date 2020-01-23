@@ -166,7 +166,7 @@ function deHumanizeString (str) {
 function amendAllRelatedPermissions (role, table, action, databaseId) {
   var humanizedTable = humanizeString(table);
 
-  $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+humanizedTable+"'][data-database-id='"+databaseId+"']").each (function () {
+  $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+humanizedTable+"']").each (function () {
     var checkbox = $(this).children();
 
     if (action === "enable") {

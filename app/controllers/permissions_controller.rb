@@ -24,7 +24,6 @@ class PermissionsController < ApplicationController
   end
 
   def add_to_role
-    binding.pry
     @role = Role.find_by(name: permission_params[:role])
 
     @permission = Permission.find_by(subject_class: permission_params[:table],
