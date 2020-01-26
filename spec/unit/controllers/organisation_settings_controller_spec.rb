@@ -2,13 +2,14 @@
 
 describe OrganisationSettingsController, type: :controller, js: true do
   before do
-    create_user_with_permissions(role, :edit, table)
+    create_user_with_permissions(role, :edit, table, database.id)
     sign_in @user
   end
 
   let(:organisation_setting) { create(:organisation_setting) }
   let(:role) { 'Sales' }
   let(:table) { 'users' }
+  let(:database) { create(:database) }
 
   describe '#edit' do
     subject { get :edit, params: { id: organisation_setting.id }, format: :js }
