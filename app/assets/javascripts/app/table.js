@@ -21,7 +21,7 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
 }
 
 function fetchDataForNestedTable(recordId, nestedTable, tableName) {
-  var databaseId = (location.pathname+location.search).substr(1).split('/')[1].charAt(0);
+  var databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
   var url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable + "&database_id=" + databaseId + "&table_name=" + tableName;
 
   $.ajax({

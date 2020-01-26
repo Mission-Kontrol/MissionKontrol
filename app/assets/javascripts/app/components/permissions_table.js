@@ -74,8 +74,8 @@ function formatNestedColumns ( d, databaseId ) {
   "</table>";
 }
 
-function showNestedTable (searchableTable, databaseId) {
-  var databaseId = databaseId;
+function showNestedTable (searchableTable, databaseIdTable) {
+  var databaseId = databaseIdTable;
 
   $("body").on("click", "tbody > tr.original-row-permissions > td:first-child", function () {
     var tr = $(event.target).closest("tr");
@@ -191,8 +191,8 @@ function enableTooltipOnContentClick () {
     $.post(
       "/permissions/enable_all",
       {
-        role: role,
-        table: table,
+        role,
+        table,
         database_id: databaseId
       }
     );
@@ -212,8 +212,8 @@ function enableTooltipOnContentClick () {
     $.post(
       "/permissions/disable_all",
       {
-        role: role,
-        table: table,
+        role,
+        table,
         database_id: databaseId
       }
     );
@@ -270,8 +270,8 @@ function addRolePermission (role, permission, table, databaseId) {
   $.post(
     "/permissions/add_to_role",
     {
-      role: role,
-      permission: permission,
+      role,
+      permission,
       table: deHumanizeString(table),
       database_id: databaseId
     }
