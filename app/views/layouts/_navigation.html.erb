@@ -100,7 +100,7 @@
               <% end %>
             </li>
             <li class="<%= active_controller?('databases') %>">
-              <a href="" id="nav-link-for-available-databases" class="nav-link-for-available-databases">
+              <a href="" id="nav-link-for-available-databases-settings" class="nav-link-for-available-databases">
                 <span class="nav-label" data-i18n="nav.layouts">
                   <%= image_tag('/assets/images/icons/database-1.png') %>
                   Databases
@@ -108,22 +108,9 @@
               </a>
 
               <ul class="nav nav-second-level collapse nav-databases">
-
                 <li class="">
                   <%= link_to 'Add', new_database_path, id: "nav-link-for-add-database" %>
                 </li>
-                <%
-=begin%>
- <% @available_databases&.each do |database| %>
-                  <li class="">
-                    <%= link_to database.friendly_name, edit_database_path(database), id: "nav-link-for-database" %>
-                  </li>
-                <% end %>
-                <li class="">
-                  <%= link_to 'Add', new_database_path, id: "nav-link-for-add-database" %>
-                </li> 
-<%
-=end%>
               </ul>
             </li>
           </ul>
