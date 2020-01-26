@@ -3,15 +3,20 @@
 <div class="panel-body">
   <div class="row">
     <div class="col-sm-12">
-      <table id="target-table-permissions" class="data-table-permissions table" data-table-name='permissions'>
-        <thead>
-          <tr>
-            <% @headers.each do |header|%>
-              <th class='column-<%= header %>'><%= header.humanize %></th>
-            <% end %>
-          </tr>
-        </thead>
-      </table>
+      <% @databases.each do |database| %>
+        <button class="accordion"><%= database.friendly_name %></button>
+        <div class="panel">
+          <table id="target-table-permissions-<%= database.id %>" class="data-table-permissions table" data-table-name="permissions" data-database-id="<%= database.id %>">
+            <thead>
+              <tr>
+                <% @headers.each do |header|%>
+                  <th class="column-<%= header %>"><%= header.humanize %></th>
+                <% end %>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

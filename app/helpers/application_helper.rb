@@ -21,6 +21,6 @@ module ApplicationHelper
   end
 
   def current_organisation
-    OrganisationSetting.last
+    @current_organisation ||= OrganisationSetting.last
   end
 end

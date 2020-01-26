@@ -2,8 +2,8 @@
 
 module Features
   module TargetDatabaseHelpers
-    def connect_to_target_database
-      @connection = establish_connection
+    def connect_to_target_database(database)
+      @connection = establish_connection(database)
       @connection.connection
     end
 
@@ -11,14 +11,14 @@ module Features
       ActiveRecord::Base.remove_connection(@connection)
     end
 
-    def establish_connection
+    def establish_connection(database)
       ActiveRecord::Base.establish_connection(
-        adapter: 'postgresql',
-        host: ENV['DEMO_CLIENT_DB_HOST'],
-        username: ENV['DEMO_CLIENT_DB_USER'],
-        password: ENV['DEMO_CLIENT_DB_PASSWORD'],
-        database: ENV['DEMO_CLIENT_DB_NAME'],
-        port: ENV['DEMO_CLIENT_DB_PORT']
+        adapter: database.adapter,
+        host: database.host,
+        username: database.username,
+        password: database.password,
+        database: database.name,
+        port: database.port
       )
     end
   end

@@ -8,6 +8,7 @@ function activateTooltipster () {
   $(".tooltipster-tooltip").each(function () {
     var role = $(this).data("role");
     var table = $(this).data("table");
+    var databaseId = $(this).data("database-id");
 
     $(this).tooltipster({
       theme: ["tooltipster-shadow", "tooltipster-shadow-customized"],
@@ -20,9 +21,9 @@ function activateTooltipster () {
       contentAsHTML: true,
       content: $("<div class='tooltip_templates'>"+
         "<span id='tooltip_content'>"+
-        "<a href='#' class='permissions-enable-all' data-role='"+role+"' data-table='"+table+"'>Enable</a>"+
+        "<a href='#' class='permissions-enable-all' data-role='"+role+"' data-table='"+table+"' data-database-id='"+databaseId+"'>Enable</a>"+
         "<br>"+
-        "<a href='#' class='permissions-disable-all' data-role='"+role+"' data-table='"+table+"'>Disable</a>"+
+        "<a href='#' class='permissions-disable-all' data-role='"+role+"' data-table='"+table+"' data-database-id='"+databaseId+"'>Disable</a>"+
         "</span>"+
         "</div>"
       ),
@@ -30,21 +31,22 @@ function activateTooltipster () {
   });
 }
 
-function displayCheckbox (value, roleName, action) {
+function displayCheckbox (value, roleName, action, databaseId) {
   if (value === true) {
-    return "<img class='filled-checkbox' src='"+filledCheckboxIcon+"' data-role='"+roleName+"' data-action='"+action+"'>";
+    return "<img class='filled-checkbox' src='"+filledCheckboxIcon+"' data-role='"+roleName+"' data-database-id='"+databaseId+"' data-action='"+action+"'>";
   } else {
     return "<img class='empty-checkbox' src='"+emptyCheckboxIcon+"' data-role='"+roleName+"' data-action='"+action+"'>";
   }
 }
 
-function formatNestedColumns ( d ) {
+function formatNestedColumns ( d, databaseId ) {
+  var databaseId = databaseId;
   var permissionsClass = 'class="permissions--nested-table-data"';
   var adminTd = permissionsClass+' data-role="Admin"';
   var salesTd = permissionsClass+' data-role="Sales"';
   var teamLeadTd = permissionsClass+' data-role="Team Lead"';
 
-  return "<table id='permissions--nested-table' data-table='"+d.Table+"'>"+
+  return "<table id='permissions--nested-table' data-table='"+d.Table+"' data-database-id='"+databaseId+"'>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>View</p></td>"+
           "<td "+adminTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_view, "Admin", "view") +"</td>"+
@@ -72,8 +74,26 @@ function formatNestedColumns ( d ) {
   "</table>";
 }
 
-function loadPermissionsDataTable (columns) {
-  var searchableTable = $(".data-table-permissions").DataTable({
+function showNestedTable (searchableTable, databaseIdTable) {
+  var databaseId = databaseIdTable;
+
+  $("body").on("click", "tbody > tr.original-row-permissions > td:first-child", function () {
+    var tr = $(event.target).closest("tr");
+    var row = searchableTable.row(tr);
+
+    if ( row.child.isShown() ) {
+      row.child.hide();
+      tr.removeClass("shown");
+    }
+    else {
+      row.child( formatNestedColumns(row.data(), databaseId) ).show();
+      tr.addClass("shown");
+    }
+  });
+}
+
+function loadPermissionsDataTable (columns, databaseId, table) {
+  var searchableTable = table.DataTable({
     colReorder: true,
     paging: false,
     info: false,
@@ -98,7 +118,7 @@ function loadPermissionsDataTable (columns) {
               "<div class='sk-dot1'></div>" +
               "<div class='sk-dot2'></div>" +
             "</div>"},
-    ajax: "/" + (location.pathname+location.search).substr(1),
+    ajax: "/" + (location.pathname+location.search).substr(1) + "?database_id=" + databaseId,
     columns,
     stateSave: true,
     stateSaveCallback(settings, data) {
@@ -120,27 +140,17 @@ function loadPermissionsDataTable (columns) {
     }
   });
 
-  $("body").on("click", "#target-table-permissions > tbody > tr.original-row-permissions > td:first-child", function () {
-    var tr = $(this).closest("tr");
-    var row = searchableTable.row(tr);
-
-    if ( row.child.isShown() ) {
-      row.child.hide();
-      tr.removeClass("shown");
-    }
-    else {
-      row.child( formatNestedColumns(row.data()) ).show();
-      tr.addClass("shown");
-    }
-  });
+  showNestedTable(searchableTable, databaseId);
 }
 
-function fetchDataForPermissionsTable() {
+function fetchDataForPermissionsTable(table) {
+  var databaseId = $(table).data("database-id");
+
   $.ajax({
     dataType: "json",
-    url: "/" + (location.pathname+location.search).substr(1),
+    url: "/" + (location.pathname+location.search).substr(1) + "?database_id=" + databaseId,
     success(data) {
-      loadPermissionsDataTable(data.columns);
+      loadPermissionsDataTable(data.columns, databaseId, table);
     }
   });
 }
@@ -153,7 +163,7 @@ function deHumanizeString (str) {
   return str.replace(/([a-z\d])([A-Z]+)/g, "$1_$2").replace(innerString(), "_").toLowerCase();
 }
 
-function amendAllRelatedPermissions (role, table, action) {
+function amendAllRelatedPermissions (role, table, action, databaseId) {
   var humanizedTable = humanizeString(table);
 
   $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+humanizedTable+"']").each (function () {
@@ -176,18 +186,20 @@ function enableTooltipOnContentClick () {
     e.preventDefault();
     var role = $(this).data("role");
     var table = $(this).data("table");
+    var databaseId = $(this).data("database-id");
 
     $.post(
       "/permissions/enable_all",
       {
-        role: role,
-        table: table
+        role,
+        table,
+        database_id: databaseId
       }
     );
 
-    amendAllRelatedPermissions(role, table, "enable");
+    amendAllRelatedPermissions(role, table, "enable", databaseId);
 
-    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": fullCircleIcon });
+    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"'][data-database-id='"+databaseId+"']").attr({ "src": fullCircleIcon });
     enableTooltipOnContentClick();
   });
 
@@ -195,18 +207,20 @@ function enableTooltipOnContentClick () {
     e.preventDefault();
     var role = $(this).data("role");
     var table = $(this).data("table");
+    var databaseId = $(this).data("database-id");
 
     $.post(
       "/permissions/disable_all",
       {
-        role: role,
-        table: table
+        role,
+        table,
+        database_id: databaseId
       }
     );
 
-    amendAllRelatedPermissions(role, table, "disable");
+    amendAllRelatedPermissions(role, table, "disable", databaseId);
 
-    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"']").attr({ "src": emptyCircleIcon });
+    $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"'][data-database-id='"+databaseId+"']").attr({ "src": emptyCircleIcon });
     enableTooltipOnContentClick();
   });
 }
@@ -252,13 +266,14 @@ function updateTablePermissionsImg (role, table, permission, action) {
   }
 }
 
-function addRolePermission (role, permission, table) {
+function addRolePermission (role, permission, table, databaseId) {
   $.post(
     "/permissions/add_to_role",
     {
-      role: role,
-      permission: permission,
-      table: deHumanizeString(table)
+      role,
+      permission,
+      table: deHumanizeString(table),
+      database_id: databaseId
     }
   );
 
@@ -276,13 +291,14 @@ function addRolePermission (role, permission, table) {
   updateTablePermissionsImg(role, table, permission, "add");
 }
 
-function removeRolePermission (role, permission, table) {
+function removeRolePermission (role, permission, table, databaseId) {
   $.post(
     "/permissions/remove_from_role",
     {
       role,
       permission,
-      table: deHumanizeString(table)
+      table: deHumanizeString(table),
+      database_id: databaseId
     }
   );
 
@@ -300,35 +316,54 @@ function removeRolePermission (role, permission, table) {
 }
 
 function emptyCheckbox() {
-  $("body").on("click", "#target-table-permissions .filled-checkbox", function () {
+  $("body").on("click", ".data-table-permissions .filled-checkbox", function () {
     var role = $(this).data("role");
     var permission = $(this).data("action");
-    var table = $(this).closest("table").data("table");
+    var tableObject = $(this).closest("table");
+    var table = tableObject.data("table");
+    var databaseId = tableObject.data("database-id");
 
-    removeRolePermission(role, permission, table);
+    removeRolePermission(role, permission, table, databaseId);
   });
 }
 
 function fillCheckbox() {
-  $("body").on("click", "#target-table-permissions .empty-checkbox", function () {
+  $("body").on("click", ".data-table-permissions .empty-checkbox", function () {
     var role = $(this).data("role");
     var permission = $(this).data("action");
-    var table = $(this).closest("table").data("table");
+    var tableObject = $(this).closest("table");
+    var table = tableObject.data("table");
+    var databaseId = tableObject.data("database-id");
 
-    addRolePermission(role, permission, table);
+    addRolePermission(role, permission, table, databaseId);
   });
 }
 
-$(document).ready(function() {
-  let metaTag = $("meta[name=psj]");
-  let isCurrentControllerPermissions = metaTag.attr("controller") === "permissions";
+function togglePermissionAccordians () {
+  var acc = document.getElementsByClassName("accordion");
+  var i;
 
-  if (isCurrentControllerPermissions) {
-    fetchDataForPermissionsTable();
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+
+      var panel = this.nextElementSibling;
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+        var table = $(panel).find(".data-table-permissions");
+        fetchDataForPermissionsTable(table);
+      }
+    });
   }
+}
 
+$(document).ready(function() {
   emptyCheckbox();
   fillCheckbox();
 
   enableTooltipOnContentClick();
+
+  togglePermissionAccordians();
 });

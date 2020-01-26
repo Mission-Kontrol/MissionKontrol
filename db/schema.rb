@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191123165832) do
+ActiveRecord::Schema.define(version: 20200126125119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,18 @@ ActiveRecord::Schema.define(version: 20191123165832) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "databases", force: :cascade do |t|
+    t.string "adapter", null: false
+    t.string "encoding"
+    t.integer "pool", default: 5
+    t.string "host", null: false
+    t.string "username", null: false
+    t.string "password_digest", null: false
+    t.integer "port", null: false
+    t.string "name"
+    t.string "friendly_name"
+  end
+
   create_table "organisation_settings", force: :cascade do |t|
     t.string "license_key"
     t.string "activation_id"
@@ -105,6 +117,7 @@ ActiveRecord::Schema.define(version: 20191123165832) do
     t.string "nested_table"
     t.string "create_destination"
     t.string "delete_destination"
+    t.integer "database_id"
   end
 
   create_table "task_queue_outcomes", force: :cascade do |t|

@@ -3,7 +3,8 @@
 module Kuwinda
   module UseCase
     class DatabaseConnection
-      def initialize
+      def initialize(database)
+        @database = database
         @gateway = database_connection_gateway
       end
 
@@ -13,10 +14,10 @@ module Kuwinda
 
       private
 
-      attr_reader :gateway
+      attr_reader :gateway, :database
 
       def database_connection_gateway
-        Kuwinda::Gateway::DatabaseConnectionGateway.new
+        Kuwinda::Gateway::DatabaseConnectionGateway.new(database)
       end
     end
   end

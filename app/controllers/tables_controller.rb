@@ -8,22 +8,26 @@ class TablesController < ApplicationController
 
   IGNORED_COLUMNS = %w[id created_at updated_at user].freeze
 
-  before_action :authenticate_admin_user!,
-                :set_target_db_repo,
-                :set_current_table,
+  before_action :set_current_table,
                 :check_license
 
-  before_action :set_nested_table, except: %i[add_record create_record]
-  before_action :load_task_queues, only: %i[show preview]
-  before_action :set_relatable_tables, :set_activities, only: %i[preview]
-  before_action :set_layout_for_table, only: %i[show]
-  before_action :load_available_tables, only: %i[show preview]
+  before_action :target_db, except: :index
+  before_action :set_main_table, only: :show
+  before_action :set_nested_table, except: %i[add_record create_record index]
   before_action :check_user_permissions, only: %i[show]
+
+  def index
+    @database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call.to_a
+
+    respond_to do |format|
+      format.js { render json: @database_tables.sort.to_json }
+    end
+  end
 
   def show
     respond_to do |format|
       format.html do
-        render_show_html
+        render_show_html(params[:table])
       end
 
       format.js do
@@ -45,7 +49,7 @@ class TablesController < ApplicationController
   end
 
   def update_table_field
-    @target_db_repo.update_record(table_field_params[:table],
+    @target_db.update_record(table_field_params[:table],
                                   table_field_params[:field],
                                   table_field_params[:value],
                                   table_field_params[:id])
@@ -56,7 +60,7 @@ class TablesController < ApplicationController
   end
 
   def update_related_table_field
-    @target_db_repo.update_related_record(related_table_field_params[:table],
+    @target_db.update_related_record(related_table_field_params[:table],
                                   related_table_field_params[:field],
                                   related_table_field_params[:value],
                                   related_table_field_params[:foreign_key_title],
@@ -68,7 +72,8 @@ class TablesController < ApplicationController
   end
 
   def settings
-    @table = @target_db_repo.table
+    # @table = @target_db.table
+    set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table)
     @related_tables = relatable_tables(@table)
   end
@@ -80,13 +85,14 @@ class TablesController < ApplicationController
   end
 
   def add_record
-    @table = @target_db_repo.table
+    # @table = @target_db.table
+    set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table)
     set_columns_for_form
   end
 
   def create_record
-    @target_db_repo.create_record(params[:table], record_params)
+    @target_db.create_record(params[:table], record_params)
   rescue ActiveRecord::NotNullViolation => e
     @error = :NullViolation
     field = e.to_s.split('value in column ').last.split(' violates').first.split('\"').last
@@ -105,8 +111,21 @@ class TablesController < ApplicationController
     redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table)
   end
 
-  def set_target_db_repo
-    @target_db_repo = Kuwinda::Repository::TargetDB.new(params[:table])
+  def target_db
+    @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
+  end
+
+  def set_database
+    @database = Database.find(database_params)
+  end
+
+  def set_main_table
+    @table = params[:table]
+  end
+
+  def database_connection
+    set_database
+    @database_connection = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
   end
 
   def table_field_params
@@ -145,21 +164,21 @@ class TablesController < ApplicationController
 
   def nested_column_names(nested_table_state)
     nested_column_names = []
-    nested_db_repo = Kuwinda::Repository::TargetDB.new(@current_table_settings.nested_table)
+    # nested_db_repo = Kuwinda::Repository::TargetDB.new(@current_table_settings.nested_table, database_connection)
 
     nested_table_state.visible_columns.each do |value|
-      nested_column_names << nested_db_repo.table_columns[value.to_i].name
+      nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].name
     end
 
     nested_column_names
   end
 
   def relatable_tables(table)
-    Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
+    Kuwinda::Presenter::ListRelatableTables.new(database_connection, table).call
   end
 
   def set_columns_for_form
-    columns = @target_db_repo.table_columns
+    columns = @target_db.table_columns(@table)
     @inputs = []
 
     columns.map do |column|
@@ -175,5 +194,9 @@ class TablesController < ApplicationController
 
   def record_params
     params.require(:record).permit!
+  end
+
+  def database_params
+    params[:id] || params[:database_id]
   end
 end

@@ -2095,11 +2095,13 @@ a.forum-item-title:hover {
   }
 
   .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    border: transparent;
+    border: 1px solid $border-grey;
+    border-bottom: 1px solid white;
+    border-radius: 0px;
   }
 
   .nav-tabs {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid $border-grey;
   }
 
   .tab-pane .panel-body {
@@ -2107,7 +2109,7 @@ a.forum-item-title:hover {
   }
 
   .tabs-left .tab-pane .panel-body, .tabs-right .tab-pane .panel-body {
-    border-top: 1px solid $border-color;
+    border-top: 1px solid $border-grey;
   }
 
   .nav-tabs > li a:hover {

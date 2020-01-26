@@ -4,11 +4,12 @@ describe Kuwinda::Presenter::RetrieveData do
   subject { retrieve_data.call }
 
   let(:retrieve_data) do
-    described_class.new(client_database, view_builder, query_limiter)
+    described_class.new(database_connection, view_builder, query_limiter)
   end
-  let(:client_database) do
-    Kuwinda::UseCase::DatabaseConnection.new.execute
+  let(:database_connection) do
+    Kuwinda::UseCase::DatabaseConnection.new(database).execute
   end
+  let(:database) { create(:database) }
   let(:view_builder) { create(:view_builder) }
   let(:query_limiter) { 'WHERE user_id = 3' }
   let(:expected_result) do

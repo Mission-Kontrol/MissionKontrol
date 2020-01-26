@@ -5,14 +5,11 @@ class PermissionsController < ApplicationController
 
   layout 'dashboard'
 
-  before_action :load_available_tables,
-                :load_task_queues,
-                :check_target_db_connection
   before_action :check_user_admin_abilities
 
   def index
+    @databases = Database.all
     @headers = ['Table'] + roles.map(&:name)
-    @tables = available_tables.to_a
     @roles = roles
 
     respond_to do |format|
@@ -30,10 +27,11 @@ class PermissionsController < ApplicationController
     @role = Role.find_by(name: permission_params[:role])
 
     @permission = Permission.find_by(subject_class: permission_params[:table],
-                                     action: permission_params[:permission])
+                                     action: permission_params[:permission],
+                                     subject_id: permission_params[:database_id])
 
     if permission_params[:permission] != 'view'
-      view_permission = Permission.find_by(subject_class: permission_params[:table], action: 'view')
+      view_permission = Permission.find_by(subject_class: permission_params[:table], action: 'view', subject_id: permission_params[:database_id])
       @role.permissions << view_permission unless @role.permissions.include? view_permission
     end
 
@@ -44,12 +42,13 @@ class PermissionsController < ApplicationController
     @role = Role.find_by(name: permission_params[:role])
 
     if permission_params[:permission] == 'view'
-      existing_permissions = @role.permissions.where(subject_class: permission_params[:table])
+      existing_permissions = @role.permissions.where(subject_class: permission_params[:table], subject_id: permission_params[:database_id])
 
       existing_permissions.each { |permission| @role.permissions.delete(permission) }
     else
       @permission = Permission.find_by(subject_class: permission_params[:table],
-                                       action: permission_params[:permission])
+                                       action: permission_params[:permission],
+                                       subject_id: permission_params[:database_id])
 
       @role.permissions.delete(@permission) if @role.permissions.include? @permission
     end
@@ -57,14 +56,14 @@ class PermissionsController < ApplicationController
 
   def enable_all
     @role = Role.find_by(name: permission_params[:role])
-    permissions = Permission.where(subject_class: permission_params[:table])
+    permissions = Permission.where(subject_class: permission_params[:table], subject_id: permission_params[:database_id])
 
     permissions.each { |permission| @role.permissions << permission unless @role.permissions.include? permission }
   end
 
   def disable_all
     @role = Role.find_by(name: permission_params[:role])
-    existing_permissions = @role.permissions.where(subject_class: permission_params[:table])
+    existing_permissions = @role.permissions.where(subject_class: permission_params[:table], subject_id: permission_params[:database_id])
 
     existing_permissions.each { |permission| @role.permissions.delete(permission) }
   end
@@ -72,7 +71,7 @@ class PermissionsController < ApplicationController
   private
 
   def permission_params
-    params.permit(:permission, :role, :table)
+    params.permit(:permission, :role, :table, :database_id)
   end
 
   def render_show_html
@@ -92,8 +91,8 @@ class PermissionsController < ApplicationController
       data: table_permission_data,
       columns: columns,
       draw: params['draw'].to_i,
-      recordsTotal: Permission.all.count,
-      recordsFiltered: Permission.all.count
+      recordsTotal: database_permissions.count,
+      recordsFiltered: database_permissions.count
     }
   end
 
@@ -101,12 +100,8 @@ class PermissionsController < ApplicationController
     Role.all.sort
   end
 
-  def available_tables
-    Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  end
-
   def table_permission_data
-    permissions = Permission.all
+    permissions = database_permissions
     grouped_permissions = permissions.group_by(&:subject_class)
     data = []
     grouped_permissions.each do |table|
@@ -124,15 +119,19 @@ class PermissionsController < ApplicationController
     data
   end
 
+  def database_permissions
+    Permission.where(subject_id: params[:database_id])
+  end
+
   def role_permissions_level(table, role)
     permissions = (table & role.permissions)
 
     if permissions.empty?
-      "<img src='/assets/images/icons/circle-with-cross.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "'>"
+      "<img src='/assets/images/icons/circle-with-cross.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
     elsif permissions.length == table.length
-      "<img src='/assets/images/icons/circle-with-check-symbol.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "'>"
+      "<img src='/assets/images/icons/circle-with-check-symbol.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
     else
-      "<img src='/assets/images/icons/circle-with-contrast.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "'>"
+      "<img src='/assets/images/icons/circle-with-contrast.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
     end
   end
 

@@ -165,3 +165,7 @@ Dashboard > Programmable voice > TwiML > TwiML Apps > Create new app or choose e
 #### Caller ID  
 
 Dashboard > Programmable voice > Numbers > Mange numbers > select existing number or buy new number
+
+## Permissions
+
+subject_id = database_id

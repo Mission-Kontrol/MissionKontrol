@@ -39,38 +39,20 @@ describe OrganisationSettingsController, type: :controller, js: true do
       end
     end
 
-    context 'when the target db credentials have changed' do
+    context 'when the organisation details have changed' do
       let(:params) do
         {
           id: organisation_setting.id,
           organisation_setting: {
-            company_name: 'Name',
-            target_database_name: ENV['DEMO_CLIENT_DB_NAME'],
-            target_database_username: ENV['DEMO_CLIENT_DB_USER'],
-            target_database_password: ENV['DEMO_CLIENT_DB_PASSWORD'],
-            target_database_host: ENV['DEMO_CLIENT_DB_HOST'],
-            target_database_port: ENV['DEMO_CLIENT_DB_PORT'],
-            target_database_type: 'postgres'
+            company_name: 'Name'
           }
         }
       end
 
-      it 'updates the db connection' do
+      it 'updates the organisation' do
         subject
 
         expect(OrganisationSetting.find(organisation_setting.id).company_name).to eq('Name')
-      end
-
-      it 'updates the available permissions' do
-        subject
-
-        expect(Permission.all.count).to eq(17)
-      end
-
-      it 'creates target table settings for tables' do
-        subject
-
-        expect(TargetTableSetting.all.count).to eq(5)
       end
     end
   end

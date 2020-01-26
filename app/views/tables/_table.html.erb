@@ -16,7 +16,7 @@
 </div>
 
 <div class="table-responsive" >
-  <table id="target-table-<%= @target_db_repo.table.downcase %>" class="footable table" data-filter-container="#filter-form-container" data-filtering="true"  data-sorting="true" data-paging="true" data-table-name='<%= current_table %>' data-filter-position="left">
+  <table id="target-table-<%= @current_table.downcase %>" class="footable table" data-filter-container="#filter-form-container" data-filtering="true"  data-sorting="true" data-paging="true" data-table-name='<%= current_table %>' data-filter-position="left">
     <thead>
       <tr>
         <% @headers.each do |header|%>
@@ -33,7 +33,7 @@
 
     <tbody>
       <% @rows.each do |r|%>
-        <tr class="clickable-row" data-href='<%= table_record_preview_path(table: @target_db_repo.table, table_name: @target_db_repo.table.downcase, record_id: r['id']) %>'>
+        <tr class="clickable-row" data-href='<%= table_record_preview_path(table: @current_table, table_name: @current_table.downcase, record_id: r['id']) %>'>
           <% if table_has_layout?(@current_table) %>
             <%= render 'table_with_layout', r: r, hidden_columns: @hidden_columns %>
           <% else %>

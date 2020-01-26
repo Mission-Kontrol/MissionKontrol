@@ -36,18 +36,11 @@
       </li>
 
       <li class="<%= active_controller?('tables') && active_action?('show') %>">
-        <a href="" id="nav-link-for-tables">
-          <span class="nav-label" data-i18n="nav.dashboard">DATABASE</span> <span class="fa arrow"></span>
+        <a href="" id="nav-link-for-available-databases" class="nav-link-for-available-databases">
+          <span class="nav-label" data-i18n="nav.dashboard">DATA</span> <span class="fa arrow"></span>
         </a>
 
-        <ul class="nav nav-second-level collapse">
-          <% @available_tables&.each do |t| %>
-            <li class="">
-              <% if current_admin_user.permission?(:view, t) %>
-                <%= link_to t.humanize, table_path(table: t, id: t.downcase), id: "nav-link-for-#{t.downcase}-table" %>
-              <% end %>
-            </li>
-          <% end %>
+        <ul class="nav nav-second-level collapse" id="nav-populate-available-databases">
         </ul>
       </li>
 
@@ -105,6 +98,33 @@
               <%= link_to permissions_path, id: "nav-link-for-user-settings" do %>
                 <%= image_tag('/assets/images/icons/database-1.png') %>  Permissions
               <% end %>
+            </li>
+            <li class="<%= active_controller?('databases') %>">
+              <a href="" id="nav-link-for-available-databases" class="nav-link-for-available-databases">
+                <span class="nav-label" data-i18n="nav.layouts">
+                  <%= image_tag('/assets/images/icons/database-1.png') %>
+                  Databases
+                </span> <span class="fa arrow"></span>
+              </a>
+
+              <ul class="nav nav-second-level collapse nav-databases">
+
+                <li class="">
+                  <%= link_to 'Add', new_database_path, id: "nav-link-for-add-database" %>
+                </li>
+                <%
+=begin%>
+ <% @available_databases&.each do |database| %>
+                  <li class="">
+                    <%= link_to database.friendly_name, edit_database_path(database), id: "nav-link-for-database" %>
+                  </li>
+                <% end %>
+                <li class="">
+                  <%= link_to 'Add', new_database_path, id: "nav-link-for-add-database" %>
+                </li> 
+<%
+=end%>
+              </ul>
             </li>
           </ul>
         </li>

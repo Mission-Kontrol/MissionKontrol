@@ -1,41 +1,42 @@
 # frozen_string_literal: true
 
-feature 'Permissions' do
+# TODO: figure out how to do these without sleep 10?
+
+feature 'Permissions', js: true do
   background do
     sign_in_as_user_with_license
-    connect_to_target_database
+    @database = create(:database)
     create(:target_table_setting, name: 'events')
   end
 
   scenario 'user with sales role with permissions to view table can view table navigation' do
     give_sales_role_permissions_to_view_events_table
-    visit root_path
-    expect(page).to have_link('Events')
-    remove_connection_to_target_database
+    find("a[id='nav-link-for-available-databases']").click
+    find("a[data-database-id='#{@database.id}']").click
+    sleep 10
+    expect(page).to have_link('events')
   end
 
   scenario 'user with sales role with permissions to view table can view table page' do
     give_sales_role_permissions_to_view_events_table
-    visit root_path
-    click_link 'Events'
-    expect(page).to have_current_path(table_path(table: 'events', id: 'events'))
-    remove_connection_to_target_database
+    visit table_path(id: @database.id, table: 'events')
+    expect(page).to have_current_path(table_path(id: @database.id, table: 'events'))
   end
 
   scenario 'user with sales role without permissions to view table cannot view table navigation' do
-    visit root_path
-    expect(page).not_to have_link('Events')
-    remove_connection_to_target_database
+    find("a[id='nav-link-for-available-databases']").click
+    find("a[data-database-id='#{@database.id}']").click
+    sleep 10
+    expect(page).not_to have_link('events')
   end
 
   scenario 'user with sales role without permissions to view table cannot view table page' do
-    visit table_path(table: 'events', id: 'events')
+    visit table_path(id: @database.id, table: 'events')
     expect(page).to have_current_path(dashboard_path)
-    remove_connection_to_target_database
   end
 end
 
 def give_sales_role_permissions_to_view_events_table
-  view_permission = create(:permission)
+  view_permission = create(:permission, subject_id: @database.id)
   @role.permissions << view_permission
 end
