@@ -4,17 +4,19 @@ require 'rails_helper'
 
 describe PermissionsController, type: :controller, js: true do
   before do
-    create_user_with_permissions(role, :edit, table)
-    @view_permission = create(:permission, subject_class: table, action: 'view')
-    @create_permission = create(:permission, subject_class: table, action: 'create')
+    create_user_with_permissions(role, :edit, table, database.id)
+    @view_permission = create(:permission, subject_class: table, action: 'view', subject_id: database.id)
+    @create_permission = create(:permission, subject_class: table, action: 'create', subject_id: database.id)
     sign_in @user
   end
+
   let(:role) { 'Sales' }
   let(:table) { 'users' }
+  let(:database) { create(:database) }
 
   describe '#add_to_role' do
     context 'when action is view' do
-      subject { post :add_to_role, params: { role: role, table: table, permission: 'view' }, format: :js }
+      subject { post :add_to_role, params: { role: role, table: table, permission: 'view', database_id: database.id }, format: :js }
 
       it 'adds view permission for the table to the role' do
         subject
@@ -24,7 +26,7 @@ describe PermissionsController, type: :controller, js: true do
     end
 
     context 'when action is not view' do
-      subject { post :add_to_role, params: { role: role, table: table, permission: 'create' }, format: :js }
+      subject { post :add_to_role, params: { role: role, table: table, permission: 'create', database_id: database.id }, format: :js }
 
       context 'when view is already enabled' do
         before do
@@ -55,7 +57,7 @@ describe PermissionsController, type: :controller, js: true do
 
   describe '#remove_from_role' do
     context 'when action is view' do
-      subject { post :remove_from_role, params: { role: role, table: table, permission: 'view' }, format: :js }
+      subject { post :remove_from_role, params: { role: role, table: table, permission: 'view', database_id: database.id }, format: :js }
 
       before do
         @user.roles.first.permissions << @view_permission
@@ -83,7 +85,7 @@ describe PermissionsController, type: :controller, js: true do
     end
 
     context 'when action is not view' do
-      subject { post :remove_from_role, params: { role: role, table: table, permission: 'create' }, format: :js }
+      subject { post :remove_from_role, params: { role: role, table: table, permission: 'create', database_id: database.id }, format: :js }
 
       before do
         @user.roles.first.permissions << @create_permission
@@ -110,7 +112,7 @@ describe PermissionsController, type: :controller, js: true do
   end
 
   describe '#enable_all' do
-    subject { post :enable_all, params: { role: role, table: table }, format: :js }
+    subject { post :enable_all, params: { role: role, table: table, database_id: database.id }, format: :js }
 
     it 'enables all permissions for the table for the role' do
       subject
@@ -121,7 +123,7 @@ describe PermissionsController, type: :controller, js: true do
   end
 
   describe '#disable_all' do
-    subject { post :disable_all, params: { role: role, table: table }, format: :js }
+    subject { post :disable_all, params: { role: role, table: table, database_id: database.id }, format: :js }
 
     before do
       @user.roles.first.permissions << @view_permission

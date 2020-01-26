@@ -254,6 +254,10 @@ Naming/PredicateName:
     - 'app/controllers/application_controller.rb'
     - 'app/helpers/application_helper.rb'
 
+Style/AndOr:
+  Exclude:
+    - 'app/controllers/databases_controller.rb'
+
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.

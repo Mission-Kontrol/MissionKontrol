@@ -25,9 +25,9 @@ class AdminUser < ApplicationRecord
       !twilio_caller_id.blank?
   end
 
-  def permission?(action, table)
+  def permission?(action, table, database_id)
     ability = Ability.new(self)
-    ability.can? self, action, table
+    ability.can? self, action, table, database_id
   end
 
   def admin_abilities?

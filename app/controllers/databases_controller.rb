@@ -17,7 +17,7 @@ class DatabasesController < ApplicationController
   def create
     if testing?
       @active_connection = test_connection
-      render :test_connection && return
+      render :test_connection and return
     else
       @database = Database.new(database_params)
       @database.password = password_param
@@ -34,7 +34,7 @@ class DatabasesController < ApplicationController
   def update
     if testing?
       @active_connection = test_connection
-      render :test_connection && return
+      render :test_connection and return
     else
       @database = Database.find(params[:id])
       @database.update_attributes(database_params)

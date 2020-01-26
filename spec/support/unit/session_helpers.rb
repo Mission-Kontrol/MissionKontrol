@@ -9,10 +9,10 @@ module Unit
       @user = create(:admin_user)
     end
 
-    def create_user_with_permissions(role, action, table)
+    def create_user_with_permissions(role, action, table, database_id)
       create_user
       add_role_to_user(role)
-      add_permission_to_role(action, table)
+      add_permission_to_role(action, table, database_id)
     end
 
     def create_user_with_role(role)
@@ -41,8 +41,8 @@ module Unit
       @user.roles << @role
     end
 
-    def add_permission_to_role(action, table)
-      view_permission = create(:permission, subject_class: table, action: action)
+    def add_permission_to_role(action, table, database_id)
+      view_permission = create(:permission, subject_class: table, action: action, subject_id: database_id)
       @role.permissions << view_permission
     end
   end

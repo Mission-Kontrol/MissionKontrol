@@ -5,7 +5,7 @@ require 'rails_helper'
 describe TablesController, :type => :controller do
   before do
     @database = create(:database)
-    create_user_with_permissions('Sales', :view, 'users')
+    create_user_with_permissions('Sales', :view, 'users', @database.id)
     create(:target_table_setting)
   end
 
