@@ -11,7 +11,7 @@ class TablesController < ApplicationController
   before_action :set_current_table,
                 :check_license
 
-  before_action :set_target_db, except: :index
+  before_action :target_db, except: :index
   before_action :set_main_table, only: :show
   before_action :set_nested_table, except: %i[add_record create_record index]
   before_action :check_user_permissions, only: %i[show]
@@ -111,7 +111,7 @@ class TablesController < ApplicationController
     redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table)
   end
 
-  def set_target_db
+  def target_db
     @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
   end
 

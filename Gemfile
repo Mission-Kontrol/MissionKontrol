@@ -43,7 +43,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '~> 2.17.0'
+  gem 'capybara', '~> 3.18.0'
   gem 'capybara-selenium'
   gem 'capybara-screenshot', '~> 1.0', '>= 1.0.22'
   gem 'codacy-coverage', require: false
