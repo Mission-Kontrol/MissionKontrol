@@ -22,6 +22,8 @@ class DatabasesController < ApplicationController
       @database = Database.new(database_params)
       @database.password = password_param
       @result = @database.save!
+      update_available_permissions
+      update_target_table_settings
     end
   end
 
@@ -36,6 +38,8 @@ class DatabasesController < ApplicationController
     else
       @database = Database.find(params[:id])
       @database.update_attributes(database_params)
+      update_available_permissions
+      update_target_table_settings
       @result = @database.save!
     end
   end
@@ -73,5 +77,40 @@ class DatabasesController < ApplicationController
     connection.active?
   rescue PG::ConnectionBad
     false
+  end
+
+  def database_connection
+    Kuwinda::UseCase::DatabaseConnection.new(@database).execute
+  end
+
+  def available_tables
+    @database_connection = database_connection
+    Kuwinda::Presenter::ListAvailableTables.new(@database_connection).call.to_a
+  end
+
+  def update_available_permissions
+    @available_tables = available_tables
+    database_permissions = Permission.where(subject_id: @database.id).map(&:subject_class)
+    @available_tables.each do |table|
+      next if database_permissions.include? table
+
+      create_action_permissions(table)
+    end
+  end
+
+  def update_target_table_settings
+    target_table_settings = TargetTableSetting.where(database_id: @database.id).map(&:name)
+    @available_tables.each do |table|
+      next if target_table_settings.include? table
+
+      TargetTableSetting.create!(name: table, database_id: @database_id)
+    end
+  end
+
+  def create_action_permissions(table)
+    %w[view create edit delete].each do |action|
+      next if Permission.find_by(subject_id: @database.id, subject_class: table, action: action)
+      Permission.create!(subject_id: @database.id, subject_class: table, action: action)
+    end
   end
 end

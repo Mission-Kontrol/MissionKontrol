@@ -10,11 +10,11 @@ describe DatabasesController, type: :controller, js: true do
           database: {
             friendly_name: 'Test database',
             adapter: 'postgresql',
-            host: 'localhost',
+            host: ENV['DEMO_CLIENT_DB_HOST'],
             port: 5432,
-            name: 'name',
-            username: 'username',
-            password: 'password'
+            name: ENV['DEMO_CLIENT_DB_NAME'],
+            username: ENV['DEMO_CLIENT_DB_USER'],
+            password: ENV['DEMO_CLIENT_DB_PASSWORD']
           }
         }
       end
@@ -23,6 +23,18 @@ describe DatabasesController, type: :controller, js: true do
         subject
 
         expect(assigns(:database)).to eq(Database.last)
+      end
+
+      it 'updates the available permissions' do
+        subject
+
+        expect(Permission.all.count).to eq(20)
+      end
+
+      it 'creates target table settings for tables' do
+        subject
+
+        expect(TargetTableSetting.all.count).to eq(5)
       end
     end
   end
