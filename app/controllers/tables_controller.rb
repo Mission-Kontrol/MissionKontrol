@@ -108,7 +108,7 @@ class TablesController < ApplicationController
   private
 
   def check_user_permissions
-    redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table)
+    redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table, @database.id)
   end
 
   def target_db
