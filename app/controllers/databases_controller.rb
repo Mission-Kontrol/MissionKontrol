@@ -110,6 +110,7 @@ class DatabasesController < ApplicationController
   def create_action_permissions(table)
     %w[view create edit delete].each do |action|
       next if Permission.find_by(subject_id: @database.id, subject_class: table, action: action)
+
       Permission.create!(subject_id: @database.id, subject_class: table, action: action)
     end
   end
