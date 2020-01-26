@@ -59,6 +59,7 @@ function loadDataTable (columns) {
   var canExport = $(".data-table").data("can-export");
   var tableName = $(".data-table").data("table-name");
   var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
+  var databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
   if (nestedVisibleColumns.length > 0) {
     columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img src='/assets/images/icons/triangle.svg'></a>"});
   }
@@ -121,7 +122,7 @@ function loadDataTable (columns) {
           $.ajax({
             url: "/table/settings",
             type: "GET",
-            data: { "table": tableName },
+            data: { "table": tableName, "database_id": databaseId },
             success() {}
           });
         }
