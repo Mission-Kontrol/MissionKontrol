@@ -3,6 +3,9 @@
 class DatabasesController < ApplicationController
   layout 'dashboard'
 
+  before_action :check_user_permissions, only: %i[new edit]
+
+
   def index
     @databases = Database.all
     can_add = current_admin_user.admin_abilities? && params[:settings]
@@ -48,6 +51,14 @@ class DatabasesController < ApplicationController
   end
 
   private
+
+  def check_user_permissions
+    unless current_admin_user.admin_abilities?
+      flash[:alert] = 'You do not have sufficient permissions to manage database settings'
+      redirect_to(dashboard_path)
+    end
+  end
+
 
   def database_params
     params.require(:database).permit(:friendly_name,
