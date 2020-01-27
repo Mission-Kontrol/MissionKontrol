@@ -48,16 +48,21 @@ function renderAvailableDatabaseSettings (databases, dropdownOriginal) {
   dropdown.addClass("in");
 }
 
+function fetchAvailableDatabases (dropdown) {
+  $.ajax({
+    dataType: "json",
+    url: "/databases",
+    success(data) {
+      renderAvailableDatabases(data, dropdown);
+    }
+  });
+}
+
 function loadAvailableDatabases () {
   $("#nav-link-for-available-databases").click(function() {
     var dropdown = $(this);
-    $.ajax({
-      dataType: "json",
-      url: "/databases",
-      success(data) {
-        renderAvailableDatabases(data, dropdown);
-      }
-    });
+
+    fetchAvailableDatabases(dropdown);
   });
 }
 
@@ -77,6 +82,8 @@ function loadAvailableDatabaseSettings () {
 function renderAvailableTables (tables, databaseId) {
   var dropdown = $("#nav-populate-available-databases-"+databaseId);
   var availableTables = [];
+  dropdown[0].innerHTML = "";
+
   $.each(tables, function( index, value ) {
     availableTables.push(
       "<li>"+
@@ -88,23 +95,46 @@ function renderAvailableTables (tables, databaseId) {
   dropdown.addClass("in");
 }
 
+function fetchAvailableTables (databaseId) {
+  $.ajax({
+    dataType: "json",
+    url: "/tables",
+    data: { database_id: databaseId },
+    success(data) {
+      renderAvailableTables(data, databaseId);
+    }
+  });
+}
+
 function loadAvailableTables () {
   $("body").on("click", ".nav-link-for-databases", function (e) {
     e.preventDefault();
     var databaseId = $(this).data("databaseId");
-    $.ajax({
-      dataType: "json",
-      url: "/tables",
-      data: { database_id: databaseId },
-      success(data) {
-        renderAvailableTables(data, databaseId);
-      }
-    });
+    var tableList = $(this).next("ul");
+
+    if (tableList.hasClass("in")) {
+      tableList.removeClass("in");
+    } else {
+      fetchAvailableTables(databaseId);
+    }
   });
+}
+
+function loadDatabasesNav () {
+  if ($("#nav-link-databases").hasClass("active")) {
+    var dropdown = $("#nav-link-for-available-databases");
+
+    fetchAvailableDatabases(dropdown);
+
+    var databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
+
+    fetchAvailableTables(databaseId);
+  }
 }
 
 $(document).ready(function() {
   loadAvailableDatabases();
   loadAvailableDatabaseSettings();
   loadAvailableTables();
+  loadDatabasesNav();
 });
