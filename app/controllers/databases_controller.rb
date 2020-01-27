@@ -49,6 +49,12 @@ class DatabasesController < ApplicationController
     end
   end
 
+  def destroy
+    database = Database.find(params[:id])
+    database.delete
+    redirect_to dashboard_path
+  end
+
   private
 
   def check_user_permissions
