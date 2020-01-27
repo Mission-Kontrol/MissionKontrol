@@ -3,10 +3,15 @@
 class DatabasesController < ApplicationController
   layout 'dashboard'
 
+  before_action :check_user_permissions, only: %i[new edit]
+
   def index
     @databases = Database.all
+    can_add = current_admin_user.admin_abilities? && params[:settings]
+    json = { databases: @databases.sort, can_add: can_add }.to_json
+
     respond_to do |format|
-      format.js { render json: @databases.sort.to_json }
+      format.js { render json: json }
     end
   end
 
@@ -45,6 +50,13 @@ class DatabasesController < ApplicationController
   end
 
   private
+
+  def check_user_permissions
+    return if current_admin_user.admin_abilities?
+
+    flash[:alert] = 'You do not have sufficient permissions to manage database settings'
+    redirect_to(dashboard_path)
+  end
 
   def database_params
     params.require(:database).permit(:friendly_name,

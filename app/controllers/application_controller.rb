@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
               ActiveRecord::NoDatabaseError,
               PG::ConnectionBad,
               Mysql2::Error,
+              ActiveRecord::ConnectionNotEstablished,
               SocketError, :with => :handle_invalid_client_db_error
 
   def check_license

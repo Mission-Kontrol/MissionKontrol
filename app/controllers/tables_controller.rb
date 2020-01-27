@@ -109,7 +109,10 @@ class TablesController < ApplicationController
   private
 
   def check_user_permissions
-    redirect_to(root_path) unless current_admin_user.permission?(:view, @current_table, @database.id)
+    return if current_admin_user.permission?(:view, @current_table, @database.id)
+
+    flash[:alert] = 'You do not have sufficient permissions to access that table'
+    redirect_to(dashboard_path)
   end
 
   def target_db
