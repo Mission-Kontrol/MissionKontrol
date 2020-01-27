@@ -121,7 +121,7 @@ class DatabasesController < ApplicationController
     @available_tables.each do |table|
       next if target_table_settings.include? table
 
-      TargetTableSetting.create!(name: table, database_id: @database_id)
+      TargetTableSetting.create!(name: table, database_id: @database.id)
     end
   end
 
