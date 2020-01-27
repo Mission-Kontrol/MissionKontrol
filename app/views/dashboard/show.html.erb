@@ -30,39 +30,8 @@
   </div>
 
   <div class="col-sm-4">
-    <h2>Kuwinda database</h2>
-
-    <ul>
-      <li>
-        <div data-toggle='tooltip' data-placement='top' title ='<%= @admin_database.host %>' class="text-truncate">
-          Database host:
-          <%= @admin_database.host %>
-        </div>
-      </li>
-
-      <li>Database type: <%= @admin_database.type %></li>
-      <li>Database port: <%= @admin_database.port %></li>
-      <li>Database name: <%= @admin_database.database %></li>
-      <li>Database username: <%= @admin_database.username %></li>
-      <li>Database password: **********</li>
-    </ul>
   </div>
 
   <div class="col-sm-4">
-    <h2>Target database</h2>
-
-    <ul>
-      <li>
-        <div data-toggle='tooltip' data-placement='top' title ='<%= current_organisation.target_database_host %>' class="text-truncate">
-          Database host:
-          <%= current_organisation.target_database_host %>
-        </div>
-      </li>
-      <li>Database type: <%= current_organisation.target_database_type %></li>
-      <li>Database port: <%= current_organisation.target_database_port %></li>
-      <li>Database name: <%= current_organisation.target_database_name %></li>
-      <li>Database username: <%= current_organisation.target_database_username %></li>
-      <li>Database password: **********</li>
-    </ul>
   </div>
 </div>
