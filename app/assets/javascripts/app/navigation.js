@@ -1,9 +1,9 @@
-function renderAvailableDatabases (databases, dropdownOriginal) {
+function renderAvailableDatabases (data, dropdownOriginal) {
   var dropdown = dropdownOriginal.next();
   var availableDatabases = [];
   dropdown[0].innerHTML = "";
 
-  $.each(databases, function( index, value ) {
+  $.each(data.databases, function( index, value ) {
     availableDatabases.push(
       "<li>"+
         "<a href='' class='nav-link-for-databases' data-database-id='"+value.id+"'>"+
