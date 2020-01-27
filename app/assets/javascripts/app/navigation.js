@@ -20,12 +20,12 @@ function renderAvailableDatabases (databases, dropdownOriginal) {
   dropdown.addClass("in");
 }
 
-function renderAvailableDatabaseSettings (databases, dropdownOriginal) {
+function renderAvailableDatabaseSettings (data, dropdownOriginal) {
   var dropdown = dropdownOriginal.next();
   var availableDatabases = [];
   dropdown[0].innerHTML = "";
 
-  $.each(databases, function( index, value ) {
+  $.each(data.databases, function( index, value ) {
     availableDatabases.push(
       "<li>"+
         "<a href='/databases/"+value.id+"/edit' class='nav-link-for-database-settings' data-database-id='"+value.id+"'>"+
@@ -37,11 +37,13 @@ function renderAvailableDatabaseSettings (databases, dropdownOriginal) {
     );
   });
 
-  availableDatabases.push(
-    "<li>"+
-      "<a id='nav-link-for-add-database' href='/databases/new'>Add</a>"+
-    "</li>"
-  );
+  if (data.can_add === "true") {
+    availableDatabases.push(
+      "<li>"+
+        "<a id='nav-link-for-add-database' href='/databases/new'>Add</a>"+
+      "</li>"
+    );
+  }
 
   dropdown.append(availableDatabases.join(""));
 
@@ -69,13 +71,19 @@ function loadAvailableDatabases () {
 function loadAvailableDatabaseSettings () {
   $("#nav-link-for-available-databases-settings").click(function() {
     var dropdown = $(this);
-    $.ajax({
-      dataType: "json",
-      url: "/databases",
-      success(data) {
-        renderAvailableDatabaseSettings(data, dropdown);
-      }
-    });
+
+    if ($(this).next("ul").hasClass("in")) {
+      $(this).next("ul").removeClass("in");
+    } else {
+      $.ajax({
+        dataType: "json",
+        url: "/databases",
+        data: { settings: true },
+        success(data) {
+          renderAvailableDatabaseSettings(data, dropdown);
+        }
+      });
+    }
   });
 }
 

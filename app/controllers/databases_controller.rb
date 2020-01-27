@@ -5,8 +5,11 @@ class DatabasesController < ApplicationController
 
   def index
     @databases = Database.all
+    can_add = current_admin_user.admin_abilities? && params[:settings]
+    json = { databases: @databases.sort, can_add: can_add }.to_json
+
     respond_to do |format|
-      format.js { render json: @databases.sort.to_json }
+      format.js { render json: json }
     end
   end
 
