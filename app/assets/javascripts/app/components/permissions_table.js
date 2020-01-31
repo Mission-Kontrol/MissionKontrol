@@ -346,11 +346,14 @@ function togglePermissionAccordians () {
   for (i = 0; i < acc.length; i++) {
     acc[i].addEventListener("click", function() {
       this.classList.toggle("active");
+      img = $(this).find("img").first();
 
       var panel = this.nextElementSibling;
       if (panel.style.display === "block") {
+        img.attr({ "src": "/assets/images/icons/plus-thick.png" });
         panel.style.display = "none";
       } else {
+        img.attr({ "src": "/assets/images/icons/minus-thick.png" });
         panel.style.display = "block";
         var table = $(panel).find(".data-table-permissions");
         fetchDataForPermissionsTable(table);
