@@ -96,6 +96,7 @@ function loadUserDataTable (columns) {
       var editLink = row.lastChild.firstChild;
       var statusField = row.children[3];
       var userStatus = statusField.innerHTML;
+      var nameField = row.firstChild;
 
       if (userStatus === "false") {
         statusField.innerHTML = "<img src='/assets/images/icons/circle-with-cross.png'>";
@@ -104,6 +105,7 @@ function loadUserDataTable (columns) {
       }
 
       $(editLink).attr("href",  previewUrl);
+      $(nameField).html("<a href='" + previewUrl + "' data-remote='true'>" + data.name + "</a>");
     },
     buttons: [
       {
