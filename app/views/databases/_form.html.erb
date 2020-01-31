@@ -75,7 +75,9 @@
                     <div class="row">
                       <div class="col-sm-11">
                         <%= f.submit "Test connection", class: "btn btn-primary m-b pull-right" %>
-                        <%= link_to "Remove database", database_path(@database), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger m-b pull-right" %>
+                        <% if @database.persisted? %>
+                          <%= link_to "Remove database", database_path(@database), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger m-b pull-right" %>
+                        <% end %>
                       </div>
                     </div>
 
