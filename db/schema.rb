@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200126125119) do
+ActiveRecord::Schema.define(version: 20200131135708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20200126125119) do
     t.integer "pool", default: 5
     t.string "host", null: false
     t.string "username", null: false
-    t.string "password_digest", null: false
+    t.string "password", null: false
     t.integer "port", null: false
     t.string "name"
     t.string "friendly_name"
