@@ -49,6 +49,12 @@ class DatabasesController < ApplicationController
     end
   end
 
+  def destroy
+    database = Database.find(params[:id])
+    database.delete
+    redirect_to dashboard_path
+  end
+
   private
 
   def check_user_permissions
@@ -115,7 +121,7 @@ class DatabasesController < ApplicationController
     @available_tables.each do |table|
       next if target_table_settings.include? table
 
-      TargetTableSetting.create!(name: table, database_id: @database_id)
+      TargetTableSetting.create!(name: table, database_id: @database.id)
     end
   end
 

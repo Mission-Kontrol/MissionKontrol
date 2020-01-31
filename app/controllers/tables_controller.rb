@@ -6,7 +6,7 @@ class TablesController < ApplicationController
 
   layout 'dashboard'
 
-  IGNORED_COLUMNS = %w[id created_at updated_at user].freeze
+  IGNORED_COLUMNS = %w[id created_at updated_at].freeze
 
   before_action :set_current_table,
                 :check_license
@@ -73,22 +73,25 @@ class TablesController < ApplicationController
   end
 
   def settings
-    # @table = @target_db.table
     set_main_table
-    @table_settings = TargetTableSetting.find_by(name: @table)
+    @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
     @related_tables = relatable_tables(@table)
   end
 
   def update_settings
-    @table_settings = TargetTableSetting.find_by(name: params[:table])
-    @table_settings.update_attribute(params[:setting], params[:value])
+    @table_settings = TargetTableSetting.find_by(name: params[:table], database_id: @database.id)
+
+    if params[:value] == 'N/A' && params[:setting] == 'nested_table'
+      @table_settings.update_attribute(:nested_table, nil)
+    else
+      @table_settings.update_attribute(params[:setting], params[:value])
+    end
     @result = @table_settings.save
   end
 
   def add_record
-    # @table = @target_db.table
     set_main_table
-    @table_settings = TargetTableSetting.find_by(name: @table)
+    @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
     set_columns_for_form
   end
 
@@ -160,7 +163,7 @@ class TablesController < ApplicationController
   end
 
   def set_nested_table
-    @current_table_settings = TargetTableSetting.find_by(name: params[:table])
+    @current_table_settings = TargetTableSetting.find_by(name: params[:table], database_id: @database.id)
     nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
 
     @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []

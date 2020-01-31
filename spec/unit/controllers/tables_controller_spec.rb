@@ -6,7 +6,7 @@ describe TablesController, :type => :controller do
   before do
     @database = create(:database)
     create_user_with_permissions('Sales', :view, 'users', @database.id)
-    create(:target_table_setting)
+    create(:target_table_setting, database_id: @database.id)
   end
 
   describe 'GET show' do
