@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-sm-12">
       <% @databases.each do |database| %>
-        <button class="accordion"><%= database.friendly_name %></button>
+        <button class="accordion"><%= database.friendly_name %><span class="float-right"><img src="/assets/images/icons/plus-thick.png"></span></button>
         <div class="panel">
           <table id="target-table-permissions-<%= database.id %>" class="data-table-permissions table" data-table-name="permissions" data-database-id="<%= database.id %>">
             <thead>
