@@ -5,7 +5,7 @@ function displayFilterBar (table) {
   var tableInfo = $(".table--info");
 
   if (tableInfo.find(".table--filter-bar").length > 0) {
-    if (table.columns([2,3]).search()[0].includes(",")) {
+    if (table.columns([2,3]).search()[0].split(",").filter(Boolean).length > 1) {
       $(".filter-bar--selected .white").last().text("2 filters selected");
     } else {
       $(".filter-bar--selected .white").last().text("1 filter selected");
@@ -34,6 +34,13 @@ function filterByTeams (table) {
   $(".users-teams--table-data").click(function() {
     var role = $(this).data("role");
     var statusFilter = table.column(3).search();
+    if (statusFilter.includes("true")) {
+      statusFilter = "true";
+    } else if (statusFilter.includes("false")) {
+      statusFilter = "false";
+    } else {
+      statusFilter = "";
+    }
 
     filterTable(statusFilter, role, table);
   })
@@ -42,7 +49,7 @@ function filterByTeams (table) {
 function filterByStatus (table) {
   $(".users-status--table-data").click(function() {
     var status = $(this).data("status");
-    var teamFilter = table.column(2).search();
+    var teamFilter = table.column(2).search().replace("true,", "").replace("false,", "");
 
     filterTable(status, teamFilter, table);
   })
@@ -96,6 +103,7 @@ function loadUserDataTable (columns) {
       var editLink = row.lastChild.firstChild;
       var statusField = row.children[3];
       var userStatus = statusField.innerHTML;
+      var nameField = row.firstChild;
 
       if (userStatus === "false") {
         statusField.innerHTML = "<img src='/assets/images/icons/circle-with-cross.png'>";
@@ -104,6 +112,7 @@ function loadUserDataTable (columns) {
       }
 
       $(editLink).attr("href",  previewUrl);
+      $(nameField).html("<a href='" + previewUrl + "' data-remote='true'>" + data.name + "</a>");
     },
     buttons: [
       {

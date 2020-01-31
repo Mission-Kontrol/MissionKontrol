@@ -2,7 +2,11 @@
   toastr.success('User has been successfully updated.');
   $('#users--team-partial').html("<%= j render("teams")%>");
   $('#users--status-partial').html("<%= j render("status")%>");
-  $("#target-table-admin-users").DataTable().ajax.reload();
+  var table = $("#target-table-admin-users").DataTable()
+  table.ajax.reload();
+  filterByTeams(table);
+  filterByStatus(table);
+  clearFilters(table);
   $('.users--edit-modal').removeClass('show');
   $('.users--edit-modal').addClass('hide');
 <% else %>

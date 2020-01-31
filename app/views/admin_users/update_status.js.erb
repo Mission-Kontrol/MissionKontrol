@@ -1,3 +1,7 @@
 toastr.success('Status has been successfully updated.');
 $('#users--status-partial').html("<%= j render("status")%>");
-$("#target-table-admin-users").DataTable().ajax.reload();
+var table = $("#target-table-admin-users").DataTable()
+table.ajax.reload();
+filterByTeams(table);
+filterByStatus(table);
+clearFilters(table);
