@@ -6,7 +6,7 @@ feature 'Permissions', js: true do
   background do
     sign_in_as_user_with_license
     @database = create(:database)
-    create(:target_table_setting, name: 'events')
+    create(:target_table_setting, name: 'events', database_id: @database.id)
   end
 
   scenario 'user with sales role with permissions to view table can view table navigation' do
