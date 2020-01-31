@@ -31,15 +31,21 @@ module Kuwinda
         end
       end
 
+      def decrypt_password(password)
+        crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
+        crypt.decrypt_and_verify(password)
+      end
+
       def database_credentials(database)
-        {
+        credentials = {
           adapter: adapter(database.adapter),
           username: database.username,
-          password: '278d5db10a01380f9437b9ad2e3ba7bc94952f3ac6530f1e470e69e61eef9863',
+          password: decrypt_password(database.password),
           port: database.port,
           host: database.host,
           database: database.name
         }
+        credentials
       end
 
       def db_invalid?
