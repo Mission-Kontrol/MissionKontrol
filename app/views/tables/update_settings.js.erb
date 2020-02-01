@@ -1,6 +1,13 @@
 <% if @result %>
   toastr.success('Table settings have been successfully updated.');
-  $(".data-table").DataTable().ajax.reload();
+  <% if @table_settings.nested_table.nil? %>
+    $(".data-table").data("nested-table", "");
+    $(".data-table").data("nested-table-columns", "");
+  <% elsif @table_settings.nested_table.present? %>
+    $(".data-table").data("nested-table", "<%= @table_settings.nested_table %>");
+    $(".data-table").data("nested-table-columns", "<%= @nested_column_names %>");
+  <% end %>
+    window['datatable'].draw();
 <% else %>
   toastr.error('Unable to update table settings.');
 <% end %>

@@ -56,13 +56,14 @@ function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleCo
 }
 
 function loadDataTable (columns) {
-  var canExport = $(".data-table").data("can-export");
-  var tableName = $(".data-table").data("table-name");
-  var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
-  var databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
+  let canExport = $(".data-table").data("can-export");
+  let tableName = $(".data-table").data("table-name");
+  let nestedVisibleColumns = $(".data-table").data("nested-table-columns");
+  let databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
   if (nestedVisibleColumns.length > 0) {
     columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img src='/assets/images/icons/triangle.svg'></a>"});
   }
+
   var searchableTable = $(".data-table").DataTable({
     colReorder: true,
     deferRender: true,
@@ -96,10 +97,10 @@ function loadDataTable (columns) {
       stateLoadCallbackFunction($(this), callback);
     },
     createdRow(row, data, dataIndex) {
-      var table = $(this).data("table-name");
-      var nestedTable = $(this).data("nested-table");
-      var id = data.id;
-      var previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
+      let table = $(this).data("table-name");
+      let nestedTable = $(this).data("nested-table");
+      let id = data.id;
+      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
       $(row).addClass("table--nested-row");
       $(row).attr("data-href",  previewUrl);
       $(row).attr("data-nested-table", nestedTable);
@@ -119,6 +120,7 @@ function loadDataTable (columns) {
         text: "Settings",
         className: "table--settings",
         action () {
+          $("button.table--settings").attr("disabled", true);
           $.ajax({
             url: "/table/settings",
             type: "GET",
@@ -155,6 +157,8 @@ function loadDataTable (columns) {
       tr.addClass("shown");
     }
   });
+
+  window["datatable"] = searchableTable;
 }
 
 function fetchDataForTable() {
