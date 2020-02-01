@@ -81,7 +81,7 @@ class TablesController < ApplicationController
   def update_settings
     @table_settings = TargetTableSetting.find_by(name: params[:table], database_id: @database.id)
 
-    if params[:value] == 'N/A' && params[:setting] == 'nested_table'
+    if (params[:value] == 'N/A' || params[:value] == 'Disable') && params[:setting] == 'nested_table'
       @table_settings.update_attribute(:nested_table, nil)
     else
       @table_settings.update_attribute(params[:setting], params[:value])
