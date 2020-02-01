@@ -332,3 +332,11 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
     cursor: pointer;
   }
 }
+
+img.rotate {
+  -webkit-transform:rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg);
+}

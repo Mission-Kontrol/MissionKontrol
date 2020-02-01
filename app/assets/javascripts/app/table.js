@@ -61,7 +61,7 @@ function loadDataTable (columns) {
   let nestedVisibleColumns = $(".data-table").data("nested-table-columns");
   let databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
   if (nestedVisibleColumns.length > 0) {
-    columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img src='/assets/images/icons/triangle.svg'></a>"});
+    columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img class='nested-table rotate' src='/assets/images/icons/triangle.svg'></a>"});
   }
 
   var searchableTable = $(".data-table").DataTable({
@@ -275,6 +275,28 @@ function loadTaskQueuePreviewDataTable (columns) {
   $("#task-queue-preview-table").removeClass("hide");
 }
 
+function rotateIcon (icon, nestedRowOpen) {
+  if (nestedRowOpen) {
+    icon.removeClass("rotate");
+  } else {
+    icon.addClass("rotate");
+  }
+}
+
+function rotateNestedTableIcon () {
+  $("body").on("click", ".table--nested-table", function () {
+    let triangleIcon = $(this).children(".nested-table");
+    let nestedRowOpen = $(this).parent().parent().next().hasClass("table--nested-row");
+    rotateIcon(triangleIcon, nestedRowOpen);
+  });
+
+  $("body").on("click", ".sorting_1", function () {
+    let triangleIcon = $(this).children().children(".nested-table");
+    let nestedRowOpen = $(this).parent().next().hasClass("table--nested-row");
+    rotateIcon(triangleIcon, nestedRowOpen);
+  });
+}
+
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerTables = metaTag.attr("controller") === "tables";
@@ -302,4 +324,6 @@ $(document).ready(function() {
       updateTableField(event, table, field, id);
     }
   })
+
+  rotateNestedTableIcon();
 });
