@@ -78,7 +78,7 @@
       </li>
 
       <% if current_admin_user.admin_abilities? %>
-        <li class="<%= active_controller?('organisation_settings') || active_controller?('edit') || active_controller?('admin_users') %> || <%= active_controller?('permissions') %>">
+        <li class="<%= active_controller?('organisation_settings') || active_controller?('admin_users') || active_controller?('databases') || active_controller?('permissions') %>">
           <a href="" id="nav-link-for-tables">
             <span class="nav-label" data-i18n="nav.layouts">SETTINGS</span> <span class="fa arrow"></span>
           </a>
@@ -107,12 +107,7 @@
                 </span> <span class="fa arrow"></span>
               </a>
 
-              <ul class="nav nav-second-level collapse nav-databases">
-                <% if current_admin_user.admin_abilities? %>
-                  <li class="">
-                    <%= link_to 'Add', new_database_path, id: "nav-link-for-add-database" %>
-                  </li>
-                <% end %>
+              <ul id="nav-link-databases-settings" class="nav nav-second-level collapse nav-databases <%= active_controller?('databases') %>">
               </ul>
             </li>
           </ul>

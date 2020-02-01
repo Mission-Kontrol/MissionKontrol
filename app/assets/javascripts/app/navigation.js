@@ -64,7 +64,20 @@ function loadAvailableDatabases () {
   $("#nav-link-for-available-databases").click(function() {
     var dropdown = $(this);
 
-    fetchAvailableDatabases(dropdown);
+    if (dropdown.parent("li").hasClass("active")) {
+      fetchAvailableDatabases(dropdown);
+    }
+  });
+}
+
+function fetchAvailableDatabaseSettings (dropdown) {
+  $.ajax({
+    dataType: "json",
+    url: "/databases",
+    data: { settings: true },
+    success(data) {
+      renderAvailableDatabaseSettings(data, dropdown);
+    }
   });
 }
 
@@ -72,17 +85,8 @@ function loadAvailableDatabaseSettings () {
   $("#nav-link-for-available-databases-settings").click(function() {
     var dropdown = $(this);
 
-    if ($(this).next("ul").hasClass("in")) {
-      $(this).next("ul").removeClass("in");
-    } else {
-      $.ajax({
-        dataType: "json",
-        url: "/databases",
-        data: { settings: true },
-        success(data) {
-          renderAvailableDatabaseSettings(data, dropdown);
-        }
-      });
+    if (dropdown.parent("li").hasClass("active")) {
+      fetchAvailableDatabaseSettings(dropdown);
     }
   });
 }
@@ -101,6 +105,7 @@ function renderAvailableTables (tables, databaseId) {
   });
   dropdown.append(availableTables.join(""));
   dropdown.addClass("in");
+  dropdown.parent("li").addClass("active");
 }
 
 function fetchAvailableTables (databaseId) {
@@ -122,6 +127,7 @@ function loadAvailableTables () {
 
     if (tableList.hasClass("in")) {
       tableList.removeClass("in");
+      $(this).parent("li").removeClass("active");
     } else {
       fetchAvailableTables(databaseId);
     }
@@ -140,9 +146,18 @@ function loadDatabasesNav () {
   }
 }
 
+function loadAvailableDatabaseSettingsNav () {
+  if ($("#nav-link-databases-settings").hasClass("active")) {
+    var dropdown = $("#nav-link-for-available-databases-settings");
+
+    fetchAvailableDatabaseSettings(dropdown);
+  }
+}
+
 $(document).ready(function() {
   loadAvailableDatabases();
   loadAvailableDatabaseSettings();
   loadAvailableTables();
   loadDatabasesNav();
+  loadAvailableDatabaseSettingsNav();
 });
