@@ -81,7 +81,7 @@ class TablesController < ApplicationController
   def update_settings
     @table_settings = TargetTableSetting.find_by(name: params[:table], database_id: @database.id)
 
-    if params[:value] == 'N/A' && params[:setting] == 'nested_table'
+    if (params[:value] == 'N/A' || params[:value] == 'Disable') && params[:setting] == 'nested_table'
       @table_settings.update_attribute(:nested_table, nil)
     else
       @table_settings.update_attribute(params[:setting], params[:value])
@@ -159,11 +159,11 @@ class TablesController < ApplicationController
   end
 
   def set_current_table
-    @current_table = params[:table]
+    @current_table = params[:table] || params[:table_name]
   end
 
   def set_nested_table
-    @current_table_settings = TargetTableSetting.find_by(name: params[:table], database_id: @database.id)
+    @current_table_settings = TargetTableSetting.find_by(name: @current_table, database_id: @database.id)
     nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
 
     @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []

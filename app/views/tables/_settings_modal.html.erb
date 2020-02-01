@@ -30,7 +30,7 @@
                   <% if @related_tables.empty? %>
                     <%= select_tag "dropdown", options_for_select(["N/A"], "N/A"), {class: "table--settings-nested-select", disabled: true} %>
                   <% else %>
-                    <%= select_tag "dropdown", options_for_select(["N/A", @related_tables].flatten, @table_settings.nested_table), {class: "table--settings-nested-select", "data-table" => @table, "data-setting" => "nested_table"} %>
+                    <%= select_tag "dropdown", options_for_select(["Disable", @related_tables].flatten, @table_settings.nested_table), {class: "table--settings-nested-select", "data-table" => @table, "data-setting" => "nested_table"} %>
                   <% end %>
                 </div>
               </div>
