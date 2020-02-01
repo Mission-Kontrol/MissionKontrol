@@ -57,6 +57,7 @@ class PermissionsController < ApplicationController
   def enable_all
     @role = Role.find_by(name: permission_params[:role])
     permissions = Permission.where(subject_class: permission_params[:table], subject_id: permission_params[:database_id])
+    @database_id = permission_params[:database_id]
 
     permissions.each { |permission| @role.permissions << permission unless @role.permissions.include? permission }
   end
@@ -64,6 +65,7 @@ class PermissionsController < ApplicationController
   def disable_all
     @role = Role.find_by(name: permission_params[:role])
     existing_permissions = @role.permissions.where(subject_class: permission_params[:table], subject_id: permission_params[:database_id])
+    @database_id = permission_params[:database_id]
 
     existing_permissions.each { |permission| @role.permissions.delete(permission) }
   end

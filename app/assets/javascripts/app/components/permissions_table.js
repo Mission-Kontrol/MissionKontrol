@@ -78,7 +78,7 @@ function showNestedTable () {
   $("body").on("click", "tbody > tr.original-row-permissions > td:first-child", function () {
     let tr = $(event.target).closest("tr");
     let database = $(tr).parent().parent().data("databaseId");
-    let row = window["datatable"+database].row(tr);
+    let row = window["datatable" + database].row(tr);
 
     if ( row.child.isShown() ) {
       row.child.hide();
@@ -92,7 +92,7 @@ function showNestedTable () {
 }
 
 function loadPermissionsDataTable (columns, databaseId, table) {
-  window['datatable' + databaseId] = table.DataTable({
+  window["datatable" + databaseId] = table.DataTable({
     colReorder: true,
     paging: false,
     info: false,
@@ -168,7 +168,7 @@ function amendAllRelatedPermissions (role, table, action, databaseId) {
   var humanizedTable = humanizeString(table);
 
   $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+humanizedTable+"']").each (function () {
-    var checkbox = $(this).children();
+    let checkbox = $(this).children();
 
     if (action === "enable") {
       checkbox.attr({ "src": filledCheckboxIcon });
@@ -179,7 +179,7 @@ function amendAllRelatedPermissions (role, table, action, databaseId) {
       checkbox.removeClass("filled-checkbox");
       checkbox.addClass("empty-checkbox");
     }
-  })
+  });
 }
 
 function enableTooltipOnContentClick () {
@@ -365,7 +365,7 @@ function togglePermissionAccordians () {
 }
 
 $(document).ready(function() {
-  showNestedTable ()
+  showNestedTable();
   emptyCheckbox();
   fillCheckbox();
 
