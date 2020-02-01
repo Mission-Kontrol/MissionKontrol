@@ -104,6 +104,7 @@ class PermissionsController < ApplicationController
     permissions = database_permissions
     grouped_permissions = permissions.group_by(&:subject_class)
     data = []
+
     grouped_permissions.each do |table|
       table_data = { 'Table' => table.first.to_s.humanize }
       @roles.each do |role|
@@ -128,7 +129,7 @@ class PermissionsController < ApplicationController
 
     if permissions.empty?
       "<img src='/assets/images/icons/circle-with-cross.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
-    elsif permissions.length == table.length
+    elsif permissions.length == 4
       "<img src='/assets/images/icons/circle-with-check-symbol.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
     else
       "<img src='/assets/images/icons/circle-with-contrast.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
