@@ -39,12 +39,12 @@ function displayCheckbox (value, roleName, action, databaseId) {
   }
 }
 
-function formatNestedColumns ( d, databaseId ) {
-  var databaseId = databaseId;
-  var permissionsClass = 'class="permissions--nested-table-data"';
-  var adminTd = permissionsClass+' data-role="Admin"';
-  var salesTd = permissionsClass+' data-role="Sales"';
-  var teamLeadTd = permissionsClass+' data-role="Team Lead"';
+function formatNestedColumns ( d, tableDatabaseId ) {
+  let databaseId = tableDatabaseId;
+  let permissionsClass = 'class="permissions--nested-table-data"';
+  let adminTd = permissionsClass+' data-role="Admin"';
+  let salesTd = permissionsClass+' data-role="Sales"';
+  let teamLeadTd = permissionsClass+' data-role="Team Lead"';
 
   return "<table id='permissions--nested-table' data-table='"+d.Table+"' data-database-id='"+databaseId+"'>"+
       "<tr>"+
@@ -74,26 +74,25 @@ function formatNestedColumns ( d, databaseId ) {
   "</table>";
 }
 
-function showNestedTable (searchableTable, databaseIdTable) {
-  var databaseId = databaseIdTable;
-
+function showNestedTable () {
   $("body").on("click", "tbody > tr.original-row-permissions > td:first-child", function () {
-    var tr = $(event.target).closest("tr");
-    var row = searchableTable.row(tr);
+    let tr = $(event.target).closest("tr");
+    let database = $(tr).parent().parent().data("databaseId");
+    let row = window["datatable" + database].row(tr);
 
     if ( row.child.isShown() ) {
       row.child.hide();
       tr.removeClass("shown");
     }
     else {
-      row.child( formatNestedColumns(row.data(), databaseId) ).show();
+      row.child( formatNestedColumns(row.data(), database) ).show();
       tr.addClass("shown");
     }
   });
 }
 
 function loadPermissionsDataTable (columns, databaseId, table) {
-  var searchableTable = table.DataTable({
+  window["datatable" + databaseId] = table.DataTable({
     colReorder: true,
     paging: false,
     info: false,
@@ -135,22 +134,24 @@ function loadPermissionsDataTable (columns, databaseId, table) {
       $(row).attr("data-href",  previewUrl);
     },
     initComplete(settings, json) {
-      initCompleteFunction(settings, json, searchableTable);
+      initCompleteFunction(settings, json, window["datatable"+databaseId]);
       activateTooltipster();
     }
   });
-
-  showNestedTable(searchableTable, databaseId);
 }
 
 function fetchDataForPermissionsTable(table) {
-  var databaseId = $(table).data("database-id");
+  let databaseId = $(table).data("database-id");
 
   $.ajax({
     dataType: "json",
     url: "/" + (location.pathname+location.search).substr(1) + "?database_id=" + databaseId,
     success(data) {
-      loadPermissionsDataTable(data.columns, databaseId, table);
+      if ( ! $.fn.DataTable.isDataTable( table ) ) {
+        loadPermissionsDataTable(data.columns, databaseId, table);
+      } else {
+        table.DataTable().ajax.reload();
+      }
     }
   });
 }
@@ -167,7 +168,7 @@ function amendAllRelatedPermissions (role, table, action, databaseId) {
   var humanizedTable = humanizeString(table);
 
   $(".permissions--nested-table-data[data-role='"+role+"'][data-table='"+humanizedTable+"']").each (function () {
-    var checkbox = $(this).children();
+    let checkbox = $(this).children();
 
     if (action === "enable") {
       checkbox.attr({ "src": filledCheckboxIcon });
@@ -178,7 +179,7 @@ function amendAllRelatedPermissions (role, table, action, databaseId) {
       checkbox.removeClass("filled-checkbox");
       checkbox.addClass("empty-checkbox");
     }
-  })
+  });
 }
 
 function enableTooltipOnContentClick () {
@@ -356,6 +357,7 @@ function togglePermissionAccordians () {
         img.attr({ "src": "/assets/images/icons/minus-thick.png" });
         panel.style.display = "block";
         var table = $(panel).find(".data-table-permissions");
+
         fetchDataForPermissionsTable(table);
       }
     });
@@ -363,6 +365,7 @@ function togglePermissionAccordians () {
 }
 
 $(document).ready(function() {
+  showNestedTable();
   emptyCheckbox();
   fillCheckbox();
 

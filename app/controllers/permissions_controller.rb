@@ -57,6 +57,7 @@ class PermissionsController < ApplicationController
   def enable_all
     @role = Role.find_by(name: permission_params[:role])
     permissions = Permission.where(subject_class: permission_params[:table], subject_id: permission_params[:database_id])
+    @database_id = permission_params[:database_id]
 
     permissions.each { |permission| @role.permissions << permission unless @role.permissions.include? permission }
   end
@@ -64,6 +65,7 @@ class PermissionsController < ApplicationController
   def disable_all
     @role = Role.find_by(name: permission_params[:role])
     existing_permissions = @role.permissions.where(subject_class: permission_params[:table], subject_id: permission_params[:database_id])
+    @database_id = permission_params[:database_id]
 
     existing_permissions.each { |permission| @role.permissions.delete(permission) }
   end
@@ -104,6 +106,7 @@ class PermissionsController < ApplicationController
     permissions = database_permissions
     grouped_permissions = permissions.group_by(&:subject_class)
     data = []
+
     grouped_permissions.each do |table|
       table_data = { 'Table' => table.first.to_s.humanize }
       @roles.each do |role|
@@ -128,7 +131,7 @@ class PermissionsController < ApplicationController
 
     if permissions.empty?
       "<img src='/assets/images/icons/circle-with-cross.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
-    elsif permissions.length == table.length
+    elsif permissions.length == 4
       "<img src='/assets/images/icons/circle-with-check-symbol.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
     else
       "<img src='/assets/images/icons/circle-with-contrast.png' class='tooltipster-tooltip' data-tooltip-content='#tooltip_content' data-role='" + role.name + "' data-table='" + table.first.subject_class + "' data-database-id='" + table.first.subject_id.to_s + "'>"
