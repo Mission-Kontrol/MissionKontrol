@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     render_view = if request.path == edit_organisation_setting_path(current_organisation)
                     render 'organisation_settings/edit'
                   else
-                    redirect_to '/404', format: 'js'
+                    redirect_to '/database_connection_error', format: 'js'
                   end
   end
 

@@ -83,6 +83,6 @@ Rails.application.routes.draw do
   get 'data_table_states/load'
   post 'data_table_states/save'
 
-  match "404", to: "errors#not_found", via: :all
+  match "database_connection_error", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 end
