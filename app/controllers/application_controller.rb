@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
               ActiveRecord::NoDatabaseError,
               PG::ConnectionBad,
               Mysql2::Error,
+              ActiveSupport::MessageVerifier::InvalidSignature,
               ActiveRecord::ConnectionNotEstablished,
               SocketError, :with => :handle_invalid_client_db_error
 
@@ -37,12 +38,10 @@ class ApplicationController < ActionController::Base
     @task_queues = []
 
     render_view = if request.path == edit_organisation_setting_path(current_organisation)
-                    'organisation_settings/edit'
+                    render 'organisation_settings/edit'
                   else
-                    '/layouts/bad_connection'
+                    redirect_to '/404', format: 'js'
                   end
-
-    render render_view
   end
 
   def handle_openssl_error
