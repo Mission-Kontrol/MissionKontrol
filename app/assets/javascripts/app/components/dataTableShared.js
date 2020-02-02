@@ -6,6 +6,9 @@ function stateLoadCallbackFunction(object, callback) {
         dataType: "json",
         success(json) {
             callback(json);
+        },
+        error(){
+            toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
         }
     });
 }
@@ -19,7 +22,10 @@ function stateSaveCallbackFunction(settings, data, object) {
         data: { "state": data },
         dataType: "json",
         type: "POST",
-        success(){}
+        success(){},
+        error(){
+            toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
+        }
     });
 }
 

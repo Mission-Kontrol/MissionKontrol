@@ -18,7 +18,7 @@ describe TablesController, :type => :controller do
 
           get :show, params: { id: @database.id, table_name: 'users', table: 'users'}
 
-          expect(response).to render_template('layouts/bad_connection')
+          expect(response).to redirect_to('/database_connection_error')
         end
       end
 
@@ -43,7 +43,7 @@ describe TablesController, :type => :controller do
 
           get :preview, params: { id: @database.id, table_name: 'users', record_id: 1, table: 'users'}
 
-          expect(response).to render_template('layouts/bad_connection')
+          expect(response).to redirect_to('/database_connection_error')
         end
       end
 

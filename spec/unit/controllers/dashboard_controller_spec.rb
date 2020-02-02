@@ -102,7 +102,7 @@ describe DashboardController, :type => :controller do
 
           subject
 
-          expect(response).to render_template('layouts/bad_connection')
+          expect(response).to redirect_to('/database_connection_error')
         end
       end
 
