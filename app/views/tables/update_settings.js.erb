@@ -3,9 +3,11 @@
   <% if @table_settings.nested_table.nil? %>
     $(".data-table").data("nested-table", "");
     $(".data-table").data("nested-table-columns", "");
+    window.location.reload();
   <% elsif @table_settings.nested_table.present? %>
     $(".data-table").data("nested-table", "<%= @table_settings.nested_table %>");
     $(".data-table").data("nested-table-columns", "<%= @nested_column_names %>");
+    window.location.reload();
   <% end %>
     window['datatable'].draw();
 <% else %>
