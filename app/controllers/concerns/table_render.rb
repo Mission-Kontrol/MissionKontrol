@@ -17,7 +17,8 @@ module TableRender
     search = params.dig('search', 'value')
     searchable_columns = params['columns']
     columns = []
-    order_column = params['order'].try(:[], '0').try(:[], 'column')
+    order_column_number = params['order'].try(:[], '0').try(:[], 'column')
+    order_column = params['columns'].try(:[], order_column_number).try(:[], 'data')
     order_dir = params['order'].try(:[], '0').try(:[], 'dir')
 
     sql_result = @target_db.datatable_filter(@table, search, searchable_columns, limit, offset, order_column, order_dir)
