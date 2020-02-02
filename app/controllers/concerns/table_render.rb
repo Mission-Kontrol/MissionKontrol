@@ -11,13 +11,15 @@ module TableRender
     render :show
   end
 
+  # rubocop:disable Metrics/MethodLength
   def render_show_js
     offset = params['start']
     limit = params['length']
     search = params.dig('search', 'value')
     searchable_columns = params['columns']
     columns = []
-    order_column = params['order'].try(:[], '0').try(:[], 'column')
+    order_column_number = params['order'].try(:[], '0').try(:[], 'column')
+    order_column = params['columns'].try(:[], order_column_number).try(:[], 'data')
     order_dir = params['order'].try(:[], '0').try(:[], 'dir')
 
     sql_result = @target_db.datatable_filter(@table, search, searchable_columns, limit, offset, order_column, order_dir)
@@ -38,6 +40,7 @@ module TableRender
       recordsFiltered: @target_db.count(@table).rows[0][0]
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   def render_preview_html
     # @target_db.table = @current_table

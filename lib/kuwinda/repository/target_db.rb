@@ -63,20 +63,23 @@ module Kuwinda
       end
 
       def query(sql, limit, offset, order_column = nil, order_dir = nil)
-        if limit && offset
+        if order_column.present? && order_dir.present?
           query_string = sql.split(';')
+          query_string = "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
+        else
+          query_string = sql
+        end
+
+        if limit && offset
+          query_string = query_string.split(';')
           query_string = "#{query_string[0]} limit #{limit} offset #{offset};"
         elsif limit
-          query_string = sql.split(';')
+          query_string = query_string.split(';')
           query_string = "#{query_string[0]} limit #{limit};"
         else
           query_string = sql
         end
 
-        if order_column && order_dir
-          query_string = sql.split(';')
-          query_string = "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
-        end
         conn.exec_query(query_string)
       end
 
@@ -125,6 +128,7 @@ module Kuwinda
 
         columns.each do |_key, value|
           next unless value['searchable']
+          next if value['data'].empty?
 
           if current_organisation.target_database_type == 'postgresql'
             filter = postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
@@ -146,6 +150,7 @@ module Kuwinda
 
         columns.each do |_key, value|
           next unless value['searchable']
+          next if value['data'].empty?
 
           if current_organisation.target_database_type == 'postgresql'
             filter = postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
