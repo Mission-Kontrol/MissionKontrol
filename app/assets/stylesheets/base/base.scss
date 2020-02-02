@@ -59,6 +59,10 @@ a:hover, a:focus {
   border-bottom: 1px solid $border-color !important;
 }
 
+.border-left {
+  border-left: 1px solid $border-color;
+}
+
 .font-bold {
   font-weight: 600;
 }

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DatabasesController < ApplicationController
-  layout 'dashboard'
+  layout 'standard'
 
   before_action :check_user_permissions, only: %i[new edit]
 

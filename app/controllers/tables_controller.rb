@@ -4,7 +4,7 @@ class TablesController < ApplicationController
   include TableActivity
   include TableRender
 
-  layout 'dashboard'
+  layout 'standard'
 
   IGNORED_COLUMNS = %w[id created_at updated_at].freeze
 

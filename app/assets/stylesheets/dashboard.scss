@@ -1,0 +1,35 @@
+.dashboard--title {
+  padding-top: 5%;
+  padding-left: 3%;
+  height: 5%;
+}
+
+.dashboard--system {
+  padding-top: 15px;
+}
+
+.dashboard--trial-license {
+  border: solid 0.5px $blueberry;
+  background-color: $white;
+  padding-left: 3%;
+  padding-bottom: 1%;
+}
+
+.dashboard--panels {
+  margin-top: 30px;
+}
+
+.dashboard--panel {
+  background-color: $white;
+  height: 200px;
+  padding: 15px;
+  text-align: center;
+
+  img {
+    height: 80px;
+  }
+}
+
+[data-link] {
+  cursor: pointer;
+}

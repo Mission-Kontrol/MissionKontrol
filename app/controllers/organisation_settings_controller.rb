@@ -3,7 +3,7 @@
 class OrganisationSettingsController < ApplicationController
   include UserAbilities
 
-  layout 'dashboard'
+  layout 'standard'
 
   before_action :check_user_admin_abilities, only: %i[edit]
 

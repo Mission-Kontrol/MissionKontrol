@@ -1,37 +1,71 @@
-<div class="row wrapper border-bottom white-bg page-heading">
-  <h2>Welcome to Kuwinda</h2>
+<div class="row wrapper page-heading dashboard--title">
+  <h1 class="bold">Welcome to Kuwinda</h1>
+  <h4><%= Time.now.strftime("%A %d %B %Y") %></h4>
 </div>
 
-<div class="row wrapper border-bottom white-bg m-t p-h-xs">
-
-  <div class="col-sm-4">
-    <h2>Kuwinda</h2>
-
-    <ul>
-      <li>
-        Current version: 0.1.1
-      </li>
-
-      <li>
-        Documentation
-      </li>
-
-      <li>
-        <a href="https://kuwinda.io">Official homepage</a>
-      </li>
-
-      <li>
-        <a href="https://www.kuwinda.io/support/en/knowledgebase">Get support</a>
-      </li>
-
-      <li>List of changes</li>
-      <li>Request a feature</li>
-    </ul>
+<div class="row wrapper m-t p-h-xs">
+  <div class="col-sm-8">
+    <div class="row">
+      <% if @trial_license %>
+        <div class="col-sm-12">
+          <div class="dashboard--trial-license">
+            <h1>You're on a trial license</h1>
+            <h5>Let us know if there is anything we can help with. Subscribe Now.</h5>
+          </div>
+        </div>
+      <% end %>
+      <div class="col-sm-12 dashboard--panels">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="dashboard--panel" data-link="<%= new_database_path if current_admin_user.admin_abilities? %>">
+              <img src="/assets/images/icons/database-2.png">
+              <h3>Connect a database</h3>
+              <h5>Add a database to get started building your admin interface</h5>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="dashboard--panel" data-link="<%= permissions_path if current_admin_user.admin_abilities? %>">
+              <img src="/assets/images/icons/report.png">
+              <h3>Configure tables</h3>
+              <h5>Once you have connected a database set-up some tables</h5>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="dashboard--panel" data-link="<%= users_path if current_admin_user.admin_abilities? %>">
+              <img src="/assets/images/icons/team-1.png">
+              <h3>Invite users</h3>
+              <h5>Set permissions and add some users</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="col-sm-4 border-left">
+    <div class="border-bottom">
+      <h2>System</h2>
+    </div>
+    <div class="dashboard--system">
+      <ul>
+        <li>
+          Current version: 0.1.1
+        </li>
 
-  <div class="col-sm-4">
-  </div>
+        <li>
+          Documentation
+        </li>
 
-  <div class="col-sm-4">
+        <li>
+          <a href="https://kuwinda.io">Official homepage</a>
+        </li>
+
+        <li>
+          <a href="https://www.kuwinda.io/support/en/knowledgebase">Get support</a>
+        </li>
+
+        <li>List of changes</li>
+        <li>Request a feature</li>
+      </ul>
+    </div>
   </div>
 </div>
