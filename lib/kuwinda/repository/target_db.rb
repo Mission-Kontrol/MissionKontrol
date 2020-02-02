@@ -10,8 +10,8 @@ module Kuwinda
         @conn = database.connection
       end
 
-      def all(table, limit = nil, offset = nil)
-        query("select * from #{table};", limit, offset)
+      def all(table, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+        query("select * from #{table};", limit, offset, order_column, order_dir)
       end
 
       def find(table, id)
@@ -62,7 +62,7 @@ module Kuwinda
         conn.exec_query(sql)
       end
 
-      def query(sql, limit, offset)
+      def query(sql, limit, offset, order_column = nil, order_dir = nil)
         if limit && offset
           query_string = sql.split(';')
           query_string = "#{query_string[0]} limit #{limit} offset #{offset};"
@@ -71,6 +71,11 @@ module Kuwinda
           query_string = "#{query_string[0]} limit #{limit};"
         else
           query_string = sql
+        end
+
+        if order_column && order_dir
+          query_string = sql.split(';')
+          query_string = "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
         end
         conn.exec_query(query_string)
       end
@@ -89,13 +94,15 @@ module Kuwinda
         conn.columns(table)
       end
 
-      def datatable_filter(table, search_value = nil, columns = nil, limit = nil, offset = nil)
-        return all(table, limit, offset) if search_value.blank? || columns.nil?
+      # rubocop:disable Metrics/ParameterLists
+      def datatable_filter(table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+        return all(table, limit, offset, order_column, order_dir) if search_value.blank? || columns.nil?
 
-        result = search_columns(table, search_value, columns, limit, offset)
+        result = search_columns(table, search_value, columns, limit, offset, order_column, order_dir)
 
         result
       end
+      # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
       def find_all_related_search(table, search_value, foreign_key_title, foreign_key_value, columns = nil, limit = 10, offset = nil)
@@ -111,7 +118,8 @@ module Kuwinda
 
       private
 
-      def search_columns(table, search_value = nil, columns = nil, limit = nil, offset = nil)
+      # rubocop:disable Metrics/ParameterLists
+      def search_columns(table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
         result = nil
         current_organisation = OrganisationSetting.last
 
@@ -119,9 +127,9 @@ module Kuwinda
           next unless value['searchable']
 
           if current_organisation.target_database_type == 'postgresql'
-            filter = postgres_search(table, value, search_value, limit, offset)
+            filter = postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
           else
-            filter = non_postgres_search(table, value, search_value, limit, offset)
+            filter = non_postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
           end
           next if filter.nil? || filter.rows.empty?
 
@@ -129,6 +137,7 @@ module Kuwinda
         end
         result
       end
+      # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
       def search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
@@ -151,14 +160,16 @@ module Kuwinda
       end
       # rubocop:enable Metrics/ParameterLists
 
-      def postgres_search(table, value, search_value, limit = nil, offset = nil)
+      # rubocop:disable Metrics/ParameterLists
+      def postgres_search(table, value, search_value, limit = nil, offset = nil, order_column = nil, order_dir = nil)
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string
 
-        query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
+        query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
       end
+      # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
       def postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = nil, offset = nil)
@@ -171,9 +182,11 @@ module Kuwinda
       end
       # rubocop:enable Metrics/ParameterLists
 
-      def non_postgres_search(table, value, search_value, limit = nil, offset = nil)
-        query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+      # rubocop:disable Metrics/ParameterLists
+      def non_postgres_search(table, value, search_value, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+        query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
       end
+      # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = nil, offset = nil)
