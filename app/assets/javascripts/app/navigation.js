@@ -117,7 +117,7 @@ function fetchAvailableTables (databaseId) {
       renderAvailableTables(data, databaseId);
     },
     error(){
-      toastr.error('There appears to be an error with your database connection. Please check your credentials or speak to an Administrator');
+      toastr.error("There appears to be an error with your database connection. Please check your credentials or speak to an Administrator");
     }
   });
 }

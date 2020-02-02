@@ -29,6 +29,9 @@ function fetchDataForNestedTable(recordId, nestedTable, tableName) {
     url,
     success(d) {
       loadNestedDataTable(d.columns, d.data, nestedTable, recordId);
+    },
+    error(){
+      toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
     }
   });
 }
@@ -167,6 +170,9 @@ function fetchDataForTable() {
     url: "/" + (location.pathname+location.search).substr(1),
     success(d) {
       loadDataTable(d.columns);
+    },
+    error(){
+      toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
     }
   });
 }
@@ -231,7 +237,8 @@ function fetchDataForRelatedTables() {
       url,
       success(d) {
         loadRelatedDataTable(d.columns, relatedTableId, url);
-      }
+      },
+      error(){ }
     });
   }
 }
