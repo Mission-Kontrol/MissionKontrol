@@ -11,6 +11,7 @@ module TableRender
     render :show
   end
 
+  # rubocop:disable Metrics/MethodLength
   def render_show_js
     offset = params['start']
     limit = params['length']
@@ -39,6 +40,7 @@ module TableRender
       recordsFiltered: @target_db.count(@table).rows[0][0]
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   def render_preview_html
     # @target_db.table = @current_table
