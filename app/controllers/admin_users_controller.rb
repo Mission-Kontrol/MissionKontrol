@@ -3,7 +3,7 @@
 class AdminUsersController < ApplicationController
   include UserAbilities
 
-  layout 'dashboard'
+  layout 'standard'
 
   STATUSES = ['active', 'inactive'].freeze
 

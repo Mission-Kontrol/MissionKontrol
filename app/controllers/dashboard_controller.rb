@@ -8,7 +8,10 @@ class DashboardController < ApplicationController
 
   layout 'license', only: %i[license verify_license]
 
-  def show; end
+  def show
+    full_license = OrganisationSetting.last.full_license
+    @trial_license = (full_license != true)
+  end
 
   def license
     redirect_to dashboard_path if license_valid?
