@@ -125,6 +125,7 @@ module Kuwinda
 
         columns.each do |_key, value|
           next unless value['searchable']
+          next if value['data'].empty?
 
           if current_organisation.target_database_type == 'postgresql'
             filter = postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
@@ -146,6 +147,7 @@ module Kuwinda
 
         columns.each do |_key, value|
           next unless value['searchable']
+          next if value['data'].empty?
 
           if current_organisation.target_database_type == 'postgresql'
             filter = postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
