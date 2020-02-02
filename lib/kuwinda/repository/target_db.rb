@@ -66,6 +66,8 @@ module Kuwinda
         if order_column.present? && order_dir.present?
           query_string = sql.split(';')
           query_string = "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
+        else
+          query_string = sql
         end
 
         if limit && offset
