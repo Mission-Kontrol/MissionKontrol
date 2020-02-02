@@ -95,15 +95,19 @@ div.dataTables_wrapper {
 
 	div.dataTables_processing {
 		position: absolute;
-		top: 50%;
+		top: 65%;
 		left: 50%;
-		width: 200px;
 		margin-left: -100px;
 		margin-top: -26px;
 		text-align: center;
-		padding: 1em 0;
+		padding: 0.6em;
 		z-index: 1000;
 		border-color: #563D7C;
+		border-radius: 100%;
+
+		img {
+			width: 96px;
+		}
 	}
 }
 
