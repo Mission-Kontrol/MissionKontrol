@@ -81,9 +81,8 @@ function loadUserDataTable (columns) {
     autoWidth: false,
     scrollX: true,
     serverSide: true,
-    processing: true,
+    processing: false,
     language: {
-      processing: "<img class='loading-gif' src='/assets/images/icons/blue_cat_loading.gif' />",
       paginate: {
         next: "Next >",
         previous: "< Prev"

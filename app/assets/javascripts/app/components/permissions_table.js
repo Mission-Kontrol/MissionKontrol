@@ -111,10 +111,7 @@ function loadPermissionsDataTable (columns, databaseId, table) {
       orderable: false,
       targets: [1, 2, 3]
     }],
-    processing: true,
-      language: {
-        processing: "<img class='loading-gif' src='/assets/images/icons/blue_cat_loading.gif' />"
-      },
+    processing: false,
     ajax: "/" + (location.pathname+location.search).substr(1) + "?database_id=" + databaseId,
     columns,
     stateSave: true,

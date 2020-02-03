@@ -1,7 +1,7 @@
 "use strict";
 
 function loadNestedDataTable(columns, data, nestedTable, recordId) {
-  $("#target-table-" + nestedTable + "-" + recordId).DataTable({
+  var nestedSearchableTable = $("#target-table-" + nestedTable + "-" + recordId).DataTable({
     colReorder: false,
     info: false,
     paging: false,
@@ -11,13 +11,18 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
     data,
     stateSave: true,
     scrollX: true,
+    processing: false,
     stateSaveCallback(settings, data) {
       stateSaveCallbackFunction(settings, data, $(this));
     },
     stateLoadCallback(settings, callback) {
       stateLoadCallbackFunction($(this), callback);
+    },
+    initComplete(settings, json) {
+      initCompleteFunction(settings, json, nestedSearchableTable);
     }
   });
+  $(".spinner").hide();
 }
 
 function fetchDataForNestedTable(recordId, nestedTable, tableName) {
@@ -73,10 +78,9 @@ function loadDataTable (columns) {
     autoWidth: false,
     scrollX: true,
     serverSide: true,
-    processing: true,
+    processing: false,
     pagingType: "simple_numbers",
     language: {
-      processing: "<img class='loading-gif' src='/assets/images/icons/blue_cat_loading.gif' />",
       paginate: {
         next: "Next >",
         previous: "< Prev",
@@ -182,7 +186,7 @@ function loadRelatedDataTable (columns, id, ajax) {
       autoWidth: false,
       scrollX: true,
       serverSide: true,
-      processing: true,
+      processing: false,
         language: {
           processing: "<img class='loading-gif' src='/assets/images/icons/blue_cat_loading.gif' />"
         },
