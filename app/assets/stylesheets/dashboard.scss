@@ -34,3 +34,19 @@
 [data-link] {
   cursor: pointer;
 }
+
+.spinner {
+  position: absolute;
+  z-index: 1000;
+  left: 50%;
+  top: 45%;
+  background-color: $white;
+  border: solid 0.5px $blueberry;
+  border-radius: 100%;
+
+  img {
+    border-radius: 100%;
+    padding: 0.6em;
+    width: 96px;
+  }
+}

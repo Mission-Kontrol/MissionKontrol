@@ -111,12 +111,7 @@ function loadPermissionsDataTable (columns, databaseId, table) {
       orderable: false,
       targets: [1, 2, 3]
     }],
-    processing: true,
-      language: {
-        processing: "<div class='sk-spinner sk-spinner-chasing-dots'>" +
-              "<div class='sk-dot1'></div>" +
-              "<div class='sk-dot2'></div>" +
-            "</div>"},
+    processing: false,
     ajax: "/" + (location.pathname+location.search).substr(1) + "?database_id=" + databaseId,
     columns,
     stateSave: true,

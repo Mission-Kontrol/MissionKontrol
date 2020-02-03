@@ -11,6 +11,9 @@
 
   <body>
     <div id="wrapper" class="<%= params[:controller] %>.<%= params[:action] %> ">
+      <div class="spinner">
+        <img class='loading-gif' src='/assets/images/icons/blue_cat_loading.gif' />
+      </div>
       <%= render 'layouts/navigation' %>
       <div id="page-wrapper" class="gray-bg <%= @extra_class %>">
         <%= render 'shared/flash_message' %>
