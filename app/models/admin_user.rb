@@ -18,6 +18,14 @@ class AdminUser < ApplicationRecord
 
   include SensitiveData
 
+  def active_for_authentication?
+    super and self.active?
+  end
+
+  def inactive_message
+    "Your account is not active. Please speak to an Administrator."
+  end
+
   def twilio_setup_complete?
     !twilio_account_sid.blank? &&
       !twilio_auth_token.blank? &&

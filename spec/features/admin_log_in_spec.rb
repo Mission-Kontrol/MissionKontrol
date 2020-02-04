@@ -1,16 +1,16 @@
-feature 'Admin user logs in to the app' do
-  xscenario 'viewing the admin dashboard' do
-    when_i_log_in_as_an_admin_user
-    then_i_expect_to_be_redirected_to_the_dashboard
-  end
-end
+# frozen_string_literal: true
 
-def when_i_log_in_as_an_admin_user
-  VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-    sign_in_as_admin_with_license
+feature 'User login', js: true do
+  scenario 'when user is active' do
+    sign_in_as_user_with_license
+    expect(page).to have_current_path(dashboard_path)
   end
-end
 
-def then_i_expect_to_be_redirected_to_the_dashboard
-  expect(page).to have_current_path(dashboard_path)
+  scenario 'when user is inactive' do
+    create_org_with_license
+    @user = create(:admin_user, active: false)
+    sign_in_user
+    expect(page).to have_current_path(new_admin_user_session_path)
+    expect(page).to have_content "Your account is not active. Please speak to an Administrator."
+  end
 end
