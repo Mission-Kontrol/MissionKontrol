@@ -16,3 +16,25 @@ input {
   padding-bottom: 5px;
   margin-bottom: 5px;
 }
+
+#new_database {
+  select {
+    width: 80%;
+    border: none;
+    border-bottom: solid 1px $border-grey;
+    background: url(/assets/images/icons/triangle.svg) no-repeat;
+    background-position: 96% 50%;
+    cursor: pointer;
+    border-radius: 0px;
+    -webkit-appearance: none;
+    /* for webkit browsers */
+    -moz-appearance: none;
+    /* for firefox */
+    appearance: none;
+    /* for modern browsers */
+  }
+
+  select::-ms-expand, select::-ms-expand {
+    display: none;
+  }
+}
