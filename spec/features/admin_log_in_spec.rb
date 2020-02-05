@@ -11,6 +11,6 @@ feature 'User login', js: true do
     @user = create(:admin_user, active: false)
     sign_in_user
     expect(page).to have_current_path(new_admin_user_session_path)
-    expect(page).to have_content "Your account is not active. Please speak to an Administrator."
+    expect(page).to have_content 'Your account is not active. Please speak to an Administrator.'
   end
 end

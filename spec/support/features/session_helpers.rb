@@ -10,7 +10,9 @@ module Features
 
     def sign_in_as_admin_with_license
       create_org_with_license
+      @role = create(:role, name: 'Admin', administrator: true)
       @user = create(:admin_user)
+      @user.roles << @role
       sign_in_user
     end
 
@@ -36,11 +38,11 @@ module Features
 
     def update_organisation_db_settings
       @organisation.update!(
-        target_database_name: ENV['DEMO_CLIENT_DB_NAME'],
-        target_database_username: ENV['DEMO_CLIENT_DB_USER'],
-        target_database_password: ENV['DEMO_CLIENT_DB_PASSWORD'],
-        target_database_host: ENV['DEMO_CLIENT_DB_HOST'],
-        target_database_port: ENV['DEMO_CLIENT_DB_PORT'],
+        target_database_name: 'kuwinda_test',
+        target_database_username: ENV['KUWINDA_DATABASE_USER'],
+        target_database_password: ENV['KUWINDA_DATABASE_PASSWORD'],
+        target_database_host: ENV['KUWINDA_DATABASE_HOST'],
+        target_database_port: 5432,
         target_database_type: 'postgres'
       )
     end

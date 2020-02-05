@@ -132,7 +132,6 @@ function loadPermissionsDataTable (columns, databaseId, table) {
     },
     initComplete(settings, json) {
       initCompleteFunction(settings, json, window["datatable"+databaseId]);
-      activateTooltipster();
     }
   });
 }
@@ -199,7 +198,6 @@ function enableTooltipOnContentClick () {
 
     $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"'][data-database-id='"+databaseId+"']").attr({ "src": fullCircleIcon });
     enableTooltipOnContentClick();
-    activateTooltipster();
   });
 
   $("body").on("click", ".permissions-disable-all", function (e) {
@@ -221,7 +219,6 @@ function enableTooltipOnContentClick () {
 
     $(".tooltipster-tooltip[data-role='"+role+"'][data-table='"+table+"'][data-database-id='"+databaseId+"']").attr({ "src": emptyCircleIcon });
     enableTooltipOnContentClick();
-    activateTooltipster();
   });
 }
 
@@ -371,4 +368,8 @@ $(document).ready(function() {
   enableTooltipOnContentClick();
 
   togglePermissionAccordians();
+});
+
+$(document).ajaxStop(function(){
+  activateTooltipster();
 });

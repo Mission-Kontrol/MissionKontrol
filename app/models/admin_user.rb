@@ -19,7 +19,7 @@ class AdminUser < ApplicationRecord
   include SensitiveData
 
   def active_for_authentication?
-    super and self.active?
+    super && active?
   end
 
   def inactive_message

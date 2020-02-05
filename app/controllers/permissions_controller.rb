@@ -112,7 +112,7 @@ class PermissionsController < ApplicationController
       @roles.each do |role|
         table_data.merge!(role.name.to_s => role_permissions_level(table.last, role))
         table.last.each do |permission|
-          data_key = role.name.gsub(" ", "_") + '_' + permission.action
+          data_key = role.name.gsub(' ', '_') + '_' + permission.action
           data_value = role_has_permission?(permission, role)
           table_data.merge!(data_key => data_value)
         end
