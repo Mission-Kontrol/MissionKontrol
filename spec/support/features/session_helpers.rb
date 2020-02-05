@@ -2,24 +2,29 @@
 
 module Features
   module SessionHelpers
-    def sign_in_as_admin_with_license
+    def create_org_with_license
       @organisation = create(:organisation_setting)
       update_organisation_db_settings
       add_license_key
-      user = create(:admin_user)
-      visit root_path
-      fill_in 'Email', with: user.email
-      fill_in 'Password', with: 'password'
-      click_button 'Log in'
+    end
+
+    def sign_in_as_admin_with_license
+      create_org_with_license
+      @role = create(:role, name: 'Admin', administrator: true)
+      @user = create(:admin_user)
+      @user.roles << @role
+      sign_in_user
     end
 
     def sign_in_as_user_with_license
-      @organisation = create(:organisation_setting)
+      create_org_with_license
       @role = create(:role)
-      update_organisation_db_settings
-      add_license_key
       @user = create(:admin_user)
       @user.roles << @role
+      sign_in_user
+    end
+
+    def sign_in_user
       visit root_path
       fill_in 'Email', with: @user.email
       fill_in 'Password', with: 'password'
@@ -33,11 +38,11 @@ module Features
 
     def update_organisation_db_settings
       @organisation.update!(
-        target_database_name: ENV['DEMO_CLIENT_DB_NAME'],
-        target_database_username: ENV['DEMO_CLIENT_DB_USER'],
-        target_database_password: ENV['DEMO_CLIENT_DB_PASSWORD'],
-        target_database_host: ENV['DEMO_CLIENT_DB_HOST'],
-        target_database_port: ENV['DEMO_CLIENT_DB_PORT'],
+        target_database_name: 'kuwinda_test',
+        target_database_username: ENV['KUWINDA_DATABASE_USER'],
+        target_database_password: ENV['KUWINDA_DATABASE_PASSWORD'],
+        target_database_host: ENV['KUWINDA_DATABASE_HOST'],
+        target_database_port: 5432,
         target_database_type: 'postgres'
       )
     end

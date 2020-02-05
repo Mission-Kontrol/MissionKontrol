@@ -108,11 +108,11 @@ class PermissionsController < ApplicationController
     data = []
 
     grouped_permissions.each do |table|
-      table_data = { 'Table' => table.first.to_s.humanize }
+      table_data = { 'Table' => table.first.to_s.humanize, 'Id' => params[:database_id] }
       @roles.each do |role|
         table_data.merge!(role.name.to_s => role_permissions_level(table.last, role))
         table.last.each do |permission|
-          data_key = role.name + '_' + permission.action
+          data_key = role.name.gsub(' ', '_') + '_' + permission.action
           data_value = role_has_permission?(permission, role)
           table_data.merge!(data_key => data_value)
         end

@@ -148,7 +148,7 @@ function loadDataTable (columns) {
     var row = searchableTable.row(tr);
     var nestedTable = tr.data("nested-table");
 
-    if (nestedTable === null) {
+    if (nestedTable === null || nestedTable === "") {
       return;
     }
 

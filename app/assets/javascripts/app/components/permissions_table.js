@@ -10,24 +10,26 @@ function activateTooltipster () {
     var table = $(this).data("table");
     var databaseId = $(this).data("database-id");
 
-    $(this).tooltipster({
-      theme: ["tooltipster-shadow", "tooltipster-shadow-customized"],
-      side: "bottom",
-      trigger: "click",
-      triggerClose: {
-        mouseleave: true
-      },
-      interactive: true,
-      contentAsHTML: true,
-      content: $("<div class='tooltip_templates'>"+
-        "<span id='tooltip_content'>"+
-        "<a href='#' class='permissions-enable-all' data-role='"+role+"' data-table='"+table+"' data-database-id='"+databaseId+"'>Enable</a>"+
-        "<br>"+
-        "<a href='#' class='permissions-disable-all' data-role='"+role+"' data-table='"+table+"' data-database-id='"+databaseId+"'>Disable</a>"+
-        "</span>"+
-        "</div>"
-      ),
-    });
+    if (!$(this).hasClass("tooltipstered")) {
+      $(this).tooltipster({
+        theme: ["tooltipster-shadow", "tooltipster-shadow-customized"],
+        side: "bottom",
+        trigger: "click",
+        triggerClose: {
+          mouseleave: true
+        },
+        interactive: true,
+        contentAsHTML: true,
+        content: $("<div class='tooltip_templates'>"+
+          "<span id='tooltip_content'>"+
+          "<a href='#' class='permissions-enable-all' data-role='"+role+"' data-table='"+table+"' data-database-id='"+databaseId+"'>Enable</a>"+
+          "<br>"+
+          "<a href='#' class='permissions-disable-all' data-role='"+role+"' data-table='"+table+"' data-database-id='"+databaseId+"'>Disable</a>"+
+          "</span>"+
+          "</div>"
+        ),
+      });
+    }
   });
 }
 
@@ -49,27 +51,27 @@ function formatNestedColumns ( d, tableDatabaseId ) {
   return "<table id='permissions--nested-table' data-table='"+d.Table+"' data-database-id='"+databaseId+"'>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>View</p></td>"+
-          "<td "+adminTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_view, "Admin", "view") +"</td>"+
-          "<td "+salesTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_view, "Sales", "view") +"</td>"+
-          "<td "+teamLeadTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_view, "Team Lead", "view") +"</td>"+
+          "<td "+adminTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_view, "Admin", "view", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_view, "Sales", "view", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_view, "Team Lead", "view", databaseId) +"</td>"+
       "</tr>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>Create</p></td>"+
-          "<td "+adminTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_create, "Admin", "create") +"</td>"+
-          "<td "+salesTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_create, "Sales", "create") +"</td>"+
-          "<td "+teamLeadTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_create, "Team Lead", "create") +"</td>"+
+          "<td "+adminTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_create, "Admin", "create", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_create, "Sales", "create", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_create, "Team Lead", "create", databaseId) +"</td>"+
       "</tr>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>Edit</p></td>"+
-          "<td "+adminTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_edit, "Admin", "edit") +"</td>"+
-          "<td "+salesTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_edit, "Sales", "edit") +"</td>"+
-          "<td "+teamLeadTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_edit, "Team Lead", "edit") +"</td>"+
+          "<td "+adminTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_edit, "Admin", "edit", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_edit, "Sales", "edit", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_edit, "Team Lead", "edit", databaseId) +"</td>"+
       "</tr>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>Delete</p></td>"+
-          "<td "+adminTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_delete, "Admin", "delete") +"</td>"+
-          "<td "+salesTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_delete, "Sales", "delete") +"</td>"+
-          "<td "+teamLeadTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_delete, "Team Lead", "delete") +"</td>"+
+          "<td "+adminTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_delete, "Admin", "delete", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_delete, "Sales", "delete", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_delete, "Team Lead", "delete", databaseId) +"</td>"+
       "</tr>"+
   "</table>";
 }
@@ -123,14 +125,13 @@ function loadPermissionsDataTable (columns, databaseId, table) {
     },
     createdRow(row, data, dataIndex) {
       let table = $(this).data("table-name");
-      let id = data.id;
+      let id = data.Id;
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
       $(row).addClass("original-row-permissions");
       $(row).attr("data-href",  previewUrl);
     },
     initComplete(settings, json) {
       initCompleteFunction(settings, json, window["datatable"+databaseId]);
-      activateTooltipster();
     }
   });
 }
@@ -367,4 +368,8 @@ $(document).ready(function() {
   enableTooltipOnContentClick();
 
   togglePermissionAccordians();
+});
+
+$(document).ajaxStop(function(){
+  activateTooltipster();
 });
