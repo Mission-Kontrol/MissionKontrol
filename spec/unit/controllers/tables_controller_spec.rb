@@ -9,6 +9,29 @@ describe TablesController, :type => :controller do
     create(:target_table_setting, database_id: @database.id)
   end
 
+  describe 'GET index' do
+    subject { get :index, xhr: true, format: :js, params: { id: @database.id } }
+
+    before do
+      allow_any_instance_of(Kuwinda::Presenter::ListAvailableTables).to receive(:call).and_return(['users', 'events', 'attending_events'])
+      sign_in @user
+
+      subject
+    end
+
+    context 'when user has permissions to view the users table' do
+      it 'returns the users table in the json response' do
+        expect(JSON.parse(response.body)).to include 'users'
+      end
+    end
+
+    context 'when user does not have permission to view the events table' do
+      it 'does not return the events table in the json response' do
+        expect(JSON.parse(response.body)).not_to include 'events'
+      end
+    end
+  end
+
   describe 'GET show' do
     context 'when admin user has a valid license' do
       context 'when client database connection is invalid' do
