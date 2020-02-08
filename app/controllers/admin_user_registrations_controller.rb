@@ -3,6 +3,7 @@
 class AdminUserRegistrationsController < Devise::RegistrationsController
   before_action :check_admin_user_exists, only: [:new]
   before_action :configure_permitted_parameters, if: :devise_controller?
+  after_action :make_admin, only: [:create]
   layout 'application', only: [:new]
 
   protected
@@ -41,6 +42,7 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
       first_name
       last_name
       status
+      active
       twilio_caller_id
       twilio_auth_token
       twilio_account_sid
@@ -65,5 +67,11 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
                     end
 
     redirect_to redirect_path if redirect_path.present?
+  end
+
+  def make_admin
+    role = Role.find_by(name: "Admin")
+    user = AdminUser.last
+    user.roles << role
   end
 end

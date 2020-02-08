@@ -175,7 +175,7 @@ function submitTeamChange () {
 function validateForm () {
   var password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
-  $("body").on("keyup", "#admin_user_first_name, #admin_user_last_name, #admin_user_email, #admin_user_password", function () {
+  $("body").on("keyup", "#admin_user_first_name, #admin_user_last_name, #admin_user_email, #admin_user_password", "#admin_user_password_confirmation", function () {
     var fieldsFilled = $("#admin_user_first_name").val().length > 0 &&
     $("#admin_user_last_name").val().length > 0 &&
     $("#admin_user_email").val().length > 0;
@@ -185,7 +185,7 @@ function validateForm () {
     var passwordEmpty = $("#admin_user_password").val().length === 0;
     var passwordValid = $("#admin_user_password").val().match(password);
 
-    var validForm = (create && fieldsFilled && passwordValid) || (update && fieldsFilled && passwordEmpty) || (update && fieldsFilled && !passwordEmpty && passwordValid);
+    var validForm = (fieldsFilled && passwordValid) || (update && fieldsFilled && passwordEmpty) || (update && fieldsFilled && !passwordEmpty && passwordValid);
 
     if (validForm) {
       $("input[type=submit]").prop("disabled", false);
