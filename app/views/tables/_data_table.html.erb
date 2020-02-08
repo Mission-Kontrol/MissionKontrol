@@ -14,7 +14,7 @@
     </table>
     <% if current_admin_user.permission?(:create, @table, @database.id) %>
       <div class="target-table--add-record">
-        <a data-remote='true' href='/table/add_record?table=<%= @table.downcase %>' class="btn btn-default">
+        <a data-remote='true' href='/table/add_record?table=<%= @table.downcase %>&database_id=<%= @database.id %>' class="btn btn-default">
           <span><img src="/assets/images/icons/plus.png" alt="plus" class="table--add-record-button">Add Record</span>
         </a>
       </div>

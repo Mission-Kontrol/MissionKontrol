@@ -47,7 +47,7 @@ module Kuwinda
         values = "(#{last_id + 1}, "
 
         record_params.each do |field, value|
-          column = table_columns.select { |table_column| table_column.name == field }.first
+          column = table_columns(table).select { |table_column| table_column.name == field }.first
           fields += "#{field}, "
           if (column.type == :datetime || column.type == :inet || column.type == :integer) && value == ''
             values += 'NULL, '
@@ -57,7 +57,8 @@ module Kuwinda
         end
         fields += 'created_at, updated_at)'
 
-        values += "'#{DateTime.now}', '#{DateTime.now}')"
+        values += "'#{DateTime.now.utc}', '#{DateTime.now.utc}')"
+
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
         conn.exec_query(sql)
       end

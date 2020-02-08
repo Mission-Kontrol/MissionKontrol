@@ -44,6 +44,7 @@
             <div class="col-sm-12">
               <div class="record--save-btn">
                 <%= hidden_field_tag(:table, @current_table) %>
+                <%= hidden_field_tag(:database_id, @database.id) %>
                 <%= submit_tag('Save', class: 'btn btn-primary btn--save-record') %>
               </div>
             </div>
