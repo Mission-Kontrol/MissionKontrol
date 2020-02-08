@@ -42,7 +42,7 @@ class DatabasesController < ApplicationController
       render :test_connection and return
     else
       @database = Database.find(params[:id])
-      @database.update_attributes(database_params)
+      @database.update_attributes(database_params_update)
       update_available_permissions
       update_target_table_settings
       @result = @database.save!
@@ -72,6 +72,18 @@ class DatabasesController < ApplicationController
                                      :name,
                                      :password,
                                      :username)
+  end
+
+  def database_params_update
+    permitted = params.require(:database).permit(:friendly_name,
+                                                 :adapter,
+                                                 :host,
+                                                 :port,
+                                                 :name,
+                                                 :username)
+
+    permitted.merge!(password: params[:database][:password]) if params[:database][:password_changed]
+    permitted
   end
 
   def password_param
