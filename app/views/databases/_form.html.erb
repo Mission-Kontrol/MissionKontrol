@@ -68,6 +68,7 @@
                         <div class="form-group">
                           <%= f.label :password %>
                           <%= f.password_field :password, autofocus: true, class: "form-control", value: @database.password %>
+                          <%= f.hidden_field :password_changed, value: false %>
                         </div>
                       </div>
                     </div>
