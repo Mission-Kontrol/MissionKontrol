@@ -78,6 +78,67 @@ feature 'Setting granular permissions', js: true do
 end
 # rubocop:enable Metrics/BlockLength
 
+# rubocop:disable Metrics/BlockLength
+feature 'Granular permissions with multi databases', js: true do
+  background do
+    sign_in_as_admin_with_license
+    setup_tables_and_roles
+    create_second_database
+    create(:target_table_setting, name: @table, database_id: @database.id)
+    create(:target_table_setting, name: @second_table, database_id: @second_database.id)
+    visit permissions_path
+  end
+
+  scenario 'setting table to enabled automatically checks all CRUD boxes' do
+    first('.accordion').click
+    first('.tooltipster-tooltip').click
+    find('a.permissions-enable-all[data-role="Admin"]').click
+    sleep 5
+    first('td.sorting_1').click
+    expect(page.first('.tooltipster-tooltip[data-role="Admin"]')['src']).to have_content '/assets/images/icons/circle-with-check-symbol.png'
+    expect(page.first('.permissions--nested-table-data > img[data-role="Admin"][data-action="view"]')['src']).to have_content '/assets/images/icons/black-check-box-with-white-check.png'
+    expect(page.first('.permissions--nested-table-data > img[data-role="Admin"][data-action="create"]')['src']).to have_content '/assets/images/icons/black-check-box-with-white-check.png'
+    expect(page.first('.permissions--nested-table-data > img[data-role="Admin"][data-action="edit"]')['src']).to have_content '/assets/images/icons/black-check-box-with-white-check.png'
+    expect(page.first('.permissions--nested-table-data > img[data-role="Admin"][data-action="delete"]')['src']).to have_content '/assets/images/icons/black-check-box-with-white-check.png'
+  end
+
+  scenario 'setting single CRUD action to true changes the circle icon' do
+    first('.accordion').click
+    first('td.sorting_1').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="view"]').click
+    expect(page.first('.tooltipster-tooltip[data-role="Sales"]')['src']).to have_content '/assets/images/icons/circle-with-contrast.png'
+  end
+
+  scenario 'setting a non view CRUD action automatically selects view as well' do
+    first('.accordion').click
+    first('td.sorting_1').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="edit"]').click
+    expect(page.first('.tooltipster-tooltip[data-role="Sales"]')['src']).to have_content '/assets/images/icons/circle-with-contrast.png'
+    expect(page.first('.permissions--nested-table-data > img[data-role="Sales"][data-action="view"]')['src']).to have_content '/assets/images/icons/black-check-box-with-white-check.png'
+  end
+
+  scenario 'selecting all CRUD actions changes the circle icon' do
+    first('.accordion').click
+    first('td.sorting_1').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="edit"]').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="create"]').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="delete"]').click
+    expect(page.first('.tooltipster-tooltip[data-role="Sales"]')['src']).to have_content '/assets/images/icons/circle-with-check-symbol.png'
+  end
+
+  scenario 'removing a single CRUD action from fully enabled table changes the circle icon' do
+    give_role_all_permissions(@sales, 'events')
+    first('.accordion').click
+    first('td.sorting_1').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="edit"]').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="create"]').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="delete"]').click
+    first('.permissions--nested-table-data > img[data-role="Sales"][data-action="view"]').click
+    expect(page.first('.tooltipster-tooltip[data-role="Sales"]')['src']).to have_content '/assets/images/icons/circle-with-cross.png'
+  end
+end
+# rubocop:enable Metrics/BlockLength
+
 feature 'Permissions', js: true do
   background do
     sign_in_as_user_with_license
@@ -94,21 +155,6 @@ feature 'Permissions', js: true do
   scenario 'user with sales role without permissions to view table cannot view table page' do
     visit table_path(id: @database.id, table: 'events')
     expect(page).to have_current_path(dashboard_path)
-  end
-
-  xscenario 'user with sales role without permissions to view table cannot view table navigation' do
-    find("a[id='nav-link-for-available-databases']").click
-    find("a[data-database-id='#{@database.id}']").click
-    # sleep 10
-    expect(page).not_to have_link('events')
-  end
-
-  xscenario 'user with sales role with permissions to view table can view table in navigation' do
-    give_sales_role_permissions_to_view_events_table
-    find("a[id='nav-link-for-available-databases']").click
-    find("a[data-database-id='#{@database.id}']").click
-    # sleep 2
-    expect(page).to have_link('events')
   end
 end
 
@@ -142,4 +188,10 @@ def setup_tables_and_roles
   @sales = create(:role, name: 'Sales')
   @team_lead = create(:role, name: 'Team Lead')
   create_action_permissions(@table)
+end
+
+def create_second_database
+  @second_database = create(:database)
+  @second_table = 'users'
+  create_action_permissions(@second_table)
 end
