@@ -29,6 +29,7 @@ class DatabasesController < ApplicationController
       @result = @database.save!
       update_available_permissions
       update_target_table_settings
+      redirect_to permissions_path
     end
   end
 
@@ -46,6 +47,7 @@ class DatabasesController < ApplicationController
       update_available_permissions
       update_target_table_settings
       @result = @database.save!
+      redirect_to permissions_path
     end
   end
 
