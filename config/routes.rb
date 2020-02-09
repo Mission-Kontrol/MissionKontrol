@@ -85,4 +85,7 @@ Rails.application.routes.draw do
 
   match "database_connection_error", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
+  match '/404' => 'errors#not_found', via: :all
+  match '/406' => 'errors#not_acceptable', via: :all
+  match '/401' => "errors#not_authorized", via: :all
 end

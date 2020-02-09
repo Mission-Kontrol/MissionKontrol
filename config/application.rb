@@ -15,6 +15,7 @@ module Kuwinda
 
     config.eager_load_paths << Rails.root.join('lib')
 
+    config.exceptions_app = self.routes
     # Settings in config/environments/* take precedence over ones specified here
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
