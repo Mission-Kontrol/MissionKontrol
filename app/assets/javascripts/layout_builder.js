@@ -385,7 +385,7 @@ function prepareNormalToast() {
     closeButton: true,
     howMethod: "fadeIn",
     hideMethod: "fadeOut",
-    timeOut: 2000,
+    timeOut: 5000,
     preventDuplicates: true,
     positionClass: "toast-bottom-right"
   };
