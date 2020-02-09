@@ -83,7 +83,10 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-sm-11">
+                      <div class="col-sm-8">
+                        <h4>Don't forget to <%= link_to "set the database permissions here", permissions_path %>, otherwise you won't be able to see any tables.</h4>
+                      </div>
+                      <div class="col-sm-3">
                         <%= f.submit "Save", class: "btn btn-primary m-b pull-right" %>
                       </div>
                     </div>
