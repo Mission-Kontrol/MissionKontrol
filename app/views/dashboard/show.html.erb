@@ -6,14 +6,18 @@
 <div class="row wrapper m-t p-h-xs">
   <div class="col-sm-8">
     <div class="row">
-      <% if @trial_license %>
+      <%
+=begin%>
+ <% if @trial_license %>
         <div class="col-sm-12">
           <div class="dashboard--trial-license">
             <h1>You're on a trial license</h1>
             <h5>Let us know if there is anything we can help with. Subscribe Now.</h5>
           </div>
         </div>
-      <% end %>
+      <% end %> 
+<%
+=end%>
       <div class="col-sm-12 dashboard--panels">
         <div class="row">
           <div class="col-sm-4">
