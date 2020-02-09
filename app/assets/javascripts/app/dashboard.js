@@ -58,7 +58,7 @@ function loadToastr() {
       howMethod: "fadeIn",
       hideMethod: "fadeOut",
       preventDuplicates: true,
-      timeOut: 2000
+      timeOut: 5000
   };
 }
 

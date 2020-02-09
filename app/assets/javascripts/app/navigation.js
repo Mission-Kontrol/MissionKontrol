@@ -96,6 +96,9 @@ function renderAvailableTables (tables, databaseId) {
   var availableTables = [];
   dropdown[0].innerHTML = "";
 
+  if (tables.length === 0) {
+    toastr.info("You don't have any permission on this database. Please configure permissions or talk to an Admin.");
+  }
   $.each(tables, function( index, value ) {
     availableTables.push(
       "<li>"+
