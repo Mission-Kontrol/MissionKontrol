@@ -52,11 +52,6 @@
 
     <%# render 'form_content_admin_db', f: f %>
 
-    <%= f.hidden_field(:admin_database_host, value: ENV['KUWINDA_DATABASE_HOST']) %>
-    <%= f.hidden_field(:admin_database_username, value: ENV['KUWINDA_DATABASE_USER']) %>
-    <%= f.hidden_field(:admin_database_password, value: ENV['KUWINDA_DATABASE_PASSWORD']) %>
-    <%= f.hidden_field(:admin_database_port, value: ENV['KUWINDA_DATABASE_PORT']) %>
-    <%= f.hidden_field(:admin_database_name, value: 'kuwinda') %>
-    <%= f.hidden_field(:admin_database_type, value: 'postgresql') %>
+    <%= f.hidden_field(:active, value: true) %>
   </div>
 </div>
