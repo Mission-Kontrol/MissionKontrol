@@ -20,7 +20,6 @@ if [[ $? == 0 ]]; then
         echo
         echo "==> Failed to migrate. Running setup first. <=="
         dockerize bundle exec rails db:setup
-        dockerize bundle exec rake db:seed
     fi
 fi
 echo
