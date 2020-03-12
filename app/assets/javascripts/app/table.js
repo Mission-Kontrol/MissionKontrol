@@ -1,28 +1,5 @@
 "use strict";
 
-function displayActionsBar (table) {
-  var filterBar = $(".table--filter-bar-container").html();
-  var tableInfo = $(".table--info");
-  let checkedCount = $('.data-table--select-input:checked').length
-  let selectedText = $(".filter-bar--selected .white").last()
-
-  if (tableInfo.find(".table--filter-bar").length === 0) {
-    tableInfo.append(filterBar);
-  } else if (checkedCount > 1) {
-    selectedText.text(checkedCount + " results selected");
-  } else if (checkedCount === 1) {
-    selectedText.text(checkedCount + " result selected");
-  } else if (checkedCount === 0) {
-    $(".table--filter-bar").last().remove();
-  }
-};
-
-function selectInput (table) {
-  $("body").on("change", ".data-table--select-input:checkbox", function () {
-    displayActionsBar(table);
-  });
-};
-
 function loadNestedDataTable(columns, data, nestedTable, recordId) {
   var nestedSearchableTable = $("#target-table-" + nestedTable + "-" + recordId).DataTable({
     colReorder: false,
@@ -169,10 +146,6 @@ function loadDataTable (columns) {
     }
   });
 
-  // var deleteColumn = searchableTable.column(0).data();
-
-  // deleteColumn.unshift("<input type='checkbox' id='"+ databaseId +"' name='"+ tableName +"' value='"+ tableName +"'></input>")
-
   $("body").on("click", ".buttons-columnVisibility a", function () {
     searchableTable.state.save().ajax.reload();
   });
@@ -197,6 +170,8 @@ function loadDataTable (columns) {
   });
 
   selectInput(searchableTable);
+
+  deleteData(searchableTable);
 
   window["datatable"] = searchableTable;
 }
