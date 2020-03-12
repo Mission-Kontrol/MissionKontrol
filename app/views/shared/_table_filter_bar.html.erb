@@ -2,16 +2,28 @@
   <div class="col-sm-12 table--filter-bar">
     <div class="filter-bar--info">
       <div class="filter-bar--selected">
-        <h5 class="white">1 filter selected</h5>
+        <h5 class="white">
+          1 <%= users ? "filter" : "result" %> selected
+        </h5>
       </div>
       <div class="filter-bar--seperator">
         <h5 class="white">|</h5>
       </div>
       <div class="filter-bar--clear">
         <h5 class="white">
-          Clear filters
+          <%= users ? "Clear filters" : "Clear selection" %>
         </h5>
       </div>
+      <% unless users %>
+        <div class="filter-bar--seperator">
+          <h5 class="white">|</h5>
+        </div>
+        <div class="filter-bar--delete">
+          <h5 class="white">
+            Delete selection
+          </h5>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

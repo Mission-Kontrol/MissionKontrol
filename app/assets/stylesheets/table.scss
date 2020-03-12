@@ -4,6 +4,8 @@
 }
 
 .data-table-main {
+  width: 100%;
+
   thead {
     background-color: #f3f3f4;
 
@@ -322,13 +324,15 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
 
   .filter-bar--info {
     display: inline-flex;
+    height: inherit;
+    align-items: center;
   }
 
   .filter-bar--seperator {
     padding: 0 10px;
   }
 
-  .filter-bar--clear {
+  .filter-bar--clear, .filter-bar--delete {
     cursor: pointer;
   }
 }

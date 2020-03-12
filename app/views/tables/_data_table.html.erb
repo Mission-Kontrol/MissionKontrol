@@ -1,3 +1,5 @@
+<%= render partial: "shared/table_filter_bar.html.erb", locals: { users: false } %>
+
 <div class="row">
   <div class="col-sm-12">
     <table id="target-table-<%= @table.downcase %>" class="data-table data-table-main table" data-table-name='<%= current_table %>' data-nested-table='<%= table_settings.nested_table %>' data-can-export="<%= current_admin_user.export_abilities? %>" data-nested-table-columns="<%= @nested_column_names %>">

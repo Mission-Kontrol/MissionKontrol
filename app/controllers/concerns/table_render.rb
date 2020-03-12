@@ -5,9 +5,10 @@ module TableRender
 
   private
 
+  # TODO: make the unshift only applicable if user has ability to delete from this table
   def render_show_html(table)
     sql_result = @target_db.all(table)
-    @headers = sql_result ? sql_result.columns : []
+    @headers = sql_result ? sql_result.columns.unshift("") : []
     render :show
   end
 

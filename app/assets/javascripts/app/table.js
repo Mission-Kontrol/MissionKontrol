@@ -1,5 +1,28 @@
 "use strict";
 
+function displayActionsBar (table) {
+  var filterBar = $(".table--filter-bar-container").html();
+  var tableInfo = $(".table--info");
+  let checkedCount = $('.data-table--select-input:checked').length
+  let selectedText = $(".filter-bar--selected .white").last()
+
+  if (tableInfo.find(".table--filter-bar").length === 0) {
+    tableInfo.append(filterBar);
+  } else if (checkedCount > 1) {
+    selectedText.text(checkedCount + " results selected");
+  } else if (checkedCount === 1) {
+    selectedText.text(checkedCount + " result selected");
+  } else if (checkedCount === 0) {
+    $(".table--filter-bar").last().remove();
+  }
+};
+
+function selectInput (table) {
+  $("body").on("change", ".data-table--select-input:checkbox", function () {
+    displayActionsBar(table);
+  });
+};
+
 function loadNestedDataTable(columns, data, nestedTable, recordId) {
   var nestedSearchableTable = $("#target-table-" + nestedTable + "-" + recordId).DataTable({
     colReorder: false,
@@ -71,6 +94,12 @@ function loadDataTable (columns) {
   if (nestedVisibleColumns.length > 0) {
     columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img class='nested-table rotate' src='/assets/images/icons/triangle.svg'></a>"});
   }
+  
+  columns.unshift({
+    data: "",
+    sortable: false,
+    defaultContent: "<input type='checkbox' class='data-table--select-input' id='"+ databaseId +"' name='"+ tableName +"' value='"+ tableName +"'></input>"
+  })
 
   var searchableTable = $(".data-table").DataTable({
     colReorder: true,
@@ -79,6 +108,7 @@ function loadDataTable (columns) {
     scrollX: true,
     serverSide: true,
     processing: false,
+    responsive: true,
     pagingType: "simple_numbers",
     language: {
       paginate: {
@@ -139,11 +169,15 @@ function loadDataTable (columns) {
     }
   });
 
+  // var deleteColumn = searchableTable.column(0).data();
+
+  // deleteColumn.unshift("<input type='checkbox' id='"+ databaseId +"' name='"+ tableName +"' value='"+ tableName +"'></input>")
+
   $("body").on("click", ".buttons-columnVisibility a", function () {
     searchableTable.state.save().ajax.reload();
   });
 
-  $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row > td:first-child", function () {
+  $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row > td > a.table--nested-table", function () {
     var tr = $(this).closest("tr");
     var row = searchableTable.row(tr);
     var nestedTable = tr.data("nested-table");
@@ -161,6 +195,8 @@ function loadDataTable (columns) {
       tr.addClass("shown");
     }
   });
+
+  selectInput(searchableTable);
 
   window["datatable"] = searchableTable;
 }
