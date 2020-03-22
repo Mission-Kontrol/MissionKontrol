@@ -25,10 +25,13 @@ function selectInput (table) {
 
 function deleteData (table) {
   $("body").on("click", ".filter-bar--delete", function () {
-    let checkbox = $(".data-table--select-input:checked").first();
-    let database_id = checkbox.data("id");
-    let record_id = checkbox.parent().parent().data("record-id");
-    let table = checkbox.val();
+    let recordsArray = new Array();
+    let checkboxes = $(".data-table--select-input:checked")
+    checkboxes.each(function () {
+      recordsArray.push($(this).parent().parent().data("record-id"));
+    })
+    let database_id = checkboxes.first().data("id");
+    let table = checkboxes.first().val();
 
     $.ajax({
       method: "POST",
@@ -37,7 +40,7 @@ function deleteData (table) {
       data: {
         database_id,
         table,
-        record_id
+        records_array: recordsArray
       },
       success(data) {
         toastr.success('Record(s) successfully deleted.')

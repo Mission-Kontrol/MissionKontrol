@@ -100,14 +100,25 @@ module Kuwinda
       end
 
       describe '#delete_record' do
-        let(:record_id) { 78 }
+        let(:records_array) { [78] }
         let(:table) { 'users' }
 
         it 'deletes the given record' do
           expect(target_db.conn).to receive(:exec_query).with(
-            "DELETE FROM #{table} WHERE id = #{record_id};"
+            "DELETE FROM #{table} WHERE id IN (78);"
           )
-          target_db.delete_record(table, record_id)
+          target_db.delete_record(table, records_array)
+        end
+
+        context 'given multiple records' do
+          let(:records_array) { [78, 115] }
+
+          it 'deletes both the given records' do
+            expect(target_db.conn).to receive(:exec_query).with(
+              "DELETE FROM #{table} WHERE id IN (78, 115);"
+            )
+            target_db.delete_record(table, records_array)
+          end
         end
       end
     end

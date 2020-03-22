@@ -110,7 +110,7 @@ class TablesController < ApplicationController
   end
 
   def delete_record
-    @result = @target_db.delete_record(delete_params[:table], delete_params[:record_id])
+    @result = @target_db.delete_record(delete_params[:table], delete_params[:records_array])
   end
 
   private
@@ -155,7 +155,7 @@ class TablesController < ApplicationController
   end
 
   def delete_params
-    params.permit(:database_id, :record_id, :table)
+    params.permit(:database_id, :table, records_array: [])
   end
 
   def table_has_layout?(table)
