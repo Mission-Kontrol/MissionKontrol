@@ -23,9 +23,30 @@ function selectInput (table) {
   });
 };
 
-// TODO: add ajax call here
 function deleteData (table) {
   $("body").on("click", ".filter-bar--delete", function () {
-    alert("ARE YOU SURE")
+    let checkbox = $(".data-table--select-input:checked").first();
+    let database_id = checkbox.data("id");
+    let record_id = checkbox.parent().parent().data("record-id");
+    let table = checkbox.val();
+
+    $.ajax({
+      method: "POST",
+      url: "/table/delete_record",
+      dataType: "script",
+      data: {
+        database_id,
+        table,
+        record_id
+      },
+      success(data) {
+        toastr.success('Record(s) successfully deleted.')
+        $(".table--filter-bar").last().remove();
+        $(".data-table").DataTable().ajax.reload();
+      },
+      error() {
+        toastr.error('Unable to delete the record(s).')
+      }
+    })
   })
 };

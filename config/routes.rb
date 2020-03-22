@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post 'table/update_settings', to: 'tables#update_settings'
   get 'table/add_record', to: 'tables#add_record'
   post 'table/create_record', to: 'tables#create_record'
+  post 'table/delete_record', to: 'tables#delete_record'
 
   patch 'table_field', to: 'tables#update_table_field', as: 'update_table_field'
   patch 'related_table_field', to: 'tables#update_related_table_field', as: 'update_related_table_field'

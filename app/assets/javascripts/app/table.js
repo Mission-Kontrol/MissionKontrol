@@ -75,7 +75,7 @@ function loadDataTable (columns) {
   columns.unshift({
     data: "",
     sortable: false,
-    defaultContent: "<input type='checkbox' class='data-table--select-input' id='"+ databaseId +"' name='"+ tableName +"' value='"+ tableName +"'></input>"
+    defaultContent: "<input type='checkbox' class='data-table--select-input' data-id='"+ databaseId +"' name='"+ tableName +"' value='"+ tableName +"'></input>"
   })
 
   var searchableTable = $(".data-table").DataTable({
@@ -115,6 +115,7 @@ function loadDataTable (columns) {
       $(row).addClass("table--nested-row");
       $(row).attr("data-href",  previewUrl);
       $(row).attr("data-nested-table", nestedTable);
+      $(row).attr("data-record-id", id);
     },
     buttons: [
       {

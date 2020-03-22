@@ -13,7 +13,7 @@ class TablesController < ApplicationController
 
   before_action :target_db, except: :index
   before_action :set_main_table, only: :show
-  before_action :set_nested_table, except: %i[add_record create_record index]
+  before_action :set_nested_table, except: %i[add_record create_record index delete_record]
   before_action :check_user_permissions, only: %i[show]
 
   def index
@@ -109,6 +109,10 @@ class TablesController < ApplicationController
     @error = :Unknown
   end
 
+  def delete_record
+    @result = @target_db.delete_record(delete_params[:table], delete_params[:record_id])
+  end
+
   private
 
   def check_user_permissions
@@ -148,6 +152,10 @@ class TablesController < ApplicationController
                                                 :field,
                                                 :table,
                                                 :value)
+  end
+
+  def delete_params
+    params.permit(:database_id, :record_id, :table)
   end
 
   def table_has_layout?(table)

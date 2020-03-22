@@ -95,4 +95,35 @@ describe TablesController, :type => :controller do
       end
     end
   end
+
+  describe 'POST delete_record' do
+    subject { post :delete_record, xhr: true, format: :js, params: params }
+
+    let(:params) { { database_id: @database.id, table: table, record_id: record_id } }
+    let(:table) { 'events' }
+    let(:record_id) { 5 }
+
+    before do
+      allow_any_instance_of(Kuwinda::Repository::TargetDB).to receive(:delete_record).and_return(true)
+      sign_in @user
+      subject
+    end
+
+    context 'when user has permission to delete from specified table' do
+      context 'and record exists' do
+        it 'deletes the record' do
+          # expect(response).to render_template(:delete_record)
+          expect(JSON.parse(response.body)).to include 'Record(s) successfully deleted.'
+        end
+
+        it 'returns a success message' do
+        end
+      end
+    end
+
+    context 'when user does not have permission to delete from specified table' do
+      it 'returns an error message' do
+      end
+    end
+  end
 end

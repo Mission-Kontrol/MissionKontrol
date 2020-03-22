@@ -98,6 +98,18 @@ module Kuwinda
           target_db.update_related_record(table, field, value, foreign_key_title, foreign_key_value)
         end
       end
+
+      describe '#delete_record' do
+        let(:record_id) { 78 }
+        let(:table) { 'users' }
+
+        it 'deletes the given record' do
+          expect(target_db.conn).to receive(:exec_query).with(
+            "DELETE FROM #{table} WHERE id = #{record_id};"
+          )
+          target_db.delete_record(table, record_id)
+        end
+      end
     end
   end
 end
