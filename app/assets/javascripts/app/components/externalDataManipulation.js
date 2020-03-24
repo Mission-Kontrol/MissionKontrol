@@ -48,7 +48,7 @@ function deleteData (table) {
         $(".data-table").DataTable().ajax.reload();
       },
       error() {
-        toastr.error('Unable to delete the record(s).')
+        toastr.error('Unable to delete the record(s). Please check you have adequate permission to do this action or speak to an Administrator.')
       }
     })
   })

@@ -4,7 +4,7 @@
 feature 'Setting permissions', js: true do
   background do
     sign_in_as_admin_with_license
-    setup_tables_and_roles
+    setup_tables_and_roles('events')
     create(:target_table_setting, name: @table, database_id: @database.id)
     visit permissions_path
   end
@@ -39,7 +39,7 @@ end
 feature 'Setting granular permissions', js: true do
   background do
     sign_in_as_admin_with_license
-    setup_tables_and_roles
+    setup_tables_and_roles('events')
     create(:target_table_setting, name: @table, database_id: @database.id)
     visit permissions_path
   end
@@ -82,7 +82,7 @@ end
 feature 'Granular permissions with multi databases', js: true do
   background do
     sign_in_as_admin_with_license
-    setup_tables_and_roles
+    setup_tables_and_roles('events')
     create_second_database
     create(:target_table_setting, name: @table, database_id: @database.id)
     create(:target_table_setting, name: @second_table, database_id: @second_database.id)
@@ -158,40 +158,4 @@ feature 'Permissions', js: true do
   end
 end
 
-def give_sales_role_permissions_to_view_events_table
-  view_permission = create(:permission, subject_id: @database.id)
-  @role.permissions << view_permission
-end
 
-def create_action_permissions(table)
-  %w[view create edit delete].each do |action|
-    next if Permission.find_by(subject_id: @database.id, subject_class: table, action: action)
-
-    Permission.create!(subject_id: @database.id, subject_class: table, action: action)
-  end
-end
-
-def give_role_all_permissions(role, table)
-  permissions = Permission.where(subject_id: @database.id, subject_class: table)
-  role.permissions << permissions
-end
-
-def give_role_single_permission(role, table, action)
-  permission = Permission.find_by(subject_id: @database.id, subject_class: table, action: action)
-
-  role.permissions << permission
-end
-
-def setup_tables_and_roles
-  @database = create(:database)
-  @table = 'events'
-  @sales = create(:role, name: 'Sales')
-  @team_lead = create(:role, name: 'Team Lead')
-  create_action_permissions(@table)
-end
-
-def create_second_database
-  @second_database = create(:database)
-  @second_table = 'users'
-  create_action_permissions(@second_table)
-end

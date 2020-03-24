@@ -110,6 +110,9 @@ class TablesController < ApplicationController
   end
 
   def delete_record
+    not_authorized = !current_admin_user.permission?(:delete, @current_table, @database.id)
+    raise ApplicationController::NotAuthorized if not_authorized
+
     @result = @target_db.delete_record(delete_params[:table], delete_params[:records_array])
   end
 

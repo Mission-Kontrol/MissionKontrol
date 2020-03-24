@@ -14,7 +14,7 @@
           <%= users ? "Clear filters" : "Clear selection" %>
         </h5>
       </div>
-      <% unless users %>
+      <% if !users && current_admin_user.permission?(:delete, @current_table, @database.id) %>
         <div class="filter-bar--seperator">
           <h5 class="white">|</h5>
         </div>

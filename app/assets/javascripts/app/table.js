@@ -26,7 +26,7 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
 }
 
 function fetchDataForNestedTable(recordId, nestedTable, tableName) {
-  var databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
+  var databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
   var url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable + "&database_id=" + databaseId + "&table_name=" + tableName;
 
   $.ajax({
@@ -67,7 +67,7 @@ function loadDataTable (columns) {
   let canExport = $(".data-table").data("can-export");
   let tableName = $(".data-table").data("table-name");
   let nestedVisibleColumns = $(".data-table").data("nested-table-columns");
-  let databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
+  let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
   if (nestedVisibleColumns.length > 0) {
     columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img class='nested-table rotate' src='/assets/images/icons/triangle.svg'></a>"});
   }
