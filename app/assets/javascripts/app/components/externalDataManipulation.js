@@ -23,7 +23,7 @@ function selectInput (table) {
   });
 };
 
-function deleteData (table) {
+function deleteData () {
   $("body").on("click", ".filter-bar--delete", function () {
     let recordsArray = new Array();
     let checkboxes = $(".data-table--select-input:checked")
@@ -43,9 +43,9 @@ function deleteData (table) {
         records_array: recordsArray
       },
       success(data) {
-        toastr.success('Record(s) successfully deleted.')
         $(".table--filter-bar").last().remove();
         $(".data-table").DataTable().ajax.reload();
+        toastr.success('Record(s) successfully deleted.')
       },
       error() {
         toastr.error('Unable to delete the record(s). Please check you have adequate permission to do this action or speak to an Administrator.')
@@ -53,3 +53,39 @@ function deleteData (table) {
     })
   })
 };
+
+function editData () {
+  $("body").on("click", ".filter-bar--edit", function () {
+    let recordsArray = new Array();
+    let checkboxes = $(".data-table--select-input:checked")
+    checkboxes.each(function () {
+      recordsArray.push($(this).parent().parent().data("record-id"));
+    })
+    let database_id = checkboxes.first().data("id");
+    let table = checkboxes.first().val();
+
+    $.ajax({
+      method: "GET",
+      url: "/table/edit_record",
+      dataType: "script",
+      data: {
+        database_id,
+        table,
+        records_array: recordsArray
+      },
+      success(data) {
+        // $(".table--filter-bar").last().remove();
+        // $(".data-table").DataTable().ajax.reload();
+        // toastr.success('Record(s) successfully updated.')
+      },
+      error() {
+        // toastr.error('Unable to update the record(s). Please check you have adequate permission to do this action or speak to an Administrator.')
+      }
+    });
+  });
+};
+
+function manipulateData (table) {
+  deleteData();
+  editData();
+}

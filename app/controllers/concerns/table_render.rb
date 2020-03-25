@@ -31,7 +31,7 @@ module TableRender
       columns << { data: c }
     end
 
-    data = sql_result.nil? ? {} : sql_result.to_hash
+    data = sql_result.nil? ? {} : sql_result.to_hash.sort_by { |k| k["id"] }
 
     render json: {
       data: data,

@@ -172,7 +172,7 @@ function loadDataTable (columns) {
 
   selectInput(searchableTable);
 
-  deleteData(searchableTable);
+  manipulateData(searchableTable);
 
   window["datatable"] = searchableTable;
 }

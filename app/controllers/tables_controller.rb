@@ -95,8 +95,41 @@ class TablesController < ApplicationController
     set_columns_for_form
   end
 
+  def edit_record
+    set_main_table
+    @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
+    set_columns_for_form
+    @records = []
+    params[:records_array].each do |record_id|
+      record = @target_db.find(@table, record_id)
+      @records << record if record
+    end
+  end
+
   def create_record
     @target_db.create_record(params[:table], record_params)
+  rescue ActiveRecord::NotNullViolation => e
+    @error = :NullViolation
+    field = e.to_s.split('value in column ').last.split(' violates').first.split('\"').last
+    @error_message = "Unable to save record if #{field} is blank. Please fill in this field and try again."
+  rescue ActiveRecord::RecordNotUnique => e
+    @error = :NotUnique
+    field = e.to_s.split('Key (').last.split(')=').first
+    @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
+  rescue ActiveRecord::ActiveRecordError
+    @error = :Unknown
+  end
+
+  def update_record
+    not_authorized = !current_admin_user.permission?(:edit, @current_table, @database.id)
+    raise ApplicationController::NotAuthorized if not_authorized
+
+    record_params.each do |record_id, values|
+      values.each do |field, value|
+        @target_db.update_record(params[:table], field, value, record_id)
+      end
+    end
+
   rescue ActiveRecord::NotNullViolation => e
     @error = :NullViolation
     field = e.to_s.split('value in column ').last.split(' violates').first.split('\"').last

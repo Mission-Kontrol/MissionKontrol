@@ -14,6 +14,16 @@
           <%= users ? "Clear filters" : "Clear selection" %>
         </h5>
       </div>
+      <% if !users && current_admin_user.permission?(:edit, @current_table, @database.id) %>
+        <div class="filter-bar--seperator">
+          <h5 class="white">|</h5>
+        </div>
+        <div class="filter-bar--edit">
+          <h5 class="white">
+            Edit selection
+          </h5>
+        </div>
+      <% end %>
       <% if !users && current_admin_user.permission?(:delete, @current_table, @database.id) %>
         <div class="filter-bar--seperator">
           <h5 class="white">|</h5>

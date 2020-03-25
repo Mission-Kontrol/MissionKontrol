@@ -31,7 +31,7 @@ module Kuwinda
       end
 
       def update_record(table, field, value, id)
-        sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
+        sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc}' WHERE id=#{id};"
         conn.exec_query(sql)
       end
 
