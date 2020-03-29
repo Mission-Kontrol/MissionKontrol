@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 describe TablesController, :type => :controller do
+  let(:mock_target_db) { double("TargetDbDouble") }
+  let(:mock_presenter) { double("PresenterDouble") }
+
   before do
     @database = create(:database)
     create_user_with_permissions('Sales', :view, 'users', @database.id)
@@ -13,7 +16,8 @@ describe TablesController, :type => :controller do
     subject { get :index, xhr: true, format: :js, params: { id: @database.id } }
 
     before do
-      allow_any_instance_of(Kuwinda::Presenter::ListAvailableTables).to receive(:call).and_return(['users', 'events', 'attending_events'])
+      allow(mock_presenter).to receive(:call).and_return(['users', 'events', 'attending_events'])
+      allow(Kuwinda::Presenter::ListAvailableTables).to receive(:new).and_return(mock_presenter)
       sign_in @user
 
       subject
@@ -99,30 +103,55 @@ describe TablesController, :type => :controller do
   describe 'POST delete_record' do
     subject { post :delete_record, xhr: true, format: :js, params: params }
 
-    let(:params) { { database_id: @database.id, table: table, record_id: record_id } }
+    let(:params) { { database_id: @database.id, table: table, records_array: [record_id.to_i] } }
     let(:table) { 'events' }
     let(:record_id) { 5 }
-
-    before do
-      allow_any_instance_of(Kuwinda::Repository::TargetDB).to receive(:delete_record).and_return(true)
-      sign_in @user
-      subject
-    end
+    let(:role) { 'Sales' }
 
     context 'when user has permission to delete from specified table' do
+      before do
+        create_user_with_permissions(role, :delete, table, @database.id)
+        sign_in @user
+      end
+
       context 'and record exists' do
+        before do
+          allow(mock_target_db).to receive(:delete_record).and_return(1)
+          allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
+          subject
+        end
+  
         it 'deletes the record' do
-          # expect(response).to render_template(:delete_record)
-          expect(JSON.parse(response.body)).to include 'Record(s) successfully deleted.'
+          expect(assigns(:result)).to eq true
         end
 
-        it 'returns a success message' do
+        it 'renders the delete template' do
+          expect(response).to render_template('delete_record')
+        end
+      end
+
+      context 'when record fails to delete' do
+        let(:record_id) { 1111115 }
+
+        before do
+          allow(mock_target_db).to receive(:delete_record).and_return(0)
+          allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
+          subject
+        end
+
+        it 'does not delete the record' do
+          expect(assigns(:result)).to eq false
         end
       end
     end
 
     context 'when user does not have permission to delete from specified table' do
+      before do
+        sign_in @user
+      end
+
       it 'returns an error message' do
+        expect { subject }.to raise_error(NotAuthorizedError, "Not authorized to perform this action")
       end
     end
   end

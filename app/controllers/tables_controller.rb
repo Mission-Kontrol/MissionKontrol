@@ -122,7 +122,7 @@ class TablesController < ApplicationController
 
   def update_record
     not_authorized = !current_admin_user.permission?(:edit, @current_table, @database.id)
-    raise ApplicationController::NotAuthorized if not_authorized
+    raise NotAuthorizedError.new if not_authorized
 
     record_params.each do |record_id, values|
       values.each do |field, value|
@@ -144,9 +144,10 @@ class TablesController < ApplicationController
 
   def delete_record
     not_authorized = !current_admin_user.permission?(:delete, @current_table, @database.id)
-    raise ApplicationController::NotAuthorized if not_authorized
+    raise NotAuthorizedError.new if not_authorized
 
-    @result = @target_db.delete_record(delete_params[:table], delete_params[:records_array])
+    sql_result = @target_db.delete_record(delete_params[:table], delete_params[:records_array])
+    @result = sql_result == 0 ? false : true
   end
 
   private
