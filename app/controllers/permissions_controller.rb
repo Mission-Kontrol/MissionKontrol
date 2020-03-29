@@ -5,7 +5,7 @@ class PermissionsController < ApplicationController
 
   layout 'standard'
 
-  before_action :check_user_admin_abilities
+  before_action :check_user_admin_abilities, except: :index
 
   def index
     @databases = Database.all
