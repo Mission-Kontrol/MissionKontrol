@@ -8,7 +8,7 @@ describe TablesController, :type => :controller do
 
   before do
     @database = create(:database)
-    create_user_with_permissions('Sales', :view, 'users', @database.id)
+    create_user_with_permissions('Editor', :view, 'users', @database.id)
     create(:target_table_setting, database_id: @database.id)
   end
 
@@ -106,7 +106,7 @@ describe TablesController, :type => :controller do
     let(:params) { { database_id: @database.id, table: table, records_array: [record_id.to_i] } }
     let(:table) { 'events' }
     let(:record_id) { 5 }
-    let(:role) { 'Sales' }
+    let(:role) { 'Editor' }
 
     context 'when user has permission to delete from specified table' do
       before do

@@ -10,7 +10,7 @@ describe PermissionsController, type: :controller, js: true do
     sign_in @user
   end
 
-  let(:role) { 'Sales' }
+  let(:role) { 'Editor' }
   let(:table) { 'users' }
   let(:database) { create(:database) }
 

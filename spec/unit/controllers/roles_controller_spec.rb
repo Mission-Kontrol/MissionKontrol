@@ -9,8 +9,8 @@ describe RolesController, type: :controller, js: true do
   end
 
   let!(:admin_role) { create(:role, :admin) }
-  let!(:sales_role) { create(:role, :Sales) }
-  let!(:team_lead_role) { create(:role, :team_lead) }
+  let!(:editor_role) { create(:role, :Editor) }
+  let!(:user_role) { create(:role, :user) }
   let(:table) { 'users' }
 
   describe '#update' do
@@ -24,7 +24,7 @@ describe RolesController, type: :controller, js: true do
       end
 
       context 'when other role has administrator ability' do
-        let!(:team_lead_role) { create(:role, :team_lead, administrator: true) }
+        let!(:user_role) { create(:role, :user, administrator: true) }
 
         it 'updates the role' do
           put :update, params: { id: admin_role.id, setting: 'administrator' }, format: :js
