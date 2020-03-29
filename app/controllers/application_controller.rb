@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-class InvalidClientDatabaseError < StandardError; end
-
 class ApplicationController < ActionController::Base
   include License
   # Prevent CSRF attacks by raising an exception.

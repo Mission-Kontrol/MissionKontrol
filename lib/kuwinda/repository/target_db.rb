@@ -133,13 +133,12 @@ module Kuwinda
       # rubocop:disable Metrics/ParameterLists
       def search_columns(table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
         result = nil
-        current_organisation = OrganisationSetting.last
 
         columns.each do |_key, value|
           next unless value['searchable']
           next if value['data'].empty?
 
-          if current_organisation.target_database_type == 'postgresql'
+          if @current_organisation.target_database_type == 'postgresql'
             filter = postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
           else
             filter = non_postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
@@ -155,13 +154,12 @@ module Kuwinda
       # rubocop:disable Metrics/ParameterLists
       def search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
         result = nil
-        current_organisation = OrganisationSetting.last
 
         columns.each do |_key, value|
           next unless value['searchable']
           next if value['data'].empty?
 
-          if current_organisation.target_database_type == 'postgresql'
+          if @current_organisation.target_database_type == 'postgresql'
             filter = postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
           else
             filter = non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)

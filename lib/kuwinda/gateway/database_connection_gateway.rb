@@ -9,7 +9,7 @@ module Kuwinda
 
       def connect
         if db_invalid?
-          raise InvalidClientDatabaseError("Client database is invalid")
+          raise InvalidClientDatabaseError.new("Client database is invalid")
         end
 
         credentials = database_credentials(database)
@@ -27,7 +27,7 @@ module Kuwinda
         when 'mysql', 'mysql2'
           return 'mysql2'
         else
-          raise "do not know how to make adpater for #{scheme}"
+          raise InvalidClientDatabaseError.new("Do not know how to make adpater for #{scheme}")
         end
       end
 

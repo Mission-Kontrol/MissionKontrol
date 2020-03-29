@@ -20,7 +20,7 @@ describe Kuwinda::Gateway::DatabaseConnectionGateway do
       let(:database) { nil }
 
       it 'raises an InvalidClientDatabaseError' do
-        expect { subject }.to raise_error
+        expect { subject }.to raise_error(InvalidClientDatabaseError, "Client database is invalid")
       end
     end
 
@@ -28,7 +28,7 @@ describe Kuwinda::Gateway::DatabaseConnectionGateway do
       let(:database) { create(:database, adapter: 'mongo') }
 
       it 'raises an error' do
-        expect { subject }.to raise_error
+        expect { subject }.to raise_error(InvalidClientDatabaseError, "Do not know how to make adpater for mongo")
       end
     end
   end
