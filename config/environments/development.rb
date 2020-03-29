@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
+  # config.middleware.use CatchErrorFromRack
+  config.middleware.insert_before 0, CatchErrorFromRack
   # Settings specified here will take precedence over config/application.rb
 
   # In the development environment your application's code is reloaded on
