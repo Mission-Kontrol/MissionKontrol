@@ -155,4 +155,57 @@ describe TablesController, :type => :controller do
       end
     end
   end
+
+  describe 'POST update_settings' do
+    subject { post :update_settings, xhr: true, format: :js, params: params }
+
+    let(:params) do
+      {
+        editable_fields: {
+          id: { editable: false, reference: "" },
+          user_id: { editable: true, reference: "", mandatory: true },
+          event_id: { editable: true, reference: "", mandatory: false },
+          created_at: { editable: false, reference: "" },
+          updated_at: { editable: false, reference: "" }
+        },
+        table: table,
+        database_id: @database.id,
+        commit: "Save"
+      }
+    end
+    let(:editable_fields) do
+      {
+        id: false,
+        user_id: false,
+        event_id: false,
+        created_at: false,
+        updated_at: false
+      }
+    end
+    let(:table) { 'attending_events' }
+    let(:role) { 'Editor' }
+
+    before do
+      @target_table_setting = create(:target_table_setting, name: table, database_id: @database.id, nested_table: nil, editable_fields: editable_fields)
+      sign_in @user
+    end
+
+    context 'when fields are being set to editable' do
+      let(:expected_result) do
+        {
+          id: { editable: false, mandatory: nil },
+          user_id: { editable: true, mandatory: true },
+          event_id: { editable: true, mandatory: false },
+          created_at: { editable: false, mandatory: nil },
+          updated_at: { editable: false, mandatory: nil }
+      }.with_indifferent_access
+      end
+
+      it 'sets the fields as editable on the target_table_settings' do
+        subject
+        @target_table_setting.reload
+        expect(@target_table_setting.editable_fields).to eq expected_result
+      end
+    end
+  end
 end

@@ -291,7 +291,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
       background-position: 135px 8px;
     }
 
-    #dropdown, #team {
+    #dropdown, #team, .table--settings-nested-select {
       -webkit-appearance: none;
       /* for webkit browsers */
       -moz-appearance: none;
@@ -300,15 +300,15 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
       /* for modern browsers */
     }
 
-    #dropdown::-ms-expand, #team::-ms-expand {
+    #dropdown::-ms-expand, #team::-ms-expand, .table--settings-nested-select::-ms-expand {
       display: none;
     }
 
-    #dropdown:focus:invalid, #team:focus:invalid {
+    #dropdown:focus:invalid, #team:focus:invalid, .table--settings-nested-select:focus:invalid {
       border-color: #FD6347;
     }
 
-    #dropdown:required:valid, #team:required:valid {
+    #dropdown:required:valid, #team:required:valid, .table--settings-nested-select:required:valid {
       border-color: #006400;
     }
   }

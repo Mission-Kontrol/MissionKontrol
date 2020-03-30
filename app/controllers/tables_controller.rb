@@ -81,7 +81,9 @@ class TablesController < ApplicationController
   def update_settings
     @table_settings = TargetTableSetting.find_by(name: params[:table], database_id: @database.id)
 
-    if (params[:value] == 'N/A' || params[:value] == 'Disable') && params[:setting] == 'nested_table'
+    if params[:commit]
+      update_editable_fields(@table_settings, editable_field_params)
+    elsif (params[:value] == 'N/A' || params[:value] == 'Disable') && params[:setting] == 'nested_table'
       @table_settings.update_attribute(:nested_table, nil)
     else
       @table_settings.update_attribute(params[:setting], params[:value])
@@ -249,6 +251,19 @@ class TablesController < ApplicationController
   end
 
   def database_params
-    params[:id] || params[:database_id]
+    params[:database_id] || params[:id]
+  end
+
+  def editable_field_params
+    params.require(:editable_fields).permit!
+  end
+
+  def update_editable_fields(settings, params)
+    params.each do |field|
+      settings.editable_fields[field] = {
+        editable: ActiveModel::Type::Boolean.new.cast(params[field]["editable"]),
+        mandatory: ActiveModel::Type::Boolean.new.cast(params[field]["mandatory"])
+      }
+    end
   end
 end
