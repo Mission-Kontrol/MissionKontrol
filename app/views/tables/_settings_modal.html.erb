@@ -99,7 +99,7 @@
                     <td>
                       <div class="table--settings-dropdown">
                         <div class="form-control dropdown">
-                          <%= select_tag "[editable_fields][#{field}][editable]", options_for_select([ ["Yes", true], ["No", false] ], "No"), { class: "table--settings-nested-select" } %>
+                          <%= select_tag "[editable_fields][#{field}][editable]", options_for_select([ ["Yes", true], ["No", false] ], @table_settings.editable_fields[field]["editable"]), { class: "table--settings-nested-select" } %>
                         </div>
                       </div>
                     </td>
@@ -110,7 +110,8 @@
                       <div class="settings--mandatory-toggle">
                         <label class="switch">
                           <div class='toggle'>
-                            <%= check_box_tag "[editable_fields][#{field}][mandatory]", value, class: 'form-control toggle-state' %>
+                            <% checked_value = @table_settings.editable_fields[field]["mandatory"] %>
+                            <%= check_box_tag "[editable_fields][#{field}][mandatory]", checked_value, checked_value, class: 'form-control toggle-state' %>
                             <div class='toggle-inner'>
                               <div class='indicator'></div>
                             </div>

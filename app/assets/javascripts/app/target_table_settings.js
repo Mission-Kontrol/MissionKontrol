@@ -14,6 +14,18 @@ function submitSettings () {
   });
 }
 
+function toggleCheckbox () {
+  $("body").on("change", ".toggle-state:checkbox", function (e) {
+    value = $(this).val()
+    if (value === "false") {
+      $(this).val("true")
+    } else if (value === "true") {
+      $(this).val("false")
+    }
+  });
+}
+
 $(document).ready(function() {
   submitSettings();
+  toggleCheckbox();
 });
