@@ -45,7 +45,7 @@ class DatabasesController < ApplicationController
       render :test_connection and return
     else
       @database = Database.find(params[:id])
-      @database.update_attributes(database_params_update)
+      @database.update_attributes(database_params_update) if params[:database]
       update_available_permissions
       update_target_table_settings
       @result = @database.save!
@@ -133,14 +133,20 @@ class DatabasesController < ApplicationController
   end
 
   def update_target_table_settings
-    target_table_settings = TargetTableSetting.where(database_id: @database.id).map(&:name)
+    target_table_settings = TargetTableSetting.where(database_id: @database.id)
+    target_table_settings_names = target_table_settings.map(&:name)
+
     @available_tables.each do |table|
-      if target_table_settings.include? table
-        # update_editable_fields(table)
+      columns = target_db.table_columns(table)
+
+      if target_table_settings_names.include? table
+        target_table_settings.find_by(name: table).update_editable_fields(columns)
         next
       end
 
-      TargetTableSetting.create!(name: table, database_id: @database.id, editable_fields: editable_fields(table))
+      new_target_table_setting = TargetTableSetting.create!(name: table, database_id: @database.id)
+      new_target_table_setting.create_editable_fields(columns)
+      new_target_table_setting.save!
     end
   end
 
@@ -154,18 +160,5 @@ class DatabasesController < ApplicationController
 
   def target_db
     @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
-  end
-
-  def editable_fields(table)
-    columns = target_db.table_columns(table)
-
-    editable_fields = {}
-
-    columns.map do |column|
-      mandatory = IGNORED_COLUMNS.include? column.name ? false : !column.null
-      editable_fields.merge!(column.name.to_s => { 'editable' => false, 'mandatory' => mandatory })
-    end
-
-    editable_fields
   end
 end

@@ -63,37 +63,67 @@ describe DatabasesController, type: :controller, js: true do
     let(:editable_fields) do
       {
         id: { editable: false, mandatory: false },
-        user_id: { editable: false, mandatory: false },
-        event_id: { editable: false, mandatory: false },
+        user_id: { editable: true, mandatory: false },
+        event_id: { editable: true, mandatory: true },
         created_at: { editable: false, mandatory: false },
         updated_at: { editable: false, mandatory: false }
       }.with_indifferent_access
     end
-    let(:target_table_setting) { create(:target_table_setting, name: 'attending_events', database_id: database.id, editable_fields: editable_fields) }
-    # @target_table_setting = create(:target_table_setting, name: table, database_id: @database.id, nested_table: nil, editable_fields: editable_fields)
+    let!(:target_table_setting) { create(:target_table_setting, name: 'attending_events', database_id: database.id, editable_fields: editable_fields) }
 
     context 'when target table settings already exist' do
+      it 'does not update the field settings' do
+        subject
+
+        target_table_setting.reload
+        expect(target_table_setting.editable_fields).to eq editable_fields
+      end
+    end
+
+    context 'when target table settings do not include all fields' do
+      let(:editable_fields) do
+        {
+          id: { editable: false, mandatory: false },
+          user_id: { editable: true, mandatory: false },
+          event_id: { editable: true, mandatory: true }
+        }.with_indifferent_access
+      end
+
       let(:expected_editable_fields) do
         {
           id: { editable: false, mandatory: false },
-          user_id: { editable: false, mandatory: false },
-          event_id: { editable: false, mandatory: false },
+          user_id: { editable: true, mandatory: false },
+          event_id: { editable: true, mandatory: true },
           created_at: { editable: false, mandatory: false },
           updated_at: { editable: false, mandatory: false }
         }.with_indifferent_access
       end
 
-      it 'does not update the field settings' do
-      end
-    end
-
-    context 'when target table settings do not include all fields' do
       it 'adds the new fields to the editable_fields column' do
+        subject
+
+        target_table_setting.reload
+        expect(target_table_setting.editable_fields).to eq expected_editable_fields
       end
     end
 
-    context 'when a column has been updated to be mandatory on external database but is not mandatory on editable fields' do
-      it 'updates the mandatory setting for that field' do
+    context 'when a column has been removed on the external database' do
+      let(:editable_fields) do
+        {
+          id: { editable: false, mandatory: false },
+          user_id: { editable: true, mandatory: false },
+          event_id: { editable: true, mandatory: true },
+          created_at: { editable: false, mandatory: false },
+          updated_at: { editable: false, mandatory: false },
+          name: { editable: false, mandatory: false }
+        }.with_indifferent_access
+      end
+
+      it 'removes the setting for that field' do
+        subject
+
+        target_table_setting.reload
+        expect(target_table_setting.editable_fields['name']).to eq nil
       end
     end
   end
