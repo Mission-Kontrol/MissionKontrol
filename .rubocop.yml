@@ -14,4 +14,8 @@ Documentation:
   Enabled: false
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context']
+  ExcludedMethods: ['describe', 'context', 'feature']
+
+Layout/IndentFirstArrayElement:
+  Exclude:
+    - 'db/seeds.rb'

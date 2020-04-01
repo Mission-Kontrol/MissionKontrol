@@ -64,7 +64,7 @@ module Kuwinda
       end
 
       def delete_record(table, records_array)
-        records = records_array.join(", ")
+        records = records_array.join(', ')
 
         sql = "DELETE FROM #{table} WHERE id IN (#{records});"
         conn.exec_delete(sql)

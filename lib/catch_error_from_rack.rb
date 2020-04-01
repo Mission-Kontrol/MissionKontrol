@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rack'
 
 class CatchErrorFromRack
@@ -9,14 +10,12 @@ class CatchErrorFromRack
   def call(env)
     status, headers, body = @app.call(env)
     [status, headers, body]
-
   rescue ActiveRecord::ConnectionNotEstablished
     ActiveRecord::Base.establish_connection
     status, headers, body = @app.call(env)
     [status, headers, body]
-
   rescue ActionController::BadRequest
-    return [301, { 'Location' => get_hostname(env) }, []]
+    [301, { 'Location' => get_hostname(env) }, []]
   end
 
   def get_hostname(env)

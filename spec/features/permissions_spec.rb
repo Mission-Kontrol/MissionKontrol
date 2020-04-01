@@ -38,7 +38,6 @@ feature 'Setting permissions', js: true do
   end
 end
 
-# rubocop:disable Metrics/BlockLength
 feature 'Setting granular permissions', js: true do
   background do
     sign_in_as_admin_with_license
@@ -81,9 +80,7 @@ feature 'Setting granular permissions', js: true do
     expect(page.first('.permissions--nested-table-data > img[data-role="Editor"][data-action="delete"]')['src']).to have_content '/assets/images/icons/black-checkbox-empty.svg'
   end
 end
-# rubocop:enable Metrics/BlockLength
 
-# rubocop:disable Metrics/BlockLength
 feature 'Granular permissions with multi databases', js: true do
   background do
     sign_in_as_admin_with_license
@@ -142,7 +139,6 @@ feature 'Granular permissions with multi databases', js: true do
     expect(page.first('.tooltipster-tooltip[data-role="Editor"]')['src']).to have_content '/assets/images/icons/circle-with-cross.png'
   end
 end
-# rubocop:enable Metrics/BlockLength
 
 feature 'Permissions', js: true do
   background do
@@ -164,5 +160,3 @@ feature 'Permissions', js: true do
     expect(page).to have_current_path(dashboard_path)
   end
 end
-
-

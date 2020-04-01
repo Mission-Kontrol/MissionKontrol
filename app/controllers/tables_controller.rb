@@ -100,7 +100,7 @@ class TablesController < ApplicationController
   def edit_record
     set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
-    set_columns_for_form
+    editable_columns_for_form(@table_settings.editable_fields)
     @records = []
     params[:records_array].each do |record_id|
       record = @target_db.find(@table, record_id)
@@ -149,7 +149,7 @@ class TablesController < ApplicationController
     raise NotAuthorizedError.new if not_authorized
 
     sql_result = @target_db.delete_record(delete_params[:table], delete_params[:records_array])
-    @result = sql_result == 0 ? false : true
+    @result = (sql_result != 0)
   end
 
   private
@@ -246,6 +246,23 @@ class TablesController < ApplicationController
     end
   end
 
+  def editable_columns_for_form(editable_fields)
+    columns = @target_db.table_columns(@table)
+    @inputs = []
+
+    columns.map do |column|
+      next if column.name == 'id'
+
+      next unless editable_fields[column.name]['editable']
+
+      @inputs << {
+        name: column.name,
+        type: column.type,
+        required: !column.null || editable_fields[column.name]['mandatory']
+      }
+    end
+  end
+
   def record_params
     params.require(:record).permit!
   end
@@ -261,8 +278,8 @@ class TablesController < ApplicationController
   def update_editable_fields(settings, params)
     params.each do |field|
       settings.editable_fields[field] = {
-        editable: ActiveModel::Type::Boolean.new.cast(params[field]["editable"]),
-        mandatory: ActiveModel::Type::Boolean.new.cast(params[field]["mandatory"])
+        editable: ActiveModel::Type::Boolean.new.cast(params[field]['editable']),
+        mandatory: ActiveModel::Type::Boolean.new.cast(params[field]['mandatory'])
       }
     end
   end

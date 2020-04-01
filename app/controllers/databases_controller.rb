@@ -5,6 +5,8 @@ class DatabasesController < ApplicationController
 
   before_action :check_user_permissions, only: %i[new edit]
 
+  IGNORED_COLUMNS = %w[id created_at updated_at].freeze
+
   def index
     @databases = Database.all
     can_add = current_admin_user.admin_abilities? && params[:settings]
@@ -133,9 +135,12 @@ class DatabasesController < ApplicationController
   def update_target_table_settings
     target_table_settings = TargetTableSetting.where(database_id: @database.id).map(&:name)
     @available_tables.each do |table|
-      next if target_table_settings.include? table
+      if target_table_settings.include? table
+        # update_editable_fields(table)
+        next
+      end
 
-      TargetTableSetting.create!(name: table, database_id: @database.id)
+      TargetTableSetting.create!(name: table, database_id: @database.id, editable_fields: editable_fields(table))
     end
   end
 
@@ -145,5 +150,22 @@ class DatabasesController < ApplicationController
 
       Permission.create!(subject_id: @database.id, subject_class: table, action: action)
     end
+  end
+
+  def target_db
+    @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
+  end
+
+  def editable_fields(table)
+    columns = target_db.table_columns(table)
+
+    editable_fields = {}
+
+    columns.map do |column|
+      mandatory = IGNORED_COLUMNS.include? column.name ? false : !column.null
+      editable_fields.merge!(column.name.to_s => { 'editable' => false, 'mandatory' => mandatory })
+    end
+
+    editable_fields
   end
 end

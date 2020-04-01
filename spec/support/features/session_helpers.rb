@@ -51,7 +51,7 @@ module Features
       view_permission = create(:permission, subject_id: @database.id)
       @role.permissions << view_permission
     end
-    
+
     def create_action_permissions(table)
       %w[view create edit delete].each do |action|
         next if Permission.find_by(subject_id: @database.id, subject_class: table, action: action)
@@ -59,7 +59,7 @@ module Features
         create(:permission, subject_id: @database.id, subject_class: table, action: action)
       end
     end
-    
+
     def give_role_all_permissions(role, table)
       permissions = Permission.where(subject_id: @database.id, subject_class: table)
       role.permissions << permissions
@@ -67,18 +67,18 @@ module Features
 
     def remove_all_permissions_from_role(role, table)
       permissions = Permission.where(subject_id: @database.id, subject_class: table)
-      
+
       permissions.each do |permission|
         role.permissions.delete(permission) if role.permissions.include? permission
       end
     end
-    
+
     def give_role_single_permission(role, table, action)
       permission = Permission.find_by(subject_id: @database.id, subject_class: table, action: action)
-    
+
       role.permissions << permission
     end
-    
+
     def setup_tables_and_roles(table)
       @database = create(:database)
       @table = table
@@ -87,7 +87,7 @@ module Features
       @user_role = create(:role, name: 'User')
       create_action_permissions(@table)
     end
-    
+
     def create_second_database
       @second_database = create(:database)
       @second_table = 'users'

@@ -12,8 +12,8 @@ feature 'Deleting records with sufficient permissions', js: true do
   after do
     @database_connection = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
     @target_db = Kuwinda::Repository::TargetDB.new(@database_connection)
-    @target_db.create_record('attending_events', { 'event_id' => '12', 'user_id' => '32' })
-    @target_db.create_record('attending_events', { 'event_id' => '5', 'user_id' => '33' })
+    @target_db.create_record('attending_events', 'event_id' => '12', 'user_id' => '32')
+    @target_db.create_record('attending_events', 'event_id' => '5', 'user_id' => '33')
   end
 
   xscenario 'with a single record selected deletes the record' do

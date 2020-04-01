@@ -8,7 +8,7 @@ module TableRender
   # TODO: make the unshift only applicable if user has ability to delete from this table
   def render_show_html(table)
     sql_result = @target_db.all(table)
-    @headers = sql_result ? sql_result.columns.unshift("") : []
+    @headers = sql_result ? sql_result.columns.unshift('') : []
     render :show
   end
 
@@ -31,7 +31,7 @@ module TableRender
       columns << { data: c }
     end
 
-    data = sql_result.nil? ? {} : sql_result.to_hash.sort_by { |k| k["id"] }
+    data = sql_result.nil? ? {} : sql_result.to_hash.sort_by { |k| k['id'] }
 
     render json: {
       data: data,

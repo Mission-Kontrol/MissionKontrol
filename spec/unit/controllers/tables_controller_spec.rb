@@ -120,7 +120,7 @@ describe TablesController, :type => :controller do
           allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
           subject
         end
-  
+
         it 'deletes the record' do
           expect(assigns(:result)).to eq true
         end
@@ -131,7 +131,7 @@ describe TablesController, :type => :controller do
       end
 
       context 'when record fails to delete' do
-        let(:record_id) { 1111115 }
+        let(:record_id) { 111_111_5 }
 
         before do
           allow(mock_target_db).to receive(:delete_record).and_return(0)
@@ -151,7 +151,7 @@ describe TablesController, :type => :controller do
       end
 
       it 'returns an error message' do
-        expect { subject }.to raise_error(NotAuthorizedError, "Not authorized to perform this action")
+        expect { subject }.to raise_error(NotAuthorizedError, 'Not authorized to perform this action')
       end
     end
   end
@@ -162,15 +162,15 @@ describe TablesController, :type => :controller do
     let(:params) do
       {
         editable_fields: {
-          id: { editable: false, reference: "" },
-          user_id: { editable: true, reference: "", mandatory: true },
-          event_id: { editable: true, reference: "", mandatory: false },
-          created_at: { editable: false, reference: "" },
-          updated_at: { editable: false, reference: "" }
+          id: { editable: false, reference: '' },
+          user_id: { editable: true, reference: '', mandatory: true },
+          event_id: { editable: true, reference: '', mandatory: false },
+          created_at: { editable: false, reference: '' },
+          updated_at: { editable: false, reference: '' }
         },
         table: table,
         database_id: @database.id,
-        commit: "Save"
+        commit: 'Save'
       }
     end
     let(:editable_fields) do
@@ -198,7 +198,7 @@ describe TablesController, :type => :controller do
           event_id: { editable: true, mandatory: false },
           created_at: { editable: false, mandatory: nil },
           updated_at: { editable: false, mandatory: nil }
-      }.with_indifferent_access
+        }.with_indifferent_access
       end
 
       it 'sets the fields as editable on the target_table_settings' do
