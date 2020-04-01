@@ -67,7 +67,8 @@ GEM
       capybara
       selenium-webdriver
     childprocess (3.0.0)
-    clockwork (2.0.3)
+    clockwork (2.0.4)
+      activesupport
       tzinfo
     codacy-coverage (2.1.0)
       simplecov
@@ -326,7 +327,7 @@ GEM
       faraday (~> 0.9)
       jwt (>= 1.5, <= 2.5)
       nokogiri (>= 1.6, < 2.0)
-    tzinfo (1.2.5)
+    tzinfo (1.2.6)
       thread_safe (~> 0.1)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
@@ -361,7 +362,7 @@ DEPENDENCIES
   capybara (~> 3.18.0)
   capybara-screenshot (~> 1.0, >= 1.0.22)
   capybara-selenium
-  clockwork (~> 2.0, >= 2.0.3)
+  clockwork (~> 2.0)
   codacy-coverage
   coffee-rails
   database_cleaner
