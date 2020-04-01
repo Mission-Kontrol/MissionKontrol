@@ -50,7 +50,7 @@ describe DatabasesController, type: :controller, js: true do
       it 'saves the editable fields on the target table settings' do
         subject
 
-        expect(TargetTableSetting.first.editable_fields).to eq expected_editable_fields
+        expect(TargetTableSetting.find_by(name: 'attending_events').editable_fields).to eq expected_editable_fields
       end
     end
   end
