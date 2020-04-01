@@ -16,11 +16,11 @@ function submitSettings () {
 
 function toggleCheckbox () {
   $("body").on("change", ".toggle-state:checkbox", function (e) {
-    value = $(this).val()
+    let value = $(this).val();
     if (value === "false") {
-      $(this).val("true")
+      $(this).val("true");
     } else if (value === "true") {
-      $(this).val("false")
+      $(this).val("false");
     }
   });
 }

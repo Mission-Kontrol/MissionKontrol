@@ -3,8 +3,8 @@
 function displayActionsBar (table) {
   var filterBar = $(".table--filter-bar-container").html();
   var tableInfo = $(".table--info");
-  let checkedCount = $('.data-table--select-input:checked').length
-  let selectedText = $(".filter-bar--selected .white").last()
+  let checkedCount = $(".data-table--select-input:checked").length;
+  let selectedText = $(".filter-bar--selected .white").last();
 
   if (tableInfo.find(".table--filter-bar").length === 0) {
     tableInfo.append(filterBar);
@@ -45,10 +45,10 @@ function deleteData () {
       success(data) {
         $(".table--filter-bar").last().remove();
         $(".data-table").DataTable().ajax.reload();
-        toastr.success('Record(s) successfully deleted.')
+        toastr.success("Record(s) successfully deleted.");
       },
       error() {
-        toastr.error('Unable to delete the record(s). Please check you have adequate permission to do this action or speak to an Administrator.')
+        toastr.error("Unable to delete the record(s). Please check you have adequate permission to do this action or speak to an Administrator.");
       }
     })
   })
@@ -57,11 +57,11 @@ function deleteData () {
 function editData () {
   $("body").on("click", ".filter-bar--edit", function () {
     let recordsArray = new Array();
-    let checkboxes = $(".data-table--select-input:checked")
+    let checkboxes = $(".data-table--select-input:checked");
     checkboxes.each(function () {
       recordsArray.push($(this).parent().parent().data("record-id"));
-    })
-    let database_id = checkboxes.first().data("id");
+    });
+    let databaseId = checkboxes.first().data("id");
     let table = checkboxes.first().val();
 
     $.ajax({
@@ -69,21 +69,15 @@ function editData () {
       url: "/table/edit_record",
       dataType: "script",
       data: {
-        database_id,
+        database_id: databaseId,
         table,
         records_array: recordsArray
       },
-      success(data) {
-        // $(".table--filter-bar").last().remove();
-        // $(".data-table").DataTable().ajax.reload();
-        // toastr.success('Record(s) successfully updated.')
-      },
-      error() {
-        // toastr.error('Unable to update the record(s). Please check you have adequate permission to do this action or speak to an Administrator.')
-      }
+      success(data) { },
+      error() { }
     });
   });
-};
+}
 
 function manipulateData (table) {
   deleteData();
