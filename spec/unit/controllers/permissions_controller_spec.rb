@@ -14,6 +14,52 @@ describe PermissionsController, type: :controller, js: true do
   let(:table) { 'users' }
   let(:database) { create(:database) }
 
+  describe '#index' do
+    subject { get :index }
+
+    it 'assigns databases' do
+      subject
+
+      expect(assigns(:databases)).to eq [database]
+    end
+
+    it 'assigns the headers' do
+      subject
+
+      expect(assigns(:headers)).to eq ['Table', role]
+    end
+
+    it 'assigns roles' do
+      subject
+
+      expect(assigns(:roles)).to eq [@role]
+    end
+
+    context 'table_permission_data' do
+      subject { get :index, params: params, xhr: true }
+
+      let(:params) { { database_id: database.id } }
+
+      it 'returns the table name' do
+        subject
+
+        expect(JSON.parse(response.body)['data'].first['Table']).to eq 'Users'
+      end
+
+      it 'returns the role name with the permission level as html' do
+        subject
+
+        expect(JSON.parse(response.body)['data'].first['Editor']).to include "<img src='/assets/images/icons/circle-with-contrast.png'"
+      end
+
+      it 'returns individual role permissions for actions as booleans' do
+        subject
+
+        expect(JSON.parse(response.body)['data'].first['Editor_view']).to eq false
+      end
+    end
+  end
+
   describe '#add_to_role' do
     context 'when action is view' do
       subject { post :add_to_role, params: { role: role, table: table, permission: 'view', database_id: database.id }, format: :js }

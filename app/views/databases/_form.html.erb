@@ -12,7 +12,7 @@
               <div role="tabpanel" id="settings-tab--general" class="tab-pane active">
                 <div class="panel-body">
 
-                  <%= form_for(@database) do |f| %>
+                  <%= form_for(@database, remote: true) do |f| %>
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
@@ -75,7 +75,7 @@
 
                     <div class="row">
                       <div class="col-sm-11">
-                        <%= f.submit "Test connection", class: "btn btn-primary m-b pull-right" %>
+                        <%= f.submit "Test connection", class: "btn btn-primary m-b pull-right", id: "test-database-connection" %>
                         <% if @database.persisted? %>
                           <%= link_to "Remove database", database_path(@database), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger m-b pull-right margin-right" %>
                         <% end %>

@@ -1,4 +1,5 @@
 <% if @result %>
+  window.location.assign('/permissions');
   toastr.success('Database has been successfully created.')
 <% else %>
   toastr.error('Unable to save database. Please check your credentials and try again.');

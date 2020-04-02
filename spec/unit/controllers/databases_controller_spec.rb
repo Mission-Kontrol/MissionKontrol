@@ -1,21 +1,70 @@
 # frozen_string_literal: true
 
 describe DatabasesController, type: :controller, js: true do
+  let!(:admin_role) { create(:role, :admin) }
+  let(:database_params) do
+    {
+      friendly_name: 'Test database',
+      adapter: 'postgresql',
+      host: ENV['DEMO_CLIENT_DB_HOST'],
+      port: 5432,
+      name: ENV['DEMO_CLIENT_DB_NAME'],
+      username: ENV['DEMO_CLIENT_DB_USER'],
+      password: ENV['DEMO_CLIENT_DB_PASSWORD']
+    }
+  end
+
+  describe '#index' do
+    subject { get :index, params: params, xhr: true }
+
+    let!(:database_1) { create(:database) }
+    let!(:database_2) { create(:database) }
+    let(:params) { {} }
+
+    before do
+      create_user_with_role(admin_role)
+      sign_in @user
+    end
+
+    it 'lists all databases' do
+      subject
+
+      expect(assigns(:databases).count).to eq 2
+    end
+
+    context 'when user has admin abilities and param setting is present' do
+      let(:params) { { settings: true } }
+
+      it 'sets can_add as true' do
+        subject
+
+        expect(JSON.parse(response.body)['can_add']).to be_truthy
+      end
+    end
+  end
+
+  describe '#new' do
+    subject { get :new, xhr: true }
+
+    before do
+      create_user_with_role(admin_role)
+      sign_in @user
+    end
+
+    it 'creates a new database' do
+      subject
+
+      expect(assigns(:database)).not_to be nil
+    end
+  end
+
   describe '#create' do
-    subject { post :create, params: params, format: :js }
+    subject { post :create, params: params, xhr: true }
 
     context 'with valid params' do
       let(:params) do
         {
-          database: {
-            friendly_name: 'Test database',
-            adapter: 'postgresql',
-            host: ENV['DEMO_CLIENT_DB_HOST'],
-            port: 5432,
-            name: ENV['DEMO_CLIENT_DB_NAME'],
-            username: ENV['DEMO_CLIENT_DB_USER'],
-            password: ENV['DEMO_CLIENT_DB_PASSWORD']
-          }
+          database: database_params
         }
       end
 
@@ -52,6 +101,50 @@ describe DatabasesController, type: :controller, js: true do
 
         expect(TargetTableSetting.find_by(name: 'attending_events').editable_fields).to eq expected_editable_fields
       end
+
+      it 'renders the create template' do
+        subject
+
+        expect(response).to render_template :create
+      end
+    end
+
+    context 'with param commit = "Test connection"' do
+      let(:params) do
+        {
+          database: database_params,
+          commit: 'Test connection'
+        }
+      end
+
+      it 'renders test_connection' do
+        subject
+
+        expect(response).to render_template :test_connection
+      end
+
+      it 'assigns active_connection as true if active' do
+        subject
+
+        expect(assigns(:active_connection)).to eq true
+      end
+    end
+  end
+
+  describe '#edit' do
+    subject { get :edit, params: { id: database.id }, xhr: true }
+
+    let!(:database) { create(:database) }
+
+    before do
+      create_user_with_role(admin_role)
+      sign_in @user
+    end
+
+    it 'assigns database based on id' do
+      subject
+
+      expect(assigns(:database)).to eq database
     end
   end
 
@@ -124,6 +217,52 @@ describe DatabasesController, type: :controller, js: true do
 
         target_table_setting.reload
         expect(target_table_setting.editable_fields['name']).to eq nil
+      end
+    end
+  end
+
+  describe '#destroy' do
+    context 'when database exists' do
+      subject { delete :destroy, params: { id: database.id }, xhr: true }
+
+      let!(:database) { create(:database) }
+
+      before do
+        create_user_with_role(admin_role)
+        sign_in @user
+      end
+
+      it 'deletes the database' do
+        subject
+
+        expect(Database.where(id: database.id)).to eq []
+      end
+
+      it 'redirects to dashboard_path' do
+        subject
+
+        expect(response).to redirect_to dashboard_path
+      end
+    end
+
+    context 'when database does not exist' do
+      subject { delete :destroy, params: { id: 234 }, xhr: true }
+
+      before do
+        create_user_with_role(admin_role)
+        sign_in @user
+      end
+
+      it 'throws an error' do
+        subject
+
+        expect(flash[:alert]).to eq 'Something went wrong trying to delete this database. Please try again.'
+      end
+
+      it 'redirects to databases path' do
+        subject
+
+        expect(response).to redirect_to databases_path
       end
     end
   end

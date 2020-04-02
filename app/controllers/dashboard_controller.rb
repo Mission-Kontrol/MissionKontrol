@@ -10,7 +10,7 @@ class DashboardController < ApplicationController
 
   def show
     full_license = OrganisationSetting.last.full_license
-    @trial_license = (full_license != true)
+    @trial_license = !full_license
   end
 
   def license
@@ -25,7 +25,7 @@ class DashboardController < ApplicationController
       save_license(license_key: license_key, activation_id: activation_id, full_license: false)
       redirect_to new_admin_user_registration_path
     elsif full_license_key && full_activation_id
-      save_license(license_key: license_key, activation_id: activation_id, full_license: false)
+      save_license(license_key: license_key, activation_id: activation_id, full_license: true)
       redirect_to admin_user_registration_path
     else
       render 'verify_license'
