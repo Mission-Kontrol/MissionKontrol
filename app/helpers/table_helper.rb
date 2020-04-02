@@ -75,14 +75,15 @@ module TableHelper
     current_row &&  !current_row[field["title"]].blank?
   end
 
-  def add_record_field_input(input)
+  def add_record_field_input(input, value = nil, id = nil)
+    field_name = id ? "record[#{id}][#{input[:name]}]" : "record[#{input[:name]}]"
     case input[:type]
     when :integer
-      number_field_tag("record[#{input[:name]}]", nil, class: "record--modal-input", required: input[:required])
+      number_field_tag(field_name, nil, class: "record--modal-input", required: input[:required], value: value)
     when :datetime
-      datetime_field_tag("record[#{input[:name]}]", nil, class: "record--modal-input", required: input[:required])
+      datetime_field_tag(field_name, nil, class: "record--modal-input", required: input[:required], value: value)
     else
-      text_field_tag("record[#{input[:name]}]", nil, class: "record--modal-input", required: input[:required])
+      text_field_tag(field_name, nil, class: "record--modal-input", required: input[:required], value: value)
     end
   end
 

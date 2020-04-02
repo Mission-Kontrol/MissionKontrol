@@ -31,7 +31,7 @@ module Kuwinda
       end
 
       def update_record(table, field, value, id)
-        sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
+        sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc}' WHERE id=#{id};"
         conn.exec_query(sql)
       end
 
@@ -61,6 +61,13 @@ module Kuwinda
 
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
         conn.exec_query(sql)
+      end
+
+      def delete_record(table, records_array)
+        records = records_array.join(', ')
+
+        sql = "DELETE FROM #{table} WHERE id IN (#{records});"
+        conn.exec_delete(sql)
       end
 
       def query(sql, limit, offset, order_column = nil, order_dir = nil)
@@ -125,13 +132,12 @@ module Kuwinda
       # rubocop:disable Metrics/ParameterLists
       def search_columns(table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
         result = nil
-        current_organisation = OrganisationSetting.last
 
         columns.each do |_key, value|
           next unless value['searchable']
           next if value['data'].empty?
 
-          if current_organisation.target_database_type == 'postgresql'
+          if @current_organisation.target_database_type == 'postgresql'
             filter = postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
           else
             filter = non_postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
@@ -147,13 +153,12 @@ module Kuwinda
       # rubocop:disable Metrics/ParameterLists
       def search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
         result = nil
-        current_organisation = OrganisationSetting.last
 
         columns.each do |_key, value|
           next unless value['searchable']
           next if value['data'].empty?
 
-          if current_organisation.target_database_type == 'postgresql'
+          if @current_organisation.target_database_type == 'postgresql'
             filter = postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
           else
             filter = non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)

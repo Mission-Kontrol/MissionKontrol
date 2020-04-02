@@ -5,6 +5,8 @@ class DatabasesController < ApplicationController
 
   before_action :check_user_permissions, only: %i[new edit]
 
+  IGNORED_COLUMNS = %w[id created_at updated_at].freeze
+
   def index
     @databases = Database.all
     can_add = current_admin_user.admin_abilities? && params[:settings]
@@ -43,7 +45,7 @@ class DatabasesController < ApplicationController
       render :test_connection and return
     else
       @database = Database.find(params[:id])
-      @database.update_attributes(database_params_update)
+      @database.update_attributes(database_params_update) if params[:database]
       update_available_permissions
       update_target_table_settings
       @result = @database.save!
@@ -98,7 +100,7 @@ class DatabasesController < ApplicationController
 
   def test_connection
     connection = ActiveRecord::Base.establish_connection(
-      adapter: adapter_for_db(database_params[:adapter]),
+      adapter: Kuwinda::DatabaseAdapter.adapter(database_params[:adapter]),
       host: database_params[:host],
       username: database_params[:username],
       password: password_param,
@@ -131,11 +133,20 @@ class DatabasesController < ApplicationController
   end
 
   def update_target_table_settings
-    target_table_settings = TargetTableSetting.where(database_id: @database.id).map(&:name)
-    @available_tables.each do |table|
-      next if target_table_settings.include? table
+    target_table_settings = TargetTableSetting.where(database_id: @database.id)
+    target_table_settings_names = target_table_settings.map(&:name)
 
-      TargetTableSetting.create!(name: table, database_id: @database.id)
+    @available_tables.each do |table|
+      columns = target_db.table_columns(table)
+
+      if target_table_settings_names.include? table
+        target_table_settings.find_by(name: table).update_editable_fields(columns)
+        next
+      end
+
+      new_target_table_setting = TargetTableSetting.create!(name: table, database_id: @database.id)
+      new_target_table_setting.create_editable_fields(columns)
+      new_target_table_setting.save!
     end
   end
 
@@ -145,5 +156,9 @@ class DatabasesController < ApplicationController
 
       Permission.create!(subject_id: @database.id, subject_class: table, action: action)
     end
+  end
+
+  def target_db
+    @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
   end
 end

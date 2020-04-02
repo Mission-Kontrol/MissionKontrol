@@ -63,6 +63,80 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+              <h4>PERMISSIONS</h4>
+            </div>
+          </div>
+
+          <%= form_tag("/table/update_settings", method: "post", remote: true) do %>
+
+          <div class="row">
+            <div class="col-sm-12">
+            <table class="table settings--permissions-table">
+              <thead>
+                <tr>
+                  <th scope="col"><div class="settings--permissions-table-fields"></div></th>
+                  <th scope="col">
+                    <h4>Editable</h4>
+                    <p>Set fields that can be edited by teams with edit permiossion on this table.</p>
+                  </th>
+                  <th scope="col">
+                    <h4>Reference</h4>
+                    <p>Enter table.fieldname to show that instead of a field that is an ID.</p>
+                  </th>
+                  <th scope="col">
+                    <h4>Mandatory</h4>
+                    <p>For creating a record.</p>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @table_settings.editable_fields.each do |field, value| %>
+                  <tr>
+                    <th scope="row"><%= field.humanize %></th>
+                    <td>
+                      <div class="table--settings-dropdown">
+                        <div class="form-control dropdown">
+                          <%= select_tag "[editable_fields][#{field}][editable]", options_for_select([ ["Yes", true], ["No", false] ], @table_settings.editable_fields[field]["editable"]), { class: "table--settings-nested-select" } %>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <%= text_field_tag("[editable_fields][#{field}][reference]", nil, class: "record--modal-input", required: false) %>
+                    </td>
+                    <td>
+                      <div class="settings--mandatory-toggle">
+                        <label class="switch">
+                          <div class='toggle'>
+                            <% checked_value = @table_settings.editable_fields[field]["mandatory"] %>
+                            <%= check_box_tag "[editable_fields][#{field}][mandatory]", checked_value, checked_value, class: 'form-control toggle-state' %>
+                            <div class='toggle-inner'>
+                              <div class='indicator'></div>
+                            </div>
+                            <div class='active-bg'></div>
+                          </div>
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="settings--save-btn">
+              <%= hidden_field_tag(:table, @table) %>
+              <%= hidden_field_tag(:database_id, @database.id) %>
+              <%= submit_tag('Save', class: 'btn btn-primary btn--save-record float-right') %>
+            </div>
+          </div>
+        </div>
+        <% end %>
       </div>
     </div>
   </div>

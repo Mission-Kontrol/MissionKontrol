@@ -7,7 +7,7 @@ describe OrganisationSettingsController, type: :controller, js: true do
   end
 
   let(:organisation_setting) { create(:organisation_setting) }
-  let(:role) { 'Sales' }
+  let(:role) { 'Editor' }
   let(:table) { 'users' }
   let(:database) { create(:database) }
 

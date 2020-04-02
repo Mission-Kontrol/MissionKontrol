@@ -26,7 +26,7 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
 }
 
 function fetchDataForNestedTable(recordId, nestedTable, tableName) {
-  var databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
+  var databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
   var url = "/tables/" + tableName + "/" + recordId + "?record-id=" + recordId + "&nested-table=" + nestedTable + "&table=" + nestedTable + "&database_id=" + databaseId + "&table_name=" + tableName;
 
   $.ajax({
@@ -66,19 +66,35 @@ function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleCo
 function loadDataTable (columns) {
   let canExport = $(".data-table").data("can-export");
   let tableName = $(".data-table").data("table-name");
-  let nestedVisibleColumns = $(".data-table").data("nested-table-columns");
-  let databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
+  var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
+  let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
   if (nestedVisibleColumns.length > 0) {
     columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img class='nested-table rotate' src='/assets/images/icons/triangle.svg'></a>"});
   }
 
+  let reorderTargets = (nestedVisibleColumns.length > 0) ? [0, 1] : 0;
+  let defaultOrder = (nestedVisibleColumns.length > 0) ? [ 2, "asc" ] : [ 1, "asc" ];
+
+  let colOrderable = [
+    { orderable: false, targets: reorderTargets }
+  ];
+
+  columns.unshift({
+    data: "",
+    sortable: false,
+    defaultContent: "<input type='checkbox' class='data-table--select-input' data-id='"+ databaseId +"' name='"+ tableName +"' value='"+ tableName +"'></input>"
+  });
+
   var searchableTable = $(".data-table").DataTable({
     colReorder: true,
+    columnDefs: colOrderable,
+    order: [defaultOrder],
     deferRender: true,
     autoWidth: false,
     scrollX: true,
     serverSide: true,
     processing: false,
+    responsive: true,
     pagingType: "simple_numbers",
     language: {
       paginate: {
@@ -108,6 +124,7 @@ function loadDataTable (columns) {
       $(row).addClass("table--nested-row");
       $(row).attr("data-href",  previewUrl);
       $(row).attr("data-nested-table", nestedTable);
+      $(row).attr("data-record-id", id);
     },
     buttons: [
       {
@@ -143,7 +160,7 @@ function loadDataTable (columns) {
     searchableTable.state.save().ajax.reload();
   });
 
-  $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row > td:first-child", function () {
+  $("body").on("click", "#target-table-" + tableName + " > tbody > tr.table--nested-row > td > a.table--nested-table", function () {
     var tr = $(this).closest("tr");
     var row = searchableTable.row(tr);
     var nestedTable = tr.data("nested-table");
@@ -161,6 +178,10 @@ function loadDataTable (columns) {
       tr.addClass("shown");
     }
   });
+
+  selectInput(searchableTable);
+
+  manipulateData(searchableTable);
 
   window["datatable"] = searchableTable;
 }

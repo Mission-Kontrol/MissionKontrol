@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-class InvalidClientDatabaseError < StandardError; end
-
 class ApplicationController < ActionController::Base
   include License
   # Prevent CSRF attacks by raising an exception.
@@ -20,7 +18,7 @@ class ApplicationController < ActionController::Base
               SocketError, :with => :handle_invalid_client_db_error
 
   def check_license
-    redirect_to license_path unless license_valid?
+    redirect_to license_path unless license_valid? || Rails.env.development?
   end
 
   def referred_from_demo?
@@ -90,17 +88,6 @@ class ApplicationController < ActionController::Base
 
   def relatable_tables(table)
     Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
-  end
-
-  def adapter_for_db(scheme)
-   case scheme
-   when 'postgresql', 'postgres'
-     return 'postgresql'
-   when 'mysql', 'mysql2'
-     return 'mysql2'
-   else
-     raise InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
-   end
   end
 
   def set_relatable_tables

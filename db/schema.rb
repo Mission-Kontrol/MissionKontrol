@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200131135708) do
+ActiveRecord::Schema.define(version: 20200325153714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 20200131135708) do
     t.string "create_destination"
     t.string "delete_destination"
     t.integer "database_id"
+    t.jsonb "editable_fields"
   end
 
   create_table "task_queue_outcomes", force: :cascade do |t|

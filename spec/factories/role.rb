@@ -14,16 +14,16 @@ FactoryBot.define do
       export { true }
     end
 
-    trait :Sales do
-      name { 'Sales' }
+    trait :Editor do
+      name { 'Editor' }
     end
 
-    trait :sales do
-      name { 'Sales' }
+    trait :editor do
+      name { 'Editor' }
     end
 
-    trait :team_lead do
-      name { 'Team Lead' }
+    trait :user do
+      name { 'User' }
     end
   end
 end

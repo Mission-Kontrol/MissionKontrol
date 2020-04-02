@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'boot'
+require_relative '../lib/catch_error_from_rack'
 
 require 'rails/all'
 

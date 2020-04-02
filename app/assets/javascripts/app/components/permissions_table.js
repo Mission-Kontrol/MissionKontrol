@@ -45,33 +45,33 @@ function formatNestedColumns ( d, tableDatabaseId ) {
   let databaseId = tableDatabaseId;
   let permissionsClass = 'class="permissions--nested-table-data"';
   let adminTd = permissionsClass+' data-role="Admin"';
-  let salesTd = permissionsClass+' data-role="Sales"';
-  let teamLeadTd = permissionsClass+' data-role="Team Lead"';
+  let salesTd = permissionsClass+' data-role="Editor"';
+  let teamLeadTd = permissionsClass+' data-role="User"';
 
   return "<table id='permissions--nested-table' data-table='"+d.Table+"' data-database-id='"+databaseId+"'>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>View</p></td>"+
           "<td "+adminTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_view, "Admin", "view", databaseId) +"</td>"+
-          "<td "+salesTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_view, "Sales", "view", databaseId) +"</td>"+
-          "<td "+teamLeadTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_view, "Team Lead", "view", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.Editor_view, "Editor", "view", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='view' data-table='"+d.Table+"'>"+ displayCheckbox(d.User_view, "User", "view", databaseId) +"</td>"+
       "</tr>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>Create</p></td>"+
           "<td "+adminTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_create, "Admin", "create", databaseId) +"</td>"+
-          "<td "+salesTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_create, "Sales", "create", databaseId) +"</td>"+
-          "<td "+teamLeadTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_create, "Team Lead", "create", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.Editor_create, "Editor", "create", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='create' data-table='"+d.Table+"'>"+ displayCheckbox(d.User_create, "User", "create", databaseId) +"</td>"+
       "</tr>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>Edit</p></td>"+
           "<td "+adminTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_edit, "Admin", "edit", databaseId) +"</td>"+
-          "<td "+salesTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_edit, "Sales", "edit", databaseId) +"</td>"+
-          "<td "+teamLeadTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_edit, "Team Lead", "edit", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.Editor_edit, "Editor", "edit", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='edit' data-table='"+d.Table+"'>"+ displayCheckbox(d.User_edit, "User", "edit", databaseId) +"</td>"+
       "</tr>"+
       "<tr>"+
           "<td "+permissionsClass+"><p>Delete</p></td>"+
           "<td "+adminTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Admin_delete, "Admin", "delete", databaseId) +"</td>"+
-          "<td "+salesTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Sales_delete, "Sales", "delete", databaseId) +"</td>"+
-          "<td "+teamLeadTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Team_Lead_delete, "Team Lead", "delete", databaseId) +"</td>"+
+          "<td "+salesTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.Editor_delete, "Editor", "delete", databaseId) +"</td>"+
+          "<td "+teamLeadTd+" data-action='delete' data-table='"+d.Table+"'>"+ displayCheckbox(d.User_delete, "User", "delete", databaseId) +"</td>"+
       "</tr>"+
   "</table>";
 }

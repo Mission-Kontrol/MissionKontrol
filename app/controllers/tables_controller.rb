@@ -13,7 +13,7 @@ class TablesController < ApplicationController
 
   before_action :target_db, except: :index
   before_action :set_main_table, only: :show
-  before_action :set_nested_table, except: %i[add_record create_record index]
+  before_action :set_nested_table, except: %i[add_record create_record index delete_record]
   before_action :check_user_permissions, only: %i[show]
 
   def index
@@ -81,7 +81,9 @@ class TablesController < ApplicationController
   def update_settings
     @table_settings = TargetTableSetting.find_by(name: params[:table], database_id: @database.id)
 
-    if (params[:value] == 'N/A' || params[:value] == 'Disable') && params[:setting] == 'nested_table'
+    if params[:commit]
+      update_editable_fields(@table_settings, editable_field_params)
+    elsif (params[:value] == 'N/A' || params[:value] == 'Disable') && params[:setting] == 'nested_table'
       @table_settings.update_attribute(:nested_table, nil)
     else
       @table_settings.update_attribute(params[:setting], params[:value])
@@ -93,6 +95,17 @@ class TablesController < ApplicationController
     set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
     set_columns_for_form
+  end
+
+  def edit_record
+    set_main_table
+    @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
+    editable_columns_for_form(@table_settings.editable_fields)
+    @records = []
+    params[:records_array].each do |record_id|
+      record = @target_db.find(@table, record_id)
+      @records << record if record
+    end
   end
 
   def create_record
@@ -107,6 +120,36 @@ class TablesController < ApplicationController
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
   rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
+  end
+
+  def update_record
+    not_authorized = !current_admin_user.permission?(:edit, @current_table, @database.id)
+    raise NotAuthorizedError.new if not_authorized
+
+    record_params.each do |record_id, values|
+      values.each do |field, value|
+        @target_db.update_record(params[:table], field, value, record_id)
+      end
+    end
+
+  rescue ActiveRecord::NotNullViolation => e
+    @error = :NullViolation
+    field = e.to_s.split('value in column ').last.split(' violates').first.split('\"').last
+    @error_message = "Unable to save record if #{field} is blank. Please fill in this field and try again."
+  rescue ActiveRecord::RecordNotUnique => e
+    @error = :NotUnique
+    field = e.to_s.split('Key (').last.split(')=').first
+    @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
+  rescue ActiveRecord::ActiveRecordError
+    @error = :Unknown
+  end
+
+  def delete_record
+    not_authorized = !current_admin_user.permission?(:delete, @current_table, @database.id)
+    raise NotAuthorizedError.new if not_authorized
+
+    sql_result = @target_db.delete_record(delete_params[:table], delete_params[:records_array])
+    @result = (sql_result != 0)
   end
 
   private
@@ -150,6 +193,10 @@ class TablesController < ApplicationController
                                                 :value)
   end
 
+  def delete_params
+    params.permit(:database_id, :table, records_array: [])
+  end
+
   def table_has_layout?(table)
     ViewBuilder.where(table_name: table).size > 0
   end
@@ -171,13 +218,12 @@ class TablesController < ApplicationController
 
   def nested_column_names(nested_table_state)
     nested_column_names = []
-    # nested_db_repo = Kuwinda::Repository::TargetDB.new(@current_table_settings.nested_table, database_connection)
 
     nested_table_state.visible_columns.each do |value|
-      nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].name
+      nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
 
-    nested_column_names
+    nested_column_names.compact!
   end
 
   def relatable_tables(table)
@@ -199,11 +245,41 @@ class TablesController < ApplicationController
     end
   end
 
+  def editable_columns_for_form(editable_fields)
+    columns = @target_db.table_columns(@table)
+    @inputs = []
+
+    columns.map do |column|
+      next if column.name == 'id'
+
+      next unless editable_fields[column.name]['editable']
+
+      @inputs << {
+        name: column.name,
+        type: column.type,
+        required: !column.null || editable_fields[column.name]['mandatory']
+      }
+    end
+  end
+
   def record_params
     params.require(:record).permit!
   end
 
   def database_params
-    params[:id] || params[:database_id]
+    params[:database_id] || params[:id]
+  end
+
+  def editable_field_params
+    params.require(:editable_fields).permit!
+  end
+
+  def update_editable_fields(settings, params)
+    params.each do |field|
+      settings.editable_fields[field] = {
+        editable: ActiveModel::Type::Boolean.new.cast(params[field]['editable']),
+        mandatory: ActiveModel::Type::Boolean.new.cast(params[field]['mandatory'])
+      }
+    end
   end
 end

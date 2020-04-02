@@ -146,7 +146,7 @@ function loadDatabasesNav () {
 
     fetchAvailableDatabases(dropdown);
 
-    var databaseId = (location.pathname+location.search).substr(1).split("/")[1].charAt(0);
+    var databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
 
     fetchAvailableTables(databaseId);
   }

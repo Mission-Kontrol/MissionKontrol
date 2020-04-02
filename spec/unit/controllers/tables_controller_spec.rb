@@ -3,9 +3,12 @@
 require 'rails_helper'
 
 describe TablesController, :type => :controller do
+  let(:mock_target_db) { double("TargetDbDouble") }
+  let(:mock_presenter) { double("PresenterDouble") }
+
   before do
     @database = create(:database)
-    create_user_with_permissions('Sales', :view, 'users', @database.id)
+    create_user_with_permissions('Editor', :view, 'users', @database.id)
     create(:target_table_setting, database_id: @database.id)
   end
 
@@ -13,7 +16,8 @@ describe TablesController, :type => :controller do
     subject { get :index, xhr: true, format: :js, params: { id: @database.id } }
 
     before do
-      allow_any_instance_of(Kuwinda::Presenter::ListAvailableTables).to receive(:call).and_return(['users', 'events', 'attending_events'])
+      allow(mock_presenter).to receive(:call).and_return(['users', 'events', 'attending_events'])
+      allow(Kuwinda::Presenter::ListAvailableTables).to receive(:new).and_return(mock_presenter)
       sign_in @user
 
       subject
@@ -92,6 +96,115 @@ describe TablesController, :type => :controller do
             expect(response).to render_template('preview')
           end
         end
+      end
+    end
+  end
+
+  describe 'POST delete_record' do
+    subject { post :delete_record, xhr: true, format: :js, params: params }
+
+    let(:params) { { database_id: @database.id, table: table, records_array: [record_id.to_i] } }
+    let(:table) { 'events' }
+    let(:record_id) { 5 }
+    let(:role) { 'Editor' }
+
+    context 'when user has permission to delete from specified table' do
+      before do
+        create_user_with_permissions(role, :delete, table, @database.id)
+        sign_in @user
+      end
+
+      context 'and record exists' do
+        before do
+          allow(mock_target_db).to receive(:delete_record).and_return(1)
+          allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
+          subject
+        end
+
+        it 'deletes the record' do
+          expect(assigns(:result)).to eq true
+        end
+
+        it 'renders the delete template' do
+          expect(response).to render_template('delete_record')
+        end
+      end
+
+      context 'when record fails to delete' do
+        let(:record_id) { 111_111_5 }
+
+        before do
+          allow(mock_target_db).to receive(:delete_record).and_return(0)
+          allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
+          subject
+        end
+
+        it 'does not delete the record' do
+          expect(assigns(:result)).to eq false
+        end
+      end
+    end
+
+    context 'when user does not have permission to delete from specified table' do
+      before do
+        sign_in @user
+      end
+
+      it 'returns an error message' do
+        expect { subject }.to raise_error(NotAuthorizedError, 'Not authorized to perform this action')
+      end
+    end
+  end
+
+  describe 'POST update_settings' do
+    subject { post :update_settings, xhr: true, format: :js, params: params }
+
+    let(:params) do
+      {
+        editable_fields: {
+          id: { editable: false, reference: '' },
+          user_id: { editable: true, reference: '', mandatory: true },
+          event_id: { editable: true, reference: '', mandatory: false },
+          created_at: { editable: false, reference: '' },
+          updated_at: { editable: false, reference: '' }
+        },
+        table: table,
+        database_id: @database.id,
+        commit: 'Save'
+      }
+    end
+    let(:editable_fields) do
+      {
+        id: false,
+        user_id: false,
+        event_id: false,
+        created_at: false,
+        updated_at: false
+      }
+    end
+    let(:table) { 'attending_events' }
+    let(:role) { 'Editor' }
+
+    before do
+      @target_table_setting = create(:target_table_setting, name: table, database_id: @database.id, nested_table: nil, editable_fields: editable_fields)
+      sign_in @user
+    end
+
+    context 'when fields are being set to editable' do
+      let(:expected_result) do
+        {
+          id: { editable: false, mandatory: nil },
+          user_id: { editable: true, mandatory: true },
+          event_id: { editable: true, mandatory: false },
+          created_at: { editable: false, mandatory: nil },
+          updated_at: { editable: false, mandatory: nil }
+        }.with_indifferent_access
+      end
+
+      it 'sets the fields as editable on the target_table_settings' do
+        subject
+        @target_table_setting.reload
+        expect(@target_table_setting.editable_fields).to eq expected_result
       end
     end
   end

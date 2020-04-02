@@ -125,3 +125,36 @@
   display: none;
   overflow: hidden;
 }
+
+table.settings--permissions-table {
+  thead > tr > th {
+    border-bottom: none;
+  }
+
+  tbody > tr {
+    th, td {
+      border-top: none;
+    }
+  }
+
+  .table--settings-dropdown > .dropdown > select {
+    width: 100%;
+  }
+
+  .settings--permissions-table-fields {
+    width: 110px;
+  }
+
+  .settings--mandatory-toggle {
+    .toggle {
+      height: 18px;
+      width: 37px;
+    }
+
+    .toggle-inner {
+      left: 2px;
+      height: 16px;
+      width: 33px;
+    }
+  }
+}

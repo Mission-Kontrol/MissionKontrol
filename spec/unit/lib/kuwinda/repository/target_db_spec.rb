@@ -78,7 +78,7 @@ module Kuwinda
           value = "jknnlkm@fnjnfk.jfknnfk"
 
           expect(target_db.conn).to receive(:exec_query).with(
-            "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
+            "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc}' WHERE id=#{id};"
           )
           target_db.update_record(table, field, value, id)
         end
@@ -96,6 +96,29 @@ module Kuwinda
             "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
           )
           target_db.update_related_record(table, field, value, foreign_key_title, foreign_key_value)
+        end
+      end
+
+      describe '#delete_record' do
+        let(:records_array) { ["78"] }
+        let(:table) { 'users' }
+
+        it 'deletes the given record' do
+          expect(target_db.conn).to receive(:exec_delete).with(
+            "DELETE FROM #{table} WHERE id IN (78);"
+          )
+          target_db.delete_record(table, records_array)
+        end
+
+        context 'given multiple records' do
+          let(:records_array) { ["78", "115"] }
+
+          it 'deletes both the given records' do
+            expect(target_db.conn).to receive(:exec_delete).with(
+              "DELETE FROM #{table} WHERE id IN (78, 115);"
+            )
+            target_db.delete_record(table, records_array)
+          end
         end
       end
     end
