@@ -18,6 +18,8 @@ class TargetTableSetting < ApplicationRecord
     save!
   end
 
+  private
+
   def add_column_to_editable_fields(column)
     self.editable_fields = {} if editable_fields.nil?
     editable_fields.merge!(column.name.to_s => { 'editable' => false, 'mandatory' => false })

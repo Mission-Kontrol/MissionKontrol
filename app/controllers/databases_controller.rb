@@ -31,7 +31,6 @@ class DatabasesController < ApplicationController
       @result = @database.save!
       update_available_permissions
       update_target_table_settings
-      redirect_to permissions_path
     end
   end
 
@@ -49,7 +48,6 @@ class DatabasesController < ApplicationController
       update_available_permissions
       update_target_table_settings
       @result = @database.save!
-      redirect_to permissions_path
     end
   end
 
@@ -57,6 +55,9 @@ class DatabasesController < ApplicationController
     database = Database.find(params[:id])
     database.delete
     redirect_to dashboard_path
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = 'Something went wrong trying to delete this database. Please try again.'
+    redirect_to(databases_path)
   end
 
   private

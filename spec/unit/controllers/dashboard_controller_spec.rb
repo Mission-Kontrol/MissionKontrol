@@ -7,66 +7,6 @@ describe DashboardController, :type => :controller do
   let(:license_key) { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
   let(:params) { { license_key: license_key } }
 
-  # rubocop:disable Metrics/BlockLength
-  xdescribe 'POST verify_license' do
-    xcontext 'when admin is signed in' do
-      context 'when license key is present' do
-        let(:subject) do
-          sign_in admin_user
-          # post :verify_license, params: params
-          VCR.use_cassette('license_key/activation_success') do
-            VCR.use_cassette('license_key/validation_success') do
-              post :verify_license, params: params
-            end
-          end
-        end
-
-        it 'redirects to dashboard' do
-          subject
-
-          expect(response).to redirect_to(dashboard_path)
-        end
-      end
-    end
-
-    xcontext 'when admin is not signed in' do
-      context 'when license key is present' do
-        let(:subject) do
-          VCR.use_cassette('license_key/activation_success') do
-            VCR.use_cassette('license_key/validation_success') do
-              post :verify_license, params: params
-            end
-          end
-        end
-
-        it 'redirects to sign up route with an activation key and the license key' do
-          subject
-
-          redirect_params = Rack::Utils.parse_query(URI.parse(response.location).query)
-
-          expect(URI.parse(response.location).path).to eq(new_admin_user_registration_path)
-          expect(redirect_params["license_key"]).to eq(license_key)
-          expect(redirect_params["activation_id"]).to_not be(nil)
-        end
-      end
-    end
-
-    context 'when license key is not present' do
-      let(:subject) do
-        VCR.use_cassette('license_key/validation_success', record: :new_episodes) do
-          post :verify_license, params: { license_key: nil }
-        end
-      end
-
-      it 'redirects to license route' do
-        subject
-
-        expect(response).to render_template(:verify_license)
-      end
-    end
-  end
-  # rubocop:enable Metrics/BlockLength
-
   describe 'GET show' do
     context 'when admin is not present' do
       it 'redirects to the log in route' do
@@ -122,6 +62,72 @@ describe DashboardController, :type => :controller do
 
           expect(response).to render_template('show')
         end
+
+        it 'sets the trial license as true if not a full license' do
+          subject
+
+          expect(assigns(:trial_license)).to eq true
+        end
+      end
+    end
+  end
+
+  describe 'POST verify_license' do
+    context 'when license key is a valid trial key' do
+      let(:subject) do
+        sign_in admin_user
+        VCR.use_cassette('license_key/activation_success') do
+          VCR.use_cassette('license_key/validation_success') do
+            post :verify_license, params: params
+          end
+        end
+      end
+      let(:params) { { license_key: license_key } }
+      let(:license_key) { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
+
+      it 'saves the license key to an OrganisationSetting' do
+        subject
+
+        expect(OrganisationSetting.last.full_license).to eq false
+        expect(OrganisationSetting.last.license_key).to eq license_key
+      end
+
+      it 'redirects to the new admin user registration path' do
+        subject
+
+        expect(response).to redirect_to(new_admin_user_registration_path)
+      end
+    end
+
+    ## TODO: Rerun vcr cassettes and fix these specs
+    xcontext 'when license key is a valid full key' do
+      let(:subject) do
+        sign_in admin_user
+        VCR.use_cassette('license_key/activation_full_success') do
+          VCR.use_cassette('license_key/validation_full_success') do
+            post :verify_license, params: params
+          end
+        end
+      end
+      let(:params) { { license_key: license_key } }
+      let(:license_key) { 'cF320SNdpxlZZXZ06gzY33Gx5i-30' }
+
+      it 'saves the new license key to the OrganisationSetting' do
+        subject
+
+        expect(OrganisationSetting.last.full_license).to eq true
+        expect(OrganisationSetting.last.license_key).to eq license_key
+      end
+
+      it 'redirects to the admin user registration path' do
+        subject
+
+        expect(response).to redirect_to(admin_user_registration_path)
+      end
+    end
+
+    context 'when the OrganisationSetting already exists and the license key is being updated' do
+      it 'saves the new license key to the OrganisationSetting' do
       end
     end
   end
