@@ -20,10 +20,15 @@ FactoryBot.define do
 
     trait :editor do
       name { 'Editor' }
+      editor { true }
     end
 
     trait :user do
       name { 'User' }
+    end
+
+    trait :export do
+      export { true }
     end
   end
 end

@@ -236,7 +236,7 @@ class AdminUsersController < ApplicationController
     results.each do |user|
       table_data << {
         id: user.id,
-        name: user.name,
+        name: user.full_name,
         email: user.email,
         team: user.roles.first.name,
         active: user.active
