@@ -54,7 +54,7 @@ group :test do
   gem 'rspec-activemodel-mocks', '~>1.0.2'
   gem 'rspec-collection_matchers'
   gem 'rspec-its', '~> 1.2.0'
-  gem 'rspec-rails', '~> 3.7.2'
+  gem 'rspec-rails', '~> 4.0.0'
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'shoulda-matchers'
