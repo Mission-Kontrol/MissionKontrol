@@ -2,7 +2,9 @@
 
 require_relative '../../support/unit/fake_active_record'
 class Column < FakeActiveRecord
-  def name;  super end
+  def name
+    super
+  end
 end
 
 describe TargetTableSetting do
@@ -46,18 +48,14 @@ describe TargetTableSetting do
 
     let(:target_table_setting) do
       create(:target_table_setting, editable_fields:
-        { 'id' =>
-          {
-            'editable' => true,
-            'mandatory' => true
-          },
-          'parrot_id' =>
-          {
+        { 'id' => {
+          'editable' => true,
+          'mandatory' => true
+        },
+          'parrot_id' => {
             'editable' => false,
             'mandatory' => false
-          }
-        }
-      )
+          } })
     end
 
     context 'when there are new columns' do
@@ -70,7 +68,7 @@ describe TargetTableSetting do
     context 'when the column already exists as an editable field' do
       it 'does not update the editable fields' do
         subject
-        expect(target_table_setting.editable_fields['id']).to eq({ 'editable' => true, 'mandatory' => true })
+        expect(target_table_setting.editable_fields['id']).to eq('editable' => true, 'mandatory' => true)
       end
     end
 

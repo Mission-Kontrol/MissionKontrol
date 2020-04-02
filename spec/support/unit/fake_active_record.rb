@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FakeActiveRecord
-  COLUMNS = %w[name]
+  COLUMNS = %w[name].freeze
 
   def respond_to_missing?(method_name)
     COLUMNS.include?(method_name.to_s) || super

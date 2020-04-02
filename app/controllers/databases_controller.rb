@@ -55,7 +55,6 @@ class DatabasesController < ApplicationController
     database = Database.find(params[:id])
     database.delete
     redirect_to dashboard_path
-
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = 'Something went wrong trying to delete this database. Please try again.'
     redirect_to(databases_path)
