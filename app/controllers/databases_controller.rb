@@ -100,7 +100,7 @@ class DatabasesController < ApplicationController
 
   def test_connection
     connection = ActiveRecord::Base.establish_connection(
-      adapter: adapter_for_db(database_params[:adapter]),
+      adapter: Kuwinda::DatabaseAdapter.adapter(database_params[:adapter]),
       host: database_params[:host],
       username: database_params[:username],
       password: password_param,

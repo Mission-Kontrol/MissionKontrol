@@ -21,16 +21,16 @@ function selectInput (table) {
   $("body").on("change", ".data-table--select-input:checkbox", function () {
     displayActionsBar(table);
   });
-};
+}
 
 function deleteData () {
   $("body").on("click", ".filter-bar--delete", function () {
     let recordsArray = new Array();
-    let checkboxes = $(".data-table--select-input:checked")
+    let checkboxes = $(".data-table--select-input:checked");
     checkboxes.each(function () {
       recordsArray.push($(this).parent().parent().data("record-id"));
     })
-    let database_id = checkboxes.first().data("id");
+    let databaseId = checkboxes.first().data("id");
     let table = checkboxes.first().val();
 
     $.ajax({
@@ -38,7 +38,7 @@ function deleteData () {
       url: "/table/delete_record",
       dataType: "script",
       data: {
-        database_id,
+        database_id: databaseId,
         table,
         records_array: recordsArray
       },
@@ -50,9 +50,9 @@ function deleteData () {
       error() {
         toastr.error("Unable to delete the record(s). Please check you have adequate permission to do this action or speak to an Administrator.");
       }
-    })
-  })
-};
+    });
+  });
+}
 
 function editData () {
   $("body").on("click", ".filter-bar--edit", function () {

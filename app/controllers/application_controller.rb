@@ -90,17 +90,6 @@ class ApplicationController < ActionController::Base
     Kuwinda::Presenter::ListRelatableTables.new(ClientRecord, table).call
   end
 
-  def adapter_for_db(scheme)
-   case scheme
-   when 'postgresql', 'postgres'
-     return 'postgresql'
-   when 'mysql', 'mysql2'
-     return 'mysql2'
-   else
-     raise InvalidClientDatabaseError.new("don't know how to make adpater for #{scheme}")
-   end
-  end
-
   def set_relatable_tables
     @relatable_tables = []
 

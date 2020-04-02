@@ -20,17 +20,6 @@ module Kuwinda
 
       attr_reader :database
 
-      def adapter(scheme)
-        case scheme
-        when 'postgresql', 'postgres'
-          return 'postgresql'
-        when 'mysql', 'mysql2'
-          return 'mysql2'
-        else
-          raise InvalidClientDatabaseError.new("Do not know how to make adpater for #{scheme}")
-        end
-      end
-
       def decrypt_password(password)
         crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
         crypt.decrypt_and_verify(password)
@@ -38,7 +27,7 @@ module Kuwinda
 
       def database_credentials(database)
         credentials = {
-          adapter: adapter(database.adapter),
+          adapter: Kuwinda::DatabaseAdapter.adapter(database.adapter),
           username: database.username,
           password: decrypt_password(database.password),
           port: database.port,
