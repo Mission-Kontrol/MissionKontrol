@@ -218,13 +218,12 @@ class TablesController < ApplicationController
 
   def nested_column_names(nested_table_state)
     nested_column_names = []
-    # nested_db_repo = Kuwinda::Repository::TargetDB.new(@current_table_settings.nested_table, database_connection)
 
     nested_table_state.visible_columns.each do |value|
-      nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].name
+      nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
 
-    nested_column_names
+    nested_column_names.compact!
   end
 
   def relatable_tables(table)

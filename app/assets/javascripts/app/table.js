@@ -66,20 +66,29 @@ function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleCo
 function loadDataTable (columns) {
   let canExport = $(".data-table").data("can-export");
   let tableName = $(".data-table").data("table-name");
-  let nestedVisibleColumns = $(".data-table").data("nested-table-columns");
+  var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
   let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
   if (nestedVisibleColumns.length > 0) {
     columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img class='nested-table rotate' src='/assets/images/icons/triangle.svg'></a>"});
   }
-  
+
+  let reorderTargets = (nestedVisibleColumns.length > 0) ? [0, 1] : 0;
+  let defaultOrder = (nestedVisibleColumns.length > 0) ? [ 2, "asc" ] : [ 1, "asc" ];
+
+  let colOrderable = [
+    { orderable: false, targets: reorderTargets }
+  ];
+
   columns.unshift({
     data: "",
     sortable: false,
     defaultContent: "<input type='checkbox' class='data-table--select-input' data-id='"+ databaseId +"' name='"+ tableName +"' value='"+ tableName +"'></input>"
-  })
+  });
 
   var searchableTable = $(".data-table").DataTable({
     colReorder: true,
+    columnDefs: colOrderable,
+    order: [defaultOrder],
     deferRender: true,
     autoWidth: false,
     scrollX: true,

@@ -9,8 +9,24 @@
     z-index: 2001;
     width: $sidebar-width;
     position: fixed;
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100vh;
+  }
+
+  .navbar-static-side::-webkit-scrollbar {
+    width: 11px;
+  }
+  .navbar-static-side {
+    scrollbar-width: thin;
+    scrollbar-color: $blueberry $nav-dark;
+  }
+  .navbar-static-side::-webkit-scrollbar-track {
+    background: $nav-dark;
+  }
+  .navbar-static-side::-webkit-scrollbar-thumb {
+    background-color: $blueberry;
+    border-radius: 6px;
+    border: 3px solid $blueberry;
   }
 
   .navbar-top-links .dropdown-messages,

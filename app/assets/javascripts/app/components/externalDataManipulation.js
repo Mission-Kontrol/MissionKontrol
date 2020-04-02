@@ -15,7 +15,7 @@ function displayActionsBar (table) {
   } else if (checkedCount === 0) {
     $(".table--filter-bar").last().remove();
   }
-};
+}
 
 function selectInput (table) {
   $("body").on("change", ".data-table--select-input:checkbox", function () {
@@ -29,7 +29,7 @@ function deleteData () {
     let checkboxes = $(".data-table--select-input:checked");
     checkboxes.each(function () {
       recordsArray.push($(this).parent().parent().data("record-id"));
-    })
+    });
     let databaseId = checkboxes.first().data("id");
     let table = checkboxes.first().val();
 
@@ -79,7 +79,19 @@ function editData () {
   });
 }
 
+function clearSelection () {
+  $("body").on("click", ".filter-bar--clear", function () {
+    let checkboxes = $(".data-table--select-input:checked");
+    checkboxes.each(function () {
+      $(this).prop("checked", false);
+    });
+
+    $(".table--filter-bar").last().remove();
+  });
+}
+
 function manipulateData (table) {
   deleteData();
   editData();
+  clearSelection();
 }
