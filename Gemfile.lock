@@ -237,7 +237,7 @@ GEM
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
       rspec-mocks (~> 3.9.0)
-    rspec-activemodel-mocks (1.0.3)
+    rspec-activemodel-mocks (1.1.0)
       activemodel (>= 3.0)
       activesupport (>= 3.0)
       rspec-mocks (>= 2.99, < 4.0)
@@ -327,7 +327,7 @@ GEM
       faraday (~> 0.9)
       jwt (>= 1.5, <= 2.5)
       nokogiri (>= 1.6, < 2.0)
-    tzinfo (1.2.6)
+    tzinfo (1.2.7)
       thread_safe (~> 0.1)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
@@ -386,7 +386,7 @@ DEPENDENCIES
   rails-ujs (~> 0.1.0)
   recursive-open-struct (= 1.1.0)
   rolify
-  rspec-activemodel-mocks (~> 1.0.2)
+  rspec-activemodel-mocks (~> 1.1.0)
   rspec-collection_matchers
   rspec-its (~> 1.2.0)
   rspec-rails (~> 4.0.0)

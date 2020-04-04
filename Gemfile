@@ -51,7 +51,7 @@ group :test do
   gem 'factory_bot_rails', '~> 4.8.2'
   gem 'ffaker'
   gem 'rails-controller-testing'
-  gem 'rspec-activemodel-mocks', '~>1.0.2'
+  gem 'rspec-activemodel-mocks', '~>1.1.0'
   gem 'rspec-collection_matchers'
   gem 'rspec-its', '~> 1.2.0'
   gem 'rspec-rails', '~> 4.0.0'
