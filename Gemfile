@@ -24,7 +24,7 @@ gem 'turbolinks', '~> 5.1.0'
 gem 'uglifier', '~> 4.1.5'
 gem 'pg', '~> 0.18'
 gem 'mysql2', '~> 0.4.10'
-gem 'clockwork', '~> 2.0', '>= 2.0.3'
+gem 'clockwork', '~> 2.0'
 gem 'twilio-ruby', '~> 5.17.0'
 
 group :development, :test do
