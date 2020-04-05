@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 describe DashboardController, :type => :controller do
-  let(:admin_user) { create(:admin_user) }
   let(:license_key) { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
   let(:params) { { license_key: license_key } }
 
   describe 'GET show' do
+    let(:admin_user) { create(:admin_user) }
+
     context 'when admin is not present' do
       it 'redirects to the log in route' do
         get :show
@@ -73,61 +74,58 @@ describe DashboardController, :type => :controller do
   end
 
   describe 'POST verify_license' do
-    context 'when license key is a valid trial key' do
-      let(:subject) do
-        sign_in admin_user
-        VCR.use_cassette('license_key/activation_success') do
-          VCR.use_cassette('license_key/validation_success') do
-            post :verify_license, params: params
+    subject { post :verify_license, params: { license_key: license_key } }
+    context 'when license key is valid' do
+      let(:license_key) { '2222222' }
+
+      context 'and no AdminUsers exist yet' do
+        it 'saves the license key to the organisation' do
+          VCR.use_cassette('license_key/validation_and_activation') do
+            subject
+
+            expect(OrganisationSetting.last.license_key).to eq license_key
+          end
+        end
+
+        it 'redirects to the new admin user registration path' do
+          VCR.use_cassette('license_key/validation_and_activation') do
+            subject
+
+            expect(response).to redirect_to(new_admin_user_registration_path)
           end
         end
       end
-      let(:params) { { license_key: license_key } }
-      let(:license_key) { 'wcCXJZ5fd3TdekwrB5No912UO2-26' }
 
-      it 'saves the license key to an OrganisationSetting' do
-        subject
+      context 'and AdminUser already exists' do
+        let!(:admin_user) { create(:admin_user) }
+        let(:license_key) { '2222222' }
 
-        expect(OrganisationSetting.last.full_license).to eq false
-        expect(OrganisationSetting.last.license_key).to eq license_key
-      end
+        it 'saves the license key to the organisation' do
+          VCR.use_cassette('license_key/validation_and_activation') do
+            subject
 
-      it 'redirects to the new admin user registration path' do
-        subject
+            expect(OrganisationSetting.last.license_key).to eq license_key
+          end
+        end
 
-        expect(response).to redirect_to(new_admin_user_registration_path)
-      end
-    end
+        it 'redirects to the admin user registration path' do
+          VCR.use_cassette('license_key/validation_and_activation') do
+            subject
 
-    ## TODO: Rerun vcr cassettes and fix these specs
-    xcontext 'when license key is a valid full key' do
-      let(:subject) do
-        sign_in admin_user
-        VCR.use_cassette('license_key/activation_full_success') do
-          VCR.use_cassette('license_key/validation_full_success') do
-            post :verify_license, params: params
+            expect(response).to redirect_to(admin_user_registration_path)
           end
         end
       end
-      let(:params) { { license_key: license_key } }
-      let(:license_key) { 'cF320SNdpxlZZXZ06gzY33Gx5i-30' }
-
-      it 'saves the new license key to the OrganisationSetting' do
-        subject
-
-        expect(OrganisationSetting.last.full_license).to eq true
-        expect(OrganisationSetting.last.license_key).to eq license_key
-      end
-
-      it 'redirects to the admin user registration path' do
-        subject
-
-        expect(response).to redirect_to(admin_user_registration_path)
-      end
     end
 
-    context 'when the OrganisationSetting already exists and the license key is being updated' do
-      it 'saves the new license key to the OrganisationSetting' do
+    context 'when license key is not valid' do
+      let(:license_key) { 'not_a_valid_key' }
+      it 'renders the verify_license template' do
+        VCR.use_cassette('license_key/invalid_key') do
+          subject
+
+          expect(response).to render_template('verify_license')
+        end
       end
     end
   end

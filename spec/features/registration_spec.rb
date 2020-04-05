@@ -20,19 +20,18 @@ feature 'Entering License Key' do
 
   scenario 'with a valid license key' do
     visit root_path
-    VCR.use_cassette('license_key/activation_success') do
-      VCR.use_cassette('license_key/validation_success') do
-        fill_in 'License key', with: 'wcCXJZ5fd3TdekwrB5No912UO2-26'
-        click_button 'Submit'
-      end
+    VCR.use_cassette('/license_key/validation_and_activation') do
+      fill_in 'License key', with: '2222222'
+      click_button 'Submit'
     end
     expect(page).to have_current_path(new_admin_user_registration_path)
   end
 end
 
-xfeature 'Creating an Admin User' do
+feature 'Creating an Admin User' do
   background do
-    create(:organisation_setting)
+    create(:organisation_setting, license_key: '22222222')
+    create(:role)
   end
 
   scenario 'when valid license key present' do

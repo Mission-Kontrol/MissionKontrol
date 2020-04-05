@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/wcCXJZ5fd3TdekwrB5No912UO2-26?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
+    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/not_a_valid_key?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
     body:
       encoding: US-ASCII
       string: ''
@@ -39,9 +39,9 @@ http_interactions:
       Allow:
       - GET, POST, PUT, PATCH
       Content-Length:
-      - '129'
+      - '115'
       Date:
-      - Sun, 05 Apr 2020 10:51:45 GMT
+      - Sun, 05 Apr 2020 10:27:05 GMT
       Server:
       - LiteSpeed
       Vary:
@@ -52,13 +52,13 @@ http_interactions:
         ma=2592000
     body:
       encoding: UTF-8
-      string: '{"code":"lmfwc_rest_data_error","message":"License Key: wcCXJZ5fd3TdekwrB5No912UO2-26
+      string: '{"code":"lmfwc_rest_data_error","message":"License Key: not_a_valid_key
         could not be found.","data":{"status":404}}'
     http_version: 
-  recorded_at: Sun, 05 Apr 2020 10:51:45 GMT
+  recorded_at: Sun, 05 Apr 2020 10:27:05 GMT
 - request:
     method: get
-    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/activate/wcCXJZ5fd3TdekwrB5No912UO2-26?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
+    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/activate/not_a_valid_key?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
     body:
       encoding: US-ASCII
       string: ''
@@ -95,9 +95,9 @@ http_interactions:
       Allow:
       - GET
       Content-Length:
-      - '129'
+      - '115'
       Date:
-      - Sun, 05 Apr 2020 10:51:46 GMT
+      - Sun, 05 Apr 2020 10:27:08 GMT
       Server:
       - LiteSpeed
       Vary:
@@ -108,8 +108,8 @@ http_interactions:
         ma=2592000
     body:
       encoding: UTF-8
-      string: '{"code":"lmfwc_rest_data_error","message":"License Key: wcCXJZ5fd3TdekwrB5No912UO2-26
+      string: '{"code":"lmfwc_rest_data_error","message":"License Key: not_a_valid_key
         could not be found.","data":{"status":404}}'
     http_version: 
-  recorded_at: Sun, 05 Apr 2020 10:51:46 GMT
+  recorded_at: Sun, 05 Apr 2020 10:27:08 GMT
 recorded_with: VCR 4.0.0
