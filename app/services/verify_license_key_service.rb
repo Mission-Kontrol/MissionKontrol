@@ -4,51 +4,30 @@ class VerifyLicenseKeyService
   class << self
     include HTTParty
 
-    SKU = { full: '1', trial: '2' }.freeze
-    STORE_CODE = 'Z0cm9LxK3jFtbX7'
+    STATUS = { sold: '1', delivered: '2', active: '3', inactive: '4' }.freeze
 
-    def verify(license_key, type)
-      activation = activate(license_key, type)
-      validation = validate(license_key, activation, type)
+    def verify(license_key)
+      response = call("/#{license_key}")
+      return true if response['data']['status'] == STATUS[:active]
 
-      if validation
-        cache_key = "license-#{license_key}"
-        Rails.cache.fetch(cache_key, expires_in: 24.hours) { cache_key }
-      end
-
-      return license_key, activation if activation && validation
-
-      [nil, nil]
-    end
-
-    def activate(license_key, type)
-      response = call('license_key_activate', license_key, type: type)
-      return response[:data]['activation_id'].to_s if response[:status] == 200
-
-      nil
-    end
-
-    def validate(license_key, activation_id, type)
-      return nil unless activation_id
-
-      call('license_key_validate', license_key, activation_id: activation_id, type: type)
+      activate(license_key)
     end
 
     private
 
-    def call(action, license_key, opts = {})
-      base_url = 'https://www.kuwinda.io/wp-admin/admin-ajax.php'
+    def activate(license_key)
+      response = call("/activate/#{license_key}")
+      response.code == 200 ? true : false
+    end
+
+    def call(endpoint, opts = {})
+      base_url = 'https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses'
       query = {
-        store_code: STORE_CODE,
-        action: action,
-        sku: SKU[opts[:type].to_sym],
-        license_key: license_key
-      }.merge(opts.except(:type))
+        consumer_key: 'ck_f7ee148e0937dc5c183e14703f5afc36da2080e7',
+        consumer_secret: 'cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b'
+      }
 
-      response = HTTParty.post(base_url, query: query)
-
-      message = response['message'] || response['errors']['license_key'].try(:first) || response['errors']['activation_id'].try(:first)
-      { status: response['status'], message: message, data: response['data'] }
+      HTTParty.get(base_url + endpoint, query: query)
     end
   end
 end
