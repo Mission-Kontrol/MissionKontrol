@@ -1,10 +1,3 @@
-/*
- *
- *   INSPINIA - Responsive Admin Theme
- *   version 2.7.1
- *
-*/
-
 // Google Fonts
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en");
 
@@ -14,27 +7,17 @@
 @import "dualListbox/bootstrap-duallistbox.min.css";
 
 
-// Variables, Mixins
+// Variables, Mixins, Base
 @import "base/variables";
 @import "base/mixins";
-
-// INSPINIA Theme Elements
+@import "base/margins_and_paddings";
 @import "base/typography";
 @import "base/navigation";
-@import "base/top_navigation";
 @import "base/buttons";
-@import "base/badges_labels";
-@import "base/elements";
 @import "base/sidebar";
 @import "base/base";
-@import "base/pages";
 @import "base/modal";
 @import "base/form";
-// @import "base/chat";
-// @import "base/metismenu";
-@import "base/spinners";
-
-@import "components/tables";
 
 @import "view_builder";
 @import "views";
@@ -46,26 +29,9 @@
 
 @import 'table_permissions';
 @import 'components/tooltipster';
-// Landing page
-// @import "base/landing";
+@import 'components/toastr';
 
-// RTL Support
-// @import "base/rtl";
-
-// For demo only - config box style
-// @import "base/theme-config";
-
-// INSPINIA Skins
-// @import "base/skins";
-// @import "base/md-skin";
-
-// Media query style
 @import "base/media";
-
-
-// Custom style
-// Your custom style to override base style
-// @import "base/custom";
 
 // Clear layout on print mode
 @media print {
