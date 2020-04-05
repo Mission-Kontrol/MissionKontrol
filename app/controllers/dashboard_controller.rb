@@ -18,14 +18,14 @@ class DashboardController < ApplicationController
   end
 
   def verify_license
-    license_key, activation_id = verify_license!(params[:license_key], 'trial')
-    full_license_key, full_activation_id = verify_license!(params[:license_key], 'full') unless license_key && activation_id
+    license_key = params[:license_key]
+    license_valid = verify_license!(license_key)
 
-    if license_key && activation_id
-      save_license(license_key: license_key, activation_id: activation_id, full_license: false)
+    if license_valid && AdminUser.count == 0
+      save_license(license_key: license_key, full_license: false)
       redirect_to new_admin_user_registration_path
-    elsif full_license_key && full_activation_id
-      save_license(license_key: license_key, activation_id: activation_id, full_license: true)
+    elsif license_valid
+      save_license(license_key: license_key, full_license: false)
       redirect_to admin_user_registration_path
     else
       render 'verify_license'
@@ -34,10 +34,9 @@ class DashboardController < ApplicationController
 
   private
 
-  def save_license(license_key:, activation_id:, full_license:)
+  def save_license(license_key:, full_license:)
     OrganisationSetting.create!(
       license_key: license_key,
-      activation_id: activation_id,
       full_license: full_license
     )
   end

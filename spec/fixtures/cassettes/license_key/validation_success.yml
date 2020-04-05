@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/2222222?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
+    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/wcCXJZ5fd3TdekwrB5No912UO2-26?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
     body:
       encoding: US-ASCII
       string: ''
@@ -15,8 +15,8 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 200
-      message: OK
+      code: 404
+      message: Not Found
     headers:
       Connection:
       - Keep-Alive
@@ -39,9 +39,9 @@ http_interactions:
       Allow:
       - GET, POST, PUT, PATCH
       Content-Length:
-      - '297'
+      - '129'
       Date:
-      - Sun, 05 Apr 2020 08:49:50 GMT
+      - Sun, 05 Apr 2020 10:51:45 GMT
       Server:
       - LiteSpeed
       Vary:
@@ -52,13 +52,13 @@ http_interactions:
         ma=2592000
     body:
       encoding: UTF-8
-      string: '{"success":true,"data":{"id":"2","orderId":"2985","productId":"336","licenseKey":"2222222","expiresAt":null,"validFor":null,"source":"2","status":"4","timesActivated":null,"timesActivatedMax":"3","createdAt":"2020-04-05
-        08:26:31","createdBy":"4","updatedAt":"2020-04-05 08:36:01","updatedBy":"4"}}'
+      string: '{"code":"lmfwc_rest_data_error","message":"License Key: wcCXJZ5fd3TdekwrB5No912UO2-26
+        could not be found.","data":{"status":404}}'
     http_version: 
-  recorded_at: Sun, 05 Apr 2020 08:49:50 GMT
+  recorded_at: Sun, 05 Apr 2020 10:51:45 GMT
 - request:
     method: get
-    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/activate/2222222?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
+    uri: https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses/activate/wcCXJZ5fd3TdekwrB5No912UO2-26?consumer_key=ck_f7ee148e0937dc5c183e14703f5afc36da2080e7&consumer_secret=cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b
     body:
       encoding: US-ASCII
       string: ''
@@ -71,8 +71,8 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 200
-      message: OK
+      code: 404
+      message: Not Found
     headers:
       Connection:
       - Keep-Alive
@@ -95,9 +95,9 @@ http_interactions:
       Allow:
       - GET
       Content-Length:
-      - '296'
+      - '129'
       Date:
-      - Sun, 05 Apr 2020 08:49:50 GMT
+      - Sun, 05 Apr 2020 10:51:46 GMT
       Server:
       - LiteSpeed
       Vary:
@@ -108,8 +108,8 @@ http_interactions:
         ma=2592000
     body:
       encoding: UTF-8
-      string: '{"success":true,"data":{"id":"2","orderId":"2985","productId":"336","licenseKey":"2222222","expiresAt":null,"validFor":null,"source":"2","status":"4","timesActivated":"1","timesActivatedMax":"3","createdAt":"2020-04-05
-        08:26:31","createdBy":"4","updatedAt":"2020-04-05 08:49:50","updatedBy":"4"}}'
-    http_version:
-  recorded_at: Sun, 05 Apr 2020 08:49:50 GMT
+      string: '{"code":"lmfwc_rest_data_error","message":"License Key: wcCXJZ5fd3TdekwrB5No912UO2-26
+        could not be found.","data":{"status":404}}'
+    http_version: 
+  recorded_at: Sun, 05 Apr 2020 10:51:46 GMT
 recorded_with: VCR 4.0.0
