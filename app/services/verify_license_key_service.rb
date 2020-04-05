@@ -17,10 +17,10 @@ class VerifyLicenseKeyService
 
     def activate(license_key)
       response = call("/activate/#{license_key}")
-      response.code == 200 ? true : false
+      response.code == 200
     end
 
-    def call(endpoint, opts = {})
+    def call(endpoint)
       base_url = 'https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses'
       query = {
         consumer_key: 'ck_f7ee148e0937dc5c183e14703f5afc36da2080e7',

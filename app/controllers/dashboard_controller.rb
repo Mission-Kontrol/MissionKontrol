@@ -21,7 +21,7 @@ class DashboardController < ApplicationController
     license_key = params[:license_key]
     license_valid = verify_license!(license_key)
 
-    if license_valid && AdminUser.count == 0
+    if license_valid && AdminUser.count.zero?
       save_license(license_key: license_key, full_license: false)
       redirect_to new_admin_user_registration_path
     elsif license_valid
