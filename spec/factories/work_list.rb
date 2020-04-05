@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :work_list do
-    name 'test'
+    name { 'test' }
   end
 end
