@@ -40,7 +40,8 @@ feature 'Deleting records without sufficient permissions', js: true do
     visit table_path(id: @database.id, table: 'attending_events')
   end
 
-  xscenario 'user cannot see the delete option' do
+  scenario 'user cannot see the delete option' do
+    wait_for_ajax
     first('.data-table--select-input').click
     expect(page).not_to have_content('.filter-bar--delete > .white')
   end
