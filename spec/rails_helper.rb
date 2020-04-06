@@ -73,6 +73,8 @@ Capybara.raise_server_errors = false
 
 Capybara.javascript_driver = :headless_chrome
 
+Capybara.default_max_wait_time = 5
+
 Capybara.add_selector(:id) do
   xpath { |id| XPath.descendant[XPath.attr(:id) == id.to_s] }
 end

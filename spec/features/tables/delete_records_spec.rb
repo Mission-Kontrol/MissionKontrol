@@ -2,11 +2,7 @@
 
 feature 'Deleting records with sufficient permissions', js: true do
   background do
-    sign_in_as_admin_with_license
-    setup_tables_and_roles('attending_events')
-    create(:target_table_setting, name: @table, database_id: @database.id)
-    give_role_all_permissions(@user.roles.first, 'attending_events')
-    visit table_path(id: @database.id, table: 'attending_events')
+    sign_in_admin_user_with_full_permissions('attending_events')
   end
 
   after do
@@ -33,14 +29,10 @@ end
 
 feature 'Deleting records without sufficient permissions', js: true do
   background do
-    sign_in_as_admin_with_license
-    setup_tables_and_roles('attending_events')
-    create(:target_table_setting, name: @table, database_id: @database.id)
-    give_role_single_permission(@user.roles.first, 'attending_events', :view)
-    visit table_path(id: @database.id, table: 'attending_events')
+    sign_in_admin_user_with_single_permissions('attending_events', :view)
   end
 
-  xscenario 'user cannot see the delete option' do
+  scenario 'user cannot see the delete option' do
     first('.data-table--select-input').click
     expect(page).not_to have_content('.filter-bar--delete > .white')
   end
