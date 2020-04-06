@@ -17,7 +17,7 @@ class TablesController < ApplicationController
   before_action :check_user_permissions, only: %i[show]
 
   def index
-    database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call.to_a
+    database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
     @available_tables = database_tables.select { |table| current_admin_user.permission?(:view, table, @database.id) }
 
     respond_to do |format|

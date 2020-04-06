@@ -9,7 +9,9 @@ module Kuwinda
       end
 
       def call
-        database.connection.columns(table.downcase).map(&:name)
+        Rails.cache.fetch("table_fields/#{database.spec.config[:database]}/#{table}", expires_in: 12.hours) do
+          database.connection.columns(table.downcase).map(&:name)
+        end
       end
 
       private
