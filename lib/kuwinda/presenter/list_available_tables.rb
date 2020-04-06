@@ -9,8 +9,10 @@ module Kuwinda
       end
 
       def call
-        tables = database.connection.tables - ['schema_migrations']
-        tables.map
+        Rails.cache.fetch("available_tables/#{database.spec.config[:database]}", expires_in: 12.hours) do
+          tables = database.connection.tables - ['schema_migrations']
+          tables.map.to_a
+        end
       end
 
       private

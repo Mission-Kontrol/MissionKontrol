@@ -9,7 +9,9 @@ module Kuwinda
       end
 
       def call
-        table_relationships
+        Rails.cache.fetch("related_tables/#{database.spec.config[:database]}/#{table}", expires_in: 12.hours) do
+          table_relationships
+        end
       end
 
       private

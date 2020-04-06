@@ -1,11 +1,4 @@
 <div class="row border-bottom">
   <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-    <ul class="nav navbar-top-links navbar-right pull-right">
-      <li>
-        <% if admin_user_signed_in? %>
-          <%= link_to "Logout", destroy_admin_user_session_path, method: :delete, :class => 'navbar-link'  %>
-        <% end %>
-      </li>
-    </ul>
   </nav>
 </div>

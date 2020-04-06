@@ -5,7 +5,7 @@
         <div class="dropdown profile-element">
           <%= link_to dashboard_path, :class => 'navbar-link left-layout-link' do %>
             <span>
-              <img alt="image" class="" src="<%= image_url '/assets/images/Kuwinda_logo_full-blue-260.png' %>" style="width: 100px"/>
+              <img alt="image" class="" src="<%= image_url '/assets/logos/MissionKontrol-logo-inverted.png' %>" style="width: 110%"/>
             </span>
 
             <a>
@@ -111,6 +111,11 @@
               </ul>
             </li>
           </ul>
+        </li>
+      <% end %>
+      <% if admin_user_signed_in? %>
+        <li>
+          <%= link_to "LOGOUT", destroy_admin_user_session_path, method: :delete %>
         </li>
       <% end %>
     </ul>
