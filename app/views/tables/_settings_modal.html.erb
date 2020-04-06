@@ -36,6 +36,9 @@
               </div>
             </div>
           </div>
+          <%
+          <<-COMMENT
+          %>
           <div class="row">
             <div class="col-sm-8">
               <h4>Create entry</h4>
@@ -44,7 +47,7 @@
             <div class="col-sm-4">
               <div class="table--settings-dropdown">
                 <div class="form-control dropdown">
-                  <%= select_tag "dropdown", options_for_select([ "Database", "API" ], @table_settings.create_destination), {class: "table--settings-create-select", "data-table" => @table, "data-setting" => "create_destination"} %>
+                  <%= select_tag "dropdown", options_for_select([ "Database" ], @table_settings.create_destination), {class: "table--settings-create-select", "data-table" => @table, "data-setting" => "create_destination"} %>
                 </div>
               </div>
             </div>
@@ -57,11 +60,14 @@
             <div class="col-sm-4">
               <div class="table--settings-dropdown">
                 <div class="form-control dropdown">
-                  <%= select_tag "dropdown", options_for_select([ "Database", "API" ], @table_settings.delete_destination), {class: "table--settings-delete-select", "data-table" => @table, "data-setting" => "delete_destination"} %>
+                  <%= select_tag "dropdown", options_for_select([ "Database" ], @table_settings.delete_destination), {class: "table--settings-delete-select", "data-table" => @table, "data-setting" => "delete_destination"} %>
                 </div>
               </div>
             </div>
           </div>
+          <%
+          COMMENT
+          %>
         </div>
 
         <div class="row">
