@@ -23,7 +23,7 @@ module TableRender
     order_column = params['columns'].try(:[], order_column_number).try(:[], 'data')
     order_dir = params['order'].try(:[], '0').try(:[], 'dir')
 
-    sql_result = @target_db.datatable_filter(@table, search, searchable_columns, limit, offset, order_column, order_dir)
+    sql_result = @target_db.datatable_filter(@database, @table, search, searchable_columns, limit, offset, order_column, order_dir)
 
     result_columns = sql_result.nil? ? @target_db.table_columns(@table) : sql_result.columns
 
