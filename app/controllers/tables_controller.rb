@@ -100,7 +100,7 @@ class TablesController < ApplicationController
   def edit_record
     set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
-    editable_columns_for_form(@table_settings.editable_fields)
+    editable_columns_for_form
     @records = []
     params[:records_array].each do |record_id|
       record = @target_db.find(@table, record_id)
@@ -232,6 +232,7 @@ class TablesController < ApplicationController
 
   def set_columns_for_form
     columns = @target_db.table_columns(@table)
+    editable_fields = @table_settings.editable_fields
     @inputs = []
 
     columns.map do |column|
@@ -240,13 +241,14 @@ class TablesController < ApplicationController
       @inputs << {
         name: column.name,
         type: column.type,
-        required: !column.null
+        required: !column.null || editable_fields[column.name]['mandatory']
       }
     end
   end
 
-  def editable_columns_for_form(editable_fields)
+  def editable_columns_for_form
     columns = @target_db.table_columns(@table)
+    editable_fields = @table_settings.editable_fields
     @inputs = []
 
     columns.map do |column|
