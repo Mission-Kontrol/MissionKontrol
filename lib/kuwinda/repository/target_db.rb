@@ -106,10 +106,10 @@ module Kuwinda
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def datatable_filter(table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+      def datatable_filter(database, table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
         return all(table, limit, offset, order_column, order_dir) if search_value.blank? || columns.nil?
 
-        result = search_columns(table, search_value, columns, limit, offset, order_column, order_dir)
+        result = search_columns(database, table, search_value, columns, limit, offset, order_column, order_dir)
 
         result
       end
@@ -130,14 +130,14 @@ module Kuwinda
       private
 
       # rubocop:disable Metrics/ParameterLists
-      def search_columns(table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+      def search_columns(database, table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
         result = nil
-
+        database_type = Kuwinda::DatabaseAdapter.adapter(database.adapter)
         columns.each do |_key, value|
           next unless value['searchable']
           next if value['data'].empty?
 
-          if @current_organisation.target_database_type == 'postgresql'
+          if database_type == 'postgresql'
             filter = postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
           else
             filter = non_postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
@@ -153,12 +153,12 @@ module Kuwinda
       # rubocop:disable Metrics/ParameterLists
       def search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
         result = nil
-
+        database_type = Kuwinda::DatabaseAdapter.adapter(database.adapter)
         columns.each do |_key, value|
           next unless value['searchable']
           next if value['data'].empty?
 
-          if @current_organisation.target_database_type == 'postgresql'
+          if database_type == 'postgresql'
             filter = postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
           else
             filter = non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
@@ -176,7 +176,7 @@ module Kuwinda
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
-        return if column.sql_type_metadata.type != :string
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
 
         query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
       end
@@ -187,7 +187,7 @@ module Kuwinda
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
-        return if column.sql_type_metadata.type != :string
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
 
         query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
       end
@@ -195,12 +195,22 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_search(table, value, search_value, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+        table_columns = conn.columns(table)
+        column = table_columns.select { |c| c.name == value['data'] }.first
+
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
+
         query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
       end
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = nil, offset = nil)
+        table_columns = conn.columns(table)
+        column = table_columns.select { |c| c.name == value['data'] }.first
+
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
+
         query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} LIKE '%#{search_value}%'", limit, offset)
       end
       # rubocop:enable Metrics/ParameterLists

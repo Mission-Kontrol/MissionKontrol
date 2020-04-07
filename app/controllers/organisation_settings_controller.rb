@@ -13,8 +13,14 @@ class OrganisationSettingsController < ApplicationController
 
   def update
     @organisation = OrganisationSetting.find params[:id]
+    unchanged_key = organisation_params[:license_key] == @organisation.license_key
 
-    return unless @organisation.update!(organisation_params)
+    unless unchanged_key
+      valid_license = activate_license(organisation_params[:license_key])
+      @invalid_key = !valid_license
+    end
+
+    @result = @organisation.update!(organisation_params) if valid_license || unchanged_key
   end
 
   private

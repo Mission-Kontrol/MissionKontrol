@@ -15,43 +15,51 @@
       </div>
       <div class="modal--content">
 
-        <%= form_tag("/table/update_record", method: "post", remote: true) do %>
-          <% @records.each do |record| %>
-            <% @inputs.each do |input| %>
-              <div class="row">
-                <div class="col-sm-8 table--add-record--field-label">
-                  <p>
-                    <%= label_tag input[:name], input[:name].humanize %>
-                    <% if input[:required] == true %>
-                      <span>*</span>
-                    <% end %>
-                  </p>
-                </div>
-                <div class="col-sm-4 table--add-record--field-input">
-                  <div class="">
-                    <%= add_record_field_input(input, record[input[:name]], record['id']) %>
-                  </div>
+        <% if @inputs.empty? %>
+          <h4>Sorry, none of the fields on this table are editable.</h4>
+          <br>
+          <h4>Please speak to an Administrator to change the settings if you need to edit fields</h4>
+        <% else %>
+
+          <%= form_tag("/table/update_record", method: "post", remote: true) do %>
+            <% @records.each do |record| %>
+              <div class="edit--record-panel panel panel-default show">
+                <div class="panel-body row">
+                  <% @inputs.each do |input| %>
+                    <div class="col-sm-5 table--add-record--field-label">
+                      <p>
+                        <%= label_tag input[:name], input[:name].humanize %>
+                        <% if input[:required] == true %>
+                          <span>*</span>
+                        <% end %>
+                      </p>
+                    </div>
+                    <div class="col-sm-7 table--add-record--field-input">
+                      <div class="">
+                        <%= add_record_field_input(input, record[input[:name]], record['id']) %>
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
               </div>
             <% end %>
-            ---------------------
-          <% end %>
-          <div class="row">
-            <div class="col-sm-12">
-              <p>
-                * Indicates field is mandatory for import any records missing a mandatory field will be excluded and you will be able to download an exception report.
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="record--save-btn">
-                <%= hidden_field_tag(:table, @current_table) %>
-                <%= hidden_field_tag(:database_id, @database.id) %>
-                <%= submit_tag('Save', class: 'btn btn-primary btn--save-record') %>
+            <div class="row">
+              <div class="col-sm-12">
+                <p>
+                  <%= t('record.mandatory_field_indication') %>
+                </p>
               </div>
             </div>
-          </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="record--save-btn">
+                  <%= hidden_field_tag(:table, @current_table) %>
+                  <%= hidden_field_tag(:database_id, @database.id) %>
+                  <%= submit_tag('Save', class: 'btn btn-primary btn--save-record') %>
+                </div>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       </div>
     </div>

@@ -7,6 +7,10 @@ module License
     VerifyLicenseKeyService.verify(license_key)
   end
 
+  def activate_license(license_key)
+    VerifyLicenseKeyService.activate(license_key)
+  end
+
   def license_valid?
     return false unless current_organisation&.license_key_present?
 

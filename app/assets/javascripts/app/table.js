@@ -94,7 +94,6 @@ function loadDataTable (columns) {
     scrollX: true,
     serverSide: true,
     processing: false,
-    responsive: true,
     pagingType: "simple_numbers",
     language: {
       paginate: {

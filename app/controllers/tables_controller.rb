@@ -18,7 +18,8 @@ class TablesController < ApplicationController
 
   def index
     database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
-    @available_tables = database_tables.select { |table| current_admin_user.permission?(:view, table, @database.id) }
+
+    @available_tables = tables_with_view_permission(@database.id, database_tables)
 
     respond_to do |format|
       format.js { render json: @available_tables.sort.to_json }
@@ -100,7 +101,7 @@ class TablesController < ApplicationController
   def edit_record
     set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
-    editable_columns_for_form(@table_settings.editable_fields)
+    editable_columns_for_form
     @records = []
     params[:records_array].each do |record_id|
       record = @target_db.find(@table, record_id)
@@ -159,6 +160,12 @@ class TablesController < ApplicationController
 
     flash[:alert] = 'You do not have sufficient permissions to access that table'
     redirect_to(dashboard_path)
+  end
+
+  def tables_with_view_permission(database_id, tables)
+    Rails.cache.fetch("permissions/#{current_admin_user.id}_#{database_id}_viewable_tables", expires_in: 10.days) do
+      tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
+    end
   end
 
   def target_db
@@ -232,6 +239,7 @@ class TablesController < ApplicationController
 
   def set_columns_for_form
     columns = @target_db.table_columns(@table)
+    editable_fields = @table_settings.editable_fields
     @inputs = []
 
     columns.map do |column|
@@ -240,13 +248,14 @@ class TablesController < ApplicationController
       @inputs << {
         name: column.name,
         type: column.type,
-        required: !column.null
+        required: !column.null || editable_fields[column.name]['mandatory']
       }
     end
   end
 
-  def editable_columns_for_form(editable_fields)
+  def editable_columns_for_form
     columns = @target_db.table_columns(@table)
+    editable_fields = @table_settings.editable_fields
     @inputs = []
 
     columns.map do |column|
