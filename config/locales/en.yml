@@ -31,3 +31,5 @@
 
 en:
   hello: "Hello world"
+  record:
+    mandatory_field_indication: "* Indicates field is mandatory for creating/editing any records."
