@@ -68,12 +68,12 @@ function loadEnjoyhint1() {
       completeTour();
     }
   });
-  let description = "<p>" + "Welcome to Kuwinda." + "<br/>" +
+  let description = "<p>" + "Welcome to MissionKontrol." + "<br/>" +
   "We’d love to show you around quickly." +
   "We have the app connected to a dummy database for a very basic events app." + "<br /><br />" +
   "Click on the tables to show tables available from the database" + "</p>";
 
-  let descriptionTables = "<p>" + "When first setting up Kuwinda, it automatically finds all the tables available to it in your database and presents them here." + "<br/><br />" +
+  let descriptionTables = "<p>" + "When first setting up MissionKontrol, it automatically finds all the tables available to it in your database and presents them here." + "<br/><br />" +
   "Click on users to see the users table." + "</p>";
 
   var enjoyhintScriptSteps = [
@@ -98,7 +98,7 @@ function loadEnjoyhint2() {
     }
   });
 
-  let description = "<p>" + "By default Kuwinda will show all the fields that it can find in the table, you can change this later." + "<br/>" +
+  let description = "<p>" + "By default MissionKontrol will show all the fields that it can find in the table, you can change this later." + "<br/>" +
   "Click on the first user to look at that user in a bit more detail." + "</p>";
 
   var enjoyhintScriptSteps = [
