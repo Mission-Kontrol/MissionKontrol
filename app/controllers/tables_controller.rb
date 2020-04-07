@@ -18,7 +18,8 @@ class TablesController < ApplicationController
 
   def index
     database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
-    @available_tables = database_tables.select { |table| current_admin_user.permission?(:view, table, @database.id) }
+
+    @available_tables = tables_with_view_permission(@database.id, database_tables)
 
     respond_to do |format|
       format.js { render json: @available_tables.sort.to_json }
@@ -159,6 +160,12 @@ class TablesController < ApplicationController
 
     flash[:alert] = 'You do not have sufficient permissions to access that table'
     redirect_to(dashboard_path)
+  end
+
+  def tables_with_view_permission(database_id, tables)
+    Rails.cache.fetch("permissions/#{current_admin_user.id}_#{database_id}_viewable_tables", expires_in: 10.days) do
+      tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
+    end
   end
 
   def target_db
