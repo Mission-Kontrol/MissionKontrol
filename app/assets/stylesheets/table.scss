@@ -93,9 +93,19 @@
   }
 }
 
-div.dataTables_wrapper div.dataTables_filter input {
-  width: 80% !important;
-  margin-left: 0;
+div.dataTables_wrapper div.dataTables_filter {
+  input {
+    width: 80% !important;
+    margin-left: 0;
+    color: transparent;
+  }
+
+  input:focus {
+    background-image: none;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+    border-color: $blueberry;
+    color: $purplish-grey;
+  }
 }
 
 div.dataTables_wrapper div.dataTables_filter label {
@@ -122,10 +132,14 @@ div.dataTables_wrapper div.dataTables_filter label {
     background-size: auto;
     background-origin: content-box;
     background-clip: border-box;
+    color: transparent;
   }
 
   input:focus {
     background-image: none;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+    border-color: $blueberry;
+    color: $purplish-grey;
   }
 }
 
