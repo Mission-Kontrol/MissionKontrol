@@ -13,12 +13,12 @@ class VerifyLicenseKeyService
       activate(license_key)
     end
 
-    private
-
     def activate(license_key)
       response = call("/activate/#{license_key}")
       response.code == 200
     end
+
+    private
 
     def call(endpoint)
       base_url = 'https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses'

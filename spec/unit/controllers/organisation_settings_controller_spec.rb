@@ -29,10 +29,17 @@ describe OrganisationSettingsController, type: :controller, js: true do
 
   describe '#update' do
     subject { post :update, params: params, format: :js }
+    let(:params) do
+      {
+        id: organisation_setting.id,
+        organisation_setting: {
+          company_name: 'Name',
+          license_key: organisation_setting.license_key
+        }
+      }
+    end
 
     context 'when the target db credentials have not changed' do
-      let(:params) { { id: organisation_setting.id, organisation_setting: { company_name: 'Name' } } }
-
       it 'assigns the organisation setting' do
         subject
 
@@ -45,7 +52,8 @@ describe OrganisationSettingsController, type: :controller, js: true do
         {
           id: organisation_setting.id,
           organisation_setting: {
-            company_name: 'Name'
+            company_name: 'NewName',
+            license_key: organisation_setting.license_key
           }
         }
       end
@@ -53,7 +61,35 @@ describe OrganisationSettingsController, type: :controller, js: true do
       it 'updates the organisation' do
         subject
 
-        expect(OrganisationSetting.find(organisation_setting.id).company_name).to eq('Name')
+        expect(OrganisationSetting.find(organisation_setting.id).company_name).to eq('NewName')
+      end
+    end
+
+    context 'when the organisation license_key has changed and is invalid' do
+      let(:params) do
+        {
+          id: organisation_setting.id,
+          organisation_setting: {
+            company_name: 'NewName',
+            license_key: '2222222'
+          }
+        }
+      end
+
+      it 'assigns @invalid_key' do
+        VCR.use_cassette('license_key/valid_exceeded_activation') do
+          subject
+
+          expect(assigns(:invalid_key)).to eq true
+        end
+      end
+
+      it 'does not update the organisation' do
+        VCR.use_cassette('license_key/valid_exceeded_activation') do
+          subject
+
+          expect(OrganisationSetting.find(organisation_setting.id).company_name).not_to eq 'NewName'
+        end
       end
     end
   end

@@ -1,1 +1,7 @@
-toastr.success('Settings have been successfully updated.');
+ <% if @invalid_key %>
+  toastr.error("<%= t('errors.unable_to_activate_license_key') %>")
+<% elsif @result %>
+  toastr.success("<%= t('successes.have_been_successfully_updated', model: 'Settings') %>");
+<% else %>
+  toastr.error("<%= t('errors.unable_to_save', model: 'settings') %>");
+<% end %>

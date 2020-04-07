@@ -19,7 +19,7 @@ class DashboardController < ApplicationController
 
   def verify_license
     license_key = params[:license_key]
-    license_valid = verify_license!(license_key)
+    license_valid = activate_license(license_key)
 
     if license_valid && AdminUser.count.zero?
       save_license(license_key: license_key, full_license: false)
