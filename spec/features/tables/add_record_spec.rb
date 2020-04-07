@@ -2,7 +2,7 @@
 
 feature 'Adding records with sufficient permissions', js: true do
   background do
-    sign_in_admin_user_with_full_permissions('attending_events')
+    sign_in_admin_user_with_complete_table_settings('attending_events')
   end
 
   scenario 'with a single record selected creates the record' do
