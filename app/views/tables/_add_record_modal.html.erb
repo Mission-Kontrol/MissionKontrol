@@ -16,23 +16,27 @@
       <div class="modal--content">
 
         <%= form_tag("/table/create_record", method: "post", remote: true) do %>
-          <% @inputs.each do |input| %>
-            <div class="row">
-              <div class="col-sm-8 table--add-record--field-label">
-                <p>
-                  <%= label_tag input[:name], input[:name].humanize %>
-                  <% if input[:required] == true %>
-                    <span>*</span>
-                  <% end %>
-                </p>
-              </div>
-              <div class="col-sm-4 table--add-record--field-input">
-                <div class="">
-                  <%= add_record_field_input(input) %>
+          <div class="add--record-panel panel panel-default show">
+            <div class="panel-body row">
+              <% @inputs.each do |input| %>
+                <div class="row">
+                  <div class="col-sm-5 table--add-record--field-label">
+                    <p>
+                      <%= label_tag input[:name], input[:name].humanize %>
+                      <% if input[:required] == true %>
+                        <span>*</span>
+                      <% end %>
+                    </p>
+                  </div>
+                  <div class="col-sm-7 table--add-record--field-input">
+                    <div class="">
+                      <%= add_record_field_input(input) %>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             </div>
-          <% end %>
+          </div>
           <div class="row">
             <div class="col-sm-12">
               <p>
