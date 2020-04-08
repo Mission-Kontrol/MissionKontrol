@@ -256,7 +256,7 @@ Naming/PredicateName:
 
 Style/AndOr:
   Exclude:
-    - 'app/controllers/databases_controller.rb'
+    - 'app/controllers/concerns/database_actions.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

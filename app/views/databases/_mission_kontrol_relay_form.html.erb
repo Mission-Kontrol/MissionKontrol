@@ -22,7 +22,7 @@
 
   <div class="row">
     <div class="col-sm-11">
-      <%= f.submit "Test connection", class: "btn btn-primary m-b pull-right", id: "test-gem-connection" %>
+      <%= f.submit "Test gem", class: "btn btn-primary m-b pull-right", id: "test-gem-connection" %>
       <% if @database.persisted? %>
         <%= f.submit "Remove gem", class: "btn btn-danger m-b pull-right margin-right", id: "remove-gem-connection", data: { confirm: "Are you sure?" } %>
       <% end %>

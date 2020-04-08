@@ -219,6 +219,59 @@ describe DatabasesController, type: :controller, js: true do
         expect(target_table_setting.editable_fields['name']).to eq nil
       end
     end
+
+    context 'with mission_kontrol_relay gem credentials' do
+      let(:params) { { id: database.id, database: { domain_url: 'https://domain_url.org', gem_token: 'gem_token' } } }
+
+      context 'when submitting valid credentials' do
+        it 'updates the database' do
+          subject
+
+          database.reload
+          expect(database.domain_url).to eq 'https://domain_url.org'
+        end
+      end
+
+      xcontext 'when testing connection' do
+        let(:params) do
+          {
+            id: database.id,
+            database: { domain_url: 'https://domain_url.org', gem_token: 'gem_token' },
+            commit: 'Test gem'
+          }
+        end
+
+        it 'renders test_gem template' do
+          subject
+
+          expect(response).to render_template :test_gem
+        end
+
+        it 'assigns active_connection as true if active' do
+          subject
+
+          expect(assigns(:active_connection)).to eq true
+        end
+      end
+
+      context 'when removing gem connection' do
+        let(:database) { create(:database, domain_url: 'https://domain_url.org', gem_token: 'gem_token') }
+        let(:params) do
+          {
+            id: database.id,
+            commit: 'Remove gem'
+          }
+        end
+
+        it 'deletes the gem credentials from the database' do
+          subject
+
+          database.reload
+          expect(database.domain_url).to eq nil
+          expect(database.gem_token).to eq nil
+        end
+      end
+    end
   end
 
   describe '#destroy' do
