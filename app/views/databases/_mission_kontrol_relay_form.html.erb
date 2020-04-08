@@ -1,0 +1,39 @@
+<%= form_for(@database, remote: true) do |f| %>
+  <div class="row flex">
+    <div class="col-sm-4">
+      <h2 class="medium">MissionKontrolRelay Gem</h2>
+      <h4>MissionKontrolRelay is ruby gem you can install on an application related to your database.</h4>
+      <br>
+      <h4>The token required for the connection will be created when you install the gem.</h4>
+      <br>
+      <h4>Find more information <a href="https://www.rubydoc.info/gems/mission_kontrol_relay/">here</a>
+    </div>
+     <div class="col-sm-8 align-self-center">
+      <div class="form-group">
+        <%= f.label :domain_url %>
+        <%= f.text_field :domain_url, autofocus: true, class: "form-control", placeholder: "" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :gem_token %>
+        <%= f.text_field :gem_token, autofocus: true, class: "form-control", placeholder: "" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-11">
+      <%= f.submit "Test connection", class: "btn btn-primary m-b pull-right", id: "test-gem-connection" %>
+      <% if @database.persisted? %>
+        <%= f.submit "Remove gem", class: "btn btn-danger m-b pull-right margin-right", id: "remove-gem-connection", data: { confirm: "Are you sure?" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-8">
+    </div>
+    <div class="col-sm-3">
+      <%= f.submit "Save", class: "btn btn-primary m-b pull-right" %>
+    </div>
+  </div>
+<% end %>

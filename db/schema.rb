@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200325153714) do
+ActiveRecord::Schema.define(version: 20200408133632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 20200325153714) do
     t.integer "port", null: false
     t.string "name"
     t.string "friendly_name"
+    t.string "domain_url"
+    t.string "gem_token"
   end
 
   create_table "organisation_settings", force: :cascade do |t|
