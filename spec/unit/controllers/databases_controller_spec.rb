@@ -232,7 +232,15 @@ describe DatabasesController, type: :controller, js: true do
         end
       end
 
-      xcontext 'when testing connection' do
+      context 'when testing connection' do
+        before do
+          VCR.turn_off!
+          stub_request(:get, 'https://domain_url.org/models/associations?token=gem_token')
+            .to_return(status: 200, body: '', headers: {})
+        end
+
+        after { VCR.turn_on! }
+
         let(:params) do
           {
             id: database.id,
@@ -247,10 +255,26 @@ describe DatabasesController, type: :controller, js: true do
           expect(response).to render_template :test_gem
         end
 
-        it 'assigns active_connection as true if active' do
+        it 'assigns active_gem_connection as true if active' do
           subject
 
-          expect(assigns(:active_connection)).to eq true
+          expect(assigns(:active_gem_connection)).to eq true
+        end
+
+        context 'and connection is not successful' do
+          before do
+            VCR.turn_off!
+            stub_request(:get, 'https://domain_url.org/models/associations?token=gem_token')
+              .to_return(status: 500, body: '', headers: {})
+          end
+
+          after { VCR.turn_on! }
+
+          it 'assigns active_gem_connection to false' do
+            subject
+
+            expect(assigns(:active_gem_connection)).to eq false
+          end
         end
       end
 

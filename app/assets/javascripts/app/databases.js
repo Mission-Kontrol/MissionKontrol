@@ -6,8 +6,8 @@ function submitPasswordChange () {
 
 function clearGemCredentials () {
   $("#remove-gem-connection").on("click", function () {
-    $("#database_domain_url").val('');
-    $("#database_gem_token").val('');
+    $("#database_domain_url").val("");
+    $("#database_gem_token").val("");
   });
 }
 

@@ -2,6 +2,7 @@
 
 module DatabaseActions
   extend ActiveSupport::Concern
+  include HTTParty
 
   private
 
@@ -62,6 +63,17 @@ module DatabaseActions
     connection.active?
   rescue PG::ConnectionBad
     false
+  end
+
+  def test_gem_connection
+    base_url = database_params_update[:domain_url]
+    query = {
+      token: database_params_update[:gem_token]
+    }
+
+    response = HTTParty.get(base_url + '/models/associations', query: query)
+    @active_gem_connection = response.code == 200
+    render :test_gem and return
   end
 
   def remove_gem_connection
