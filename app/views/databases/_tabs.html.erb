@@ -1,0 +1,31 @@
+
+<div class="wrapper wrapper-content animated">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="tabs-container">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a class="nav-link active" data-toggle="tab" href="#settings-tab--general">General</a></li>
+              <% if @database.persisted? %>
+                <li><a class="nav-link" data-toggle="tab" href="#settings-tab--mkr">MissionKontrolRelay</a></li>
+              <% end %>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" id="settings-tab--general" class="tab-pane active">
+                <div class="panel-body">
+                  <%= render 'credentials_form' %>
+                </div>
+              </div>
+              <div role="tabpanel" id="settings-tab--mkr" class="tab-pane">
+                <div class="panel-body">
+                  <%= render 'mission_kontrol_relay_form' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

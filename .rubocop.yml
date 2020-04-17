@@ -16,6 +16,9 @@ Documentation:
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature']
 
+Metrics/ModuleLength:
+  Max: 105
+
 Layout/IndentFirstArrayElement:
   Exclude:
     - 'db/seeds.rb'

@@ -1,6 +1,5 @@
 <% if @result %>
-  window.location.assign('/permissions');
-  toastr.success('Database has been successfully updated.')
+  toastr.success("<%= t('successes.has_been_successfully_updated', model: 'Database') %>");
 <% else %>
-  toastr.error('Unable to save database. Please check your credentials and try again.');
+  toastr.error("<%= t('errors.unable_to_save', model: 'database') %>");
 <% end %>

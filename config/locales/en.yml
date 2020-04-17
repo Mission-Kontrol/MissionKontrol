@@ -33,9 +33,10 @@ en:
   hello: "Hello world"
   errors:
     unable_to_activate_license_key: "Unable to activate the license key. Please check this is a valid key."
-    unable_to_save: "Unable to save %{model}. Please try again."
+    unable_to_save: "Unable to save %{model}. Please check your details and try again."
   organisation_settings:
   record:
     mandatory_field_indication: "* Indicates field is mandatory for creating/editing any records."
   successes:
     have_been_successfully_updated: "%{model} have been successfully updated."
+    has_been_successfully_updated: "%{model} has been successfully updated."

@@ -8,7 +8,7 @@ require 'vcr'
 require 'codacy-coverage'
 
 Codacy::Reporter.start
-# WebMock.disable_net_connect!(allow_localhost: true)
+WebMock.disable_net_connect!(allow_localhost: true)
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/cassettes'

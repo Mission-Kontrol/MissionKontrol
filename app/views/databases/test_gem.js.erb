@@ -1,0 +1,5 @@
+<% if @active_gem_connection %>
+  toastr.success('Gem connection successful.')
+<% else %>
+  toastr.error('Unable to connect to your application. Please check your credentials and try again.');
+<% end %>
