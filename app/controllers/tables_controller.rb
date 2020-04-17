@@ -285,9 +285,10 @@ class TablesController < ApplicationController
 
   def update_editable_fields(settings, params)
     params.each do |field|
-      settings.editable_fields[field] = {
-        editable: ActiveModel::Type::Boolean.new.cast(params[field]['editable']),
-        mandatory: ActiveModel::Type::Boolean.new.cast(params[field]['mandatory'])
+      value = field.first
+      settings.editable_fields[value] = {
+        editable: ActiveModel::Type::Boolean.new.cast(params[value]['editable']),
+        mandatory: ActiveModel::Type::Boolean.new.cast(params[value]['mandatory'])
       }
     end
   end

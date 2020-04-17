@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 
-gem 'rails', '5.1.7'
+gem 'rails', '5.2.4.2'
 
 gem 'bcrypt'
 gem 'bootstrap-sass', '>= 3.4.1'
