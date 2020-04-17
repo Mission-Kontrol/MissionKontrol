@@ -105,7 +105,7 @@
                     <td>
                       <div class="table--settings-dropdown">
                         <div class="form-control dropdown">
-                          <%= select_tag "[editable_fields][#{field}][editable]", options_for_select([ ["Yes", true], ["No", false] ], @table_settings.editable_fields[field]["editable"]), { class: "table--settings-nested-select" } %>
+                          <%= select_tag "[editable_fields][#{field}][editable]", options_for_select([ ["Yes", true], ["No", false] ], @table_settings.editable_fields[field]["editable"]), { class: "table--settings-select" } %>
                         </div>
                       </div>
                     </td>

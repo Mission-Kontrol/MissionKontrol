@@ -13,7 +13,7 @@ class TablesController < ApplicationController
 
   before_action :target_db, except: :index
   before_action :set_main_table, only: :show
-  before_action :set_nested_table, except: %i[add_record create_record index delete_record]
+  before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings]
   before_action :check_user_permissions, only: %i[show]
 
   def index
