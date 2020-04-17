@@ -60,5 +60,5 @@ group :test do
   gem 'shoulda-matchers'
   gem 'vcr', '~> 4.0.0'
   gem 'webmock', '~> 3.8.3'
-  gem 'with_model', '~> 2.0.0'
+  gem 'with_model', '~> 2.1.3'
 end
