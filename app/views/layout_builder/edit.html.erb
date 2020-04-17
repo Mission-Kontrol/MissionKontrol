@@ -7,7 +7,7 @@
 <div class="row border-bottom white-bg m-b">
   <div class="col-sm-12">
     <div class="text-right p-h-xs">
-      <%= link_to "Preview", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: @row) %>
+      <%= link_to "Preview", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: @row, database_id: @database.id) %>
     </div>
   </div>
 </div>

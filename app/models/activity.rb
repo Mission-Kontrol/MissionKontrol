@@ -2,10 +2,11 @@
 
 class Activity < ApplicationRecord
   KINDS = %w[note call].freeze
-  FEEDABLE_TYPES = Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+  ## TODO: Figure out the feedable_types based on database?
+  # FEEDABLE_TYPES = Kuwinda::Presenter::ListAvailableTables.new(@database_connection).call
 
   validates :content, presence: true
   validates :kind, presence: true, inclusion: { in: KINDS }
   validates :feedable_id, presence: true
-  validates :feedable_type, presence: true, inclusion: { in: FEEDABLE_TYPES }
+  # validates :feedable_type, presence: true, inclusion: { in: FEEDABLE_TYPES }
 end

@@ -25,7 +25,8 @@ getOptionsForDraggable = function (primaryTable) {
     url: "/layouts/table_fields_with_type",
     type: "GET",
     data: {
-      table: primaryTable
+      table: primaryTable,
+      id: location.pathname.substr(1).split("/")[1]
     },
     async: true,
     dataType: "json",
@@ -127,7 +128,8 @@ getFieldsWithType = function (table) {
     url: "/layouts/table_fields_with_type",
     type: "GET",
     data: {
-      table
+      table,
+      id: location.pathname.substr(1).split("/")[1]
     },
     async: true,
     dataType: "json",

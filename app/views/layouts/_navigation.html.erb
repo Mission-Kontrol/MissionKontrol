@@ -71,14 +71,8 @@
         </li>
       <% end %>
 
-      <li class="<%= active_controller?('layout_builder') %> hide">
-        <%= link_to layouts_path do %>
-          <span class="nav-label" data-i18n="nav.layouts">Layouts</span>
-        <% end %>
-      </li>
-
       <% if current_admin_user.admin_abilities? %>
-        <li class="<%= active_controller?('organisation_settings') || active_controller?('admin_users') || active_controller?('databases') || active_controller?('permissions') %>">
+        <li class="<%= active_controller?('organisation_settings') || active_controller?('layout_builder') || active_controller?('admin_users') || active_controller?('databases') || active_controller?('permissions') %>">
           <a href="" id="nav-link-for-tables">
             <span class="nav-label" data-i18n="nav.layouts">SETTINGS</span> <span class="fa arrow"></span>
           </a>
@@ -97,6 +91,11 @@
             <li class="<%= active_controller?('permissions') %>">
               <%= link_to permissions_path, id: "nav-link-for-user-settings" do %>
                 <%= image_tag('/assets/images/icons/database-1.png') %>  Permissions
+              <% end %>
+            </li>
+            <li class="<%= active_controller?('layout_builder') %>">
+              <%= link_to layouts_path do %>
+                <%= image_tag('/assets/images/icons/settings-1.png') %> Layouts
               <% end %>
             </li>
             <li class="<%= active_controller?('databases') %>">

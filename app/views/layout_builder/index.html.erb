@@ -11,26 +11,28 @@
       </li>
     </ol>
   </div>
-  <div class="col-sm-2 pull-right margin-top-nav">
-    <%= link_to('Add new', new_layout_path, html_options = { class: "btn btn-info" }) %>
-  </div>
+  
 </div>
 
 <div class="wrapper wrapper-content animated ">
   <div class="row">
     <div class="col-sm-12">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content">
-          <table class="table table-hover">
+      <% @databases.each do |database| %>
+        <button class="accordion"><%= database.friendly_name %><span class="float-right"><img src="/assets/images/icons/plus-thick.png"></span></button>
+        <div class="panel">
+          <div class="col-sm-2 pull-right margin-top-nav">
+            <%= link_to('Add new', new_layout_path(database_id: database.id), html_options = { class: "btn btn-info" }) %>
+          </div>
+          <table id="table-layouts-<%= database.id %>" class="table" data-database-id="<%= database.id %>">
             <thead>
               <tr>
-                <th>Layout name</th>
-                <th>Layout table</th>
+                <th>Table</th>
+                <th>Layout</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <% @view_builders.each do |view_builder| %>
+              <% @view_builders.select { |view_builder| view_builder.database_id == database.id }.each do |view_builder| %>
                 <tr>
                   <td><%= view_builder.view_name %></td>
                   <td><%= view_builder.table_name %></td>
@@ -38,11 +40,42 @@
                     <%= link_to('Settings', edit_layout_path(view_builder.id), html_options = { class: "btn btn-info" }) %>
                   </td>
                 </tr>
-              <% end %>
+              <% end if @view_builders %>
             </tbody>
           </table>
+          <br />
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% if false %>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Layout name</th>
+                  <th>Layout table</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @view_builders.each do |view_builder| %>
+                  <tr>
+                    <td><%= view_builder.view_name %></td>
+                    <td><%= view_builder.table_name %></td>
+                    <td>
+                      <%= link_to('Settings', edit_layout_path(view_builder.id), html_options = { class: "btn btn-info" }) %>
+                    </td>
+                  </tr>
+                <% end if @view_builders %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

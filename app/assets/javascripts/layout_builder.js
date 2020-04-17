@@ -178,28 +178,28 @@ function getContainerParam(containerId) {
   }
 }
 
-function saveLayout(name, primaryTable, ignoreModal) {
-  var layoutID;
-  var redirectURL;
+// function saveLayout(name, primaryTable, ignoreModal) {
+//   var layoutID;
+//   var redirectURL;
 
-  $.ajax({
-    url: "/layouts",
-    type: "POST",
-    data: {
-      table: primaryTable,
-      view_name: name,
-      ignore_modal: ignoreModal
-    },
-    error: function(XMLHttpRequest, errorTextStatus, error){
-              alert("Failed: "+ errorTextStatus+" ;"+error);
-           },
-    success: function(response, status, request){
-      layoutID = response.id;
-      redirectURL = "/layouts/" + layoutID + "/edit";
-      window.location.replace(redirectURL);
-    }
-  });
-}
+//   $.ajax({
+//     url: "/layouts",
+//     type: "POST",
+//     data: {
+//       table: primaryTable,
+//       view_name: name,
+//       ignore_modal: ignoreModal
+//     },
+//     error: function(XMLHttpRequest, errorTextStatus, error){
+//               alert("Failed: "+ errorTextStatus+" ;"+error);
+//            },
+//     success: function(response, status, request){
+//       layoutID = response.id;
+//       redirectURL = "/layouts/" + layoutID + "/edit";
+//       window.location.replace(redirectURL);
+//     }
+//   });
+// }
 
 function updateLayoutRelatedTables(el) {
   let data = {};
@@ -216,15 +216,16 @@ function updateLayoutRelatedTables(el) {
   });
 }
 
-function goToNextScreen() {
-  $("#layout-builder-modal-screen-1").toggleClass("hide");
-  // $("#layout-builder-modal-screen-2").toggleClass("hide");
-}
+// function goToNextScreen() {
+//   debugger
+//   $("#layout-builder-modal-screen-1").toggleClass("hide");
+//   // $("#layout-builder-modal-screen-2").toggleClass("hide");
+// }
 
-function goToPreviousScreen() {
-  $("#layout-builder-modal-screen-1").toggleClass("hide");
-  // $("#layout-builder-modal-screen-2").toggleClass("hide");
-}
+// function goToPreviousScreen() {
+//   $("#layout-builder-modal-screen-1").toggleClass("hide");
+//   // $("#layout-builder-modal-screen-2").toggleClass("hide");
+// }
 
 function showFieldSettingsFormScreen2() {
   $("#layout_builder_field_settings_form_screen_1").addClass("hide");
@@ -446,6 +447,8 @@ function removeRelatedTable() {
   })
 }
 
+
+
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerLayout = metaTag.attr("controller") === "layout_builder";
@@ -533,20 +536,13 @@ $(document).ready(function() {
       showFieldSettingsFormScreen2();
     });
 
-    $("#layout-builder-modal-next-button").click(function() {
-      goToNextScreen();
-    });
+    // $("#layout-builder-modal-next-button").click(function() {
+    //   goToNextScreen();
+    // });
 
-    $("#layout-builder-modal-back-button").click(function() {
-      goToPreviousScreen();
-    });
-
-    $("#layout-builder-modal-save-button").click(function() {
-      var ignoreModal = $("#layout-builder-modal-ignore-checkbox").is(":checked");
-      var layoutName = document.getElementById("layout-builder-modal-form-name").value;
-      var layoutPrimaryTable = document.getElementById("layout-builder-modal-form-primary-table").value;
-      saveLayout(layoutName, layoutPrimaryTable, ignoreModal);
-    });
+    // $("#layout-builder-modal-back-button").click(function() {
+    //   goToPreviousScreen();
+    // });
 
     let currentTable = $("#view_builder_table_name").data("table-name");
 

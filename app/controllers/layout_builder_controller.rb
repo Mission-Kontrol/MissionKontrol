@@ -6,16 +6,24 @@ class LayoutBuilderController < ApplicationController
   layout 'layout_builder', only: [:new, :edit]
   layout 'standard', only: [:index, :preview]
   skip_before_action :verify_authenticity_token
-  before_action :load_available_tables,
-                :authenticate_admin_user!
+  # before_action :load_available_tables,
+  #               :authenticate_admin_user!
+  before_action :authenticate_admin_user!
   before_action :load_task_queues, only: %i[show preview]
   before_action :check_user_editor_abilities
+  before_action :set_database, only: %i[new create]
+
+  def index
+    @databases = Database.all
+    @view_builders = ViewBuilder.all
+  end
 
   def new
     @available_tables = available_tables
     @tables_with_layouts = tables_with_layouts
-    @view_builder = ViewBuilder.new(table_name: field_params[:table])
+    @view_builder = ViewBuilder.new(table_name: field_params[:table], database_id: @database.id)
 
+    ## TODO: Display the second modal here instead of edit as table still needs to be selected?
     if current_admin_user.ignore_layout_modal?
       if @view_builder.save!
         redirect_to action: 'edit', id: @view_builder.id
@@ -28,12 +36,26 @@ class LayoutBuilderController < ApplicationController
   end
 
   def table_fields_with_type
+    @view_builder = ViewBuilder.find(params[:id])
+    @database = Database.find(@view_builder.database_id)
+    @database_connection = database_connection
     @fields_with_type = list_table_fields_with_type(params[:table])
     render json: @fields_with_type.sort
   end
 
+  def edit
+    @view_builder = ViewBuilder.find(params[:id])
+    @database = Database.find(@view_builder.database_id)
+    @database_connection = database_connection
+    @available_tables = available_tables
+    @relatable_tables = relatable_tables(@view_builder.table_name)
+    @fields_with_type = list_table_fields_with_type(@view_builder.table_name)
+    @target_db = Kuwinda::Repository::TargetDB.new(@database_connection)
+    @row = @target_db.all(@view_builder.table_name, 1).rows.first.first
+  end
+
   def create
-    @view_builder = ViewBuilder.find_or_create_by(table_name: field_params[:table])
+    @view_builder = ViewBuilder.find_or_create_by(table_name: field_params[:table], database_id: @database.id)
 
     if @view_builder.save!
       if current_admin_user.ignore_layout_modal.to_s != field_params[:ignore_modal]
@@ -77,14 +99,6 @@ class LayoutBuilderController < ApplicationController
     end
   end
 
-  def edit
-    @view_builder = ViewBuilder.find(params[:id])
-    @relatable_tables = relatable_tables(@view_builder.table_name)
-    @fields_with_type = list_table_fields_with_type(@view_builder.table_name)
-    @target_db = Kuwinda::Repository::TargetDB.new(@view_builder.table_name)
-    @row = @target_db.all(1).rows.first.first
-  end
-
   def preview
     @layout_builder = ViewBuilder.find(params[:id])
     @target_db = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
@@ -105,8 +119,43 @@ class LayoutBuilderController < ApplicationController
 
   private
 
+  def set_database
+    @database = Database.find(params[:database_id])
+  end
+
+  def database_connection
+    @database_connection = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
+  end
+
   def load_view_builder
     @view_builder = ViewBuilder.find(params[:id])
+  end
+
+  ## TODO: these three are duplicate, move into concern
+  def relatable_tables(table)
+    Kuwinda::Presenter::ListRelatableTables.new(@database_connection, table).call
+  end
+
+  def set_relatable_tables
+    @relatable_tables = []
+
+    relatable_tables(@current_table).each do |table|
+      layout = ViewBuilder.find_by_table_name(table)
+      relative = {}
+      # @target_db.table = table
+      foreign_key_title = helpers.get_foreign_key(params[:table_name])
+      foreign_key_value = params[:record_id]
+      sql_result = @target_db.find_all_related(table, foreign_key_title, foreign_key_value, 10, 0)
+      relative[:headers] = sql_result ? sql_result.columns : []
+      relative[:name] = table
+      @relatable_tables << relative
+    end
+
+    @relatable_tables
+  end
+
+  def list_table_fields_with_type(table)
+    Kuwinda::Presenter::ListTableFieldsWithType.new(@database_connection, table).call
   end
 
   def tables_with_layouts
@@ -118,7 +167,8 @@ class LayoutBuilderController < ApplicationController
   end
 
   def available_tables
-    Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
+    Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
+    # Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
   end
 
   def field_params
