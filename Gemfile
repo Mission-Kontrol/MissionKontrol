@@ -25,7 +25,7 @@ gem 'uglifier', '~> 4.2.0'
 gem 'pg', '~> 1.2'
 gem 'mysql2', '~> 0.4.10'
 gem 'clockwork', '~> 2.0'
-gem 'twilio-ruby', '~> 5.17.0'
+gem 'twilio-ruby', '~> 5.33.1'
 
 group :development, :test do
   gem 'dotenv-rails'
