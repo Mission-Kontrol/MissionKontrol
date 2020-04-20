@@ -121,6 +121,9 @@ class TablesController < ApplicationController
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
   rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
+  rescue ActiveRecord::StatementInvalid
+    @error = :Unknown
+    @error_message = 'Unable to save record. Please check your values and try again'
   end
 
   def update_record
@@ -143,6 +146,9 @@ class TablesController < ApplicationController
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
   rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
+  rescue ActiveRecord::StatementInvalid
+    @error = :Unknown
+    @error_message = 'Unable to save record. Please check your values and try again'
   end
 
   def delete_record
