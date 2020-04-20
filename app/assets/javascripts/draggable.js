@@ -137,13 +137,12 @@ saveDraggableContainer = function (dragEvent, containerId) {
 }
 
 updateDraggableFieldsContainer = function (data) {
-  $("#layout-builder-draggable-fields-container").html("");
+  $("#sv_builder_primary_table_draggable_fields_container").html("");
   for (var i = 0; i < data.length; i++) {
     var field = {};
     field["title"] = data[i][0];
     field["kind"] = data[i][1];
     field["table"] = data[i][2];
-
     let draggableField = buildDraggableField(field);
 
     //
@@ -151,19 +150,19 @@ updateDraggableFieldsContainer = function (data) {
     // contianer does not already inlcude a dragable item with the same field name.
     //
 
-    if (containerDataContainsField("layout-builder-draggable-header-container1", field.title)) {
-      if (!containerContainsDraggableItem("#layout-builder-draggable-header-container1", field.title)) {
-        $("#layout-builder-draggable-header-container1").append(draggableField);
-      }
-    } else if (containerDataContainsField("layout-builder-draggable-header-container2", field.title)) {
-      if (!containerContainsDraggableItem("#layout-builder-draggable-header-container2", field.title)) {
-        $("#layout-builder-draggable-header-container2").append(draggableField);
-      }
-    } else if (containerDataContainsField("layout-builder-draggable-side-container", field.title)) {
-      if (!containerContainsDraggableItem("#layout-builder-draggable-side-container", field.title)) {
-        $("#layout-builder-draggable-side-container").append(draggableField);
-      }
-    } else if (containerDataContainsField("layout-builder-draggable-main-container1", field.title)) {
+    // if (containerDataContainsField("layout-builder-draggable-header-container1", field.title)) {
+    //   if (!containerContainsDraggableItem("#layout-builder-draggable-header-container1", field.title)) {
+    //     $("#layout-builder-draggable-header-container1").append(draggableField);
+    //   }
+    // } else if (containerDataContainsField("layout-builder-draggable-header-container2", field.title)) {
+    //   if (!containerContainsDraggableItem("#layout-builder-draggable-header-container2", field.title)) {
+    //     $("#layout-builder-draggable-header-container2").append(draggableField);
+    //   }
+    // } else if (containerDataContainsField("layout-builder-draggable-side-container", field.title)) {
+    //   if (!containerContainsDraggableItem("#layout-builder-draggable-side-container", field.title)) {
+    //     $("#layout-builder-draggable-side-container").append(draggableField);
+    //   }
+    if (containerDataContainsField("layout-builder-draggable-main-container1", field.title)) {
       if (!containerContainsDraggableItem("#layout-builder-draggable-main-container1", field.title)) {
         $("#layout-builder-draggable-main-container1").append(draggableField);
       }
@@ -180,7 +179,7 @@ updateDraggableFieldsContainer = function (data) {
         $("#task-queue-draggable-field-settings-container").append(draggableField);
       }
     } else {
-      $("#layout-builder-draggable-fields-container").append(draggableField);
+      $("#sv_builder_primary_table_draggable_fields_container").append(draggableField);
     }
   }
 }
@@ -190,7 +189,7 @@ isDataContainer = function (containerId) {
 }
 
 initializeDraggable = function () {
-  const containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
+  const containers = "#layout-builder-draggable-trash-container, #sv_builder_primary_table_draggable_fields_container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
   const dataContainers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
 
   window.draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
@@ -198,7 +197,7 @@ initializeDraggable = function () {
     handle: ".layout-builder-draggable-item"
   });
 
-  const fieldsContainer = document.querySelectorAll("#layout-builder-draggable-fields-container")[0];
+  const fieldsContainer = document.querySelectorAll("#sv_builder_primary_table_draggable_fields_container")[0];
 
   window.draggable.on("drag:start", (dragEvent) => {
     showTrashContainer();

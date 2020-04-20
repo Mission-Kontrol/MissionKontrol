@@ -1,0 +1,28 @@
+<div class="light-border-bottom layout-builder-side-nav-available-table">
+  <% primary_table = @view_builder.table_name %>
+  <a href="" class="sv_builder_table_navigation" data-table-name="<%= primary_table %>" data-database-id="<%= @database.id %>">
+    <strong>Primary table</strong> (<%= primary_table.humanize %>)
+    <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
+  </a>
+  <div id="sv_builder_primary_table_draggable_fields_container">
+  </div>
+</div>
+<div class="light-border-bottom layout-builder-side-nav-available-table">
+  <a href="#" class="sv_builder_table_navigation-other greyish-brown" disable="true" data-table-name="<%= primary_table %>" data-database-id="<%= @database.id %>">
+    Other
+    <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
+  </a>
+</div>
+
+<h3 class="blueberry medium">Related tables</h3>
+
+<% if @relatable_tables %>
+  <% @relatable_tables.each do |table| %>
+    <div class="light-border-bottom layout-builder-side-nav-available-table">
+      <a href="#" class="sv_builder_related_table_navigation" data-table-name="<%= table %>" data-primary-table="<%= primary_table %>" data-database-id="<%= @database.id %>">
+        <%= table.humanize %>
+        <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  <% end %>
+<% end %>

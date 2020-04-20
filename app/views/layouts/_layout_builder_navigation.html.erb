@@ -1,140 +1,28 @@
 <div class="row white-bg min-height-100vh">
   <div class="col-sm-3 min-height-100vh">
-    <br>
-    <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_field_settings_form" id="layout-builder-field-settings-tab">
-      <i class="fa fa-database" aria-hidden="true"></i>
-    </a>
-
-    <a class="layout-builder-nav-item" href="/" data-tab-name="layout_builder_general_settings_form" id="layout-builder-general-settings-tab">
-      <i class="fa fa-wrench" aria-hidden="true"></i>
-    </a>
-
-    <% if active_action?("edit") %>
-      <a class="layout-builder-nav-item hide" href="/" data-tab-name="layout_builder_phone_settings_form" id="layout-builder-phone-settings-tab">
-        <i class="fa fa-phone" aria-hidden="true"></i>
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link single_view_nav active" id="field_settings_navigation" role="tab" data-toggle="pill" href="#single_view_field_settings_form" aria-controls="field_settings" aria-selected="true">
+        <i class="fa fa-database" aria-hidden="true"></i>
       </a>
-    <% end %>
+      <a class="nav-link single_view_nav" id="general_settings_navigation" role="tab" data-toggle="pill" href="#single_view_general_settings_form" aria-controls="general_settings" aria-selected="false">
+        <i class="fa fa-wrench" aria-hidden="true"></i>
+      </a>
+    </div>
   </div>
-
   <div class="col-sm-9 layout-builder-side-nav min-height-100vh">
-    <br>
-    <div class="m-t">
-      <div class="tab-content" id="layout_builder_general_settings_form">
-        <h4>General settings</h4>
-
-        <%= render 'general_settings_form' %>
-      </div>
-
-      <div class="tab-content" id="layout_builder_field_settings_form">
-
-        <div id="layout_builder_field_settings_form_screen_1">
-          <h4>Fields</h4>
-
-          <p>Select a table to view related fields.</p>
-
-          <div class="light-border-bottom"></div>
-
-          <% if action_name == 'edit' %>
-            <div class="light-border-bottom layout-builder-side-nav-available-table">
-              <% primary_table = @view_builder.table_name %>
-              <a href="#" class="layout_builder_selected_table_name" data-table-name="<%= primary_table %>" data-primary-table="<%= primary_table %>">
-                <strong><%= primary_table %></strong>
-                <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
-              </a>
-            </div>
-
-            <% if @relatable_tables %>
-              <% @relatable_tables.each do |table| %>
-                <div class="light-border-bottom layout-builder-side-nav-available-table">
-                  <a href="#" class="layout_builder_selected_table_name" data-table-name="<%= table %>" data-primary-table="<%= primary_table %>">
-                    <%= table %>
-                    <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
-                  </a>
-                </div>
-              <% end %>
-            <% end %>
-          <% end %>
-
-          <% if action_name == 'new' %>
-            <% @available_tables.each do |table| %>
-              <div class="light-border-bottom layout-builder-side-nav-available-table">
-                <a href="#" class="layout_builder_selected_table_name" data-table-name=<%= table %>>
-                  <%= table %>
-                  <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
-                </a>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-
-        <div class="hide" id="layout_builder_field_settings_form_screen_2">
-          <h4>
-            <a href="#" class="layout_builder_field_settings_form_back_btn">
-              <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-            </a>
-            <span id="layout_builder_selected_table_name"></span>
-          </h4>
-
-          <p>Drag fields to the containers on the right to update layout.</p>
-
-          <p class="related-table-notice hide">
-            You can add a related table by dragging ‘Create table’ to a new layout section.
-          </p>
-
-          <p>
-            You can show/hide and order columns in the layout view.
-          </p>
-
-          <div class="light-border-bottom"></div>
-
-            <% if @relatable_tables %>
-              <% @relatable_tables.each do |relative| %>
-                <% if !@view_builder.related_tables.include?(relative) %>
-                  <div class="draggable-list-for-relatable-table" id="draggable-list-for-relatable-table-<%= relative %>">
-                    <div class="draggable-list-item draggable-list-item-for-<%= relative %> hide" data-table="<%= relative %>" data-container-id="draggable-list-for-relatable-table-<%= relative %>">
-                      <span><i class="fa fa-arrows" aria-hidden="true"></i> Create table - <%= relative %></span>
-                      <span class="pull-right hide remove-related-table" onclick="removeRelatedTable()"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                  </div>
-                <% else %>
-                  <div class="draggable-list-for-relatable-table" id="draggable-list-for-relatable-table-<%= relative %>">
-                  </div>
-                <% end %>
-              <% end %>
-            <% end %>
-
-          <div id="layout-builder-draggable-fields-container-header">
-            <br>
-            <p><b>Table fields available</b></p>
-            <br>
-          </div>
-
-          <div id="layout-builder-draggable-fields-container">
-          </div>
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane active" id="single_view_field_settings_form" role="tabpanel" aria-labelledby="v-pills-home-tab">
+        <div class="panel-body">
+          <%= render 'draggable_field_settings' %>
         </div>
       </div>
-
-      <% if active_action?("edit") %>
-        <div class="tab-content" id="layout_builder_phone_settings_form">
-
-          <h4>Phone settings</h4>
-
-          <p>Select the fields that can be treated as phone numbers.</p>
-
-          <div id="callable-fields">
-            <% @fields_with_type.each do |f| %>
-              <% @field = f[0] %>
-              <div>
-                <% if @view_builder.callable_fields.include?(@field) %>
-                  <input type="checkbox" checked name="<%= @field %>" value="<%= @field %>" class="callable-field" onchange="updateCallableFields()"> <%= @field %>
-                <% else %>
-                  <input type="checkbox" name="<%= @field %>" value="<%= @field %>" class="callable-field" onchange="updateCallableFields()"> <%= @field %>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
+      <div class="tab-pane" id="single_view_general_settings_form" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+        <div class="panel-body">
+          <h4>General settings</h4>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>
+
+

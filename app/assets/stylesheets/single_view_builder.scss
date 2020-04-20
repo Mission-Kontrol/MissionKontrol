@@ -1,0 +1,14 @@
+.single_view_nav {
+  width: 40px;
+  display: block;
+  height: 40px;
+  padding: 20px;
+}
+
+#sv_builder_primary_table_draggable_fields_container {
+  margin: 5px 0;
+
+  .layout-builder-field-editable-toggle {
+    display: none;
+  }
+}

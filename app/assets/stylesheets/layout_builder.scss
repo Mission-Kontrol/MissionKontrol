@@ -67,10 +67,10 @@
   width: 300px;
 }
 
-#layout-builder-draggable-fields-container {
-  outline: none !important;
-  padding-bottom: 150px;
-}
+// #layout-builder-draggable-fields-container {
+//   outline: none !important;
+//   padding-bottom: 150px;
+// }
 
 #layout-builder-draggable-header-container1,
 #layout-builder-draggable-header-container2,
@@ -95,15 +95,15 @@
   }
 }
 
-#layout-builder-draggable-fields-container {
-  .layout-builder-field-editable-toggle {
-    display: none;
-  }
+// #layout-builder-draggable-fields-container {
+//   .layout-builder-field-editable-toggle {
+//     display: none;
+//   }
 
-  .layout-builder-draggable-item-handle {
-    width: 100%;
-  }
-}
+//   .layout-builder-draggable-item-handle {
+//     width: 100%;
+//   }
+// }
 
 .layout-builder-side-nav {
   min-height: 100%;

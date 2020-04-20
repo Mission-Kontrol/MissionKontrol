@@ -50,8 +50,9 @@ class LayoutBuilderController < ApplicationController
     @available_tables = available_tables
     @relatable_tables = relatable_tables(@view_builder.table_name)
     @fields_with_type = list_table_fields_with_type(@view_builder.table_name)
+    ## TODO: FIX THIS (if no row, then what?)
     @target_db = Kuwinda::Repository::TargetDB.new(@database_connection)
-    @row = @target_db.all(@view_builder.table_name, 1).rows.first.first
+    @row = @target_db.all(@view_builder.table_name, 1).rows.try(:first).try(:first) || 1
   end
 
   def create

@@ -20,24 +20,24 @@ let applyOutcomeRule;
 let loadIndexPage;
 let loadEditPage;
 
-getOptionsForDraggable = function (primaryTable) {
-  $.ajax({
-    url: "/layouts/table_fields_with_type",
-    type: "GET",
-    data: {
-      table: primaryTable,
-      id: location.pathname.substr(1).split("/")[1]
-    },
-    async: true,
-    dataType: "json",
-    error(XMLHttpRequest, errorTextStatus, error){
-              window.toastr.error("Invalid target database, please review credentials.");
-           },
-    success(data){
-      updateDraggableFieldsContainer(data);
-    }
-  });
-}
+// getOptionsForDraggable = function (primaryTable) {
+//   $.ajax({
+//     url: "/layouts/table_fields_with_type",
+//     type: "GET",
+//     data: {
+//       table: primaryTable,
+//       id: location.pathname.substr(1).split("/")[1]
+//     },
+//     async: true,
+//     dataType: "json",
+//     error(XMLHttpRequest, errorTextStatus, error){
+//               window.toastr.error("Invalid target database, please review credentials.");
+//            },
+//     success(data){
+//       updateDraggableFieldsContainer(data);
+//     }
+//   });
+// }
 
 initQueryBuilder = function (filters) {
   $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
