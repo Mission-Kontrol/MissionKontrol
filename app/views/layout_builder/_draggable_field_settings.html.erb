@@ -15,14 +15,21 @@
 </div>
 
 <h3 class="blueberry medium">Related tables</h3>
-
+<h4>Drag tables into the layout to add them to the view</h4>
 <% if @relatable_tables %>
-  <% @relatable_tables.each do |table| %>
-    <div class="light-border-bottom layout-builder-side-nav-available-table">
-      <a href="#" class="sv_builder_related_table_navigation" data-table-name="<%= table %>" data-primary-table="<%= primary_table %>" data-database-id="<%= @database.id %>">
-        <%= table.humanize %>
-        <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
-      </a>
-    </div>
-  <% end %>
+  <div class="draggable-list-for-relatable-table" id="draggable-list-for-relatable-table">
+
+    <% @relatable_tables.each do |table| %>
+      <% if !@view_builder.related_tables.include?(table) %>
+        <div class="draggable-list-item layout-builder-draggable-item-handle draggable-list-item-for-<%= table %>" data-table="<%= table %>" data-container-id="draggable-list-for-relatable-table-<%= table %>">
+          <span><i class="fa fa-arrows" aria-hidden="false"></i> Create table - <%= table %></span>
+          <span class="pull-right hide remove-related-table" onclick="removeRelatedTable()"><i class="fa fa-times" aria-hidden="true"></i></span>
+        </div>
+      <% else %>
+        <div class="draggable-list-for-relatable-table" id="draggable-list-for-relatable-table-<%= table %>">
+        </div>
+      <% end %>
+    <% end %>
+
+  </div>
 <% end %>

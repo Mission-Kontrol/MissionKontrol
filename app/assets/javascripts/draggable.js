@@ -189,14 +189,13 @@ isDataContainer = function (containerId) {
 }
 
 initializeDraggable = function () {
-  const containers = "#layout-builder-draggable-trash-container, #sv_builder_primary_table_draggable_fields_container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
+  const containers = "#layout-builder-draggable-trash-container, .draggable-list-for-relatable-table, #sv_builder_primary_table_draggable_fields_container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
   const dataContainers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
 
   window.draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: ".layout-builder-draggable-item",
     handle: ".layout-builder-draggable-item"
   });
-
   const fieldsContainer = document.querySelectorAll("#sv_builder_primary_table_draggable_fields_container")[0];
 
   window.draggable.on("drag:start", (dragEvent) => {

@@ -46,38 +46,37 @@ function getOptionsForDraggable (primaryTable, databaseId) {
 //   }
 // }
 
-// function rebuildDraggableDataContainers() {
-//   var dataContainerIds = ["#layout-builder-draggable-header-container1",
-//     "#layout-builder-draggable-header-container2",
-//     "#layout-builder-draggable-side-container",
-//     "#layout-builder-draggable-main-container1",
-//     "#layout-builder-draggable-main-container2",
-//     "#layout-builder-draggable-main-container3"];
+function rebuildDraggableDataContainers() {
+  var dataContainerIds = [
+    "#layout-builder-draggable-main-container1",
+    "#layout-builder-draggable-main-container2",
+    "#layout-builder-draggable-main-container3"
+  ];
 
-//   for (var i = 0; i < dataContainerIds.length; i++) {
-//     let containerId = dataContainerIds[i];
-//     let data = JSON.parse($(containerId)[0].dataset.fieldsForContainer);
+  for (var i = 0; i < dataContainerIds.length; i++) {
+    let containerId = dataContainerIds[i];
+    let data = JSON.parse($(containerId)[0].dataset.fieldsForContainer);
 
-//     if (data !== "[]") {
-//       let fieldsForContainer = Object.values(data);
+    if (data !== "[]") {
+      let fieldsForContainer = Object.values(data);
 
-//       for (var j = 0; j < fieldsForContainer.length; j++) {
-//         let field = fieldsForContainer[j];
-//         if (!containerContainsDraggableItem(containerId, field.title)) {
-//           let draggableField = buildDraggableField(field);
-//           $(containerId).append(draggableField);
-//         }
-//       }
-//     }
-//   }
-// }
+      for (var j = 0; j < fieldsForContainer.length; j++) {
+        let field = fieldsForContainer[j];
+        if (!containerContainsDraggableItem(containerId, field.title)) {
+          let draggableField = buildDraggableField(field);
+          $(containerId).append(draggableField);
+        }
+      }
+    }
+  }
+}
 
 function rebuildDraggable(table, databaseId) {
   if (draggable) {
     draggable.destroy();
   }
 
-  // rebuildDraggableDataContainers();
+  rebuildDraggableDataContainers();
   // var containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3";
 
   getOptionsForDraggable(table, databaseId);
@@ -117,7 +116,19 @@ function loadDraggableFields () {
   });
 }
 
+function initializeDragula () {
+  drake = dragula([...document.querySelectorAll(".draggable-list-for-relatable-table"), document.querySelector("#droppable-list-of-relatable-tables")]);
+
+  drake.on("drop", (el) => {
+    $(el).find(".remove-related-table").removeClass("hide");
+    $(el).find("i.fa-times").show();
+    updateLayoutRelatedTables(el);
+  });
+}
+
 $(document).ready(function () {
+  rebuildDraggableDataContainers();
   initializeDraggable();
   loadDraggableFields();
+  initializeDragula();
 });

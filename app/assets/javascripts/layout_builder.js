@@ -472,13 +472,13 @@ $(document).ready(function() {
   }
 
   if (isCurrentControllerLayout && isCurrentActionEdit) {
-    drake = dragula([...document.querySelectorAll(".draggable-list-for-relatable-table"), document.querySelector("#droppable-list-of-relatable-tables")]);
+    // drake = dragula([...document.querySelectorAll(".draggable-list-for-relatable-table"), document.querySelector("#droppable-list-of-relatable-tables")]);
 
-    drake.on("drop", (el) => {
-      $(el).find(".remove-related-table").removeClass("hide");
-      $(el).find("i.fa-times").show();
-      updateLayoutRelatedTables(el);
-    });
+    // drake.on("drop", (el) => {
+    //   $(el).find(".remove-related-table").removeClass("hide");
+    //   $(el).find("i.fa-times").show();
+    //   updateLayoutRelatedTables(el);
+    // });
   }
 
   if (isCurrentControllerLayout && (isCurrentActionNew || isCurrentActionEdit)) {
