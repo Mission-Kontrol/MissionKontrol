@@ -45,7 +45,7 @@ end
 group :test do
   gem 'capybara', '~> 3.32.0'
   gem 'capybara-selenium'
-  gem 'capybara-screenshot', '~> 1.0', '>= 1.0.22'
+  gem 'capybara-screenshot', '~> 1.0'
   gem 'codacy-coverage', require: false
   gem 'database_cleaner'
   gem 'factory_bot_rails', '~> 5.1.1'
