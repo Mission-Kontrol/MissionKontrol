@@ -78,7 +78,7 @@ module Kuwinda
           value = "jknnlkm@fnjnfk.jfknnfk"
 
           expect(target_db.conn).to receive(:exec_query).with(
-            "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc}' WHERE id=#{id};"
+            "UPDATE #{table} SET #{field} = '#{value}', updated_at = NOW() WHERE id=#{id};"
           )
           target_db.update_record(table, field, value, id)
         end
