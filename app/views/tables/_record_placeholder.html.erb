@@ -1,30 +1,3 @@
-<div class="wrapper">
-  <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_header_container1) &&
-            draggable_fields_container_is_empty?(layout_builder.draggable_fields_header_container2) %>
-    <div class="row row-eq-height white-bg">
-      <div class="col-lg-10">
-        <div class="table-record-placeholder-header">
-          <%= render 'tables/layout/header_container1', layout_builder: layout_builder %>
-        </div>
-
-        <div class="table-record-placeholder-header">
-          <%= render 'tables/layout/header_container2', layout_builder: layout_builder %>
-        </div>
-      </div>
-
-      <% if current_admin_user.twilio_setup_complete? && layout_builder.callable_fields.present? %>
-      <div class="col-sm-4 twilio_dialer_buttons">
-        <div class="row">
-          <div class="col-sm-12">
-            <%= render '/tables/twilio_dialer', layout_builder: layout_builder %>
-          </div>
-        </div>
-      </div>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
 <div class="wrapper" style="">
   <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
           draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container2) &&
@@ -51,16 +24,6 @@
   <% end %>
 
   <div class="row m-t m-b">
-    <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_side_container) %>
-      <div class="col-sm-5 p-none">
-        <div class="m-r white-bg p-sm">
-          <div class="table-record-placeholder">
-            <%= render 'tables/layout/side_container', layout_builder: layout_builder %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-
     <% if @activities %>
       <% if current_admin_user.twilio_setup_complete? || layout_builder.commentable %>
         <div class="col-sm-7 pull-right">
