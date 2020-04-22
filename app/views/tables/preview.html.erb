@@ -22,11 +22,11 @@
     </div>
 
     <div class="col-lg-2">
-      <div class="text-right" style='padding: 30px 0 0 0'>
+      <div class="text-right">
         <% if @layout_builder %>
-          <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-outline btn-primary edit-layout-btn" }) %>
+          <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-primary" }) %>
         <% else %>
-          <%= link_to('New layout', new_layout_path(table: @current_table), html_options = { class: "btn btn-outline btn-primary edit-layout-btn" }) %>
+          <%= link_to('New layout', new_layout_path(table: @current_table), html_options = { class: "btn btn-primary" }) %>
         <% end %>
       </div>
     </div>
@@ -35,7 +35,7 @@
 
 <% if @layout_builder %>
   <div class="m-t">
-    <%= render 'record_placeholder', layout_builder: @layout_builder %>
+    <%= render 'single_data_view', layout_builder: @layout_builder %>
   </div>
 <% else %>
   <div class="animated ">

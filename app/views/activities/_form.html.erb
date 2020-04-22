@@ -1,21 +1,11 @@
 <div>
-  <%= form_with(model: @activity, local: false, data: { 'activity-form' => true }) do |form| %>
-    <div class="form-group">
-      <%= form.text_area :content, class: "form-control" %>
-    </div>
+  <%= form_with(model: @activity, local: false, data: { 'activity-form' => true }, class: 'activity-comment-form') do |form| %>
+    <%= form.hidden_field :feedable_type, id: :feedable_type, value: feedable_type  %>
+    <%= form.hidden_field :feedable_id, id: :feedable_id, value: feedable_id  %>
+    <%= form.hidden_field :kind, value: 'note'  %>
 
-    <div class="form-group">
-      <%= form.hidden_field :feedable_type, id: :feedable_type, value: feedable_type  %>
-      <%= form.hidden_field :feedable_id, id: :feedable_id, value: feedable_id  %>
-      <%= form.hidden_field :kind, value: 'note'  %>
-    </div>
 
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="actions text-right">
-          <%= form.submit 'Save', class: 'btn btn-primary' %>
-        </div>
-      </div>
-    </div>
+    <%= form.text_area :content, placeholder: 'Click to add a comment', class: "activity-comment-form--input" %>
+    <%= form.submit 'Submit', class: 'btn btn-info' %>
   <% end %>
 </div>

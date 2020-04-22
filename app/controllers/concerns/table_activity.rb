@@ -6,17 +6,16 @@ module TableActivity
   private
 
   def set_activities_for_table
-    ## TODO: figure out what going on here
-    # feedable_type = @target_db.table
-    # feedable_id = params[:record_id]
+    ## TODO: add database id to activity table
+    feedable_type = params[:table]
+    feedable_id = params[:record_id]
 
-    # @activities_for_table = Activity.where(
-    #   feedable_type: feedable_type,
-    #   feedable_id: feedable_id
-    # )
+    @activities_for_table = Activity.where(
+      feedable_type: feedable_type,
+      feedable_id: feedable_id
+    )
 
-    # group_activities_by_kind
-    []
+    group_activities_by_kind
   end
 
   def group_activities_by_kind

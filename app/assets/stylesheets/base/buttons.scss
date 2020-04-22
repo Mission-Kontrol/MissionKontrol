@@ -20,7 +20,7 @@
 }
 
 .btn-info.btn-outline {
-  color: $lazur;
+  color: $very-light-pink;
 }
 
 .btn-warning.btn-outline {
@@ -29,6 +29,15 @@
 
 .btn-danger.btn-outline {
   color: $red;
+}
+
+.btn-purple {
+  color: $white;
+  background-color: $blueberry;
+  border-color: $blueberry;
+  border-radius: 3px;
+  width: 411px;
+  height: 33px;
 }
 
 .btn-primary.btn-outline:hover,
@@ -53,6 +62,12 @@
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
   background-color: darken($button-green, 3%);
   border-color: darken($button-green, 3%);
+  color: #FFFFFF;
+}
+
+.btn-purple:hover, .btn-purple:focus, .btn-purple:active, .btn-purple.active, .open .dropdown-toggle.btn-purple, .btn-purple:active:focus, .btn-purple:active:hover, .btn-purple.active:hover, .btn-purple.active:focus {
+  background-color: darken($blueberry, 3%);
+  border-color: darken($blueberry, 3%);
   color: #FFFFFF;
 }
 
@@ -87,14 +102,14 @@
 }
 
 .btn-info {
-  background-color: $lazur;
-  border-color: $lazur;
+  background-color: $very-light-pink;
+  border-color: $very-light-pink;
   color: #FFFFFF;
 }
 
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info, .btn-info:active:focus, .btn-info:active:hover, .btn-info.active:hover, .btn-info.active:focus {
-  background-color: darken($lazur, 3%);
-  border-color: darken($lazur, 3%);
+  background-color: darken($very-light-pink, 3%);
+  border-color: darken($very-light-pink, 3%);
   color: #FFFFFF;
 }
 
@@ -103,8 +118,8 @@
 }
 
 .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info.active[disabled], fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
-  background-color: lighten($lazur, 4%);
-  border-color: lighten($lazur, 4%);
+  background-color: lighten($very-light-pink, 4%);
+  border-color: lighten($very-light-pink, 4%);
 }
 
 .btn-default {
@@ -281,11 +296,11 @@ button.btn-warning.dim:active {
 }
 
 button.btn-info.dim {
-  box-shadow: inset 0 0 0 darken($lazur, 6%), 0 5px 0 0 darken($lazur, 6%), 0 10px 5px #999;
+  box-shadow: inset 0 0 0 darken($very-light-pink, 6%), 0 5px 0 0 darken($very-light-pink, 6%), 0 10px 5px #999;
 }
 
 button.btn-info.dim:active {
-  box-shadow: inset 0 0 0 darken($lazur, 6%), 0 2px 0 0 darken($lazur, 6%), 0 5px 3px #999;
+  box-shadow: inset 0 0 0 darken($very-light-pink, 6%), 0 2px 0 0 darken($very-light-pink, 6%), 0 5px 3px #999;
 }
 
 button.btn-success.dim {

@@ -15,6 +15,7 @@ class TablesController < ApplicationController
   before_action :set_main_table, only: :show
   before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings]
   before_action :check_user_permissions, only: %i[show]
+  before_action :set_activities, only: :preview
 
   def index
     database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call

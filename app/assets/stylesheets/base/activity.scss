@@ -1,0 +1,109 @@
+.activity-history-header {
+  margin-top: 15px;
+}
+
+form.activity-comment-form {
+  /* This bit sets up the horizontal layout */
+  display:flex;
+  flex-direction:row;
+  
+  /* This bit draws the box around it */
+  border-top: 0.5px solid $border-grey;
+  border-bottom: 0.5px solid $border-grey;
+
+  /* I've used padding so you can see the edges of the elements. */
+  padding: 2px;
+}
+
+.activity-comment-form--input {
+  /* Tell the input to use all the available space */
+  flex-grow:2;
+  /* And hide the input's outline, so the form looks like the outline */
+  border:none;
+  background-color: transparent;
+  height: 36px;
+  line-height: 250%;
+}
+
+.activity-comment-form--input::placeholder {
+  line-height: 250%;
+}
+
+// input:focus {
+//   /* removing the input focus blue box. Put this on the form if you like. */
+//   outline: none;
+// }
+
+table.activities-history--table {
+  margin-bottom: 0px;
+  padding-right: 20px;
+
+  td:first-child {
+    width: 10%;
+    border-right: 1px solid $border-grey;
+  }
+
+  // td:first-child::after {
+  //   content: '';
+  //   position: relative;
+  //   width: 11px;
+  //   height: 11px;
+  //   // right: 98%;
+  //   background-color: white;
+  //   border: 1px solid $button-green;
+  //   border-radius: 50%;
+  //   z-index: 1;
+  // }
+  .activity-table-circle {
+    position: absolute;
+    margin-left: 10px;
+    margin-top: -6px;
+  }
+
+  .table-border-circle {
+    content: '';
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border: 1px solid $button-green;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  td:last-child {
+    vertical-align: middle;
+    padding-left: 20px;
+  }
+}
+
+.show-more-button {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.activity-history-tabs {
+  border: none;
+
+  li.active > a {
+    border: none;
+  }
+}
+
+.activity-history {
+  ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+    vertical-align:bottom;
+    display:inline-block;
+  }
+
+  ul li {
+      line-height:28px;
+      background:red;
+      color:#fff;
+      margin:0 20px 0 0;
+      float:left;
+  }
+}
