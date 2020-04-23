@@ -3,7 +3,7 @@ let metaTag;
 let isCurrentControllerTaskQueues;
 let isCurrentActionIndex;
 let isCurrentActionEdit;
-let getOptionsForDraggable;
+// let getOptionsForDraggable;
 let loadTaskQueuePreview;
 let initQueryBuilder;
 let buildFilterForDataType;
