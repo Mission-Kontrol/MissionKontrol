@@ -72,8 +72,10 @@ module TableRender
       foreign_key_title = helpers.get_foreign_key(@current_table)
       foreign_key_value = params[:record_id]
       ## TODO: why does target_db keep crapping out at this point?
-      # sql_result = @target_db.find_all_related(table, foreign_key_title, foreign_key_value, 10, 0)
-      sql_result = nil
+      @target_db = Kuwinda::Repository::TargetDB.new(database_connection)
+
+      sql_result = @target_db.find_all_related(table, foreign_key_title, foreign_key_value, 10, 0)
+      # sql_result = nil
       relative[:headers] = sql_result ? sql_result.columns : []
       relative[:name] = table
       @relatable_tables << relative
@@ -93,7 +95,7 @@ module TableRender
     foreign_key_title = helpers.get_foreign_key(params[:table_name])
     foreign_key_value = params[:record_id]
 
-    sql_result = @target_db.find_all_related_search(table, search, foreign_key_title, foreign_key_value, searchable_columns, limit, offset)
+    sql_result = @target_db.find_all_related_search(@database, table, search, foreign_key_title, foreign_key_value, searchable_columns, limit, offset)
 
     result_columns = sql_result.nil? ? @target_db.table_columns(table) : sql_result.columns
 

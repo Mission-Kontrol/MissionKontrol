@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <h3><%= current_table.humanize %></h3>
     <br>
-    <table id="target-table-<%= current_table.downcase %>" class="related-data-table table" data-table-name='<%= current_table %>'>
+    <table id="target-table-<%= current_table.downcase %>" class="data-table data-table-main related-data-table table" data-table-name='<%= current_table %>' data-database-id='<%= @database.id %>'>
       <thead>
         <tr>
           <% headers.each do |header|%>
