@@ -17,7 +17,7 @@ function goToPreviousScreen () {
 function saveLayout(name, primaryTable, ignoreModal, databaseId) {
   var layoutID;
   var redirectURL;
-  debugger
+
   $.ajax({
     url: "/layouts",
     type: "POST",

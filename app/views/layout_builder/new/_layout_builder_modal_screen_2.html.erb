@@ -1,4 +1,4 @@
-<div id="layout-builder-modal-screen-2" class="hide">
+<div id="layout-builder-modal-screen-2" class="<%= current_admin_user.ignore_layout_modal ? '' : 'hide' %>">
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title">Bring your new layout to life</h4>
@@ -26,7 +26,7 @@
 
     <div class="modal-footer">
       <a class="btn btn-default" id="layout-builder-modal-back-button">Back</a>
-      <a class="btn btn-default" id="layout-builder-modal-save-button" data-database-id="<%= @database.id %>">Next</a>
+      <a class="btn btn-primary" id="layout-builder-modal-save-button" data-database-id="<%= @database.id %>">Next</a>
     </div>
   </div>
 </div>

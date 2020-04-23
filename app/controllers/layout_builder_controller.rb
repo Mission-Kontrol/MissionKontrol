@@ -24,11 +24,12 @@ class LayoutBuilderController < ApplicationController
     @view_builder = ViewBuilder.new(table_name: field_params[:table], database_id: @database.id)
 
     ## TODO: Display the second modal here instead of edit as table still needs to be selected?
-    if current_admin_user.ignore_layout_modal?
-      if @view_builder.save!
-        redirect_to action: 'edit', id: @view_builder.id
-      end
-    end
+    # if current_admin_user.ignore_layout_modal?
+    #   @ignore_modal = true
+    #   # if @view_builder.save!
+    #   #   redirect_to action: 'edit', id: @view_builder.id
+    #   # end
+    # end
   end
 
   def show
@@ -141,7 +142,7 @@ class LayoutBuilderController < ApplicationController
     @relatable_tables = []
 
     relatable_tables(@current_table).each do |table|
-      layout = ViewBuilder.find_by_table_name(table)
+      # layout = ViewBuilder.find_by_table_name(table)
       relative = {}
       # @target_db.table = table
       foreign_key_title = helpers.get_foreign_key(params[:table_name])

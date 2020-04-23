@@ -1,8 +1,10 @@
 <div class="modal fade" id="layout-builder-modal" tabindex="-1" role="dialog" aria-labelledby="layout-builder-modal">
   <div class="modal-dialog" role="document">
-    <%= render partial: 'layout_builder/new/layout_builder_modal_screen_1' %>
-
-    <%= render partial: 'layout_builder/new/layout_builder_modal_screen_2' %>
+    <% if current_admin_user.ignore_layout_modal? %>
+      <%= render partial: 'layout_builder/new/layout_builder_modal_screen_2' %>
+    <% else %>
+      <%= render partial: 'layout_builder/new/layout_builder_modal_screen_1' %>
+    <% end %>
   </div>
 </div>
 

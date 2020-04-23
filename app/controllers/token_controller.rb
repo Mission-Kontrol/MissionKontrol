@@ -3,7 +3,7 @@ class TokenController < ApplicationController
 
   ## TODO: FIX THIS SHIT
   def generate
-    token = ::Twilio::Capability.generate(current_admin_user)
+    token = Rails.env.test? ? 'token' : ::Twilio::Capability.generate(current_admin_user)
 
     render json: { token: token }
   end

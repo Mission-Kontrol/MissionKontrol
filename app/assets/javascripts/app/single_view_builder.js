@@ -1,12 +1,12 @@
 "use strict";
 
-function getOptionsForDraggable (primaryTable, databaseId) {
+function getOptionsForDraggable (primaryTable) {
   $.ajax({
     url: "/layouts/table_fields_with_type",
     type: "GET",
     data: {
       table: primaryTable,
-      id: databaseId
+      id: location.pathname.substr(1).split("/")[1]
     },
     async: true,
     dataType: "json",
@@ -44,14 +44,14 @@ function rebuildDraggableDataContainers() {
   }
 }
 
-function rebuildDraggable(table, databaseId) {
+function rebuildDraggable(table) {
   if (draggable) {
     draggable.destroy();
   }
 
   rebuildDraggableDataContainers();
 
-  getOptionsForDraggable(table, databaseId);
+  getOptionsForDraggable(table);
   initializeDraggable();
 }
 
@@ -63,9 +63,8 @@ function loadDraggableFields () {
       $(this).removeClass('active');
     } else {
       let table = $(this).data().tableName;
-      let databaseId = $(this).data().databaseId;
 
-      rebuildDraggable(table, databaseId);
+      rebuildDraggable(table);
       $(this).addClass('active');
     }
   });

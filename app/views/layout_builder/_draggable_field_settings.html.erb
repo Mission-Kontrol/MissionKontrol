@@ -1,7 +1,7 @@
 <div class="light-border-bottom layout-builder-side-nav-available-table">
   <% primary_table = @view_builder.table_name %>
   <a href="" class="sv_builder_table_navigation" data-table-name="<%= primary_table %>" data-database-id="<%= @database.id %>">
-    <strong>Primary table</strong> (<%= primary_table.humanize %>)
+    <strong>Primary table</strong> (<%= primary_table.humanize if primary_table %>)
     <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
   </a>
   <div id="sv_builder_primary_table_draggable_fields_container">
