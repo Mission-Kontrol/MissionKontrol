@@ -201,54 +201,6 @@ function fetchDataForTable() {
 function loadRelatedDataTable (columns, id, ajax) {
   var searchableRelatedTable = { [id]:
     $("#" + id).DataTable({
-      // colReorder: true,
-      // columnDefs: colOrderable,
-      // order: [defaultOrder],
-      // deferRender: true,
-      // autoWidth: false,
-      // scrollX: true,
-      // serverSide: true,
-      // processing: false,
-      // pagingType: "simple_numbers",
-      // language: {
-      //   paginate: {
-      //     next: "Next >",
-      //     previous: "< Prev",
-      //   },
-      //   info: "of _MAX_ results",
-      //   zeroRecords: "Nothing found - sorry",
-      //   infoEmpty: "No records available",
-      //   infoFiltered: "(filtered from _MAX_ total records)"
-      // },
-      // ajax: "/" + (location.pathname+location.search).substr(1),
-      // dom: "f<'table--info'piB>rt<'clear'>",
-      // columns,
-      // stateSave: true,
-      // buttons: [
-      //   {
-      //     extend: "colvis",
-      //     className: "table--colvis",
-      //     text: "Columns"
-      //   },
-      //   {
-      //     extend: "csv",
-      //     className: "table--export " + canExport,
-      //     text: "Export"
-      //   },
-      //   {
-      //     text: "Settings",
-      //     className: "table--settings",
-      //     action () {
-      //       $("button.table--settings").attr("disabled", true);
-      //       $.ajax({
-      //         url: "/table/settings",
-      //         type: "GET",
-      //         data: { "table": tableName, "database_id": databaseId },
-      //         success() {}
-      //       });
-      //     }
-      //   }
-      // ],
       colReorder: true,
       deferRender: true,
       autoWidth: false,
@@ -266,12 +218,8 @@ function loadRelatedDataTable (columns, id, ajax) {
         infoEmpty: "No records available",
         infoFiltered: "(filtered from _MAX_ total records)"
       },
-        // language: {
-        //   processing: "<img class='loading-gif' src='/assets/images/icons/blue_cat_loading.gif' />"
-        // },
       ajax,
       dom: "f<'table--info'piB>rt<'clear'>",
-      // dom: "Bfrtip",
       columns,
       stateSave: true,
       stateSaveCallback(settings, data) {
@@ -286,32 +234,7 @@ function loadRelatedDataTable (columns, id, ajax) {
             className: "table--colvis",
             text: "Columns"
           },
-          // {
-          //   extend: "csv",
-          //   className: "table--export " + canExport,
-          //   text: "Export"
-          // },
-          // {
-          //   text: "Settings",
-          //   className: "table--settings",
-          //   action () {
-          //     $("button.table--settings").attr("disabled", true);
-          //     $.ajax({
-          //       url: "/table/settings",
-          //       type: "GET",
-          //       data: { "table": tableName, "database_id": databaseId },
-          //       success() {}
-          //     });
-          //   }
-          // }
         ],
-      // buttons: [
-      //   "colvis",
-      //   {
-      //     "extend": "csv",
-      //     "className": "btn btn-warning",
-      //   }
-      // ],
       createdRow(row, data, dataIndex) {
         var table = $(this).data("table-name");
         var id = data.id;
@@ -330,7 +253,7 @@ function fetchDataForRelatedTables() {
   var recordId = location.pathname.split("/")[3];
   var primaryTable = location.pathname.split("/")[2];
   var relatedTables = $(".related-data-table");
-  let databaseId = $(".related-data-table").first().data('database-id');
+  let databaseId = $(".related-data-table").first().data("database-id");
 
   for (var i = 0; i < relatedTables.length; i++) {
     let relatedTable = relatedTables[i].dataset.tableName;

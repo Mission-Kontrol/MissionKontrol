@@ -24,11 +24,15 @@ function cancelEditable(evt) {
 }
 
 function hideEditable(editableRow) {
-  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0]
+  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0];
   let editableInput = editableRow.getElementsByClassName("editable-input")[0];
 
   editableContentWrapper.style.display = "block";
   editableInput.style.display = "none";
+}
+
+function refreshEditableContent(editableContent, newValue) {
+  editableContent.innerText = newValue;
 }
 
 function updateTableField(evt, table, field, id) {
@@ -56,15 +60,13 @@ function updateTableField(evt, table, field, id) {
     url: "/table_field",
     type: "PATCH",
     data,
-    error: function(XMLHttpRequest, errorTextStatus, error){
-      if (XMLHttpRequest.status == 400) {
+    error (XMLHttpRequest){
+      if (XMLHttpRequest.status === 400) {
         prepareLongToast();
         toastr.error(XMLHttpRequest.responseJSON.error);
       }
-
-      console.error("PATCH /table_field Failed: "+ errorTextStatus+" ;"+error);
     },
-    success: function(response, status, request){
+    success (){
       refreshEditableContent(editableContent, newValue);
       hideEditable(editableRow);
       toastr.info("Table field successfully updated.");
@@ -98,22 +100,16 @@ function updateRelatedTableField(evt, table, field, foreignKeyTitle, foreignKeyV
     url: "/related_table_field",
     type: "PATCH",
     data,
-    error: function(XMLHttpRequest, errorTextStatus, error){
+    error (XMLHttpRequest){
       if (XMLHttpRequest.status === 400) {
         prepareLongToast();
         toastr.error(XMLHttpRequest.responseJSON.error);
       }
-
-      console.error("PATCH /table_field Failed: "+ errorTextStatus+" ;"+error);
     },
-    success: function(response, status, request){
+    success () {
       refreshEditableContent(editableContent, newValue);
       hideEditable(editableRow);
       toastr.info("Related table field successfully updated.");
     }
   });
-}
-
-function refreshEditableContent(editableContent, newValue) {
-  editableContent.innerText = newValue;
 }

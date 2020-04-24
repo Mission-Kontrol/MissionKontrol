@@ -27,10 +27,10 @@ function saveLayout(name, primaryTable, ignoreModal, databaseId) {
       ignore_modal: ignoreModal,
       database_id: databaseId
     },
-    error: function(XMLHttpRequest, errorTextStatus, error){
-              alert("Failed: "+ errorTextStatus+" ;"+error);
-           },
-    success: function(response, status, request){
+    error (errorTextStatus, error){
+      alert("Failed: "+ errorTextStatus+" ;"+error);
+    },
+    success (response){
       layoutID = response.id;
       redirectURL = "/layouts/" + layoutID + "/edit";
       window.location.replace(redirectURL);
@@ -43,7 +43,7 @@ function layoutBuilderModalSave () {
     var ignoreModal = $("#layout-builder-modal-ignore-checkbox").is(":checked");
     var layoutName = document.getElementById("layout-builder-modal-form-name").value;
     var layoutPrimaryTable = document.getElementById("layout-builder-modal-form-primary-table").value;
-    var databaseId = $(this).data('database-id');
+    var databaseId = $(this).data("database-id");
     saveLayout(layoutName, layoutPrimaryTable, ignoreModal, databaseId);
   });
 }

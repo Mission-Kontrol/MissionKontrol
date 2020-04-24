@@ -58,14 +58,14 @@ function rebuildDraggable(table) {
 function loadDraggableFields () {
   $(".sv_builder_table_navigation").click(function(evt) {
     evt.preventDefault();
-    if ($(this).hasClass('active')) {
+    if ($(this).hasClass("active")) {
       $("#sv_builder_primary_table_draggable_fields_container").html("");
-      $(this).removeClass('active');
+      $(this).removeClass("active");
     } else {
       let table = $(this).data().tableName;
 
       rebuildDraggable(table);
-      $(this).addClass('active');
+      $(this).addClass("active");
     }
   });
 }
