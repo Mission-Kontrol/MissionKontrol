@@ -1,6 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.feature 'Admin views a table without a layout', type: :feature do
+feature 'Admin views a table without a layout', type: :feature do
   before do
     delete_layout_for_users
   end
@@ -14,7 +14,7 @@ RSpec.feature 'Admin views a table without a layout', type: :feature do
 end
 
 def delete_layout_for_users
-  ViewBuilder.where(table_name: "users").delete_all
+  ViewBuilder.where(table_name: 'users').delete_all
 end
 
 def then_click_the_users_link

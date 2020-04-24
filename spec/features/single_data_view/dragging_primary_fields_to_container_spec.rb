@@ -1,8 +1,8 @@
+# frozen_string_literal: true
+
 # # dragging to container
 # # dragging out of container (and refreshing?)
 # # dragging into trash
-
-# # frozen_string_literal: true
 
 # feature 'Dragging primary fields to container', js: true do
 #   background do

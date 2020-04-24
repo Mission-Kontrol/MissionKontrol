@@ -162,7 +162,7 @@ describe LayoutBuilderController, type: :controller do
     end
 
     it 'renders the view_builder in json format' do
-      expect(JSON.parse(response.body)).to include({ 'table_name' => 'events', 'view_name' => 'view_name', 'database_id' => @database.id })
+      expect(JSON.parse(response.body)).to include('table_name' => 'events', 'view_name' => 'view_name', 'database_id' => @database.id)
     end
 
     context 'when there is an error saving the view_builder' do
