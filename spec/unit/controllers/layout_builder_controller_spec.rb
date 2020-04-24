@@ -2,148 +2,288 @@
 
 require 'rails_helper'
 
-# rubocop:disable Metrics/BlockLength
-xdescribe LayoutBuilderController, type: :controller do
+describe LayoutBuilderController, type: :controller do
   before do
-    create_user
-    add_role_to_user('admin')
+    @database = create(:database)
+    create_user_with_permissions('Editor', :view, 'users', @database.id)
     sign_in @user
+
+    allow(mock_list_available_tables).to receive(:call).and_return(available_tables)
+    allow(Kuwinda::Presenter::ListAvailableTables).to receive(:new).and_return(mock_list_available_tables)
+
+    allow(mock_list_table_fields_with_type).to receive(:call).and_return(fields_with_type)
+    allow(Kuwinda::Presenter::ListTableFieldsWithType).to receive(:new).and_return(mock_list_table_fields_with_type)
+
+    allow(mock_list_relatable_tables).to receive(:call).and_return(relatable_tables)
+    allow(Kuwinda::Presenter::ListRelatableTables).to receive(:new).and_return(mock_list_relatable_tables)
+  end
+
+  let(:mock_list_available_tables) { double("PresenterDouble") }
+  let(:mock_list_table_fields_with_type) { double("PresenterDouble") }
+  let(:mock_list_relatable_tables) { double("PresenterDouble") }
+  let(:mock_target_db) { double('TargetDbDouble') }
+  let(:available_tables) { ['users', 'events', 'attending_events'] }
+  let(:relatable_tables) { ['events', 'attending_events'] }
+  let(:table_name) { 'users' }
+  let(:fields_with_type) do
+    [
+      ["id", "string", table_name],
+      ["user", "string", table_name],
+      ["name", "string", table_name]
+    ]
+  end
+
+  let!(:view_builder) { create(:view_builder, table_name: table_name, database_id: @database.id) }
+
+  describe 'GET index' do
+    subject { get :index }
+
+    before do
+      subject
+    end
+
+    it 'assigns @databases with all databases' do
+      expect(assigns(:databases)).to eq [@database]
+    end
+
+    it 'assigns @view_builders with all view_builders' do
+      expect(assigns(:view_builders)).to eq [view_builder]
+    end
   end
 
   describe 'GET new' do
+    subject { get :new, params: { database_id: @database.id, table: table_name } }
+
     before do
-      get :new
+      @view_builder = view_builder
+      @view_builder_other = view_builder_other
+      subject
+    end
+    let!(:view_builder_other) { create(:view_builder, table_name: table_name, database_id: 5) }
+
+    it 'assigns the available tables' do
+      expect(assigns[:available_tables]).to eq available_tables
     end
 
-    it 'will render the page' do
-      expect(response.status).to eq(200)
+    it 'assigns the tables with layouts' do
+      expect(assigns[:tables_with_layouts]).to eq [table_name]
     end
 
-    it 'will assign the available tables' do
-      expect(assigns(:available_tables)).to match_array available_tables
-    end
-  end
-
-  describe 'POST create' do
-    context 'when admin has a valid license key' do
-      before do
-        params = {
-          view_name: 'name of view',
-          table: 'Users'
-        }
-
-        post :create, params: params
-      end
-
-      it 'will create the view builder' do
-        expect(assigns(:view_builder).table_name).to eq 'Users'
-      end
-
-      it 'will save the view builder' do
-        expect(assigns(:view_builder)).to be_a ViewBuilder
-      end
-    end
-  end
-
-  describe 'PATCH update' do
-    let(:expected_positions) do
-      {
-        '1' => 'area',
-        '2' => 'level',
-        '3' => 'plan',
-        '4' => 'space'
-      }
-    end
-
-    context 'when admin has a valid license key' do
-      before do
-        @view_builder = create(:view_builder)
-        table_configurations = {
-          '1' => { 'Field' => 'area', 'Position' => '1' },
-          '2' => { 'Field' => 'level', 'Position' => '2' },
-          '3' => { 'Field' => 'plan', 'Position' => '3' },
-          '4' => { 'Field' => 'space', 'Position' => '4' }
-        }
-        params = {
-          id: @view_builder.id,
-          tableConfigurations: table_configurations,
-        }
-        put :update, params: params, format: :js
-
-        @view_builder.reload
-      end
-
-      it 'will update the positions of the visible fields' do
-        expect(@view_builder.table_attributes['visible_fields']).to eq expected_positions
-      end
-
-      it 'will redirect to view the configuration' do
-        expect(response).to redirect_to(layout_url(@view_builder))
-      end
+    it 'assigns the correct view_builder' do
+      expect(assigns[:view_builder].table_name).to eq table_name
     end
   end
 
   describe 'GET show' do
-    context 'when client database is valid' do
-      context 'when admin has a valid license key' do
-        before do
-          @view_builder = create(:view_builder)
-          params = { id: @view_builder.id }
+    subject { get :show, params: { id: view_builder.id } }
 
-          get :show, params: params
-        end
+    it 'assigns the correct view_builder' do
+      subject
+      expect(assigns(:view_builder)).to eq view_builder
+    end
+  end
 
-        it 'will render the page' do
-          expect(response.status).to eq(200)
-        end
+  describe 'GET table_fields_with_type' do
+    subject { get :table_fields_with_type, params: params }
+    let(:params) { { id: view_builder.id, table: table_name } }
 
-        it 'will assign the view_builder' do
-          expect(assigns[:view_builder]).to eq @view_builder
-        end
+    let(:json_response) do
+      [
+        ["id", "string", table_name],
+        ["name", "string", table_name],
+        ["user", "string", table_name]
+      ]
+    end
+
+    before do
+      subject
+    end
+
+    it 'assigns fields_with_type' do
+      expect(assigns(:fields_with_type)).to eq fields_with_type
+    end
+
+    it 'renders a sorted json of fields_with_type' do
+      expect(JSON.parse(response.body)).to eq json_response
+    end
+  end
+
+  ## TODO: Come back to this - see todo comment in method
+  xdescribe 'GET edit' do
+    subject { get :edit, params: params }
+    let(:params) { { id: view_builder.id } }
+
+    before do
+      subject
+    end
+
+    it 'assigns the available tables' do
+      expect(assigns[:available_tables]).to eq available_tables
+    end
+
+    it 'assigns fields_with_type' do
+      expect(assigns(:fields_with_type)).to eq fields_with_type
+    end
+
+    it 'assigns relatable_tables' do
+      expect(assigns(:relatable_tables)).to eq relatable_tables
+    end
+  end
+
+  describe 'POST create' do
+    subject { post :create, params: params }
+
+    before do
+      subject
+    end
+
+    let(:params) do
+      {
+        table: 'events',
+        view_name: 'view_name',
+        database_id: @database.id
+      }
+    end
+
+    context 'when ignore_layout_modal is checked' do
+      let(:params) do
+        {
+          table: 'events',
+          view_name: 'view_name',
+          database_id: @database.id,
+          ignore_modal: true
+        }
+      end
+
+      it 'updates the user to ignore layout modal' do
+        @user.reload
+        expect(@user.ignore_layout_modal).to eq true
       end
     end
 
-    context 'when client database connection is invalid' do
-      context 'when admin has a valid license key' do
-        before do
-          allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
+    it 'renders the view_builder in json format' do
+      expect(JSON.parse(response.body)).to include({ 'table_name' => 'events', 'view_name' => 'view_name', 'database_id' => @database.id })
+    end
 
-          get :show, params: { use_route: 'layouts/' }
-        end
+    context 'when there is an error saving the view_builder' do
+      ## TODO: fail gracefully
+    end
+  end
 
-        xit 'renders the bad connection template' do
-          expect(response).to render_template('layouts/bad_connection')
-        end
+  describe 'POST update' do
+    subject { post :update, params: params, xhr: true }
+
+    before do
+      subject
+    end
+
+    let(:params) do
+      {
+        'id' => view_builder.id,
+        'view_builder' => {
+          'draggable_fields_main_container1' => draggable_fields_main_container1
+        }
+      }
+    end
+    let(:draggable_fields_main_container1) do
+      {
+        '0' => {
+          'title' => 'choice',
+          'table' => table_name,
+          'kind' => 'string'
+        }
+      }
+    end
+
+    it 'updates the view_builder' do
+      view_builder.reload
+      expect(view_builder.draggable_fields_main_container1).to eq draggable_fields_main_container1
+    end
+
+    it 'renders a success message' do
+      expect(response).to render_template('layout_builder/update/success')
+    end
+
+    context 'when it fails to save' do
+      it 'renders a failure message' do
+        ## TODO: fail gracefully
       end
     end
   end
 
-  describe 'GET edit' do
-    xcontext 'when client database connection is invalid' do
-      it 'renders the bad connection template' do
-        allow(controller).to receive(:edit).and_raise(InvalidClientDatabaseError.new)
+  describe 'POST update_related_tables' do
+    subject { post :update_related_tables, params: params, xhr: true }
 
-        get :edit, params: { use_route: 'layouts/' }
+    before do
+      subject
+    end
 
-        expect(response).to render_template('layouts/bad_connection')
+    let(:params) do
+      {
+        'id' => view_builder.id,
+        'related_table' => 'events'
+      }
+    end
+
+    it 'updates the view_builder' do
+      view_builder.reload
+      expect(view_builder.related_tables).to eq ['events']
+    end
+
+    it 'renders a success message' do
+      expect(response).to render_template('layout_builder/update/success')
+    end
+
+    context 'when there is already a related table' do
+      let(:view_builder) { create(:view_builder, table_name: table_name, database_id: @database.id, related_tables: ['events']) }
+      let(:params) do
+        {
+          'id' => view_builder.id,
+          'related_table' => 'attending_events'
+        }
+      end
+
+      it 'updates the view_builder' do
+        view_builder.reload
+        expect(view_builder.related_tables).to eq ['events', 'attending_events']
+      end
+    end
+
+    context 'when it fails to save' do
+      it 'renders a failure message' do
+        ## TODO: fail gracefully
       end
     end
   end
 
-  describe 'GET preview' do
-    context 'when client database connection is invalid' do
-      it 'renders the bad connection template' do
-        allow(controller).to receive(:preview).and_raise(InvalidClientDatabaseError.new)
+  describe 'POST remove_related_table' do
+    subject { post :remove_related_table, params: params, xhr: true }
 
-        get :preview, params: { use_route: 'layouts/' }
+    before do
+      subject
+    end
 
-        expect(response).to render_template('layouts/bad_connection')
+    let(:view_builder) { create(:view_builder, table_name: table_name, database_id: @database.id, related_tables: ['events']) }
+    let(:params) do
+      {
+        'id' => view_builder.id,
+        'related_table' => 'events'
+      }
+    end
+
+    it 'updates the view_builder' do
+      view_builder.reload
+      expect(view_builder.related_tables).to eq []
+    end
+
+    it 'renders a success message' do
+      expect(response).to render_template('layout_builder/update/success')
+    end
+
+    context 'when it fails to save' do
+      it 'renders a failure message' do
+        ## TODO: fail gracefully
       end
     end
   end
-end
-# rubocop:enable Metrics/BlockLength
-
-def available_tables
-  Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
 end

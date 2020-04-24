@@ -22,14 +22,6 @@ class LayoutBuilderController < ApplicationController
     @available_tables = available_tables
     @tables_with_layouts = tables_with_layouts
     @view_builder = ViewBuilder.new(table_name: field_params[:table], database_id: @database.id)
-
-    ## TODO: Display the second modal here instead of edit as table still needs to be selected?
-    # if current_admin_user.ignore_layout_modal?
-    #   @ignore_modal = true
-    #   # if @view_builder.save!
-    #   #   redirect_to action: 'edit', id: @view_builder.id
-    #   # end
-    # end
   end
 
   def show
@@ -57,7 +49,7 @@ class LayoutBuilderController < ApplicationController
   end
 
   def create
-    @view_builder = ViewBuilder.find_or_create_by(table_name: field_params[:table], database_id: @database.id)
+    @view_builder = ViewBuilder.create(table_name: field_params[:table], view_name: field_params[:view_name], database_id: @database.id)
 
     if @view_builder.save!
       if current_admin_user.ignore_layout_modal.to_s != field_params[:ignore_modal]
@@ -69,8 +61,8 @@ class LayoutBuilderController < ApplicationController
 
   def update
     @view_builder = ViewBuilder.find(params[:id])
+    ## TODO: don't allow all params
     update_attributes(@view_builder, params)
-
     if @view_builder.save!
 
       respond_to do |format|
@@ -80,6 +72,7 @@ class LayoutBuilderController < ApplicationController
   end
 
   def update_related_tables
+    ## TODO: make view_builder/layout consistent everywhere
     @layout = ViewBuilder.find(params[:id])
     @layout.related_tables |= [params['related_table']]
 
@@ -101,23 +94,24 @@ class LayoutBuilderController < ApplicationController
     end
   end
 
-  def preview
-    @layout_builder = ViewBuilder.find(params[:id])
-    @target_db = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
-    @rows = @target_db.all(5)
+  ## TODO: is this actually being used??
+  # def preview
+  #   @layout_builder = ViewBuilder.find(params[:id])
+  #   @target_db = Kuwinda::Repository::TargetDB.new(@layout_builder.table_name)
+  #   @rows = @target_db.all(5)
 
-    respond_to do |format|
-      format.js { render action: 'edit/success' }
-      format.html { render action: 'preview' }
-    end
+  #   respond_to do |format|
+  #     format.js { render action: 'edit/success' }
+  #     format.html { render action: 'preview' }
+  #   end
 
-  rescue ActiveRecord::StatementInvalid => e
-    @rows = []
+  # rescue ActiveRecord::StatementInvalid => e
+  #   @rows = []
 
-    respond_to do |format|
-      format.js { render action: 'edit/error' }
-    end
-  end
+  #   respond_to do |format|
+  #     format.js { render action: 'edit/error' }
+  #   end
+  # end
 
   private
 
@@ -163,7 +157,7 @@ class LayoutBuilderController < ApplicationController
   def tables_with_layouts
     tables_with_layouts = []
     available_tables.select do |table|
-      tables_with_layouts << table if ViewBuilder.find_by(table_name: table).present?
+      tables_with_layouts << table if ViewBuilder.find_by(table_name: table, database_id: @database.id).present?
     end
     tables_with_layouts
   end
