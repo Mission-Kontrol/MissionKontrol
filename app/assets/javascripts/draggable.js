@@ -145,23 +145,6 @@ updateDraggableFieldsContainer = function (data) {
     field["table"] = data[i][2];
     let draggableField = buildDraggableField(field);
 
-    //
-    // add field to draggable container if container data contains field AND
-    // contianer does not already inlcude a dragable item with the same field name.
-    //
-
-    // if (containerDataContainsField("layout-builder-draggable-header-container1", field.title)) {
-    //   if (!containerContainsDraggableItem("#layout-builder-draggable-header-container1", field.title)) {
-    //     $("#layout-builder-draggable-header-container1").append(draggableField);
-    //   }
-    // } else if (containerDataContainsField("layout-builder-draggable-header-container2", field.title)) {
-    //   if (!containerContainsDraggableItem("#layout-builder-draggable-header-container2", field.title)) {
-    //     $("#layout-builder-draggable-header-container2").append(draggableField);
-    //   }
-    // } else if (containerDataContainsField("layout-builder-draggable-side-container", field.title)) {
-    //   if (!containerContainsDraggableItem("#layout-builder-draggable-side-container", field.title)) {
-    //     $("#layout-builder-draggable-side-container").append(draggableField);
-    //   }
     if (containerDataContainsField("layout-builder-draggable-main-container1", field.title)) {
       if (!containerContainsDraggableItem("#layout-builder-draggable-main-container1", field.title)) {
         $("#layout-builder-draggable-main-container1").append(draggableField);
@@ -206,13 +189,18 @@ initializeDraggable = function () {
     let currentContainer = dragEvent.source.parentNode;
     let destinationContainerId = currentContainer.id;
     let sourceContainerId = dragEvent.data.sourceContainer.id;
-    let currentContainerId = currentContainer.id;
-    let currentFieldValue = dragEvent.source.innerText.trim();
 
     hideTrashContainer();
 
     if (destinationContainerId === "layout-builder-draggable-trash-container") {
-      fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+      if ($(".sv_builder_table_navigation").hasClass('active')) {
+        fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+      } else {
+        let table = $(".sv_builder_table_navigation").data().tableName
+        rebuildDraggable(table);
+        $(".sv_builder_table_navigation").addClass("active");
+        fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+      }
 
       setTimeout(function () {
         fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
