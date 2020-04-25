@@ -13,7 +13,7 @@ module TableActivity
     @activities_for_table = Activity.where(
       feedable_type: feedable_type,
       feedable_id: feedable_id
-    )
+    ).last(3).sort_by(&:created_at).reverse
 
     group_activities_by_kind
   end

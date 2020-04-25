@@ -3,36 +3,25 @@
 }
 
 form.activity-comment-form {
-  /* This bit sets up the horizontal layout */
   display:flex;
   flex-direction:row;
-  
-  /* This bit draws the box around it */
   border-top: 0.5px solid $border-grey;
   border-bottom: 0.5px solid $border-grey;
-
-  /* I've used padding so you can see the edges of the elements. */
   padding: 2px;
 }
 
 .activity-comment-form--input {
-  /* Tell the input to use all the available space */
   flex-grow:2;
-  /* And hide the input's outline, so the form looks like the outline */
   border:none;
   background-color: transparent;
   height: 36px;
   line-height: 250%;
+  margin-bottom: 0;
 }
 
 .activity-comment-form--input::placeholder {
   line-height: 250%;
 }
-
-// input:focus {
-//   /* removing the input focus blue box. Put this on the form if you like. */
-//   outline: none;
-// }
 
 table.activities-history--table {
   margin-bottom: 0px;
@@ -40,20 +29,9 @@ table.activities-history--table {
 
   td:first-child {
     width: 10%;
-    border-right: 1px solid $border-grey;
+    border-right: 1px solid $very-light-blue;
   }
 
-  // td:first-child::after {
-  //   content: '';
-  //   position: relative;
-  //   width: 11px;
-  //   height: 11px;
-  //   // right: 98%;
-  //   background-color: white;
-  //   border: 1px solid $button-green;
-  //   border-radius: 50%;
-  //   z-index: 1;
-  // }
   .activity-table-circle {
     position: absolute;
     margin-left: 10px;
@@ -91,6 +69,15 @@ table.activities-history--table {
 }
 
 .activity-history {
+  .nav-tabs {
+    float: right;
+    padding-top: 2%;
+  }
+
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    border: none;
+  }
+
   ul {
     margin:0;
     padding:0;

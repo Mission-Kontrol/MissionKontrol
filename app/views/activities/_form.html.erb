@@ -5,7 +5,7 @@
     <%= form.hidden_field :kind, value: 'note'  %>
 
 
-    <%= form.text_area :content, placeholder: 'Click to add a comment', class: "activity-comment-form--input" %>
+    <%= form.text_field :content, placeholder: 'Click to add a comment', class: "activity-comment-form--input" %>
     <%= form.submit 'Submit', class: 'btn btn-info' %>
   <% end %>
 </div>

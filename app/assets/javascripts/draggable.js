@@ -193,10 +193,10 @@ initializeDraggable = function () {
     hideTrashContainer();
 
     if (destinationContainerId === "layout-builder-draggable-trash-container") {
-      if ($(".sv_builder_table_navigation").hasClass('active')) {
+      if ($(".sv_builder_table_navigation").hasClass("active")) {
         fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
       } else {
-        let table = $(".sv_builder_table_navigation").data().tableName
+        let table = $(".sv_builder_table_navigation").data().tableName;
         rebuildDraggable(table);
         $(".sv_builder_table_navigation").addClass("active");
         fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
