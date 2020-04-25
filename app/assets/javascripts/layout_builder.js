@@ -42,11 +42,18 @@ function updateLayoutBuilderContainer (containerId, containerItems) {
   var containerParam = getContainerParam(containerId);
   var data = {};
   data["view_builder"] = {};
+  let container = $("#" + containerId);
 
   if (containerItems.length === 0) {
     data["view_builder"][containerParam] = JSON.stringify(containerItems);
+    if (!container.hasClass('layout-placeholder--border')) {
+      container.addClass('layout-placeholder--border')
+    }
   } else {
     data["view_builder"][containerParam] = containerItems;
+    if (container.hasClass('layout-placeholder--border')) {
+      container.removeClass('layout-placeholder--border')
+    }
   }
 
   $.ajax({

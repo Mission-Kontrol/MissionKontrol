@@ -74,14 +74,14 @@ buildDraggableField = function (field) {
   if (field.editable === "true") {
     item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
       "<div class='row'>" +
-      "<div class='col-sm-7'>" +
+      "<div class='col-sm-10'>" +
         "<div class = 'layout-builder-draggable-item-handle'>" +
           "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
           "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  " class='no-select'>" + field.title + "</span>" +
         "</div>" +
       "</div>" +
 
-      "<div class='col-sm-5 text-right'>"+
+      "<div class='col-sm-2 text-right'>"+
         "<div class = 'layout-builder-field-editable-toggle'>" +
           "<label class='switch'>" +
               "<div class='toggle'>" +
@@ -99,14 +99,14 @@ buildDraggableField = function (field) {
   } else {
     item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
       "<div class='row'>" +
-        "<div class='col-sm-7'>" +
+        "<div class='col-sm-10'>" +
           "<div class = 'layout-builder-draggable-item-handle'>" +
             "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
             "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  " class='no-select'>" + field.title + "</span>" +
           "</div>" +
         "</div>" +
 
-        "<div class='col-sm-5 text-right'>"+
+        "<div class='col-sm-2 text-right'>"+
           "<div class = 'layout-builder-field-editable-toggle'>" +
             "<label class='switch'>" +
               "<div class='toggle'>" +

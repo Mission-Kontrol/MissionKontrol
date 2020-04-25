@@ -269,27 +269,6 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
   text-align: right;
 }
 
-.draggable-list-item, #droppable-list-of-relatable-tables {
-  cursor: pointer;
-}
-
-#droppable-list-of-relatable-tables {
-  padding: 5px;
-  min-height:30px;border: 2px dashed #eaeaea
-}
-
-.droppable-list-item-for-relatable-table {
-  margin: 5px;
-  padding: 10px 15px;
-  background-color: #c2c2c2;
-}
-
-.draggable-list-item {
-  margin: 10px;
-  padding: 10px 10px;
-  background-color: #c2c2c2;
-}
-
 .table--settings-dropdown {
   .dropdown {
     border: none;

@@ -8,4 +8,8 @@ module ViewBuilderHelper
       ['Deactivated', 'deactivated', { class: 'select-deactivated' }]
     ]
   end
+
+  def display_border?(container)
+    container.empty? ? 'layout-placeholder--border' : ''
+  end
 end
