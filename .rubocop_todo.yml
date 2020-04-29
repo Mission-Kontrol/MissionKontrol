@@ -286,6 +286,7 @@ Style/GuardClause:
   Exclude:
     - 'app/controllers/application_controller.rb'
     - 'app/controllers/layout_builder_controller.rb'
+    - 'app/controllers/concerns/single_view_actions.rb'
 
 # Offense count: 18
 # Cop supports --auto-correct.
