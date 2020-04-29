@@ -5,6 +5,7 @@ class LayoutBuilderController < ApplicationController
   include TableActivity
   include DatabasePresenterActions
   include RelatableTables
+  include SingleViewActions
 
   layout 'layout_builder', only: [:new, :edit]
   layout 'standard', only: [:index, :preview]
