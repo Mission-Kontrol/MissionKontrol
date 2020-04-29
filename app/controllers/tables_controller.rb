@@ -3,6 +3,8 @@
 class TablesController < ApplicationController
   include TableActivity
   include TableRender
+  include DatabasePresenterActions
+  include RelatableTables
 
   layout 'standard'
 
@@ -18,9 +20,7 @@ class TablesController < ApplicationController
   before_action :set_activities, only: :preview
 
   def index
-    database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
-
-    @available_tables = tables_with_view_permission(@database.id, database_tables)
+    @available_tables = tables_with_view_permission(@database.id, available_tables)
 
     respond_to do |format|
       format.js { render json: @available_tables.sort.to_json }
@@ -232,10 +232,6 @@ class TablesController < ApplicationController
     end
 
     nested_column_names.compact!
-  end
-
-  def relatable_tables(table)
-    Kuwinda::Presenter::ListRelatableTables.new(database_connection, table).call
   end
 
   def set_columns_for_form

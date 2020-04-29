@@ -2,6 +2,9 @@
 
 class LayoutBuilderController < ApplicationController
   include UserAbilities
+  include TableActivity
+  include DatabasePresenterActions
+  include RelatableTables
 
   layout 'layout_builder', only: [:new, :edit]
   layout 'standard', only: [:index, :preview]
@@ -125,69 +128,5 @@ class LayoutBuilderController < ApplicationController
 
   def load_view_builder
     @view_builder = ViewBuilder.find(params[:id])
-  end
-
-  ## TODO: these three are duplicate, move into concern
-  def relatable_tables(table)
-    Kuwinda::Presenter::ListRelatableTables.new(@database_connection, table).call
-  end
-
-  def set_relatable_tables
-    @relatable_tables = []
-
-    relatable_tables(@current_table).each do |table|
-      # layout = ViewBuilder.find_by_table_name(table)
-      relative = {}
-      # @target_db.table = table
-      foreign_key_title = helpers.get_foreign_key(params[:table_name])
-      foreign_key_value = params[:record_id]
-      sql_result = @target_db.find_all_related(table, foreign_key_title, foreign_key_value, 10, 0)
-      relative[:headers] = sql_result ? sql_result.columns : []
-      relative[:name] = table
-      @relatable_tables << relative
-    end
-
-    @relatable_tables
-  end
-
-  def list_table_fields_with_type(table)
-    Kuwinda::Presenter::ListTableFieldsWithType.new(@database_connection, table).call
-  end
-
-  def tables_with_layouts
-    tables_with_layouts = []
-    available_tables.select do |table|
-      tables_with_layouts << table if ViewBuilder.find_by(table_name: table, database_id: @database.id).present?
-    end
-    tables_with_layouts
-  end
-
-  def available_tables
-    Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
-    # Kuwinda::Presenter::ListAvailableTables.new(ClientRecord).call
-  end
-
-  def field_params
-    params.permit(:view_name, :table, :ignore_modal, selectedOptions: [])
-  end
-
-  def update_attributes(view_builder, params)
-    view_builder.status = params[:status] if params[:status]
-    view_builder.view_name = params[:name] if params[:name]
-
-    if params[:view_builder]
-      view_builder.commentable = params[:view_builder][:commentable] if params[:view_builder][:commentable]
-      view_builder.show_status = params[:view_builder][:show_status] if params[:view_builder][:show_status]
-      view_builder.table_name = params[:view_builder][:table_name] if params[:view_builder][:table_name]
-      view_builder.parent_comment_table = params[:view_builder][:parent_comment_table] if params[:view_builder][:parent_comment_table]
-      view_builder.draggable_fields_header_container1 = params[:view_builder][:draggable_fields_header_container1] if params[:view_builder][:draggable_fields_header_container1]
-      view_builder.draggable_fields_header_container2 = params[:view_builder][:draggable_fields_header_container2] if params[:view_builder][:draggable_fields_header_container2]
-      view_builder.draggable_fields_side_container = params[:view_builder][:draggable_fields_side_container] if params[:view_builder][:draggable_fields_side_container]
-      view_builder.draggable_fields_main_container1 = params[:view_builder][:draggable_fields_main_container1] if params[:view_builder][:draggable_fields_main_container1]
-      view_builder.draggable_fields_main_container2 = params[:view_builder][:draggable_fields_main_container2] if params[:view_builder][:draggable_fields_main_container2]
-      view_builder.draggable_fields_main_container3 = params[:view_builder][:draggable_fields_main_container3] if params[:view_builder][:draggable_fields_main_container3]
-      view_builder.hidden_columns = params[:view_builder][:hidden_columns] if params[:view_builder][:hidden_columns]
-      view_builder.callable_fields = params[:view_builder][:callable_fields] if params[:view_builder][:callable_fields]
-    end
   end
 end

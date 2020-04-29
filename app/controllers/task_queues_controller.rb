@@ -4,7 +4,7 @@ class TaskQueuesController < ApplicationController
   include TaskQueuePreview
   include TaskQueueRecordActivity
   layout 'task_queue'
-  before_action :load_available_tables, :set_activities
+  before_action :set_activities
 
   def index
     @task_queue = TaskQueue.new
