@@ -74,14 +74,6 @@ class ApplicationController < ActionController::Base
     @task_queues = TaskQueue.all
   end
 
-  def set_activities
-    @activities = OpenStruct.new
-    @activities.all = []
-    @activities.calls = []
-    @activities.meetings = []
-    @activities.notes = []
-  end
-
   def check_target_db_connection
     # Kuwinda::UseCase::DatabaseConnection.new.execute unless ClientRecord.connection.active?
 

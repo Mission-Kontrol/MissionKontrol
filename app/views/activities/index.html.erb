@@ -1,0 +1,9 @@
+<%= render 'shared/page_banner_header', title: 'Activity', items: ['Activity', "#{@feedable_type.humanize}", "#{@feedable_id}"] %>
+
+<div class="panel-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <%= render 'shared/activity_history', feedable_type: @feedable_type, feedable_id: @feedable_id, index: true %>
+    </div>
+  </div>
+</div>

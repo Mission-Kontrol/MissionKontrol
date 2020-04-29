@@ -5,6 +5,14 @@ module TableActivity
 
   private
 
+  def set_activities
+    @activities = OpenStruct.new
+    @activities.all = []
+    @activities.calls = []
+    @activities.meetings = []
+    @activities.notes = []
+  end
+
   def set_activities_for_table
     ## TODO: add database id to activity table
     feedable_type = params[:table]

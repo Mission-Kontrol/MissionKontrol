@@ -24,7 +24,7 @@
   <% end %>
 
   <% if current_admin_user.twilio_setup_complete? || layout_builder.commentable %>
-    <%= render 'shared/activity_history', feedable_type: @current_table, feedable_id: @row["id"] %>
+    <%= render 'shared/activity_history', feedable_type: @current_table, feedable_id: @row["id"], index: false %>
   <% end %>
 </div>
 

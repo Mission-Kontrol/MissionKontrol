@@ -57,7 +57,7 @@ Rails.application.routes.draw do
   resources :databases
 
   resources :view_builder
-  resources :activities, only: :create
+  resources :activities, only: %i[create index]
 
   resources :organisation_settings, only: %i[edit update]
   resources :admin_users, only: %i[new]

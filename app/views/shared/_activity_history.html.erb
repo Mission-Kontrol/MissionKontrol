@@ -9,7 +9,7 @@
   <div class="col-sm-8 pull-right activity-history">
     <ul class="nav nav-tabs activity-history-tabs">
       <li class="active"><a data-toggle="tab" href="#tab-1">All</a></li>
-      <li class=""><a data-toggle="tab" href="#tab-2">Calls</a></li>
+      <li class="hide"><a data-toggle="tab" href="#tab-2">Calls</a></li>
       <li class=""><a data-toggle="tab" href="#tab-4">Notes</a></li>
     </ul>
   </div>
@@ -63,8 +63,10 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-sm-12 show-more-button">
-    <button type="button" class="btn btn-block btn-purple">Show more</button>
+<% unless index %>
+  <div class="row">
+    <div class="col-sm-12 show-more-button">
+      <%= link_to "Show more", activities_path(feedable_type: feedable_type, feedable_id: feedable_id), class: "btn btn-block btn-purple" %>
+    </div>
   </div>
-</div>
+<% end %>

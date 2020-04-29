@@ -3,6 +3,7 @@
     <%= form.hidden_field :feedable_type, id: :feedable_type, value: feedable_type  %>
     <%= form.hidden_field :feedable_id, id: :feedable_id, value: feedable_id  %>
     <%= form.hidden_field :kind, value: 'note'  %>
+    <%= form.hidden_field :user_id, value: current_admin_user.id %>
 
 
     <%= form.text_field :content, placeholder: 'Click to add a comment', class: "activity-comment-form--input" %>
