@@ -20,6 +20,7 @@ class TablesController < ApplicationController
   before_action :set_activities, only: :preview
 
   def index
+    set_database
     @available_tables = tables_with_view_permission(@database.id, available_tables)
 
     respond_to do |format|
