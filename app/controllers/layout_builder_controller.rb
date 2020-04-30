@@ -23,7 +23,7 @@ class LayoutBuilderController < ApplicationController
   end
 
   def new
-    set_database
+    database_connection
     @available_tables = available_tables
     @tables_with_layouts = tables_with_layouts
     @view_builder = ViewBuilder.new(table_name: field_params[:table], database_id: @database.id)

@@ -59,6 +59,12 @@
   @extend .bold;
 }
 
+.btn-green {
+  background-color: $button-green !important;
+  border-color: $button-green !important;
+  color: $white !important;
+}
+
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
   background-color: darken($button-green, 3%);
   border-color: darken($button-green, 3%);
