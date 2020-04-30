@@ -3,16 +3,16 @@
 }
 
 form.activity-comment-form {
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
   border-top: 0.5px solid $border-grey;
   border-bottom: 0.5px solid $border-grey;
   padding: 2px;
 }
 
 .activity-comment-form--input {
-  flex-grow:2;
-  border:none;
+  flex-grow: 2;
+  border: none;
   background-color: transparent;
   height: 36px;
   line-height: 250%;
@@ -80,19 +80,19 @@ table.activities-history--table {
   }
 
   ul {
-    margin:0;
-    padding:0;
-    list-style:none;
-    vertical-align:bottom;
-    display:inline-block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    vertical-align: bottom;
+    display: inline-block;
   }
 
   ul li {
-      line-height:28px;
-      background:red;
-      color:#fff;
-      margin:0 20px 0 0;
-      float:left;
+      line-height: 28px;
+      background: red;
+      color: #fff;
+      margin: 0 20px 0 0;
+      float: left;
   }
 }
 
