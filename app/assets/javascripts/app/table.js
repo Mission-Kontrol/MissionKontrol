@@ -352,11 +352,12 @@ $(document).ready(function() {
     const id = event.target.dataset.id;
     const foreignKeyTitle = event.target.dataset.foreignKeyTitle;
     const foreignKeyValue = event.target.dataset.foreignKeyValue;
+    const databaseId = event.target.dataset.databaseId
 
     if (foreignKeyTitle) {
       updateRelatedTableField(event, table, field, foreignKeyTitle, foreignKeyValue);
     } else {
-      updateTableField(event, table, field, id);
+      updateTableField(event, table, field, id, databaseId);
     }
   })
 

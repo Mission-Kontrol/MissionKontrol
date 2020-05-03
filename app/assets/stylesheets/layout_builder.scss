@@ -296,6 +296,8 @@ input:checked + .slider:before {
 
 .editable-input {
   display: none;
+  width: 50%;
+  padding-left: 10px;
 }
 
 .editable-actions-wrapper {

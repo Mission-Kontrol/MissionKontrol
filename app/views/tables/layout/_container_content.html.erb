@@ -1,0 +1,44 @@
+<% if field["table"] == @current_table %>
+  <% @current_row = @row %>
+<% else %>
+  <% @current_row = get_related_row(@current_table, field["table"], @row["id"]) %>
+<% end %>
+
+<% if field["editable"] == "true" %>
+  <div class="row editable-row">
+    <div class="col-xs-12">
+      <div class="editable-content-wrapper">
+        <p class="main-container-content">
+          <b><%= field["title"].humanize %></b>:
+
+          <span class="editable-content" onclick="showEditable(event);">
+            <% if current_row_valid?(@current_row, field) %>
+              <%= @current_row[field["title"]] %><span class="margin-left"><img src='/assets/images/icons/edit.png'></span>
+            <% else %>
+              --
+            <% end %>
+          </span>
+
+          <span>
+            <%= render partial: 'tables/layout/editable_input', locals: { field: field } %>
+          </span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+<% else %>
+  <div class="">
+    <p class="main-container-content">
+      <b><%= field["title"].humanize %></b>:
+
+      <span class="">
+        <% if @current_row && !@current_row[field["title"]].blank? %>
+          <%= @current_row[field["title"]] %>
+        <% else %>
+            --
+        <% end %>
+      </span>
+    </p>
+  </div>
+<% end %>

@@ -2,12 +2,11 @@ function showEditable(evt) {
   evt.preventDefault();
 
   let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
-  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0];
-  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let editableInput = $(editableRow).find(".editable-input");
 
-  editableContentWrapper.style.display = "none";
-  editableInput.style.display = "block";
-  editableInput.children[0].focus();
+  evt.currentTarget.style.display = "none";
+  $(editableInput).css("display", "inline-block");
+  $(editableInput).focus();
 
   return true;
 }
@@ -16,33 +15,33 @@ function cancelEditable(evt) {
   evt.preventDefault();
 
   let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
-  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0];
-  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let editableContent = $(editableRow).find(".editable-content");
+  let editableInput = $(editableRow).find(".editable-input");
 
-  editableContentWrapper.style.display = "block";
-  editableInput.style.display = "none";
+  $(editableContent).css("display", "inline-block");
+  $(editableInput).css("display", "none");
 }
 
 function hideEditable(editableRow) {
-  let editableContentWrapper = editableRow.getElementsByClassName("editable-content-wrapper")[0];
-  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
+  let editableContent = $(editableRow).find(".editable-content");
+  let editableInput = $(editableRow).find(".editable-input");
 
-  editableContentWrapper.style.display = "block";
-  editableInput.style.display = "none";
+  $(editableContent).css("display", "inline-block");
+  $(editableInput).css("display", "none");
 }
 
 function refreshEditableContent(editableContent, newValue) {
   editableContent.innerText = newValue;
 }
 
-function updateTableField(evt, table, field, id) {
+function updateTableField(evt, table, field, id, databaseId) {
   evt.preventDefault();
 
   let editableRow = evt.currentTarget.parentElement.parentElement.parentElement;
-  let editableContent = editableRow.getElementsByClassName("editable-content")[0];
-  let editableInput = editableRow.getElementsByClassName("editable-input")[0];
-  let currentValue = editableContent.innerText.trim();
-  let newValue = editableInput.children[0].value;
+  let editableContent = $(editableRow).find(".editable-content");
+  let editableInput = $(editableRow).find(".editable-input");
+  let currentValue = $(editableContent).text().trim();
+  let newValue = $(editableInput).children('input').val();
 
   if (currentValue === newValue) {
     cancelEditable(evt);
@@ -55,6 +54,7 @@ function updateTableField(evt, table, field, id) {
   data["table_field"]["id"] = id;
   data["table_field"]["field"] = field;
   data["table_field"]["value"] = newValue;
+  data["database_id"] = databaseId
 
   $.ajax({
     url: "/table_field",
