@@ -15,7 +15,7 @@
             <% if current_row_valid?(@current_row, field) %>
               <%= @current_row[field["title"]] %><span class="margin-left"><img src='/assets/images/icons/edit.png'></span>
             <% else %>
-              --
+               --
             <% end %>
           </span>
 
@@ -28,17 +28,19 @@
     </div>
   </div>
 <% else %>
-  <div class="">
-    <p class="main-container-content">
-      <b><%= field["title"].humanize %></b>:
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="main-container-content not-editable-content">
+        <b><%= field["title"].humanize %></b>:
 
-      <span class="">
-        <% if @current_row && !@current_row[field["title"]].blank? %>
-          <%= @current_row[field["title"]] %>
-        <% else %>
-            --
-        <% end %>
-      </span>
-    </p>
+        <span class="">
+          <% if @current_row && !@current_row[field["title"]].blank? %>
+            <%= @current_row[field["title"]] %>
+          <% else %>
+              --
+          <% end %>
+        </span>
+      </p>
+    </div>
   </div>
 <% end %>

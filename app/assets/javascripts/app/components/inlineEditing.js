@@ -31,7 +31,7 @@ function hideEditable(editableRow) {
 }
 
 function refreshEditableContent(editableContent, newValue) {
-  editableContent.innerText = newValue;
+  editableContent.text(newValue);
 }
 
 function updateTableField(evt, table, field, id, databaseId) {
