@@ -39,10 +39,7 @@ p {
   font-size: 12px;
 }
 
-.margin-space {
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
+/* COLOURS */
 
 .white {
   color: $white;
@@ -64,6 +61,8 @@ p {
   color: $brown-grey;
 }
 
+/* WEIGHT */
+
 .medium {
   font-weight: 500;
 }
@@ -80,7 +79,10 @@ p {
   @extend h4;
 }
 
+/* LINKS */
+
 a {
+  cursor: pointer;
   color: $navy;
   margin-top: 0;
   margin-bottom: 0;
@@ -88,4 +90,10 @@ a {
   &.underline {
     text-decoration: underline;
   }
+}
+
+a:hover,
+a:focus {
+  color: $blueberry;
+  text-decoration: none;
 }

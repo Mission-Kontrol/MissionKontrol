@@ -1,0 +1,170 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Helvetica Neue", "open sans", Helvetica, Arial, sans-serif;
+  background-color: #2f4050;
+  font-size: 14px;
+  color: $purplish-grey;
+  overflow-x: hidden;
+  min-width: 1269px;
+}
+
+.block {
+  display: block;
+}
+
+.clear {
+  display: block;
+  overflow: hidden;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+video {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* WRAPPERS */
+
+#wrapper {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.wrapper {
+  padding: 0 15px;
+}
+
+.wrapper-content {
+  padding: 20px 10px 40px;
+}
+
+#page-wrapper {
+  min-height: auto;
+  padding: 0 15px;
+  // min-height: 568px;
+  position: relative !important;
+}
+
+.page-heading {
+  border-top: 0;
+  padding: 0 15px 20px 15px;
+  height: 84px;
+}
+
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+/* BREADCRUMBS */
+.breadcrumb {
+  background-color: #ffffff;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.breadcrumb > li a {
+  color: inherit;
+}
+
+.breadcrumb > .active {
+  color: inherit;
+}
+
+code {
+  background-color: #F9F2F4;
+  border-radius: 4px;
+  color: #ca4440;
+  font-size: 90%;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+
+/* IBOX */
+
+.ibox {
+  clear: both;
+  margin-bottom: 25px;
+  margin-top: 0;
+  padding: 0;
+}
+
+.ibox:after, .ibox:before {
+  display: table;
+}
+
+.ibox-content {
+  background-color: $white;
+  color: inherit;
+  padding: 15px 20px 20px 20px;
+  border-color: $border-color;
+  border-image: none;
+  border-style: solid solid none;
+  border-width: 1px 0;
+}
+
+.ibox-content {
+  clear: both;
+}
+
+/* BACKGROUNDS */
+
+.gray-bg {
+  background-color: $gray;
+}
+
+.white-bg {
+  background-color: #ffffff;
+}
+
+.light-grey-bg {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.panel-info {
+  border-color: $lazur;
+}
+
+.panel-info > .panel-heading {
+  background-color: $lazur;
+  border-color: $lazur;
+  color: #ffffff;
+}
+
+.text-muted {
+  color: $muted-grey;
+}
+
+.full-height {
+  height: 100%;
+}
+
+/* FOOTER */
+
+.footer {
+  background: none repeat scroll 0 0 white;
+  border-top: 1px solid $border-color;
+  bottom: 0;
+  left: 0;
+  padding: 10px 20px;
+  position: absolute;
+  right: 0;
+}
+
+/* PANELS */
+
+.panel-heading h1, .panel-heading h2 {
+  margin-bottom: 5px;
+}

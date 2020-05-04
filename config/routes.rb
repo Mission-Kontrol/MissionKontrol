@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   patch 'layouts/:id/related_tables/remove', to: 'layout_builder#remove_related_table', as: 'remove_related_table'
 
   get 'view_builder/table_fields', to: 'view_builder#table_fields'
-  get 'view_builder/view', to: 'view_builder#view_page'
+  # get 'view_builder/view', to: 'view_builder#view_page'
   get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
   get 'users/edit', to: 'admin_users#edit'
