@@ -24,7 +24,7 @@ form.activity-comment-form {
 }
 
 table.activities-history--table {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   padding-right: 20px;
 
   td:first-child {
@@ -75,7 +75,9 @@ table.activities-history--table {
     padding-top: 2%;
   }
 
-  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover,
+  .nav-tabs > li.active > a:focus {
     border: none;
   }
 
@@ -88,11 +90,11 @@ table.activities-history--table {
   }
 
   ul li {
-      line-height: 28px;
-      background: red;
-      color: #fff;
-      margin: 0 20px 0 0;
-      float: left;
+    line-height: 28px;
+    background: red;
+    color: #fff;
+    margin: 0 20px 0 0;
+    float: left;
   }
 }
 

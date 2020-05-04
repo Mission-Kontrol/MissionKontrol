@@ -123,9 +123,9 @@ function loadDataTable (columns) {
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
 
       if (nestedTable.length === 0) {
-        $($(row).children()[1]).addClass("table--clickable-cell")
+        $($(row).children()[1]).addClass("table--clickable-cell");
       } else {
-        $($(row).children()[2]).addClass("table--clickable-cell")
+        $($(row).children()[2]).addClass("table--clickable-cell");
       }
 
       $(row).addClass("table--nested-row");
@@ -371,7 +371,7 @@ $(document).ready(function() {
     const id = event.target.dataset.id;
     const foreignKeyTitle = event.target.dataset.foreignKeyTitle;
     const foreignKeyValue = event.target.dataset.foreignKeyValue;
-    const databaseId = event.target.dataset.databaseId
+    const databaseId = event.target.dataset.databaseId;
 
     if (foreignKeyTitle) {
       updateRelatedTableField(event, table, field, foreignKeyTitle, foreignKeyValue);

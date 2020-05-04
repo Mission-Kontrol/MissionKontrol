@@ -41,7 +41,7 @@ function updateTableField(evt, table, field, id, databaseId) {
   let editableContent = $(editableRow).find(".editable-content");
   let editableInput = $(editableRow).find(".editable-input");
   let currentValue = $(editableContent).text().trim();
-  let newValue = $(editableInput).children('input').val();
+  let newValue = $(editableInput).children("input").val();
 
   if (currentValue === newValue) {
     cancelEditable(evt);
@@ -54,7 +54,7 @@ function updateTableField(evt, table, field, id, databaseId) {
   data["table_field"]["id"] = id;
   data["table_field"]["field"] = field;
   data["table_field"]["value"] = newValue;
-  data["database_id"] = databaseId
+  data["database_id"] = databaseId;
 
   $.ajax({
     url: "/table_field",
