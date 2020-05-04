@@ -338,3 +338,7 @@ img.rotate {
   -o-transform: rotate(270deg);
   transform: rotate(270deg);
 }
+
+.table--clickable-cell {
+  cursor: pointer;
+}

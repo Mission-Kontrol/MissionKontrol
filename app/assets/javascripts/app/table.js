@@ -68,6 +68,7 @@ function loadDataTable (columns) {
   let tableName = $(".data-table").data("table-name");
   var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
   let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
+
   if (nestedVisibleColumns.length > 0) {
     columns.unshift({"data":null,"defaultContent":"<a class='table--nested-table' data-remote='true' href='#'><img class='nested-table rotate' src='/assets/images/icons/triangle.svg'></a>"});
   }
@@ -115,12 +116,20 @@ function loadDataTable (columns) {
     stateLoadCallback(settings, callback) {
       stateLoadCallbackFunction($(this), callback);
     },
-    createdRow(row, data, dataIndex) {
+    createdRow(row, data) {
       let table = $(this).data("table-name");
       let nestedTable = $(this).data("nested-table");
       let id = data.id;
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
+
+      if (nestedTable.length === 0) {
+        $($(row).children()[1]).addClass("table--clickable-cell")
+      } else {
+        $($(row).children()[2]).addClass("table--clickable-cell")
+      }
+
       $(row).addClass("table--nested-row");
+      $(row).addClass("table--preview-link");
       $(row).attr("data-href",  previewUrl);
       $(row).attr("data-nested-table", nestedTable);
       $(row).attr("data-record-id", id);
@@ -332,6 +341,16 @@ function rotateNestedTableIcon () {
   });
 }
 
+function linkToPreview () {
+  $("body").on("click", ".table--clickable-cell", function () {
+    let previewLocation = $(this).parent().data("href");
+    let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
+    let databaseParams = "&database_id=" + databaseId;
+
+    window.location.href = previewLocation + databaseParams;
+  });
+}
+
 $(document).ready(function() {
   let metaTag = $("meta[name=psj]");
   let isCurrentControllerTables = metaTag.attr("controller") === "tables";
@@ -362,4 +381,6 @@ $(document).ready(function() {
   })
 
   rotateNestedTableIcon();
+
+  linkToPreview();
 });

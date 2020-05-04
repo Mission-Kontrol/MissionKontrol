@@ -232,7 +232,7 @@ class TablesController < ApplicationController
       nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
 
-    nested_column_names.compact!
+    nested_column_names.compact
   end
 
   def set_columns_for_form
