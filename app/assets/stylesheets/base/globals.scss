@@ -30,6 +30,23 @@ video {
   height: auto !important;
 }
 
+.alert ul {
+  list-style-type: none;
+}
+
+.divider {
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.align-self-center {
+  align-self: center;
+}
+
 /* WRAPPERS */
 
 #wrapper {
@@ -45,11 +62,16 @@ video {
   padding: 20px 10px 40px;
 }
 
+.container-fluid {
+  overflow-x: unset;
+}
+
 #page-wrapper {
   min-height: auto;
   padding: 0 15px;
   // min-height: 568px;
   position: relative !important;
+  padding-bottom: 50px;
 }
 
 .page-heading {

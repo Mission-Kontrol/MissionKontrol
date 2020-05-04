@@ -365,6 +365,11 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   padding: 18px 0;
 }
 
+.navbar.navbar-static-top {
+  background-color: inherit;
+  margin-bottom: -15px;
+}
+
 .pace-done .navbar-static-side, .pace-done .nav-header, .pace-done li.active, .pace-done #page-wrapper, .pace-done .footer {
   -webkit-transition: all 0.4s;
   -moz-transition: all 0.4s;

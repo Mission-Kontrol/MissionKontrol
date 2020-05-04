@@ -19,6 +19,14 @@
 
 /* MARGINS & PADDINGS */
 
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.no-margin {
+  margin: 0 !important
+}
+
 .margin-right {
   margin-right: 10px;
 }
@@ -55,6 +63,10 @@
 .p-w-sm {
   padding: 0 15px;
 
+}
+
+.p-w-xxs {
+  padding: 0 5px;
 }
 
 .p-h-xs {

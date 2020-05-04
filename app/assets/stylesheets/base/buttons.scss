@@ -2,12 +2,7 @@
 .btn {
   border-radius: $btn-border-radius;
   margin-bottom: 5px;
-  width: 137px;
-  height: 24px;
-  line-height: 0;
-  @extend h5;
   @extend .white;
-  @extend .bold;
 
   &:focus {
     outline: none !important;
@@ -23,6 +18,12 @@
 .btn-primary {
   background-color: $button-green;
   border-color: $button-green;
+  width: 137px;
+  height: 24px;
+  line-height: 0;
+  @extend h5;
+  @extend .white;
+  @extend .bold;
 
   &:hover,
   &:focus,
