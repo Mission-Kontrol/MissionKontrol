@@ -15,9 +15,9 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
-Rails.application.config.assets.precompile += %w(
+Rails.application.config.assets.precompile += %w[
   dataTable/datatables.min.js
   dragula/dragula.min.js
   shopify/draggable.bundle.js
   shopify/sortable.js
-)
+]
