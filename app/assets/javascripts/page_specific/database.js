@@ -11,12 +11,12 @@ function clearGemCredentials () {
   });
 }
 
-Paloma.controller('Databases', {
-  new: function() {
+Paloma.controller("Databases", {
+  new () {
     submitPasswordChange();
   },
 
-  edit: function() {
+  edit () {
     submitPasswordChange();
     clearGemCredentials();
   }

@@ -26,8 +26,8 @@ function submitSettingsChange () {
   });
 }
 
-Paloma.controller('AdminUsers', {
-  index: function() {
+Paloma.controller("AdminUsers", {
+  index () {
     submitSettingsChange();
   }
 });

@@ -351,8 +351,8 @@ function linkToPreview () {
   });
 }
 
-Paloma.controller('Tables', {
-  show: function() {
+Paloma.controller("Tables", {
+  show () {
     let metaTag = $("meta[name=psj]");
     let isCurrentControllerTables = metaTag.attr("controller") === "tables";
     let isCurrentActionShow = metaTag.attr("action") === "show";
@@ -379,14 +379,14 @@ Paloma.controller('Tables', {
       } else {
         updateTableField(event, table, field, id, databaseId);
       }
-    })
+    });
 
     rotateNestedTableIcon();
 
     linkToPreview();
   },
 
-  preview: function() {
+  preview () {
     let metaTag = $("meta[name=psj]");
     let isCurrentControllerTables = metaTag.attr("controller") === "tables";
     let isCurrentActionShow = metaTag.attr("action") === "show";
@@ -413,7 +413,7 @@ Paloma.controller('Tables', {
       } else {
         updateTableField(event, table, field, id, databaseId);
       }
-    })
+    });
 
     rotateNestedTableIcon();
 

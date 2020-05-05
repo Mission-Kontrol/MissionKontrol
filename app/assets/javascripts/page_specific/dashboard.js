@@ -1,5 +1,5 @@
-Paloma.controller('Dashboard', {
-  show: function(){
+Paloma.controller("Dashboard", {
+  show () {
     // alert('page specific stuff here')
   }
 });
