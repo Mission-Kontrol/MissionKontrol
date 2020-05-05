@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dataTable/datatables.min.js' %>
+<% end %>
+
 <%= render 'shared/page_banner_header', title: @current_table.capitalize, items: ['Database', @current_table.capitalize] %>
 
 <div class="wrapper wrapper-content animated ">

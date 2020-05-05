@@ -1,3 +1,8 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dragula/dragula.min.js' %>
+  <%= javascript_include_tag 'shopify/draggable.bundle.js' %>
+<% end %>
+
 <div class="modal fade" id="layout-builder-editable-warning-modal" tabindex="-1" role="dialog" aria-labelledby="layout-builder-editable-warning-modal">
   <div class="modal-dialog" role="document">
     <%= render partial: 'layout_builder/edit/layout_builder_editable_warning_modal_screen_1' %>
