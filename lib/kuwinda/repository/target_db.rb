@@ -45,12 +45,14 @@ module Kuwinda
         last_id = conn.exec_query(last_id_sql).rows.first.first
         fields = '(id, '
         values = "(#{last_id + 1}, "
+        field_types = %i[datetime inet integer string boolean time]
 
         record_params.each do |field, value|
           column = table_columns(table).select { |table_column| table_column.name == field }.first
           fields += "#{field}, "
-          if (column.type == :datetime || column.type == :inet || column.type == :integer) && value == ''
-            values += 'NULL, '
+
+          if field_types.include?(column.type) && value.empty?
+            values += column.default ? (column.default + ', ') : 'NULL, '
           else
             values += "'#{value}', "
           end
@@ -58,7 +60,6 @@ module Kuwinda
         fields += 'created_at, updated_at)'
 
         values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
-
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
         conn.exec_query(sql)
       end

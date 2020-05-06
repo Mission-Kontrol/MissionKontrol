@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 
-gem 'rails', '5.1.7'
+gem 'rails', '5.2.4.2'
 
 gem 'bcrypt'
 gem 'bootstrap-sass', '>= 3.4.1'
@@ -22,11 +22,11 @@ gem 'rolify'
 gem 'sass-rails', '~> 5.0.7'
 gem 'therubyracer', '~> 0.12.3'
 gem 'turbolinks', '~> 5.1.0'
-gem 'uglifier', '~> 4.1.5'
+gem 'uglifier', '~> 4.2.0'
 gem 'pg', '~> 1.2'
 gem 'mysql2', '~> 0.4.10'
 gem 'clockwork', '~> 2.0'
-gem 'twilio-ruby', '~> 5.17.0'
+gem 'twilio-ruby', '~> 5.33.1'
 
 group :development, :test do
   gem 'dotenv-rails'
@@ -59,7 +59,7 @@ group :test do
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'shoulda-matchers'
-  gem 'vcr', '~> 4.0.0'
+  gem 'vcr', '~> 5.1.0'
   gem 'webmock', '~> 3.8.3'
-  gem 'with_model', '~> 2.0.0'
+  gem 'with_model', '~> 2.1.3'
 end

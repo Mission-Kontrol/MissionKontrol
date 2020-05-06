@@ -123,6 +123,9 @@ class TablesController < ApplicationController
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
   rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
+  rescue ActiveRecord::StatementInvalid
+    @error = :Unknown
+    @error_message = 'Unable to save record. Please check your values and try again'
   end
 
   def update_record
@@ -145,6 +148,9 @@ class TablesController < ApplicationController
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
   rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
+  rescue ActiveRecord::StatementInvalid
+    @error = :Unknown
+    @error_message = 'Unable to save record. Please check your values and try again'
   end
 
   def delete_record
@@ -283,9 +289,10 @@ class TablesController < ApplicationController
 
   def update_editable_fields(settings, params)
     params.each do |field|
-      settings.editable_fields[field] = {
-        editable: ActiveModel::Type::Boolean.new.cast(params[field]['editable']),
-        mandatory: ActiveModel::Type::Boolean.new.cast(params[field]['mandatory'])
+      value = field.first
+      settings.editable_fields[value] = {
+        editable: ActiveModel::Type::Boolean.new.cast(params[value]['editable']),
+        mandatory: ActiveModel::Type::Boolean.new.cast(params[value]['mandatory'])
       }
     end
   end
