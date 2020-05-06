@@ -20,4 +20,5 @@ Rails.application.config.assets.precompile += %w[
   dragula/dragula.min.js
   shopify/draggable.bundle.js
   shopify/sortable.js
+  sweetAlert/sweetalert.min.js
 ]

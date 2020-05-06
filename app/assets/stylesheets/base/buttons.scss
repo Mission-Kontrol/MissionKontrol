@@ -15,17 +15,18 @@
   height: 33px;
 }
 
+.btn-wide {
+  min-width: 137px;
+}
+
+.btn-middle-align {
+  margin-bottom: 0;
+}
+
 /* BUTTONS */
 .btn-primary {
   background-color: $button-green;
   border-color: $button-green;
-  width: 137px;
-  height: 24px;
-  line-height: 0;
-
-  @extend h5;
-  @extend .white;
-  @extend .bold;
 
   &:hover,
   &:focus,
@@ -59,8 +60,6 @@
 .btn-purple {
   background-color: $blueberry;
   border-color: $blueberry;
-
-  @extend .btn-large;
 
   &:hover,
   &:focus,
@@ -190,6 +189,11 @@
   &.active[disabled] {
     color: #cacaca;
   }
+}
+
+.modal-footer .btn + .btn {
+  margin-bottom: 5px;
+  margin-left: 5px;
 }
 
 .btn-danger {

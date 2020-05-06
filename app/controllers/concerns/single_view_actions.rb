@@ -17,7 +17,7 @@ module SingleViewActions
     params.permit(:view_name, :table, :ignore_modal, selectedOptions: [])
   end
 
-  def update_attributes(view_builder, params)
+  def update_layout_attributes(view_builder, params)
     view_builder.status = params[:status] if params[:status]
     view_builder.view_name = params[:name] if params[:name]
 
@@ -25,6 +25,7 @@ module SingleViewActions
       view_builder.commentable = params[:view_builder][:commentable] if params[:view_builder][:commentable]
       view_builder.show_status = params[:view_builder][:show_status] if params[:view_builder][:show_status]
       view_builder.table_name = params[:view_builder][:table_name] if params[:view_builder][:table_name]
+      view_builder.view_name = params[:view_builder][:view_name] if params[:view_builder][:view_name]
       view_builder.parent_comment_table = params[:view_builder][:parent_comment_table] if params[:view_builder][:parent_comment_table]
       view_builder.draggable_fields_header_container1 = params[:view_builder][:draggable_fields_header_container1] if params[:view_builder][:draggable_fields_header_container1]
       view_builder.draggable_fields_header_container2 = params[:view_builder][:draggable_fields_header_container2] if params[:view_builder][:draggable_fields_header_container2]

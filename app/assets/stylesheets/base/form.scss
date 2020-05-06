@@ -1,3 +1,10 @@
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
 .edit_organisation_setting,
 .editable-input,
 .edit_database,
@@ -16,6 +23,13 @@
     border-bottom: solid 1px $border-grey;
     width: 80%;
   }
+}
+
+.form-input {
+  border: none;
+  background: inherit;
+  border-bottom: solid 1px $border-grey;
+  width: 80%;
 }
 
 input {

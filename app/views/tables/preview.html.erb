@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dataTable/datatables.min.js' %>
+<% end %>
+
 <div class="row wrapper white-bg page-heading m-b">
   <% layout_available = table_has_layout?(@current_table) %>
   <div class="row flex">
