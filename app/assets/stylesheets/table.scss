@@ -5,6 +5,21 @@
   vertical-align: bottom;
 }
 
+.table-borderless {
+  & > tr {
+    border: none;
+
+    &:hover {
+      background-color: $background-grey;
+    }
+
+    & > td {
+      border: none !important;
+      vertical-align: middle !important;
+    }
+  }
+}
+
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
