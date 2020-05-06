@@ -1,3 +1,10 @@
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 .edit_organisation_setting,
 .editable-input,
 .edit_database,
