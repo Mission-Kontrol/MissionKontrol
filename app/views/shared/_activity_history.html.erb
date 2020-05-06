@@ -23,9 +23,10 @@
           <div class="panel-body">
             <div class="activity-stream">
               <% if @activities && @activities.all.size > 0 %>
-                <%= render 'shared/activity_stream', activities: @activities.all %>
+                <%= render 'shared/activity_stream', activities: @activities.all, locals: { hide: false } %>
               <% else %>
                 <p class="default-message">No activity has been recored for this <%= feedable_type %>.</p>
+                <%= render 'shared/activity_stream', activities: @activities.all, locals: { hide: true } %>
               <% end %>
             </div>
 
@@ -37,9 +38,10 @@
           <div class="panel-body">
             <div class="activity-stream">
               <% if @activities && @activities.calls.size > 0 %>
-                <%= render 'shared/activity_stream', activities: @activities.calls %>
+                <%= render 'shared/activity_stream', activities: @activities.calls, locals: { hide: false } %>
               <% else %>
                 <p class="default-message">No calls has been recored for this <%= feedable_type %>.</p>
+                <%= render 'shared/activity_stream', activities: @activities.calls, locals: { hide: true } %>
               <% end %>
             </div>
           </div>
@@ -49,9 +51,10 @@
           <div class="panel-body">
             <div class="activity-stream">
               <% if @activities && @activities.notes.size > 0 %>
-                <%= render 'shared/activity_stream', activities: @activities.notes %>
+                <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: false } %>
               <% else %>
                 <p class="default-message">No notes has been recored for this <%= feedable_type %>.</p>
+                <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: true } %>
               <% end %>
             </div>
 
@@ -66,7 +69,7 @@
 <% unless index %>
   <div class="row">
     <div class="col-sm-12 show-more-button">
-      <%= link_to "Show more", activities_path(feedable_type: feedable_type, feedable_id: feedable_id), class: "btn btn-block btn-purple" %>
+      <%= link_to "Show more", activities_path(feedable_type: feedable_type, feedable_id: feedable_id), class: "btn btn-block btn-purple btn-large" %>
     </div>
   </div>
 <% end %>

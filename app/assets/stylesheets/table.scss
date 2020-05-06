@@ -1,3 +1,53 @@
+/* TABLES */
+
+.table > thead > tr > th {
+  border-bottom: 1px solid #ddd;
+  vertical-align: bottom;
+}
+
+.table-borderless {
+  & > tr {
+    border: none;
+
+    &:hover {
+      background-color: $background-grey;
+    }
+
+    & > td {
+      border: none !important;
+      vertical-align: middle !important;
+    }
+  }
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  border-top: 1px solid $border-color;
+  line-height: 1.42857;
+  padding: 8px;
+  vertical-align: top;
+}
+
+.nav-tabs > li > a {
+  color: #a7b1c2;
+  font-weight: 600;
+  padding: 10px 20px 10px 25px;
+}
+
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+  background-color: #e6e6e6;
+  color: $text-color;
+}
+
+.tab-content {
+  padding: 20px 0;
+}
+
 .ibox-content.tables-view {
   background-color: inherit;
   border: none;
@@ -112,7 +162,8 @@ div.dataTables_wrapper div.dataTables_filter label {
   font-size: 0;
 }
 
-#target-table-admin-users_filter, .dataTables_filter {
+#target-table-admin-users_filter,
+.dataTables_filter {
   label {
     font-size: 0;
     float: left;
@@ -143,8 +194,20 @@ div.dataTables_wrapper div.dataTables_filter label {
   }
 }
 
+#target-table-admin-users_paginate,
+.dataTables_paginate {
+  .pagination > li > a {
+    border: none;
+    background-color: inherit;
+    color: $blueberry;
+    @extend .medium;
+    @extend h5;
+  }
+}
+
 .table--info {
-  #target-table-admin-users_paginate, .dataTables_paginate {
+  #target-table-admin-users_paginate,
+  .dataTables_paginate {
     display: inline;
   }
 
@@ -216,16 +279,6 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
   background-color: inherit;
 }
 
-#target-table-admin-users_paginate, .dataTables_paginate {
-  .pagination > li > a {
-    border: none;
-    background-color: inherit;
-    color: $blueberry;
-    @extend .medium;
-    @extend h5;
-  }
-}
-
 .header-container1-content {
   font-size: 24px;
   color: #726d73;
@@ -285,7 +338,10 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
       background-position: 135px 8px;
     }
 
-    #dropdown, #team, .table--settings-select, .table--settings-nested-select {
+    #dropdown,
+    #team,
+    .table--settings-select,
+    .table--settings-nested-select {
       -webkit-appearance: none;
       /* for webkit browsers */
       -moz-appearance: none;
@@ -294,15 +350,24 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
       /* for modern browsers */
     }
 
-    #dropdown::-ms-expand, #team::-ms-expand, .table--settings-select::-ms-expand, .table--settings-nested-select::-ms-expand {
+    #dropdown::-ms-expand,
+    #team::-ms-expand,
+    .table--settings-select::-ms-expand,
+    .table--settings-nested-select::-ms-expand {
       display: none;
     }
 
-    #dropdown:focus:invalid, #team:focus:invalid, .table--settings-select::-ms-expand, .table--settings-nested-select:focus:invalid {
+    #dropdown:focus:invalid,
+    #team:focus:invalid,
+    .table--settings-select::-ms-expand,
+    .table--settings-nested-select:focus:invalid {
       border-color: #FD6347;
     }
 
-    #dropdown:required:valid, #team:required:valid, .table--settings-select::-ms-expand, .table--settings-nested-select:required:valid {
+    #dropdown:required:valid,
+    #team:required:valid,
+    .table--settings-select::-ms-expand,
+    .table--settings-nested-select:required:valid {
       border-color: #006400;
     }
   }
@@ -326,7 +391,9 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
     padding: 0 10px;
   }
 
-  .filter-bar--clear, .filter-bar--delete, .filter-bar--edit {
+  .filter-bar--clear,
+  .filter-bar--delete,
+  .filter-bar--edit {
     cursor: pointer;
   }
 }

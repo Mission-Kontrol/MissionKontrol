@@ -6,12 +6,14 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
     <%= favicon_link_tag 'favicon.ico' %>
+    <%= yield(:head) %>
   </head>
 
   <body class="gray-bg">
     <div class="container">
       <%= render 'shared/flash_message' %>
       <%= yield %>
+      <%= insert_paloma_hook %>
     </div>
 
     <div id="natterly-container"></div>

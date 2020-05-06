@@ -197,18 +197,28 @@ initializeDraggable = function () {
         fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
       } else {
         let table = $(".sv_builder_table_navigation").data().tableName;
-        rebuildDraggable(table);
+        getOptionsForDraggable(table);
         $(".sv_builder_table_navigation").addClass("active");
-        fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+        setTimeout(function () {
+          [...$(dragEvent.sourceContainer).children()].forEach((element) => {
+            if(element.innerText.includes(dragEvent.source.innerText)) {
+              element.remove();
+              return;
+            }
+          });
+
+          fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+
+          let containerFields = JSON.parse(dragEvent.sourceContainer.dataset.fieldsForContainer);
+          for (let [key, value] of Object.entries(containerFields)) {
+            if (value.title === dragEvent.source.innerText.trim()) {
+              delete containerFields[key];
+              dragEvent.sourceContainer.dataset.fieldsForContainer = JSON.stringify(containerFields);
+              return;
+            }
+          }
+        }, 500);
       }
-
-      setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
-      }, 100);
-
-      setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
-      }, 2000);
     }
 
     if (sourceContainerId === destinationContainerId) {

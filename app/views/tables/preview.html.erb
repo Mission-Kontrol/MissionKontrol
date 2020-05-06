@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dataTable/datatables.min.js' %>
+<% end %>
+
 <div class="row wrapper white-bg page-heading m-b">
   <% layout_available = table_has_layout?(@current_table) %>
   <div class="row flex">
@@ -35,7 +39,7 @@
   <div class="animated ">
     <div class="row">
       <div class="col-lg-12">
-        <div class="ibox float-e-margins">
+        <div class="ibox margin-bottom">
           <div class="ibox-content">
             <div class="row">
               <div class="col-xs-12 text-center">

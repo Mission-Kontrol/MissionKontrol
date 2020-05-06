@@ -351,36 +351,17 @@ function linkToPreview () {
   });
 }
 
-$(document).ready(function() {
-  let metaTag = $("meta[name=psj]");
-  let isCurrentControllerTables = metaTag.attr("controller") === "tables";
-  let isCurrentActionShow = metaTag.attr("action") === "show";
-  let isCurrentActionPreview = metaTag.attr("action") === "preview";
-
-  if (isCurrentControllerTables && isCurrentActionShow) {
+Paloma.controller("Tables", {
+  show () {
     fetchDataForTable();
-  }
+    updateEditableFieldInput();
+    rotateNestedTableIcon();
+    linkToPreview();
+  },
 
-  if (isCurrentControllerTables && isCurrentActionPreview) {
+  preview () {
     fetchDataForRelatedTables();
+    updateEditableFieldInput();
+    rotateNestedTableIcon();
   }
-
-  $(".editable-input input").blur(function(event) {
-    const table = event.target.dataset.table;
-    const field = event.target.dataset.field;
-    const id = event.target.dataset.id;
-    const foreignKeyTitle = event.target.dataset.foreignKeyTitle;
-    const foreignKeyValue = event.target.dataset.foreignKeyValue;
-    const databaseId = event.target.dataset.databaseId;
-
-    if (foreignKeyTitle) {
-      updateRelatedTableField(event, table, field, foreignKeyTitle, foreignKeyValue);
-    } else {
-      updateTableField(event, table, field, id, databaseId);
-    }
-  })
-
-  rotateNestedTableIcon();
-
-  linkToPreview();
 });

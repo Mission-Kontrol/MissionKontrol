@@ -1,9 +1,13 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dataTable/datatables.min.js' %>
+<% end %>
+
 <%= render 'shared/page_banner_header', title: @current_table.capitalize, items: ['Database', @current_table.capitalize] %>
 
 <div class="wrapper wrapper-content animated ">
   <div class="row">
     <div class="col-lg-12">
-      <div class="ibox float-e-margins">
+      <div class="ibox margin-bottom">
         <div class="ibox-content tables-view">
           <br>
           <%= render 'data_table', current_table: @current_table, table_settings: @current_table_settings %>

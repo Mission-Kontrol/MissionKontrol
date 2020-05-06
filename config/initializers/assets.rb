@@ -14,3 +14,11 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
+
+Rails.application.config.assets.precompile += %w[
+  dataTable/datatables.min.js
+  dragula/dragula.min.js
+  shopify/draggable.bundle.js
+  shopify/sortable.js
+  sweetAlert/sweetalert.min.js
+]

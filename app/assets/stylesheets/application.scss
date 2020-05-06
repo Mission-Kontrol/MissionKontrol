@@ -10,110 +10,15 @@
  *
 
  *= require toastr/toastr.min.css
- *= require footable-bootstrap/footable.bootstrap.min.css
- *= require enjoyhint/enjoyhint.css
  *= require query-builder/query-builder.default.min.css
  *= require dataTable/datatables.scss
- *= require metisMenu/metismenu.scss
  *= require jQueryUI/jquery-ui.css
  *= require dragula/dragula.min.css
- *= require animate/animate.min.css
- *= require bootstrap/bootstrap-datepicker.min.css
  *= require tooltipster/tooltipster.bundle.min.css
  *= require tooltipster/tooltipster-sideTip-shadow.min.css
  *= require font-awesome
  *= require site
  *= require devise
- *= require view_builder
  *= require task_queues
  *= require_self
  */
-
- body {
-   min-width: 1269px;
- }
-
-.container-fluid {
-
-  overflow-x: unset;
-}
-
-.navbar.navbar-static-top {
-  background-color: inherit;
-  margin-bottom: -15px;
-}
-
-#page-wrapper {
-  padding-bottom: 50px;
-}
-
-/*
-  helper classes
-*/
-.showme {
-  border: 1px solid red;
-}
-
-.margin-top-20 {
-  margin-top: 20px;
-}
-
-.no-margin {
-  margin: 0 !important
-}
-
-.width-100 {
-  width: 100%;
-}
-
-.alert ul {
-  list-style-type: none;
-}
-
-.p-w-xxs {
-  padding: 0 5px;
-}
-
-.logo-element {
-  padding: 10px;
-}
-.logo-element .thumbnail {
-  width: 100%;
-}
-
-.footable-filtering-search {
-  width: 100%;
-}
-
-.footable-filtering-search .input-group {
-  width: 100% !important;
-  display: flex;
-}
-
-.footable-filtering-search .dropdown-toggle {
-  display: none;
-}
-
-.footable-filtering-search button {
-  margin-bottom: 0 !important;
-}
-
-.text-truncate {
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow: ellipsis;
-  width: 200px
-}
-
-.divider {
-  border-bottom: 1px solid #eaeaea;
-  margin-bottom: 10px;
-}
-
-.flex {
-  display: flex;
-}
-
-.align-self-center {
-  align-self: center;
-}

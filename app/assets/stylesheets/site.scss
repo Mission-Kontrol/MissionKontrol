@@ -1,26 +1,22 @@
 // Google Fonts
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en&display=swap");
 
 // Bootstrap
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "dualListbox/bootstrap-duallistbox.min.css";
 
 
 // Variables, Mixins, Base
 @import "base/variables";
-@import "base/mixins";
-@import "base/margins_and_paddings";
 @import "base/typography";
+@import "base/globals.scss";
+@import "base/margins_and_paddings";
 @import "base/navigation";
 @import "base/buttons";
-@import "base/sidebar";
-@import "base/base";
 @import "base/modal";
 @import "base/form";
 @import "base/activity";
 
-@import "view_builder";
 @import "views";
 @import "admin_users";
 @import 'table';
@@ -46,8 +42,4 @@
   #page-wrapper {
     margin: 0;
   }
-}
-
-.margin-top-nav {
-  margin-top: 2.5%;
 }

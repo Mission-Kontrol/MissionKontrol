@@ -21,13 +21,12 @@
         </div>
 
         <%= yield %>
+        <%= insert_paloma_hook %>
         <%= render 'layouts/footer' %>
       </div>
     </div>
 
     <div id="natterly-container"></div>
 
-    <%= render 'layouts/mouseflow' %>
-    <%= render 'layouts/natterly' %>
   </body>
 </html>
