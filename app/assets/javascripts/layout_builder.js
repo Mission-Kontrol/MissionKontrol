@@ -99,24 +99,3 @@ function removeRelatedTable() {
     }
   })
 }
-
-$(document).ready(function() {
-  let metaTag = $("meta[name=psj]");
-  let isCurrentControllerLayout = metaTag.attr("controller") === "layout_builder";
-  let isCurrentActionNew = metaTag.attr("action") === "new";
-
-  $("body").on("click", ".clickable-row" , function() {
-      window.location = $(this).data("href");
-  });
-
-  if (isCurrentControllerLayout && isCurrentActionNew) {
-    $("#layout-builder-modal").modal({
-      backdrop: "static",
-      keyboard: false
-    });
-  }
-
-  setTimeout(() => {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-  }, 300)
-});
