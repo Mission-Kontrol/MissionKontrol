@@ -212,10 +212,10 @@ initializeDraggable = function () {
           let containerFields = JSON.parse(dragEvent.sourceContainer.dataset.fieldsForContainer);
           for (let [key, value] of Object.entries(containerFields)) {
             if (value.title === dragEvent.source.innerText.trim()) {
-              delete containerFields[key]
+              delete containerFields[key];
               dragEvent.sourceContainer.dataset.fieldsForContainer = JSON.stringify(containerFields);
               return;
-            };
+            }
           }
         }, 500);
       }

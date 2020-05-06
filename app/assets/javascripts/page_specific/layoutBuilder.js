@@ -47,11 +47,8 @@ function updateLayoutBuilderContainer (containerId, containerItems) {
     url: "/layouts/" + id,
     type: "PATCH",
     data,
-    error: function(XMLHttpRequest, errorTextStatus, error){
-      console.error("PATCH /layouts/:id Failed: "+ errorTextStatus+" ;"+error);
-    },
-    success: function(response, status, request){
-    }
+    error (){ },
+    success (){ }
   });
 }
 
@@ -61,11 +58,10 @@ function toggleInlineEditableField () {
     const _this = this;
     const currentField = this.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
     const currentFieldContainerId = currentField.parentElement.id;
-    const currentFieldEditable = currentField.dataset["fieldEditable"] === "true"
     let currentFieldContainerItems;
 
     if (_this.checked) {
-      let confirmationTitle = `Warning: You are about to make ${currentField.innerText.trim()} editable for your users`
+      let confirmationTitle = `Warning: You are about to make ${currentField.innerText.trim()} editable for your users`;
       let confirmationText = "" +
       "Not to alarm you and you probably want to do this as it’s one of the core features. However, we wanted to make sure you were sure." +
       "\n\nMaking this field editable will mean that:" +
@@ -84,7 +80,7 @@ function toggleInlineEditableField () {
         }
       }).then((value) => {
         if (value === null) {
-          uncheckEditable(_this, currentField)
+          uncheckEditable(_this, currentField);
         } else {
           checkEditable(_this, currentField);
           currentFieldContainerItems = getContainerItemsJSON(currentFieldContainerId);

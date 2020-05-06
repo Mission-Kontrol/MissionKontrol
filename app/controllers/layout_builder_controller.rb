@@ -119,10 +119,6 @@ class LayoutBuilderController < ApplicationController
 
   private
 
-  def layout_params
-    params.require(:view_builder).permit!
-  end
-
   def set_database
     @database = Database.find(params[:database_id])
   end
