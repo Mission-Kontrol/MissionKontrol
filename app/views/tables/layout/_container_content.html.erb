@@ -11,13 +11,14 @@
         <p class="main-container-content">
           <b><%= field["title"].humanize %></b>:
 
-          <span class="editable-content" onclick="showEditable(event);">
+          <div class="editable-content margin-left" onclick="showEditable(event);">
             <% if current_row_valid?(@current_row, field) %>
-              <%= @current_row[field["title"]] %><span class="margin-left"><img src='/assets/images/icons/edit.png'></span>
+              <span class="editable-content-text"><%= @current_row[field["title"]] %></span>
             <% else %>
                --
             <% end %>
-          </span>
+            <span class="margin-left"><img src='/assets/images/icons/edit.png'></span>
+          </div>
 
           <span>
             <%= render partial: 'tables/layout/editable_input', locals: { field: field } %>

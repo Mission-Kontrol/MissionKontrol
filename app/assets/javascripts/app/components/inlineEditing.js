@@ -22,8 +22,7 @@ function cancelEditable(evt) {
   $(editableInput).css("display", "none");
 }
 
-function hideEditable(editableRow) {
-  let editableContent = $(editableRow).find(".editable-content");
+function hideEditable(editableContent, editableRow) {
   let editableInput = $(editableRow).find(".editable-input");
 
   $(editableContent).css("display", "inline-block");
@@ -31,7 +30,7 @@ function hideEditable(editableRow) {
 }
 
 function refreshEditableContent(editableContent, newValue) {
-  editableContent.text(newValue);
+  $(editableContent).children('.editable-content-text').text(newValue)
 }
 
 function updateTableField(evt, table, field, id, databaseId) {
@@ -68,8 +67,35 @@ function updateTableField(evt, table, field, id, databaseId) {
     },
     success (){
       refreshEditableContent(editableContent, newValue);
-      hideEditable(editableRow);
+      hideEditable(editableContent, editableRow);
       toastr.info("Table field successfully updated.");
+    }
+  });
+}
+
+function updateFields (event) {
+  const table = event.target.dataset.table;
+  const field = event.target.dataset.field;
+  const id = event.target.dataset.id;
+  const foreignKeyTitle = event.target.dataset.foreignKeyTitle;
+  const foreignKeyValue = event.target.dataset.foreignKeyValue;
+  const databaseId = event.target.dataset.databaseId;
+
+  if (foreignKeyTitle) {
+    updateRelatedTableField(event, table, field, foreignKeyTitle, foreignKeyValue);
+  } else {
+    updateTableField(event, table, field, id, databaseId);
+  }
+}
+
+function updateEditableFieldInput () {
+  $(".editable-input input").blur(function(event) {
+    updateFields(event);
+  });
+
+  $('.editable-input input').keypress(function(event){
+    if(event.keyCode == 13) {
+      updateFields(event)
     }
   });
 }
@@ -108,7 +134,7 @@ function updateRelatedTableField(evt, table, field, foreignKeyTitle, foreignKeyV
     },
     success () {
       refreshEditableContent(editableContent, newValue);
-      hideEditable(editableRow);
+      hideEditable(editableContent, editableRow);
       toastr.info("Related table field successfully updated.");
     }
   });
