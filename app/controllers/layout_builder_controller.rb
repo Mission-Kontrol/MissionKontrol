@@ -66,8 +66,7 @@ class LayoutBuilderController < ApplicationController
 
   def update
     @view_builder = ViewBuilder.find(params[:id])
-    ## TODO: don't allow all params
-    update_attributes(@view_builder, params)
+    update_layout_attributes(@view_builder, params)
     if @view_builder.save!
 
       respond_to do |format|
@@ -119,6 +118,10 @@ class LayoutBuilderController < ApplicationController
   # end
 
   private
+
+  def layout_params
+    params.require(:view_builder).permit!
+  end
 
   def set_database
     @database = Database.find(params[:database_id])

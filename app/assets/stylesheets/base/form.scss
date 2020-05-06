@@ -18,6 +18,13 @@
   }
 }
 
+.form-input {
+  border: none;
+  background: inherit;
+  border-bottom: solid 1px $border-grey;
+  width: 80%;
+}
+
 input {
   padding-bottom: 5px;
   margin-bottom: 5px;

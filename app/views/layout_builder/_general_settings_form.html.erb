@@ -5,6 +5,12 @@
   </div>
 
   <div class="form-group">
+    <strong>Single Data View name</strong>
+    <p>Add a new to easily reference the Single Data View</p>
+    <%= form.text_field :view_name, class: 'form-control form-input' %>
+  </div>
+
+  <div class="form-group">
     <strong>Primary table</strong>
     <p>Select the primary table that this layout will be based on.</p>
     <%= form.select :table_name,
