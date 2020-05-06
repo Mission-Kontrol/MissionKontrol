@@ -1,3 +1,9 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dragula/dragula.min.js' %>
+  <%= javascript_include_tag 'shopify/draggable.bundle.js' %>
+  <%= javascript_include_tag 'shopify/sortable.js' %>
+<% end %>
+
 <div class="modal fade" id="layout-builder-modal" tabindex="-1" role="dialog" aria-labelledby="layout-builder-modal">
   <div class="modal-dialog" role="document">
     <% if current_admin_user.ignore_layout_modal? %>

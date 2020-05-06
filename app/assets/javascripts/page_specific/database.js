@@ -11,7 +11,13 @@ function clearGemCredentials () {
   });
 }
 
-$(document).ready(function() {
-  submitPasswordChange();
-  clearGemCredentials();
+Paloma.controller("Databases", {
+  new () {
+    submitPasswordChange();
+  },
+
+  edit () {
+    submitPasswordChange();
+    clearGemCredentials();
+  }
 });

@@ -58,10 +58,10 @@ $(document).ready(function () {
     });
 
     // Run menu of canvas
-    $('body.canvas-menu .sidebar-collapse').slimScroll({
-        height: '100%',
-        railOpacity: 0.9
-    });
+    // $('body.canvas-menu .sidebar-collapse').slimScroll({
+    //     height: '100%',
+    //     railOpacity: 0.9
+    // });
 
     // Open close right sidebar
     $('.right-sidebar-toggle').on('click', function () {
@@ -69,11 +69,11 @@ $(document).ready(function () {
     });
 
     // Initialize slimscroll for right sidebar
-    $('.sidebar-container').slimScroll({
-        height: '100%',
-        railOpacity: 0.4,
-        wheelStep: 10
-    });
+    // $('.sidebar-container').slimScroll({
+    //     height: '100%',
+    //     railOpacity: 0.4,
+    //     wheelStep: 10
+    // });
 
     // Open close small chat
     $('.open-small-chat').on('click', function () {
@@ -82,10 +82,10 @@ $(document).ready(function () {
     });
 
     // Initialize slimscroll for small chat
-    $('.small-chat-box .content').slimScroll({
-        height: '234px',
-        railOpacity: 0.4
-    });
+    // $('.small-chat-box .content').slimScroll({
+    //     height: '234px',
+    //     railOpacity: 0.4
+    // });
 
     // Small todo handler
     $('.check-link').on('click', function () {
@@ -142,10 +142,10 @@ $(document).ready(function () {
     // Fixed Sidebar
     $(window).bind("load", function () {
         if ($("body").hasClass('fixed-sidebar')) {
-            $('.sidebar-collapse').slimScroll({
-                height: '100%',
-                railOpacity: 0.9
-            });
+            // $('.sidebar-collapse').slimScroll({
+            //     height: '100%',
+            //     railOpacity: 0.9
+            // });
         }
     });
 
@@ -168,9 +168,9 @@ $(document).ready(function () {
         .popover();
 
     // Add slimscroll to element
-    $('.full-height-scroll').slimscroll({
-        height: '100%'
-    })
+    // $('.full-height-scroll').slimscroll({
+    //     height: '100%'
+    // })
 });
 
 
@@ -198,10 +198,10 @@ $(document).ready(function () {
 
         if (fixedsidebar == 'on') {
             body.addClass('fixed-sidebar');
-            $('.sidebar-collapse').slimScroll({
-                height: '100%',
-                railOpacity: 0.9
-            });
+            // $('.sidebar-collapse').slimScroll({
+            //     height: '100%',
+            //     railOpacity: 0.9
+            // });
         }
 
         if (collapse == 'on') {

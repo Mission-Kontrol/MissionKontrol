@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dataTable/datatables.min.js' %>
+<% end %>
+
 <%= render 'shared/page_banner_header', title: 'Settings', items: ['Settings', 'Users'] %>
 
 <div class="wrapper wrapper-content animated">
