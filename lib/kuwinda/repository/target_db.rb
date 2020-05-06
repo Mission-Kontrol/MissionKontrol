@@ -31,7 +31,7 @@ module Kuwinda
       end
 
       def update_record(table, field, value, id)
-        sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc}' WHERE id=#{id};"
+        sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id=#{id};"
         conn.exec_query(sql)
       end
 
@@ -57,7 +57,7 @@ module Kuwinda
         end
         fields += 'created_at, updated_at)'
 
-        values += "'#{DateTime.now.utc}', '#{DateTime.now.utc}')"
+        values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
 
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
         conn.exec_query(sql)
