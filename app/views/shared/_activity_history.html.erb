@@ -26,6 +26,7 @@
                 <%= render 'shared/activity_stream', activities: @activities.all %>
               <% else %>
                 <p class="default-message">No activity has been recored for this <%= feedable_type %>.</p>
+                <%= render 'shared/activity_stream', activities: @activities.all, locals: { hide: true } %>
               <% end %>
             </div>
 
@@ -40,6 +41,7 @@
                 <%= render 'shared/activity_stream', activities: @activities.calls %>
               <% else %>
                 <p class="default-message">No calls has been recored for this <%= feedable_type %>.</p>
+                <%= render 'shared/activity_stream', activities: @activities.calls, locals: { hide: true } %>
               <% end %>
             </div>
           </div>
@@ -52,6 +54,7 @@
                 <%= render 'shared/activity_stream', activities: @activities.notes %>
               <% else %>
                 <p class="default-message">No notes has been recored for this <%= feedable_type %>.</p>
+                <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: true } %>
               <% end %>
             </div>
 
