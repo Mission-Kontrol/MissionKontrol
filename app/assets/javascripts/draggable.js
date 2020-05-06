@@ -205,14 +205,20 @@ initializeDraggable = function () {
               element.remove();
               return;
             }
-          })
+          });
+
           fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+
+          let containerFields = JSON.parse(dragEvent.sourceContainer.dataset.fieldsForContainer);
+          for (let [key, value] of Object.entries(containerFields)) {
+            if (value.title === dragEvent.source.innerText.trim()) {
+              delete containerFields[key]
+              dragEvent.sourceContainer.dataset.fieldsForContainer = JSON.stringify(containerFields);
+              return;
+            };
+          }
         }, 500);
       }
-
-      setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
-      }, 100);
     }
 
     if (sourceContainerId === destinationContainerId) {
