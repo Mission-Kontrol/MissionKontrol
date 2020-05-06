@@ -18,11 +18,12 @@
 
 .layout-placeholder {
   min-height: 39px;
-  margin: 10px 0;
-  border: dashed 1px gray;
-  z-index: -2px;
+  margin: 15px 0;
 }
 
+.layout-placeholder--border {
+  border: dashed 1px $border-grey;
+}
 
 .layout-builder-draggable-field {
   padding: 10px 10px;
@@ -36,7 +37,10 @@
     margin: 0 0;
   }
 
-  .col-sm-7, .col-sm-5 {
+  .col-sm-7,
+  .col-sm-5,
+  .col-sm-10,
+  .col-sm-12 {
     padding: 0
   }
 
@@ -67,11 +71,6 @@
   width: 300px;
 }
 
-#layout-builder-draggable-fields-container {
-  outline: none !important;
-  padding-bottom: 150px;
-}
-
 #layout-builder-draggable-header-container1,
 #layout-builder-draggable-header-container2,
 #layout-builder-draggable-main-container1,
@@ -80,6 +79,14 @@
 #layout-builder-draggable-side-container {
   .layout-builder-draggable-field {
     outline: none !important;
+  }
+
+  .layout-builder-draggable-item {
+    box-shadow: none;
+    z-index: 500;
+    max-height: 40px;
+    background-color: $page-background;
+    margin-bottom: 15px;
   }
 }
 
@@ -92,16 +99,6 @@
 
   p {
     margin-top: 10px;
-  }
-}
-
-#layout-builder-draggable-fields-container {
-  .layout-builder-field-editable-toggle {
-    display: none;
-  }
-
-  .layout-builder-draggable-item-handle {
-    width: 100%;
   }
 }
 
@@ -159,16 +156,6 @@
 
 .pad-left-none {
   padding-left:0;
-}
-
-#layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3  {
-  .layout-builder-draggable-item {
-    border: 1px solid gray;
-    margin: -2px;
-    box-shadow: none;
-    z-index: 500;
-    max-height: 40px;
-  }
 }
 
 #layout-builder-draggable-side-container-wrapper {
@@ -295,6 +282,8 @@ input:checked + .slider:before {
 
 .editable-input {
   display: none;
+  width: 50%;
+  padding-left: 10px;
 }
 
 .editable-actions-wrapper {
@@ -323,11 +312,11 @@ input:checked + .slider:before {
 }
 
 .toggle {
-  margin-top: -3px;
+  margin-top: 2px;
   isolation: isolate;
   position: relative;
-  height: 24px;
-  width: 48px;
+  height: 18px;
+  width: 37px;
   border-radius: 15px;
   background: #d6d6d6;
   overflow: hidden;
@@ -337,9 +326,9 @@ input:checked + .slider:before {
   z-index: 2;
   position: absolute;
   top: 1px;
-  left: 1px;
-  height: 22px;
-  width: 46px;
+  left: 2px;
+  height: 16px;
+  width: 33px;
   border-radius: 15px;
   overflow: hidden;
 }
@@ -389,4 +378,12 @@ input:checked ~ .toggle-inner .indicator {
   .col-md-4:last-child {
     padding-left: 7.5px;
   }
+}
+
+.logo-element {
+  padding: 10px;
+}
+
+.logo-element .thumbnail {
+  width: 100%;
 }

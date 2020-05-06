@@ -146,5 +146,11 @@
     text-align: left;
     display: inline-block;
   }
+}
 
+/* Only demo */
+@media (max-width: 1000px) {
+  .welcome-message {
+    display: none;
+  }
 }

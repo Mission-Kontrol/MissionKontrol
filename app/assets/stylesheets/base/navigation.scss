@@ -14,6 +14,10 @@
   color: #999c9e;
 }
 
+.light-navbar .navbar.navbar-static-top {
+  background-color: $white;
+}
+
 .nav > li.active > a {
   color: #ffffff;
 }
@@ -359,6 +363,11 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   color: white;
   display: none;
   padding: 18px 0;
+}
+
+.navbar.navbar-static-top {
+  background-color: inherit;
+  margin-bottom: -15px;
 }
 
 .pace-done .navbar-static-side, .pace-done .nav-header, .pace-done li.active, .pace-done #page-wrapper, .pace-done .footer {

@@ -1,0 +1,103 @@
+.activity-history-header {
+  margin-top: 15px;
+}
+
+.activity-history--title {
+  padding-left: 0;
+}
+
+form.activity-comment-form {
+  display: flex;
+  flex-direction: row;
+  border-top: 0.5px solid $border-grey;
+  border-bottom: 0.5px solid $border-grey;
+  padding: 2px;
+}
+
+.activity-comment-form--input {
+  flex-grow: 2;
+  border: none;
+  background-color: transparent;
+  height: 36px;
+  line-height: 250%;
+  margin-bottom: 0;
+}
+
+.activity-comment-form--input::placeholder {
+  line-height: 250%;
+}
+
+table.activities-history--table {
+  margin-bottom: 0;
+  padding-right: 20px;
+
+  td:first-child {
+    width: 10%;
+    border-right: 1px solid $very-light-blue;
+  }
+
+  td:last-child::before {
+    content: '';
+    background-color: white;
+    border: 1px solid $button-green;
+    border-radius: 50%;
+    z-index: 1;
+    position: relative;
+    padding: 0.2px 8px;
+    right: 3%;
+  }
+
+  .activity-table-circle {
+    position: absolute;
+    margin-left: 10px;
+    margin-top: -6px;
+  }
+
+  td:last-child {
+    vertical-align: middle;
+    padding-left: 20px;
+  }
+}
+
+.show-more-button {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.activity-history-tabs {
+  border: none;
+
+  li.active > a {
+    border: none;
+  }
+}
+
+.activity-history {
+  .nav-tabs {
+    float: right;
+    padding-top: 2%;
+  }
+
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover,
+  .nav-tabs > li.active > a:focus {
+    border: none;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    vertical-align: bottom;
+    display: inline-block;
+  }
+
+  ul li {
+    line-height: 28px;
+    background: red;
+    color: #fff;
+    margin: 0 20px 0 0;
+    float: left;
+  }
+}

@@ -5,14 +5,23 @@ module TableActivity
 
   private
 
+  def set_activities
+    @activities = OpenStruct.new
+    @activities.all = []
+    @activities.calls = []
+    @activities.meetings = []
+    @activities.notes = []
+  end
+
   def set_activities_for_table
-    feedable_type = @target_db.table
+    ## TODO: add database id to activity table
+    feedable_type = params[:table]
     feedable_id = params[:record_id]
 
     @activities_for_table = Activity.where(
       feedable_type: feedable_type,
       feedable_id: feedable_id
-    )
+    ).last(3).sort_by(&:created_at).reverse
 
     group_activities_by_kind
   end

@@ -1,3 +1,9 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dragula/dragula.min.js' %>
+  <%= javascript_include_tag 'shopify/draggable.bundle.js' %>
+  <%= javascript_include_tag 'sweetAlert/sweetalert.min.js' %>
+<% end %>
+
 <div class="modal fade" id="layout-builder-editable-warning-modal" tabindex="-1" role="dialog" aria-labelledby="layout-builder-editable-warning-modal">
   <div class="modal-dialog" role="document">
     <%= render partial: 'layout_builder/edit/layout_builder_editable_warning_modal_screen_1' %>
@@ -7,7 +13,7 @@
 <div class="row border-bottom white-bg m-b">
   <div class="col-sm-12">
     <div class="text-right p-h-xs">
-      <%= link_to "Preview", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: @row) %>
+      <%= link_to "Preview", table_record_preview_path(table: @view_builder.table_name, table_name: @view_builder.table_name.downcase, record_id: @row, database_id: @database.id) %>
     </div>
   </div>
 </div>

@@ -3,6 +3,8 @@
 class TablesController < ApplicationController
   include TableActivity
   include TableRender
+  include DatabasePresenterActions
+  include RelatableTables
 
   layout 'standard'
 
@@ -13,13 +15,13 @@ class TablesController < ApplicationController
 
   before_action :target_db, except: :index
   before_action :set_main_table, only: :show
-  before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings]
+  before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings update_table_field]
   before_action :check_user_permissions, only: %i[show]
+  before_action :set_activities, only: :preview
 
   def index
-    database_tables = Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
-
-    @available_tables = tables_with_view_permission(@database.id, database_tables)
+    set_database
+    @available_tables = tables_with_view_permission(@database.id, available_tables)
 
     respond_to do |format|
       format.js { render json: @available_tables.sort.to_json }
@@ -236,11 +238,7 @@ class TablesController < ApplicationController
       nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
 
-    nested_column_names.compact!
-  end
-
-  def relatable_tables(table)
-    Kuwinda::Presenter::ListRelatableTables.new(database_connection, table).call
+    nested_column_names.compact
   end
 
   def set_columns_for_form

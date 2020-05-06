@@ -1,0 +1,63 @@
+.single_view_nav {
+  width: 40px;
+  display: block;
+  height: 40px;
+  padding: 20px;
+}
+
+#sv_builder_primary_table_draggable_fields_container {
+  margin: 5px 0;
+
+  .layout-builder-field-editable-toggle {
+    display: none;
+  }
+}
+
+.select-pending, .btn-pending {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.select-active, .btn-active {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+
+}
+
+.select-deactivated, .btn-deactivated {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.draggable-list-item, #droppable-list-of-relatable-tables {
+  cursor: pointer;
+}
+
+#droppable-list-of-relatable-tables {
+  padding: 5px;
+  min-height:30px;
+  border: 2px dashed $page-background;
+}
+
+.droppable-list-item-for-relatable-table {
+  margin: 5px;
+  padding: 10px 15px;
+  background-color: $page-background;
+}
+
+.draggable-list-item {
+  margin: 10px;
+  padding: 10px 10px;
+  background-color: $page-background;
+}
+
+div.activity-history > .nav-tabs > li > a {
+  padding: 0;
+}
+
+.editable-content {
+  display: inline-block;
+}

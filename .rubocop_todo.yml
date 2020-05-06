@@ -212,7 +212,7 @@ Lint/UselessAssignment:
 
 # Offense count: 9
 Metrics/AbcSize:
-  Max: 57
+  Max: 62
 
 # Offense count: 2
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -231,7 +231,7 @@ Metrics/ClassLength:
 
 # Offense count: 1
 Metrics/CyclomaticComplexity:
-  Max: 16
+  Max: 17
 
 # Offense count: 6
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -240,7 +240,7 @@ Metrics/MethodLength:
 
 # Offense count: 1
 Metrics/PerceivedComplexity:
-  Max: 16
+  Max: 17
 
 # Offense count: 2
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist, MethodDefinitionMacros.
@@ -286,6 +286,7 @@ Style/GuardClause:
   Exclude:
     - 'app/controllers/application_controller.rb'
     - 'app/controllers/layout_builder_controller.rb'
+    - 'app/controllers/concerns/single_view_actions.rb'
 
 # Offense count: 18
 # Cop supports --auto-correct.

@@ -1,0 +1,41 @@
+<div class="wrapper" style="">
+  <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
+          draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container2) &&
+          draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container3) %>
+    <div class="row m-t light-grey-bg">
+      <div class="col-sm-4">
+        <div class="table-record-placeholder">
+          <%= render 'tables/layout/main_container1', layout_builder: layout_builder %>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="table-record-placeholder">
+          <%= render 'tables/layout/main_container2', layout_builder: layout_builder %>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="table-record-placeholder">
+          <%= render 'tables/layout/main_container3', layout_builder: layout_builder %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if current_admin_user.twilio_setup_complete? || layout_builder.commentable %>
+    <%= render 'shared/activity_history', feedable_type: @current_table, feedable_id: @row["id"], index: false %>
+  <% end %>
+</div>
+
+<div class="animated ">
+  <% @relatable_tables.each do |relative| %>
+    <% if layout_builder.related_tables.include?(relative[:name]) %>
+      <div class="row">
+        <div class="col-sm-12">
+          <%= render 'related_data_table', current_table: relative[:name], headers: relative[:headers]%>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

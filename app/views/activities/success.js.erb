@@ -1,8 +1,17 @@
-$(".all-activities-tab .activity-stream").prepend("<%= j render @activity %>");
+<%# ## TODO: if first comment or activity on record add table? %>
+if ($(".all-activities-tab").find("table > tbody > tr").length === 3) {
+  $(".all-activities-tab").find("table > tbody > tr:last").remove();
+}
+
+$(".all-activities-tab").find(".activities-history--table").prepend("<%= j render @activity %>");
 $('.all-activities-tab .default-message').remove();
 
 if ("<%= @activity.kind %>" === "note") {
-  $(".activity-tab-for-notes .activity-stream").prepend("<%= j render @activity %>");
+  if ($(".activity-tab-for-notes").find("table > tbody > tr").length === 3) {
+    $(".activity-tab-for-notes").find("table > tbody > tr:last").remove();
+  }
+
+  $(".activity-tab-for-notes").find(".activities-history--table").prepend("<%= j render @activity %>");
   $('.activity-tab-for-notes .default-message').remove();
 }
 
@@ -17,4 +26,5 @@ if ("<%= @activity.kind %>" === "meeting") {
 }
 
 toastr.success('Activity was successfully created.');
-$('textarea[name="activity[content]"').val("");
+$('.all-activities-tab').find('.activity-comment-form--input').val('');
+$('.activity-tab-for-notes').find('.activity-comment-form--input').val('');

@@ -47,9 +47,10 @@ module TableRender
     # @target_db.table = @current_table
     @activity = Activity.new
     @row = @target_db.find(@current_table, params[:record_id])
-    @layout_builder = ViewBuilder.where(table_name: @current_table).last
+    @layout_builder = ViewBuilder.where(table_name: @current_table, database_id: @database.id).last
     @fields_with_type = list_table_fields_with_type(@layout_builder.table_name) if @layout_builder
     set_activities_for_table
+    set_relatable_tables
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -63,7 +64,7 @@ module TableRender
     foreign_key_title = helpers.get_foreign_key(params[:table_name])
     foreign_key_value = params[:record_id]
 
-    sql_result = @target_db.find_all_related_search(table, search, foreign_key_title, foreign_key_value, searchable_columns, limit, offset)
+    sql_result = @target_db.find_all_related_search(@database, table, search, foreign_key_title, foreign_key_value, searchable_columns, limit, offset)
 
     result_columns = sql_result.nil? ? @target_db.table_columns(table) : sql_result.columns
 

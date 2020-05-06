@@ -1,15 +1,15 @@
 <div class="editable-input">
   <% if field["table"] == @current_table %>
     <% if field["kind"] == 'integer' %>
-      <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>">
+      <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>" data-database-id="<%= @database.id %>">
     <% else %>
-      <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>">
+      <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>" data-database-id="<%= @database.id %>">
     <% end %>
   <% else %>
     <% if field["kind"] == 'integer' %>
-      <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>" data-foreign-key-title="<%= get_foreign_key(@current_table) %>" data-foreign-key-value="<%= params[:record_id] %>">
+      <input type="number" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-id="<%= params[:record_id] %>" data-foreign-key-title="<%= get_foreign_key(@current_table) %>" data-foreign-key-value="<%= params[:record_id] %>" data-database-id="<%= @database.id %>">
     <% else %>
-      <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-foreign-key-title="<%= get_foreign_key(@current_table) %>" data-foreign-key-value="<%= params[:record_id] %>">
+      <input type="text" class="form-control" value="<%= @current_row.nil? ? "" : @current_row[field["title"]] %>" data-table="<%= field["table"] %>" data-field="<%= field["title"] %>" data-foreign-key-title="<%= get_foreign_key(@current_table) %>" data-foreign-key-value="<%= params[:record_id] %>" data-database-id="<%= @database.id %>">
     <% end %>
   <% end %>
 </div>

@@ -74,14 +74,14 @@ buildDraggableField = function (field) {
   if (field.editable === "true") {
     item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + " data-field-editable=" + field.editable + ">" +
       "<div class='row'>" +
-      "<div class='col-sm-7'>" +
+      "<div class='col-sm-10'>" +
         "<div class = 'layout-builder-draggable-item-handle'>" +
           "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
           "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  " class='no-select'>" + field.title + "</span>" +
         "</div>" +
       "</div>" +
 
-      "<div class='col-sm-5 text-right'>"+
+      "<div class='col-sm-2 text-right'>"+
         "<div class = 'layout-builder-field-editable-toggle'>" +
           "<label class='switch'>" +
               "<div class='toggle'>" +
@@ -99,14 +99,14 @@ buildDraggableField = function (field) {
   } else {
     item = "<div class='layout-builder-draggable-field layout-builder-draggable-item draggable-source' data-field-table=" + field.table + " data-field-type=" + field.kind + ">" +
       "<div class='row'>" +
-        "<div class='col-sm-7'>" +
+        "<div class='col-sm-10'>" +
           "<div class = 'layout-builder-draggable-item-handle'>" +
             "<i class=" + "'" + icon + "'" + "aria-hidden='true'></i> " +
             "<span data-toggle='tooltip' data-placement='top' title = '" + field.title + "'" + "data-original-title='" + field.title + "'" +  " class='no-select'>" + field.title + "</span>" +
           "</div>" +
         "</div>" +
 
-        "<div class='col-sm-5 text-right'>"+
+        "<div class='col-sm-2 text-right'>"+
           "<div class = 'layout-builder-field-editable-toggle'>" +
             "<label class='switch'>" +
               "<div class='toggle'>" +
@@ -137,33 +137,15 @@ saveDraggableContainer = function (dragEvent, containerId) {
 }
 
 updateDraggableFieldsContainer = function (data) {
-  $("#layout-builder-draggable-fields-container").html("");
+  $("#sv_builder_primary_table_draggable_fields_container").html("");
   for (var i = 0; i < data.length; i++) {
     var field = {};
     field["title"] = data[i][0];
     field["kind"] = data[i][1];
     field["table"] = data[i][2];
-
     let draggableField = buildDraggableField(field);
 
-    //
-    // add field to draggable container if container data contains field AND
-    // contianer does not already inlcude a dragable item with the same field name.
-    //
-
-    if (containerDataContainsField("layout-builder-draggable-header-container1", field.title)) {
-      if (!containerContainsDraggableItem("#layout-builder-draggable-header-container1", field.title)) {
-        $("#layout-builder-draggable-header-container1").append(draggableField);
-      }
-    } else if (containerDataContainsField("layout-builder-draggable-header-container2", field.title)) {
-      if (!containerContainsDraggableItem("#layout-builder-draggable-header-container2", field.title)) {
-        $("#layout-builder-draggable-header-container2").append(draggableField);
-      }
-    } else if (containerDataContainsField("layout-builder-draggable-side-container", field.title)) {
-      if (!containerContainsDraggableItem("#layout-builder-draggable-side-container", field.title)) {
-        $("#layout-builder-draggable-side-container").append(draggableField);
-      }
-    } else if (containerDataContainsField("layout-builder-draggable-main-container1", field.title)) {
+    if (containerDataContainsField("layout-builder-draggable-main-container1", field.title)) {
       if (!containerContainsDraggableItem("#layout-builder-draggable-main-container1", field.title)) {
         $("#layout-builder-draggable-main-container1").append(draggableField);
       }
@@ -180,7 +162,7 @@ updateDraggableFieldsContainer = function (data) {
         $("#task-queue-draggable-field-settings-container").append(draggableField);
       }
     } else {
-      $("#layout-builder-draggable-fields-container").append(draggableField);
+      $("#sv_builder_primary_table_draggable_fields_container").append(draggableField);
     }
   }
 }
@@ -190,15 +172,14 @@ isDataContainer = function (containerId) {
 }
 
 initializeDraggable = function () {
-  const containers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-fields-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
+  const containers = "#layout-builder-draggable-trash-container, .draggable-list-for-relatable-table, #sv_builder_primary_table_draggable_fields_container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
   const dataContainers = "#layout-builder-draggable-trash-container, #layout-builder-draggable-header-container1, #layout-builder-draggable-header-container2, #layout-builder-draggable-side-container, #layout-builder-draggable-main-container1, #layout-builder-draggable-main-container2, #layout-builder-draggable-main-container3, #task-queue-draggable-field-settings-container";
 
   window.draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: ".layout-builder-draggable-item",
     handle: ".layout-builder-draggable-item"
   });
-
-  const fieldsContainer = document.querySelectorAll("#layout-builder-draggable-fields-container")[0];
+  const fieldsContainer = document.querySelectorAll("#sv_builder_primary_table_draggable_fields_container")[0];
 
   window.draggable.on("drag:start", (dragEvent) => {
     showTrashContainer();
@@ -208,21 +189,36 @@ initializeDraggable = function () {
     let currentContainer = dragEvent.source.parentNode;
     let destinationContainerId = currentContainer.id;
     let sourceContainerId = dragEvent.data.sourceContainer.id;
-    let currentContainerId = currentContainer.id;
-    let currentFieldValue = dragEvent.source.innerText.trim();
 
     hideTrashContainer();
 
     if (destinationContainerId === "layout-builder-draggable-trash-container") {
-      fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+      if ($(".sv_builder_table_navigation").hasClass("active")) {
+        fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
+      } else {
+        let table = $(".sv_builder_table_navigation").data().tableName;
+        getOptionsForDraggable(table);
+        $(".sv_builder_table_navigation").addClass("active");
+        setTimeout(function () {
+          [...$(dragEvent.sourceContainer).children()].forEach((element) => {
+            if(element.innerText.includes(dragEvent.source.innerText)) {
+              element.remove();
+              return;
+            }
+          });
 
-      setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
-      }, 100);
+          fieldsContainer.insertBefore(dragEvent.source, fieldsContainer.childNodes[0]);
 
-      setTimeout(function () {
-        fieldsContainer.firstElementChild.classList.toggle("layout-builder-trash-can-item-put-back");
-      }, 2000);
+          let containerFields = JSON.parse(dragEvent.sourceContainer.dataset.fieldsForContainer);
+          for (let [key, value] of Object.entries(containerFields)) {
+            if (value.title === dragEvent.source.innerText.trim()) {
+              delete containerFields[key];
+              dragEvent.sourceContainer.dataset.fieldsForContainer = JSON.stringify(containerFields);
+              return;
+            }
+          }
+        }, 500);
+      }
     }
 
     if (sourceContainerId === destinationContainerId) {

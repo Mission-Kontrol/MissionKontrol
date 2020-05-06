@@ -1,8 +1,17 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dragula/dragula.min.js' %>
+  <%= javascript_include_tag 'shopify/draggable.bundle.js' %>
+  <%= javascript_include_tag 'shopify/sortable.js' %>
+<% end %>
+
 <div class="modal fade" id="layout-builder-modal" tabindex="-1" role="dialog" aria-labelledby="layout-builder-modal">
   <div class="modal-dialog" role="document">
-    <%= render partial: 'layout_builder/new/layout_builder_modal_screen_1' %>
-
-    <%= render partial: 'layout_builder/new/layout_builder_modal_screen_2' %>
+    <% if current_admin_user.ignore_layout_modal? %>
+      <%= render partial: 'layout_builder/new/layout_builder_modal_screen_2' %>
+    <% else %>
+      <%= render partial: 'layout_builder/new/layout_builder_modal_screen_1' %>
+      <%= render partial: 'layout_builder/new/layout_builder_modal_screen_2' %>
+    <% end %>
   </div>
 </div>
 

@@ -31,7 +31,7 @@ module Kuwinda
       end
 
       def update_record(table, field, value, id)
-        sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = NOW() WHERE id=#{id};"
+        sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id=#{id};"
         conn.exec_query(sql)
       end
 
@@ -59,8 +59,7 @@ module Kuwinda
         end
         fields += 'created_at, updated_at)'
 
-        values += 'NOW(), NOW())'
-
+        values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
         conn.exec_query(sql)
       end
@@ -118,12 +117,12 @@ module Kuwinda
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
-      def find_all_related_search(table, search_value, foreign_key_title, foreign_key_value, columns = nil, limit = 10, offset = nil)
+      def find_all_related_search(database, table, search_value, foreign_key_title, foreign_key_value, columns = nil, limit = 10, offset = nil)
         all = find_all_related(table, foreign_key_title, foreign_key_value, limit, offset)
 
         return all if search_value.blank? || columns.nil?
 
-        result = search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit, offset)
+        result = search_columns_related_table(database, table, search_value, foreign_key_title, foreign_key_value, columns, limit, offset)
 
         result
       end
@@ -153,7 +152,7 @@ module Kuwinda
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
-      def search_columns_related_table(table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
+      def search_columns_related_table(database, table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
         result = nil
         database_type = Kuwinda::DatabaseAdapter.adapter(database.adapter)
         columns.each do |_key, value|

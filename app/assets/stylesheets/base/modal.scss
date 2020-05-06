@@ -1,4 +1,13 @@
-.users--edit-modal, .users--new-modal, .roles--edit-modal, .table--add-record-modal, .table--edit-record-modal, .table--settings-modal {
+.modal {
+  z-index: 2050 !important;
+}
+
+.users--edit-modal,
+.users--new-modal,
+.roles--edit-modal,
+.table--add-record-modal,
+.table--edit-record-modal,
+.table--settings-modal {
   position: fixed;
   left: 0;
   top: 0;
@@ -60,12 +69,14 @@
     padding-top: 20px;
   }
 
-  .user--activate-toggle, .role--setting-toggle {
+  .user--activate-toggle,
+  .role--setting-toggle {
     float: right;
     padding-right: 10px;
   }
 
-  .user--team-dropdown, .user--password-field {
+  .user--team-dropdown,
+  .user--password-field {
     float: right;
 
     #admin_user_password {
@@ -73,10 +84,12 @@
     }
   }
 
-  .user--delete-btn, .user--save-btn {
+  .user--delete-btn,
+  .user--save-btn {
     float: right;
 
-    .btn--delete-user, .btn--save-user {
+    .btn--delete-user,
+    .btn--save-user {
       width: 137px;
       border-radius: 5px;
     }
@@ -97,7 +110,9 @@
     }
   }
 
-  .user--modal-input, .role--modal-input, .record--modal-input {
+  .user--modal-input,
+  .role--modal-input,
+  .record--modal-input {
     cursor: auto;
     background: none;
     border: none;
@@ -106,7 +121,8 @@
     font-weight: normal;
   }
 
-  .role--modal-input, .record--modal-input {
+  .role--modal-input,
+  .record--modal-input {
     width: 80%;
     text-align: right;
     padding-right: 0px;
@@ -138,7 +154,8 @@
   }
 }
 
-.users--new-modal, .users--edit-modal {
+.users--new-modal,
+.users--edit-modal {
   .user--modal-input {
     width: 45%;
   }
@@ -148,6 +165,11 @@
   }
 }
 
-.edit--record-panel, .add--record-panel {
+.edit--record-panel,
+.add--record-panel {
   padding: 0;
+}
+
+.modal-footer {
+  text-align: start;
 }
