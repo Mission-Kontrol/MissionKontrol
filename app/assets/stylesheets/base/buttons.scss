@@ -191,6 +191,11 @@
   }
 }
 
+.modal-footer .btn + .btn {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
 .btn-danger {
   background-color: $red;
   border-color: $red;
