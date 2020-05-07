@@ -44,16 +44,16 @@
 
         <div role="tabpanel" class="tab-pane" id="task-queue-raw-sql">
           <br>
-          <div class="alert alert-warning" role="alert">WARNING. Raw SQL will override rules.</div>
+          <div class="alert-danger">WARNING. Raw SQL will override rules.</div>
 
           <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
             <div class="form-group">
               <%= f.label :raw_sql %>
-              <%= f.text_field :raw_sql, class: "form-control", placeholder: @task_queue.to_sql %>
+              <%= f.text_field :raw_sql, class: "form-control", value: @task_queue.to_sql %>
             </div>
           <% end %>
           <br>
-          <button type="button" name="button" class="btn btn-primary task-queue-update-button" id="task-queue-update-button">View Results</button>
+          <button type="button" name="button" class="btn btn-primary pull-right task-queue-update-button" id="task-queue-update-button">View Results</button>
 
         </div>
       </div>
