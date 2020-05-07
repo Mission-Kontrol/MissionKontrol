@@ -1,3 +1,28 @@
+.query-builder .rules-group-container {
+  border: 1px solid $border-grey;
+  background: $background-grey;
+}
+
+
+
+.query-builder .rule-container {
+  border: none;
+  background: inherit;
+
+  &:hover {
+    background: $very-light-blue;
+  }
+}
+
+
+.query-builder .rule-value-container input[type="number"],
+.query-builder .rule-value-container input[type="text"],
+.query-builder .rule-value-container select {
+  padding: 10px;
+}
+
+
+
 .top-tab-for-queue-layout {
   margin-top: 15px;
   display: flex;
