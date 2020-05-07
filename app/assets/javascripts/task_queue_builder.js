@@ -1,24 +1,24 @@
-let queryBuilderFilters;
-let metaTag;
-let isCurrentControllerTaskQueues;
-let isCurrentActionIndex;
-let isCurrentActionEdit;
-// let getOptionsForDraggable;
-let loadTaskQueuePreview;
-let initQueryBuilder;
-let buildFilterForDataType;
-let loadQueryBuilder;
-let getFieldsWithType;
-let disableElementbyId;
-let saveTaskQueue;
-let buildTaskQueuePreviewFieldSetting;
-let refreshTaskQueuePreviewSettings;
-let updateTaskQueueDraggableFields;
-let updateTaskQueueItemFeed;
-let addToTaskQueueActivityStream;
-let applyOutcomeRule;
-let loadIndexPage;
-let loadEditPage;
+// let queryBuilderFilters;
+// let metaTag;
+// let isCurrentControllerTaskQueues;
+// let isCurrentActionIndex;
+// let isCurrentActionEdit;
+// // let getOptionsForDraggable;
+// let loadTaskQueuePreview;
+// // let initQueryBuilder;
+// // let buildFilterForDataType;
+// // let loadQueryBuilder;
+// // let getFieldsWithType;
+// let disableElementbyId;
+// let saveTaskQueue;
+// let buildTaskQueuePreviewFieldSetting;
+// let refreshTaskQueuePreviewSettings;
+// let updateTaskQueueDraggableFields;
+// let updateTaskQueueItemFeed;
+// let addToTaskQueueActivityStream;
+// let applyOutcomeRule;
+// let loadIndexPage;
+// let loadEditPage;
 
 // getOptionsForDraggable = function (primaryTable) {
 //   $.ajax({
@@ -39,108 +39,108 @@ let loadEditPage;
 //   });
 // }
 
-initQueryBuilder = function (filters) {
-  $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
-    if (rule.filter.plugin === "datepicker") {
-      rule.$el.find(".rule-value-container input").datepicker("update");
-    }
-  });
+// initQueryBuilder = function (filters) {
+//   $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
+//     if (rule.filter.plugin === "datepicker") {
+//       rule.$el.find(".rule-value-container input").datepicker("update");
+//     }
+//   });
 
-  $("#builder").queryBuilder({
-    filters,
-    operators: ["equal",
-                "not_equal",
-                "contains",
-                "not_contains",
-                "between",
-                "not_between",
-                "is_null",
-                "is_not_null",
-                "begins_with",
-                "not_begins_with",
-                "is_empty",
-                "is_not_empty",
-                "less",
-                "less_or_equal",
-                "greater",
-                "greater_or_equal",
-                "ends_with",
-                "not_ends_with"]
-  });
+//   $("#builder").queryBuilder({
+//     filters,
+//     operators: ["equal",
+//                 "not_equal",
+//                 "contains",
+//                 "not_contains",
+//                 "between",
+//                 "not_between",
+//                 "is_null",
+//                 "is_not_null",
+//                 "begins_with",
+//                 "not_begins_with",
+//                 "is_empty",
+//                 "is_not_empty",
+//                 "less",
+//                 "less_or_equal",
+//                 "greater",
+//                 "greater_or_equal",
+//                 "ends_with",
+//                 "not_ends_with"]
+//   });
 
-  let taskQueueRules = $("#builder").data().taskQueueRules;
+//   let taskQueueRules = $("#builder").data().taskQueueRules;
 
-  if ($.isEmptyObject(taskQueueRules) ) {
-    console.log("no rule present")
-  } else {
-    $("#builder").queryBuilder("setRules", taskQueueRules);
-  }
-}
+//   if ($.isEmptyObject(taskQueueRules) ) {
+//     console.log("no rule present")
+//   } else {
+//     $("#builder").queryBuilder("setRules", taskQueueRules);
+//   }
+// }
 
-buildFilterForDataType = function (type, id) {
-  var filter = {};
+// buildFilterForDataType = function (type, id) {
+//   var filter = {};
 
-  if (type === "datetime") {
-    filter["id"] = id;
-    filter["type"] = "date";
-    filter["validation"] = {
-      format: "YYYY/MM/DD"
-    };
-    filter["plugin"] = "datepicker";
-    filter["plugin_config"] = {
-      format: "yyyy/mm/dd",
-      todayBtn: "linked",
-      todayHighlight: true,
-      autoclose: true
-    };
-  } else {
-    filter["id"] = id;
-    filter["type"] = type;
-  }
+//   if (type === "datetime") {
+//     filter["id"] = id;
+//     filter["type"] = "date";
+//     filter["validation"] = {
+//       format: "YYYY/MM/DD"
+//     };
+//     filter["plugin"] = "datepicker";
+//     filter["plugin_config"] = {
+//       format: "yyyy/mm/dd",
+//       todayBtn: "linked",
+//       todayHighlight: true,
+//       autoclose: true
+//     };
+//   } else {
+//     filter["id"] = id;
+//     filter["type"] = type;
+//   }
 
-  return filter;
-}
+//   return filter;
+// }
 
-loadQueryBuilder = function (data) {
-  const filters = [];
+// loadQueryBuilder = function (data) {
+//   const filters = [];
 
-  for (var i = 0; i < data.length; i++) {
-    var filter;
-    var id = data[i][0];
-    var type = data[i][1];
+//   for (var i = 0; i < data.length; i++) {
+//     var filter;
+//     var id = data[i][0];
+//     var type = data[i][1];
 
-    if (type === "inet" || type === "text") {
-      filter = {};
-      filter["id"] = id;
-      filter["type"] = "string";
-    } else {
-      filter = buildFilterForDataType(type, id);
-    }
+//     if (type === "inet" || type === "text") {
+//       filter = {};
+//       filter["id"] = id;
+//       filter["type"] = "string";
+//     } else {
+//       filter = buildFilterForDataType(type, id);
+//     }
 
-    filters.push(filter);
-  }
+//     filters.push(filter);
+//   }
 
-  initQueryBuilder(filters);
-}
+//   initQueryBuilder(filters);
+// }
 
-getFieldsWithType = function (table) {
-  $.ajax({
-    url: "/layouts/table_fields_with_type",
-    type: "GET",
-    data: {
-      table,
-      id: location.pathname.substr(1).split("/")[1]
-    },
-    async: true,
-    dataType: "json",
-    error(XMLHttpRequest, errorTextStatus, error) {
-              window.toastr.error("Invalid target database, please review credentials.");
-           },
-    success(data){
-      loadQueryBuilder(data);
-    }
-  });
-}
+// getFieldsWithType = function (table) {
+//   $.ajax({
+//     url: "/layouts/table_fields_with_type",
+//     type: "GET",
+//     data: {
+//       table,
+//       id: location.pathname.substr(1).split("/")[1]
+//     },
+//     async: true,
+//     dataType: "json",
+//     error(XMLHttpRequest, errorTextStatus, error) {
+//               window.toastr.error("Invalid target database, please review credentials.");
+//            },
+//     success(data){
+//       loadQueryBuilder(data);
+//     }
+//   });
+// }
 
 disableElementbyId = function (id) {
   $("#" + id).attr("disabled", true);
@@ -378,10 +378,10 @@ loadIndexPage = function () {
 
 loadEditPage = function () {
   if (isCurrentControllerTaskQueues && isCurrentActionEdit) {
-    let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
-    let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
+    // let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
+    // let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
 
-    getFieldsWithType(taskQueueTable);
+    // getFieldsWithType(taskQueueTable);
 
     // $("#task-queue-update-button").click(function() {
     //   console.log('what the fuck')

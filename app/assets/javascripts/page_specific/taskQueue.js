@@ -1,3 +1,106 @@
+function initQueryBuilder (filters) {
+  $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
+    if (rule.filter.plugin === "datepicker") {
+      rule.$el.find(".rule-value-container input").datepicker("update");
+    }
+  });
+
+  $("#builder").queryBuilder({
+    filters,
+    operators: ["equal",
+                "not_equal",
+                "contains",
+                "not_contains",
+                "between",
+                "not_between",
+                "is_null",
+                "is_not_null",
+                "begins_with",
+                "not_begins_with",
+                "is_empty",
+                "is_not_empty",
+                "less",
+                "less_or_equal",
+                "greater",
+                "greater_or_equal",
+                "ends_with",
+                "not_ends_with"]
+  });
+
+  let taskQueueRules = $("#builder").data().taskQueueRules;
+
+  if ($.isEmptyObject(taskQueueRules) ) {
+    console.log("no rule present")
+  } else {
+    $("#builder").queryBuilder("setRules", taskQueueRules);
+  }
+}
+
+function buildFilterForDataType (type, id) {
+  var filter = {};
+
+  if (type === "datetime") {
+    filter["id"] = id;
+    filter["type"] = "date";
+    filter["validation"] = {
+      format: "YYYY/MM/DD"
+    };
+    filter["plugin"] = "datepicker";
+    filter["plugin_config"] = {
+      format: "yyyy/mm/dd",
+      todayBtn: "linked",
+      todayHighlight: true,
+      autoclose: true
+    };
+  } else {
+    filter["id"] = id;
+    filter["type"] = type;
+  }
+
+  return filter;
+}
+
+function loadQueryBuilder (data) {
+  const filters = [];
+
+  for (var i = 0; i < data.length; i++) {
+    var filter;
+    var id = data[i][0];
+    var type = data[i][1];
+
+    if (type === "inet" || type === "text") {
+      filter = {};
+      filter["id"] = id;
+      filter["type"] = "string";
+    } else {
+      filter = buildFilterForDataType(type, id);
+    }
+
+    filters.push(filter);
+  }
+
+  initQueryBuilder(filters);
+}
+
+function getFieldsWithType (table) {
+  $.ajax({
+    url: "/layouts/table_fields_with_type",
+    type: "GET",
+    data: {
+      table,
+      id: $("#database-id").text().trim()
+    },
+    async: true,
+    dataType: "json",
+    error() {
+      window.toastr.error("Invalid target database, please review credentials.");
+    },
+    success(data) {
+      loadQueryBuilder(data);
+    }
+  });
+}
+
 function loadResults () {
   $(".task-queue-update-button").click(function() {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
@@ -24,10 +127,10 @@ function loadResults () {
       type: "PATCH",
       data: params,
       dataType: "json",
-      error(response, status, request) {
+      error() {
         window.toastr.error("Task queue preview failed, review SQL.");
       },
-      success(response, status, request) {
+      success(response) {
         let columns = response.columns;
 
         if (typeof columns !== "undefined") {
@@ -48,6 +151,9 @@ Paloma.controller("TaskQueues", {
     });
   },
   edit () {
+    let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
+
+    getFieldsWithType(taskQueueTable);
     loadResults();
   }
 });
