@@ -3,8 +3,6 @@
   background: $background-grey;
 }
 
-
-
 .query-builder .rule-container {
   border: none;
   background: inherit;
@@ -14,14 +12,11 @@
   }
 }
 
-
 .query-builder .rule-value-container input[type="number"],
 .query-builder .rule-value-container input[type="text"],
 .query-builder .rule-value-container select {
   padding: 10px;
 }
-
-
 
 .top-tab-for-queue-layout {
   margin-top: 15px;
@@ -40,11 +35,11 @@
 
 .top-nav-for-queue-layout {
   padding: 20px;
+  padding-bottom: 0;
 
   .top-nav-item-for-queue-layout {
-    color: black;
     font-size: 14px;
-    text-decoration: underline;
+    text-decoration: none;
     margin-right: 10px;
     text-align: center;
   }
@@ -53,8 +48,17 @@
     border-bottom: none;
 
     li.active a {
-      border: 1px solid #e3e3e3;
-      border-radius: 4px;
+      color: $purplish-grey;
+      border-color: white white black;
+    }
+
+    li > a:hover {
+      background: inherit;
+      border-color: white;
+    }
+
+    li > a:active:hover {
+      border-color: white white black;;
     }
   }
 }
@@ -94,7 +98,7 @@
   .top-nav-item-for-queue-layout {
     color: black;
     font-size: 14px;
-    text-decoration: underline;
+    text-decoration:none;
     margin-right: 10px;
     text-align: center;
   }
