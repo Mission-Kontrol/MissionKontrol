@@ -50,12 +50,6 @@
         </a>
 
         <ul class="nav nav-second-level collapse">
-          <% if @task_queues.present? %>
-            <li>
-              <a href="#" class="divider"></a>
-            </li>
-          <% end %>
-
           <% @task_queues&.each do |queue| %>
             <li class="">
               <%= link_to edit_task_queue_path(queue), id: "nav-link-for-task-queues" do %>

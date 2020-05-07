@@ -1,5 +1,5 @@
 function loadResults () {
-  $("#task-queue-update-button").click(function() {
+  $(".task-queue-update-button").click(function() {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
     var params = {};
     params["task_queue"] = {};
