@@ -3,18 +3,41 @@
 class TaskQueuesController < ApplicationController
   include TaskQueuePreview
   include TaskQueueRecordActivity
-  layout 'task_queue'
-  before_action :set_activities
+  include TableActivity
+  include DatabasePresenterActions
+
+  layout 'standard', only: :index
+  layout 'task_queue', only: [:new, :edit, :preview]
+
+  before_action :set_database, only: %i[new create]
+  before_action :set_activities, only: :edit
 
   def index
+    @databases = Database.all
+    @task_queues = TaskQueue.all
+  end
+
+  def new
+    database_connection
     @task_queue = TaskQueue.new
+    @available_tables = available_tables
     @work_lists = WorkList.order(created_at: :desc)
   end
 
+  # def index
+  #   @task_queue = TaskQueue.new
+  #   @available_tables = available_tables
+  #   @work_lists = WorkList.order(created_at: :desc)
+  # end
+
   def edit
     @task_queue = TaskQueue.find(params[:id])
-    @repo = Kuwinda::Repository::TargetDB.new(@task_queue.table)
-    result = @task_queue.to_sql.blank? ? @repo.all(10, 0) : @repo.query(@task_queue.to_sql, 10, 0)
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
+    @target_db = Kuwinda::Repository::TargetDB.new(@database_connection)
+    # @row = @target_db.all(task_queue.table, 1).rows.try(:first).try(:first) || 1
+    # @repo = Kuwinda::Repository::TargetDB.new(@task_queue.table)
+    result = @task_queue.to_sql.blank? ? @target_db.all(@task_queue.table, 10, 0) : @target_db.query(@task_queue.table, @task_queue.to_sql, 10, 0)
     @task_queue_headers = result.columns
   end
 
@@ -109,7 +132,8 @@ class TaskQueuesController < ApplicationController
   def task_queue_params
     params.require(:task_queue).permit(:name,
                                        :details,
-                                       :table)
+                                       :table,
+                                       :database_id)
   end
 
   def handle_success(action:, js_func:, notice:)
@@ -148,5 +172,13 @@ class TaskQueuesController < ApplicationController
     end
 
     record
+  end
+
+  def set_database
+    @database = Database.find(params[:database_id] || task_queue_params[:database_id])
+  end
+
+  def database_connection
+    @database_connection = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
   end
 end

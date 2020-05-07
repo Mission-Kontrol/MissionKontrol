@@ -347,13 +347,13 @@ applyOutcomeRule = function (outcome) {
 }
 
 loadIndexPage = function () {
-  if (isCurrentControllerTaskQueues && isCurrentActionIndex) {
+  if (isCurrentControllerTaskQueues) {
     $("#new-task-queue-modal").modal({
       backdrop: "static",
       keyboard: false
     });
 
-    getFieldsWithType("users");
+    // getFieldsWithType("users");
 
     $("#queue-builder-modal-next-button").click(function() {
       $("#new-queue-modal-screen-1").toggleClass("hide");

@@ -6,6 +6,8 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
     <%= tag :meta, name: :psj, action: action_name, controller: controller_name %>
+    <%= favicon_link_tag 'favicon.ico' %>
+    <%= yield(:head) %>
   </head>
 
   <body class="gray-bg">
@@ -24,6 +26,13 @@
           <%= render 'layouts/task_queue_define_tab' %>
         </div>
       </div>
+
+      <%= render 'shared/flash_message' %>
+
+      <%= yield %>
+      <%= insert_paloma_hook %>
+
+      <% render 'layouts/footer' %>
     </div>
 
     <div id="natterly-container"></div>

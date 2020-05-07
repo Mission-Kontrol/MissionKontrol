@@ -50,12 +50,6 @@
         </a>
 
         <ul class="nav nav-second-level collapse">
-          <li class="">
-            <%= link_to task_queues_path, id: "nav-link-for-task-queues" do %>
-              <%= image_tag('/assets/images/icons/settings-1.png') %>  Create task queue
-            <% end %>
-          </li>
-
           <% if @task_queues.present? %>
             <li>
               <a href="#" class="divider"></a>
@@ -97,6 +91,11 @@
             <li class="<%= active_controller?('layout_builder') %>">
               <%= link_to layouts_path do %>
                 <%= image_tag('/assets/images/icons/settings-1.png') %> Layouts
+              <% end %>
+            </li>
+            <li class="<%= active_controller?('task_queues') %>">
+              <%= link_to task_queues_path, id: "nav-link-for-task-queues" do %>
+                <%= image_tag('/assets/images/icons/settings-1.png') %>  Task Queues
               <% end %>
             </li>
             <li class="<%= active_controller?('databases') %>">

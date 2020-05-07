@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     root to: "admin_user_registrations#new"
   end
 
-  resources :task_queues, only: %i[index show create edit update] do
+  resources :task_queues, only: %i[new index show create edit update] do
     member do
       post 'outcome'
       get 'record'

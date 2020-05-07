@@ -1,3 +1,8 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'moment/moment.min.js' %>
+  <%= javascript_include_tag 'shopify/draggable.bundle.js' %>
+<% end %>
+
 <div class="row">
   <div class="col-sm-12">
     <br>
@@ -10,14 +15,6 @@
     <%= render 'task_queues/preview' %>
   </div>
 </div>
-
-<div class="modal fade" id="new-task-queue-modal" tabindex="-1" role="dialog" aria-labelledby="new-task-queue-modal">
-  <div class="modal-dialog" role="document">
-    <%= render partial: 'task_queues/new/new_queue_modal_screen_1' %>
-    <%= render partial: 'task_queues/new/new_queue_modal_screen_2' %>
-  </div>
-</div>
-
 
 <div id="task-queue-item-modal" class="modal fade" aria-hidden="true" data-task-queue-id="<%= @task_queue.id %>">
   <div class="modal-dialog modal-lg">
