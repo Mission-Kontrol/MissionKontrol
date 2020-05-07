@@ -17,6 +17,10 @@ module DatabasePresenterActions
     Kuwinda::Presenter::ListTableFieldsWithType.new(@database_connection, table).call
   end
 
+  def target_db
+    Kuwinda::Repository::TargetDB.new(@database_connection)
+  end
+
   def available_tables
     @database_connection = database_connection
     Kuwinda::Presenter::ListAvailableTables.new(@database_connection).call

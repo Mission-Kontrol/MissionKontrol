@@ -34,10 +34,10 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.find(params[:id])
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
-    @target_db = Kuwinda::Repository::TargetDB.new(@database_connection)
+    @target_db = target_db
     # @row = @target_db.all(task_queue.table, 1).rows.try(:first).try(:first) || 1
     # @repo = Kuwinda::Repository::TargetDB.new(@task_queue.table)
-    result = @task_queue.to_sql.blank? ? @target_db.all(@task_queue.table, 10, 0) : @target_db.query(@task_queue.table, @task_queue.to_sql, 10, 0)
+    result = @task_queue.to_sql.blank? ? @target_db.all(@task_queue.table, 10, 0) : @target_db.query(@task_queue.to_sql, 10, 0)
     @task_queue_headers = result.columns
   end
 
@@ -54,6 +54,8 @@ class TaskQueuesController < ApplicationController
   def update
     load_task_queue
     @task_queue.save!
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
     data = data_for_preview(@task_queue)
     render action: 'update/success', json: data
   rescue StandardError
@@ -62,6 +64,8 @@ class TaskQueuesController < ApplicationController
 
   def preview
     @task_queue = TaskQueue.find(params[:id])
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
     offset = params['start']
     limit = params['length']
     columns = []
@@ -74,8 +78,8 @@ class TaskQueuesController < ApplicationController
       data: sql_result.to_hash,
       columns: columns,
       draw: params['draw'].to_i,
-      recordsTotal: @target_db.count.rows[0][0],
-      recordsFiltered: sql_result.count
+      recordsTotal: @target_db.count(@task_queue.table).rows[0][0],
+      recordsFiltered: sql_result.count(@task_queue.table)
     }
   end
 

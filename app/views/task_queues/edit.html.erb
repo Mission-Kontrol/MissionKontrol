@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <%= javascript_include_tag 'moment/moment.min.js' %>
   <%= javascript_include_tag 'shopify/draggable.bundle.js' %>
+  <%= javascript_include_tag 'dataTable/datatables.min.js' %>
 <% end %>
 
 <div class="row">
@@ -8,7 +9,7 @@
     <br>
     <div id="builder" data-task-queue-table="<%= @task_queue.table %>" data-task-queue-id="<%= @task_queue.id %>" data-task-queue-rules="<%= @task_queue.query_builder_rules %>"></div>
     <br>
-    <button type="button" name="button" class="btn btn-primary task-queue-update-button">View Results</button>
+    <button type="button" name="button" class="btn btn-primary" id="task-queue-update-button">View Results</button>
   </div>
 
   <div class="col-sm-12" style="">
