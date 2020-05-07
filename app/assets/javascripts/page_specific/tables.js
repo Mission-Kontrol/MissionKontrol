@@ -280,45 +280,6 @@ function fetchDataForRelatedTables() {
   }
 }
 
-function loadTaskQueuePreviewDataTable (columns) {
-  if ($.fn.dataTable.isDataTable("#task-queue-preview-table")) {
-    var table = $("#task-queue-preview-table").DataTable();
-    table.destroy();
-  }
-
-  $("#task-queue-preview-table").DataTable({
-    colReorder: true,
-    deferRender: true,
-    autoWidth: false,
-    scrollX: true,
-    serverSide: true,
-    ajax: "/task_queues/" + location.pathname.split("/")[2] + "/preview",
-    dom: "Bfrtip",
-    columns,
-    stateSave: true,
-    stateSaveCallback(settings, data) {
-      stateSaveCallbackFunction(settings, data, $(this));
-    },
-    stateLoadCallback(settings, callback) {
-      stateLoadCallbackFunction($(this), callback);
-    },
-    buttons: [
-      "colvis",
-      {
-        "extend": "csv",
-        "className": "btn btn-warning",
-      }
-    ],
-    createdRow(row, data, dataIndex) {
-      let id = data.id;
-      $(row).addClass("task-queue-item");
-      $(row).attr( "data-task-queue-item-primary-key", id);
-    }
-  });
-
-  $("#task-queue-preview-table").removeClass("hide");
-}
-
 function rotateIcon (icon, nestedRowOpen) {
   if (nestedRowOpen) {
     icon.removeClass("rotate");

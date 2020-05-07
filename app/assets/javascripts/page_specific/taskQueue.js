@@ -1,3 +1,53 @@
+function loadTaskQueuePreviewDataTable (columns) {
+  if ($.fn.dataTable.isDataTable("#task-queue-preview-table")) {
+    var table = $("#task-queue-preview-table").DataTable();
+    table.destroy();
+  }
+
+  $("#task-queue-preview-table").DataTable({
+    colReorder: false,
+    deferRender: true,
+    autoWidth: false,
+    scrollX: true,
+    serverSide: true,
+    ajax: "/task_queues/" + location.pathname.split("/")[2] + "/preview",
+    dom: "f<'table--info'pB>rti<'clear'>",
+    pagingType: "simple_numbers",
+    language: {
+      paginate: {
+        next: "Next >",
+        previous: "< Prev",
+      },
+      info: "of _MAX_ results",
+      zeroRecords: "Nothing found - sorry",
+      infoEmpty: "",
+      infoFiltered: "filtered from _MAX_ total records"
+    },
+    columns,
+    stateSave: true,
+    stateSaveCallback(settings, data) {
+      stateSaveCallbackFunction(settings, data, $(this));
+    },
+    stateLoadCallback(settings, callback) {
+      stateLoadCallbackFunction($(this), callback);
+    },
+    buttons: [
+      {
+        extend: "csv",
+        className: "table--export ",
+        text: "Export"
+      }
+    ],
+    createdRow(row, data, dataIndex) {
+      let id = data.id;
+      $(row).addClass("task-queue-item");
+      $(row).attr( "data-task-queue-item-primary-key", id);
+    }
+  });
+
+  $("#task-queue-preview-table").removeClass("hide");
+}
+
 function initQueryBuilder (filters) {
   $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
     if (rule.filter.plugin === "datepicker") {
