@@ -14,7 +14,6 @@
 //= require dualListbox/jquery.bootstrap-duallistbox.js
 //= require extendext/jQuery.extendext.min.js
 //= require dotjs/doT.min.js
-//= require query-builder/query-builder.min.js
 //= require bootstrap/bootstrap-datepicker.js
 //= require tooltipster/tooltipster.bundle.min.js
 //= require paloma
