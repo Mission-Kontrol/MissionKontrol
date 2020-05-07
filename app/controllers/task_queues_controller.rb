@@ -83,6 +83,13 @@ class TaskQueuesController < ApplicationController
     }
   end
 
+  def table_fields_with_type
+    @database = Database.find(params[:id])
+    @database_connection = database_connection
+    @fields_with_type = list_table_fields_with_type(params[:table])
+    render json: @fields_with_type.sort
+  end
+
   def outcome
     task_queue = TaskQueue.find(params['task_queue_id'])
 

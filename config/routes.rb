@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get 'record'
       get 'preview'
       get 'field_settings'
+      get 'table_fields_with_type'
     end
   end
 
