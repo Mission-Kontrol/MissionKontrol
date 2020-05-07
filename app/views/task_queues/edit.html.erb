@@ -4,19 +4,10 @@
   <%= javascript_include_tag 'dataTable/datatables.min.js' %>
 <% end %>
 
-<div class="hide" id="database-id">
-  <%= @database.id %>
-</div>
-<div class="row">
-  <div class="col-sm-12">
-    <br>
-    <div id="builder" data-task-queue-table="<%= @task_queue.table %>" data-task-queue-id="<%= @task_queue.id %>" data-task-queue-rules="<%= @task_queue.query_builder_rules %>"></div>
-    <br>
-    <button type="button" name="button" class="btn btn-primary pull-right task-queue-update-button" id="task-queue-update-button">View Results</button>
-  </div>
-
-  <div class="col-sm-12" style="">
-    <%= render 'task_queues/preview' %>
+<div class="row" style="margin: 0">
+  <div class="tab-content">
+    <%= render 'task_queues/shared/task_queue_create_tab' %>
+    <%= render 'task_queues/shared/task_queue_define_tab' %>
   </div>
 </div>
 

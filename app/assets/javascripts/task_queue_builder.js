@@ -226,13 +226,6 @@ updateTaskQueueDraggableFields = function (containerId, containerItems) {
   });
 }
 
-loadTaskQueuePreview = function (columns, rows) {
-  $(".task-queue-preview-table").footable({
-    columns,
-    rows
-  });
-}
-
 updateTaskQueueItemData = function (data) {
   const entries = Object.entries(data.row)
   $('#task_queue_item_data').empty();

@@ -39,7 +39,7 @@
 
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="task-queue-builder">
-          <%= yield %>
+          <%= render 'task_queues/task_queue_builder' %>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="task-queue-raw-sql">
@@ -55,9 +55,10 @@
           <br>
           <button type="button" name="button" class="btn btn-primary task-queue-update-button" id="task-queue-update-button">View Results</button>
 
-          <%= render 'task_queues/preview' %>
         </div>
       </div>
+
+      <%= render 'task_queues/preview' %>
 
       <% render 'layouts/footer' %>
     </div>
