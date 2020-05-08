@@ -48,6 +48,49 @@ function loadTaskQueuePreviewDataTable (columns) {
   $("#task-queue-preview-table").removeClass("hide");
 }
 
+function loadTaskQueueDataTable (columns) {
+  $("#target-table-task-queues").DataTable({
+    colReorder: false,
+    deferRender: true,
+    autoWidth: false,
+    scrollX: true,
+    serverSide: true,
+    ajax: "/task_queues/" + location.pathname.split("/")[2] + "/preview",
+    dom: "f<'table--info'pB>rti<'clear'>",
+    pagingType: "simple_numbers",
+    language: {
+      paginate: {
+        next: "Next >",
+        previous: "< Prev",
+      },
+      info: "of _MAX_ results",
+      zeroRecords: "Nothing found - sorry",
+      infoEmpty: "",
+      infoFiltered: "filtered from _MAX_ total records"
+    },
+    columns,
+    stateSave: true,
+    stateSaveCallback(settings, data) {
+      stateSaveCallbackFunction(settings, data, $(this));
+    },
+    stateLoadCallback(settings, callback) {
+      stateLoadCallbackFunction($(this), callback);
+    },
+    buttons: [
+      {
+        extend: "csv",
+        className: "table--export ",
+        text: "Export"
+      }
+    ],
+    createdRow(row, data, dataIndex) {
+      let id = data.id;
+      $(row).addClass("task-queue-item");
+      $(row).attr( "data-task-queue-item-primary-key", id);
+    }
+  });
+}
+
 function initQueryBuilder (filters) {
   $("#builder").on("afterUpdateRuleValue.queryBuilder", function(e, rule) {
     if (rule.filter.plugin === "datepicker") {
@@ -152,44 +195,43 @@ function getFieldsWithType (table) {
 }
 
 function loadResults () {
-  $(".task-queue-update-button").click(function() {
-    let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
-    var params = {};
-    params["task_queue"] = {};
+  var taskQueueId = document.getElementById("builder").dataset.taskQueueId;
 
-    if ($("#builder").queryBuilder("getRules") != null) {
-      params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
-    }
+  var params = {};
+  params["task_queue"] = {};
 
-    if ($("#builder").queryBuilder("getSQL") != null) {
-      params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
-    }
+  if ($("#builder").queryBuilder("getRules") != null) {
+    params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
+  }
 
-    params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
-    params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
-    params["task_queue"]["success_outcome_title"] = document.getElementById("task_queue_success_outcome_title").value;
-    params["task_queue"]["success_outcome_timeout"] = document.getElementById("task_queue_success_outcome_timeout").value;
-    params["task_queue"]["failure_outcome_title"] = document.getElementById("task_queue_failure_outcome_title").value;
-    params["task_queue"]["failure_outcome_timeout"] = document.getElementById("task_queue_failure_outcome_timeout").value;
+  if ($("#builder").queryBuilder("getSQL") != null) {
+    params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
+  }
 
-    $.ajax({
-      url: "/task_queues/" + taskQueueId,
-      type: "PATCH",
-      data: params,
-      dataType: "json",
-      error() {
-        window.toastr.error("Task queue preview failed, review SQL.");
-      },
-      success(response) {
-        let columns = response.columns;
+  params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
+  params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
+  params["task_queue"]["success_outcome_title"] = document.getElementById("task_queue_success_outcome_title").value;
+  params["task_queue"]["success_outcome_timeout"] = document.getElementById("task_queue_success_outcome_timeout").value;
+  params["task_queue"]["failure_outcome_title"] = document.getElementById("task_queue_failure_outcome_title").value;
+  params["task_queue"]["failure_outcome_timeout"] = document.getElementById("task_queue_failure_outcome_timeout").value;
 
-        if (typeof columns !== "undefined") {
-          loadTaskQueuePreviewDataTable(columns);
-        }
+  $.ajax({
+    url: "/task_queues/" + taskQueueId,
+    type: "PATCH",
+    data: params,
+    dataType: "json",
+    error() {
+      window.toastr.error("Task queue preview failed, review SQL.");
+    },
+    success(response) {
+      let columns = response.columns;
 
-        window.toastr.info("Task queue updated.");
+      if (typeof columns !== "undefined") {
+        loadTaskQueuePreviewDataTable(columns);
       }
-    });
+
+      window.toastr.info("Task queue updated.");
+    }
   });
 }
 
@@ -204,6 +246,21 @@ Paloma.controller("TaskQueues", {
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
 
     getFieldsWithType(taskQueueTable);
-    loadResults();
+    $(".task-queue-update-button").click(function() {
+      loadResults();
+    });
+  },
+  show () {
+    $.ajax({
+      dataType: "json",
+      url: "/" + (location.pathname+location.search).substr(1),
+      success(d) {
+        console.log('success!')
+        loadTaskQueueDataTable(d.columns);
+      },
+      error(){
+        toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
+      }
+    });
   }
 });

@@ -33,10 +33,10 @@
             <tbody class="table-borderless table-hover">
               <% @task_queues.select { |task_queue| task_queue.database_id == database.id }.each do |task_queue| %>
                 <tr>
-                  <td><%= task_queue.view_name %></td>
-                  <td><%= task_queue.table_name.humanize %></td>
+                  <td><%= task_queue.name %></td>
+                  <td><%= task_queue.table.humanize %></td>
                   <td>
-                    <%= link_to('Edit', edit_layout_path(task_queue.id), html_options = { class: "btn btn-primary btn-wide" }) %>
+                    <%= link_to('Edit', edit_task_queue_path(task_queue.id), html_options = { class: "btn btn-primary btn-wide" }) %>
                   </td>
                 </tr>
               <% end if @task_queues %>

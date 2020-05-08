@@ -6,15 +6,14 @@ class TaskQueuesController < ApplicationController
   include TableActivity
   include DatabasePresenterActions
 
-  layout 'standard', only: :index
-  layout 'task_queue', only: [:new, :edit, :preview]
-
+  layout 'task_queue'
   before_action :set_database, only: %i[new create]
   before_action :set_activities, only: :edit
 
   def index
     @databases = Database.all
     @task_queues = TaskQueue.all
+    render layout: 'standard'
   end
 
   def new
@@ -24,19 +23,11 @@ class TaskQueuesController < ApplicationController
     @work_lists = WorkList.order(created_at: :desc)
   end
 
-  # def index
-  #   @task_queue = TaskQueue.new
-  #   @available_tables = available_tables
-  #   @work_lists = WorkList.order(created_at: :desc)
-  # end
-
   def edit
     @task_queue = TaskQueue.find(params[:id])
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
     @target_db = target_db
-    # @row = @target_db.all(task_queue.table, 1).rows.try(:first).try(:first) || 1
-    # @repo = Kuwinda::Repository::TargetDB.new(@task_queue.table)
     result = @task_queue.to_sql.blank? ? @target_db.all(@task_queue.table, 10, 0) : @target_db.query(@task_queue.to_sql, 10, 0)
     @task_queue_headers = result.columns
   end
@@ -83,11 +74,45 @@ class TaskQueuesController < ApplicationController
     }
   end
 
+  # TODO: this is duplicate from layouts?
   def table_fields_with_type
     @database = Database.find(params[:id])
     @database_connection = database_connection
     @fields_with_type = list_table_fields_with_type(params[:table])
     render json: @fields_with_type.sort
+  end
+
+  # TODO: this is duplicate of preview
+  def show
+    @task_queue = TaskQueue.find(params[:id])
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
+    @target_db = target_db
+    respond_to do |format|
+      format.html do
+        sql_result = @target_db.all(@task_queue.table)
+        @headers = sql_result ? sql_result.columns.unshift('') : []
+        render layout: 'standard'
+      end
+
+      format.js do
+        offset = params['start']
+        limit = params['length']
+        columns = []
+        sql_result = build_query_for_preview(@task_queue, limit, offset)
+        sql_result.columns.each do |c|
+          columns << { data: c }
+        end
+
+        render json: {
+          data: sql_result.to_hash,
+          columns: columns,
+          draw: params['draw'].to_i,
+          recordsTotal: @target_db.count(@task_queue.table).rows[0][0],
+          recordsFiltered: sql_result.count(@task_queue.table)
+        }
+      end
+    end
   end
 
   def outcome
@@ -124,6 +149,7 @@ class TaskQueuesController < ApplicationController
 
   private
 
+  # TODO: fix this
   # rubocop:disable Metrics/AbcSize
   def load_task_queue
     @task_queue = TaskQueue.find(params[:id])
