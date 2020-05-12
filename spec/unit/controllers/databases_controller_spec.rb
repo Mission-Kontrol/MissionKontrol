@@ -343,4 +343,41 @@ describe DatabasesController, type: :controller, js: true do
       end
     end
   end
+
+  describe 'GET table_fields_with_type' do
+    subject { get :table_fields_with_type, params: params }
+    let!(:database) { create(:database) }
+    let(:params) { { id: database.id, table: table_name } }
+    let(:mock_list_table_fields_with_type) { double('PresenterDouble') }
+    let(:table_name) { 'users' }
+    let(:fields_with_type) do
+      [
+        ['id', 'string', table_name],
+        ['user', 'string', table_name],
+        ['name', 'string', table_name]
+      ]
+    end
+    let(:json_response) do
+      [
+        ['id', 'string', table_name],
+        ['name', 'string', table_name],
+        ['user', 'string', table_name]
+      ]
+    end
+
+    before do
+      allow(mock_list_table_fields_with_type).to receive(:call).and_return(fields_with_type)
+      allow(Kuwinda::Presenter::ListTableFieldsWithType).to receive(:new).and_return(mock_list_table_fields_with_type)
+
+      subject
+    end
+
+    it 'assigns fields_with_type' do
+      expect(assigns(:fields_with_type)).to eq fields_with_type
+    end
+
+    it 'renders a sorted json of fields_with_type' do
+      expect(JSON.parse(response.body)).to eq json_response
+    end
+  end
 end
