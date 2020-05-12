@@ -56,13 +56,15 @@
                 <span class="nav-label"><%= database.friendly_name %></span><span class="fa arrow"></span>
               </a>
               <ul class="nav nav-second-level collapse">
-                <% @task_queues.select { |task_queue|  task_queue.database_id == database.id }.each do |task_queue| %>
-                  <li class="">
-                    <%= link_to task_queue_path(task_queue), id: "nav-link-for-task-queues" do %>
-                      <%= image_tag('/assets/images/icons/settings-1.png') %>  <%= task_queue.name %>
-                    <% end %>
-                  </li>
-                <% end%>
+                <% if @task_queues %>
+                  <% @task_queues.select { |task_queue|  task_queue.database_id == database.id }.each do |task_queue| %>
+                    <li class="">
+                      <%= link_to task_queue_path(task_queue), id: "nav-link-for-task-queues" do %>
+                        <%= image_tag('/assets/images/icons/settings-1.png') %>  <%= task_queue.name %>
+                      <% end %>
+                    </li>
+                  <% end%>
+                <% end %>
               </ul>
             </li>
           <% end %>

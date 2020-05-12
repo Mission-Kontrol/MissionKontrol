@@ -74,7 +74,7 @@ class TaskQueuesController < ApplicationController
     }
   end
 
-  # TODO: this is duplicate from layouts?
+  # TODO: this is duplicate from layouts? Move to tables controller?
   def table_fields_with_type
     @database = Database.find(params[:id])
     @database_connection = database_connection
