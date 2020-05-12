@@ -93,9 +93,6 @@ function loadTaskQueueDataTable (columns) {
       let id = data.id;
       $(row).addClass("task-queue-item");
       $(row).attr( "data-task-queue-item-primary-key", id);
-    },
-    initComplete(settings, json) {
-      // initCompleteFunction(settings, json, taskQueueTable);
     }
   });
 
@@ -133,9 +130,7 @@ function initQueryBuilder (filters) {
 
   let taskQueueRules = $("#builder").data().taskQueueRules;
 
-  if ($.isEmptyObject(taskQueueRules) ) {
-    console.log("no rule present")
-  } else {
+  if (!$.isEmptyObject(taskQueueRules) ) {
     $("#builder").queryBuilder("setRules", taskQueueRules);
   }
 }
@@ -211,11 +206,11 @@ function loadResults () {
   var params = {};
   params["task_queue"] = {};
 
-  if ($("#builder").queryBuilder("getRules") != null) {
+  if ($("#builder").queryBuilder("getRules") !== null) {
     params["task_queue"]["query_builder_rules"] = JSON.stringify($("#builder").queryBuilder("getRules"), null, 2);
   }
 
-  if ($("#builder").queryBuilder("getSQL") != null) {
+  if ($("#builder").queryBuilder("getSQL") !== null) {
     params["task_queue"]["query_builder_sql"] = $("#builder").queryBuilder("getSQL").sql;
   }
 
