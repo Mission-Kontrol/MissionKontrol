@@ -74,14 +74,6 @@ class TaskQueuesController < ApplicationController
     }
   end
 
-  # TODO: this is duplicate from layouts? Move to tables controller?
-  def table_fields_with_type
-    @database = Database.find(params[:id])
-    @database_connection = database_connection
-    @fields_with_type = list_table_fields_with_type(params[:table])
-    render json: @fields_with_type.sort
-  end
-
   # TODO: this is duplicate of preview
   def show
     @task_queue = TaskQueue.find(params[:id])
@@ -91,7 +83,7 @@ class TaskQueuesController < ApplicationController
     respond_to do |format|
       format.html do
         sql_result = @target_db.all(@task_queue.table)
-        @headers = sql_result ? sql_result.columns.unshift('') : []
+        @headers = sql_result ? sql_result.columns : []
         render layout: 'standard'
       end
 
@@ -213,9 +205,5 @@ class TaskQueuesController < ApplicationController
 
   def set_database
     @database = Database.find(params[:database_id] || task_queue_params[:database_id])
-  end
-
-  def database_connection
-    @database_connection = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
   end
 end

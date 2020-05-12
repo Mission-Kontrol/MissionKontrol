@@ -434,7 +434,7 @@ loadEditPage = function () {
       return true;
     });
 
-    getOptionsForDraggable("users");
+    // getOptionsForDraggable("users");
 
     initializeDraggable();
   }

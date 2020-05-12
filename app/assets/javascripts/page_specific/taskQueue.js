@@ -38,7 +38,7 @@ function loadTaskQueuePreviewDataTable (columns) {
         text: "Export"
       }
     ],
-    createdRow(row, data, dataIndex) {
+    createdRow(row, data) {
       let id = data.id;
       $(row).addClass("task-queue-item");
       $(row).attr( "data-task-queue-item-primary-key", id);
@@ -49,13 +49,19 @@ function loadTaskQueuePreviewDataTable (columns) {
 }
 
 function loadTaskQueueDataTable (columns) {
-  $("#target-table-task-queues").DataTable({
+  if ($.fn.dataTable.isDataTable("#target-table-task-queues")) {
+    var table = $("#target-table-task-queues").DataTable();
+    table.destroy();
+  }
+
+  var taskQueueTable = $("#target-table-task-queues").DataTable({
     colReorder: false,
     deferRender: true,
     autoWidth: false,
     scrollX: true,
     serverSide: true,
-    ajax: "/task_queues/" + location.pathname.split("/")[2] + "/preview",
+    processing: false,
+    ajax: location.pathname,
     dom: "f<'table--info'pB>rti<'clear'>",
     pagingType: "simple_numbers",
     language: {
@@ -83,12 +89,17 @@ function loadTaskQueueDataTable (columns) {
         text: "Export"
       }
     ],
-    createdRow(row, data, dataIndex) {
+    createdRow(row, data) {
       let id = data.id;
       $(row).addClass("task-queue-item");
       $(row).attr( "data-task-queue-item-primary-key", id);
+    },
+    initComplete(settings, json) {
+      // initCompleteFunction(settings, json, taskQueueTable);
     }
   });
+
+  $("#target-table-task-queues").removeClass("hide");
 }
 
 function initQueryBuilder (filters) {
@@ -177,7 +188,7 @@ function loadQueryBuilder (data) {
 
 function getFieldsWithType (table) {
   $.ajax({
-    url: "/layouts/table_fields_with_type",
+    url: "/table_fields_with_type",
     type: "GET",
     data: {
       table,
@@ -242,6 +253,7 @@ Paloma.controller("TaskQueues", {
       keyboard: false
     });
   },
+
   edit () {
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
 
@@ -250,12 +262,12 @@ Paloma.controller("TaskQueues", {
       loadResults();
     });
   },
+
   show () {
     $.ajax({
       dataType: "json",
       url: "/" + (location.pathname+location.search).substr(1),
       success(d) {
-        console.log('success!')
         loadTaskQueueDataTable(d.columns);
       },
       error(){

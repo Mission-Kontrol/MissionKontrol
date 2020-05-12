@@ -2,7 +2,7 @@
   <%= javascript_include_tag 'dataTable/datatables.min.js' %>
 <% end %>
 
-<%= render 'shared/page_banner_header', title: @task_queue.name.capitalize, items: ['Database', @task_queue.name.capitalize] %>
+<%= render 'shared/page_banner_header', title: @task_queue.name.capitalize, items: ['Task Queue', @task_queue.name.capitalize] %>
 
 <div class="wrapper wrapper-content animated ">
   <div class="row">
@@ -10,10 +10,10 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-sm-12">
-            <table id="target-table-task-queues" class="target-table-task-queues data-table table" data-table-name='task-queues' data-can-export="<%= current_admin_user.export_abilities? %>">
+            <table id="target-table-task-queues" class="table hide" data-table-name='task-queues' data-can-export="<%= current_admin_user.export_abilities? %>">
               <thead>
                 <tr>
-                  <% @headers.each do |header|%>
+                  <% @headers.each do |header| %>
                     <th class='column-<%= header %>'><%= header.humanize %></th>
                   <% end %>
                 </tr>

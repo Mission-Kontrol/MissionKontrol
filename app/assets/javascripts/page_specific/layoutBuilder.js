@@ -98,7 +98,7 @@ function toggleInlineEditableField () {
 
 function getOptionsForDraggable (primaryTable) {
   $.ajax({
-    url: "/layouts/table_fields_with_type",
+    url: "/table_fields_with_type",
     type: "GET",
     data: {
       table: primaryTable,
