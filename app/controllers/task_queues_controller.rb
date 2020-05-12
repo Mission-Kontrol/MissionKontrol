@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TaskQueuesController < ApplicationController
-  include TaskQueuePreview
+  include TaskQueueRender
   include TaskQueueRecordActivity
   include TableActivity
   include DatabasePresenterActions
@@ -57,21 +57,7 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.find(params[:id])
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
-    offset = params['start']
-    limit = params['length']
-    columns = []
-    sql_result = build_query_for_preview(@task_queue, limit, offset)
-    sql_result.columns.each do |c|
-      columns << { data: c }
-    end
-
-    render json: {
-      data: sql_result.to_hash,
-      columns: columns,
-      draw: params['draw'].to_i,
-      recordsTotal: @target_db.count(@task_queue.table).rows[0][0],
-      recordsFiltered: sql_result.count(@task_queue.table)
-    }
+    render_preview_js
   end
 
   # TODO: this is duplicate of preview
@@ -88,21 +74,7 @@ class TaskQueuesController < ApplicationController
       end
 
       format.js do
-        offset = params['start']
-        limit = params['length']
-        columns = []
-        sql_result = build_query_for_preview(@task_queue, limit, offset)
-        sql_result.columns.each do |c|
-          columns << { data: c }
-        end
-
-        render json: {
-          data: sql_result.to_hash,
-          columns: columns,
-          draw: params['draw'].to_i,
-          recordsTotal: @target_db.count(@task_queue.table).rows[0][0],
-          recordsFiltered: sql_result.count(@task_queue.table)
-        }
+        render_show_js
       end
     end
   end
@@ -140,23 +112,6 @@ class TaskQueuesController < ApplicationController
   end
 
   private
-
-  # TODO: fix this
-  # rubocop:disable Metrics/AbcSize
-  def load_task_queue
-    @task_queue = TaskQueue.find(params[:id])
-    @task_queue.name = params['task_queue']['name'] if params['task_queue']['name']
-    @task_queue.details = params['task_queue']['details'] if params['task_queue']['details']
-    @task_queue.query_builder_rules = params['task_queue']['query_builder_rules'] if params['task_queue']['query_builder_rules']
-    @task_queue.query_builder_sql = params['task_queue']['query_builder_sql'] if params['task_queue']['query_builder_sql']
-    @task_queue.raw_sql = params['task_queue']['raw_sql'] if params['task_queue']['raw_sql']
-    @task_queue.draggable_fields = params['task_queue']['draggable_fields'] if params['task_queue']['draggable_fields']
-    @task_queue.success_outcome_title = params['task_queue']['success_outcome_title'] if params['task_queue']['success_outcome_title']
-    @task_queue.success_outcome_timeout = params['task_queue']['success_outcome_timeout'] if params['task_queue']['success_outcome_timeout']
-    @task_queue.failure_outcome_title = params['task_queue']['failure_outcome_title'] if params['task_queue']['failure_outcome_title']
-    @task_queue.failure_outcome_timeout = params['task_queue']['failure_outcome_timeout'] if params['task_queue']['failure_outcome_timeout']
-  end
-  # rubocop:enable Metrics/AbcSize
 
   def task_queue_params
     params.require(:task_queue).permit(:name,

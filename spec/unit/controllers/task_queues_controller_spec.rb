@@ -7,10 +7,10 @@ describe TaskQueuesController, type: :controller do
     sign_in @user
 
     allow(mock_list_available_tables).to receive(:call).and_return(available_tables)
-    allow(Kuwinda::Presenter::ListAvailableTables).to receive(:new).and_return(mock_list_available_tables)  
+    allow(Kuwinda::Presenter::ListAvailableTables).to receive(:new).and_return(mock_list_available_tables)
   end
 
-  let(:mock_list_available_tables) { double("PresenterDouble") }
+  let(:mock_list_available_tables) { double('PresenterDouble') }
   let(:available_tables) { ['users', 'events', 'attending_events'] }
   let(:table_name) { 'events' }
   let!(:task_queue) { create(:task_queue, table: table_name, database_id: @database.id) }
@@ -106,7 +106,7 @@ describe TaskQueuesController, type: :controller do
 
   describe 'GET edit' do
     subject { get :edit, params: { id: task_queue.id } }
-    let(:mock_target_db) { double("TargetDbDouble") }
+    let(:mock_target_db) { double('TargetDbDouble') }
 
     context 'when task queue has sql' do
       before do
@@ -116,7 +116,6 @@ describe TaskQueuesController, type: :controller do
       end
     end
 
-
     context 'when task queue does not have sql' do
       before do
         allow(mock_target_db).to receive(:all).and_return(1)
@@ -124,7 +123,6 @@ describe TaskQueuesController, type: :controller do
         subject
       end
     end
-
   end
 
   describe 'POST update' do
