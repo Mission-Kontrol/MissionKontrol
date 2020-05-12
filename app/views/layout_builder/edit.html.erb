@@ -4,6 +4,10 @@
   <%= javascript_include_tag 'sweetAlert/sweetalert.min.js' %>
 <% end %>
 
+<div class="hide" id="database-id">
+  <%= @database.id %>
+</div>
+
 <div class="modal fade" id="layout-builder-editable-warning-modal" tabindex="-1" role="dialog" aria-labelledby="layout-builder-editable-warning-modal">
   <div class="modal-dialog" role="document">
     <%= render partial: 'layout_builder/edit/layout_builder_editable_warning_modal_screen_1' %>

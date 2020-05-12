@@ -102,7 +102,7 @@ function getOptionsForDraggable (primaryTable) {
     type: "GET",
     data: {
       table: primaryTable,
-      id: location.pathname.substr(1).split("/")[1]
+      id: $("#database-id").text().trim()
     },
     async: true,
     dataType: "json",
