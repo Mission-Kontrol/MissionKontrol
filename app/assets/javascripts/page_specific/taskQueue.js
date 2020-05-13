@@ -45,7 +45,7 @@ function loadTaskQueuePreviewDataTable (columns) {
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table + "&database_id=" + databaseId;
 
       $(row).attr("data-href",  previewUrl);
-      $(row).attr("data-task-queue-id", location.pathname.split("/")[2])
+      $(row).attr("data-task-queue-id", location.pathname.split("/")[2]);
       $(row).addClass("task-queue-item");
       $(row).addClass("clickable-row");
       $(row).attr( "data-task-queue-item-primary-key", id);
@@ -103,7 +103,7 @@ function loadTaskQueueDataTable (columns) {
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table + "&database_id=" + databaseId;
 
       $(row).attr("data-href",  previewUrl);
-      $(row).attr("data-task-queue-id", location.pathname.split("/")[2])
+      $(row).attr("data-task-queue-id", location.pathname.split("/")[2]);
       $(row).addClass("task-queue-item");
       $(row).addClass("clickable-row");
       $(row).attr( "data-task-queue-item-primary-key", id);

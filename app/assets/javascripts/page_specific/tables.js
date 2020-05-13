@@ -322,7 +322,7 @@ function activityItem (data) {
       "<span> added a </span><strong>tag: </strong>" +
       "<span>" + data.activity.content + "</span>" +
     "</td>" +
-  "</tr>"
+  "</tr>";
 }
 
 function submitActivityForm (data) {
@@ -332,7 +332,8 @@ function submitActivityForm (data) {
     kind: "outcome",
     user_id: data.user_id,
     content: data.outcome_content
-  }
+  };
+
   $.ajax({
     url: "/activities/create_js",
     type: "POST",
@@ -347,12 +348,12 @@ function submitActivityForm (data) {
         $(".all-activities-tab").find("table > tbody > tr:last").remove();
       }
       $(".all-activities-tab").find(".activities-history--table").prepend(activityItem(JSON.parse(data)));
-      $('.all-activities-tab .default-message').remove();
+      $(".all-activities-tab .default-message").remove();
       if ($(".activity-tab-for-outcomes").find("table > tbody > tr").length === 3) {
         $(".activity-tab-for-outcomes").find("table > tbody > tr:last").remove();
       }
       $(".activity-tab-for-outcomes").find(".activities-history--table").prepend(activityItem(JSON.parse(data)));
-      $('.activity-tab-for-outcomes .default-message').remove();
+      $(".activity-tab-for-outcomes .default-message").remove();
       window.toastr.success("Task queue outcome updated.");
     }
   });
@@ -372,7 +373,7 @@ function applyOutcomeRule () {
       table,
       primary_key: primaryKey,
       task_queue_id: taskQueueId
-    }
+  };
 
     $.ajax({
       url,
