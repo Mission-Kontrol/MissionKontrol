@@ -54,7 +54,7 @@ function loadTaskQueueDataTable (columns) {
     table.destroy();
   }
 
-  var taskQueueTable = $("#target-table-task-queues").DataTable({
+  $("#target-table-task-queues").DataTable({
     colReorder: false,
     deferRender: true,
     autoWidth: false,

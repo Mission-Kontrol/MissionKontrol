@@ -128,7 +128,6 @@ class TaskQueuesController < ApplicationController
                   :query_builder_rules,
                   :query_builder_sql,
                   :raw_sql,
-                  :draggable_fields,
                   :success_outcome_title,
                   :success_outcome_timeout,
                   :failure_outcome_title,
