@@ -134,13 +134,27 @@
   }
 
   @-webkit-keyframes animate-right {
-    from { right: -300px; opacity: 0; }
-    to { right: 0; opacity: 1; }
+    from {
+      right: -300px;
+      opacity: 0;
+    }
+
+    to {
+      right: 0;
+      opacity: 1;
+    }
   }
 
   @keyframes animate-right {
-    from { right: -300px; opacity: 0; }
-    to { right: 0; opacity: 1; }
+    from {
+      right: -300px;
+      opacity: 0;
+    }
+
+    to {
+      right: 0;
+      opacity: 1;
+    }
   }
 }
 

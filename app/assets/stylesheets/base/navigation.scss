@@ -563,6 +563,7 @@ body.canvas-menu.mini-navbar .navbar-default .nav > li > .nav-second-level li a 
 .fixed-sidebar.mini-navbar .nav-second-level li a,
 .canvas-menu.mini-navbar .nav-second-level li a {
   padding: 10px 10px 10px 15px;
+  // padding: 7px 10px 7px 52px;
 }
 
 .fixed-sidebar.mini-navbar .nav-second-level,
@@ -570,6 +571,7 @@ body.canvas-menu.mini-navbar .navbar-default .nav > li > .nav-second-level li a 
   position: relative;
   padding: 0;
   font-size: 13px;
+  left: 0;
 }
 
 .fixed-sidebar.mini-navbar li.active .nav-second-level,
@@ -591,16 +593,6 @@ body.canvas-menu.mini-navbar .navbar-default .nav li a span {
 
 body.canvas-menu.mini-navbar .navbar-default .nav li .profile-element a span {
   display: block;
-}
-
-.canvas-menu.mini-navbar .nav-second-level li a,
-.fixed-sidebar.mini-navbar .nav-second-level li a {
-  padding: 7px 10px 7px 52px;
-}
-
-.fixed-sidebar.mini-navbar .nav-second-level,
-.canvas-menu.mini-navbar .nav-second-level {
-  left: 0;
 }
 
 body.canvas-menu nav.navbar-static-side {

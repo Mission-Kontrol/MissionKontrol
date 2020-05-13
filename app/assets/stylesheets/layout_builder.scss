@@ -100,6 +100,10 @@
   p {
     margin-top: 10px;
   }
+
+  .fa.fa-times {
+    font-size: 25px;
+  }
 }
 
 .layout-builder-side-nav {
@@ -141,12 +145,6 @@
 .draggable-container--over {
   p > span {
     display: none;
-  }
-}
-
-#layout-builder-draggable-trash-container {
-  .fa.fa-times {
-    font-size: 25px;
   }
 }
 

@@ -11,15 +11,12 @@
     position: fixed;
     overflow-y: scroll;
     height: 100vh;
+    scrollbar-width: thin;
+    scrollbar-color: $blueberry $nav-dark;
   }
 
   .navbar-static-side::-webkit-scrollbar {
     width: 11px;
-  }
-
-  .navbar-static-side {
-    scrollbar-width: thin;
-    scrollbar-color: $blueberry $nav-dark;
   }
 
   .navbar-static-side::-webkit-scrollbar-track {
