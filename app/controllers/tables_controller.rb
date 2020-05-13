@@ -41,6 +41,7 @@ class TablesController < ApplicationController
   end
 
   def preview
+    @task_queue = TaskQueue.find(params[:task_queue_id]) if params[:task_queue_id]
     respond_to do |format|
       format.html do
         render_preview_html

@@ -40,7 +40,14 @@ function loadTaskQueuePreviewDataTable (columns) {
     ],
     createdRow(row, data) {
       let id = data.id;
+      let table = $(this).data("table-name");
+      let databaseId = $(this).data("database-id");
+      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table + "&database_id=" + databaseId;
+
+      $(row).attr("data-href",  previewUrl);
+      $(row).attr("data-task-queue-id", location.pathname.split("/")[2])
       $(row).addClass("task-queue-item");
+      $(row).addClass("clickable-row");
       $(row).attr( "data-task-queue-item-primary-key", id);
     }
   });
@@ -91,7 +98,14 @@ function loadTaskQueueDataTable (columns) {
     ],
     createdRow(row, data) {
       let id = data.id;
+      let table = $(this).data("table-name");
+      let databaseId = $(this).data("database-id");
+      let previewUrl = "/tables/" + table + "/" + id + "?table=" + table + "&database_id=" + databaseId;
+
+      $(row).attr("data-href",  previewUrl);
+      $(row).attr("data-task-queue-id", location.pathname.split("/")[2])
       $(row).addClass("task-queue-item");
+      $(row).addClass("clickable-row");
       $(row).attr( "data-task-queue-item-primary-key", id);
     }
   });
@@ -241,6 +255,16 @@ function loadResults () {
   });
 }
 
+function linkToSingleDataView () {
+  $("body").on("click", ".clickable-row", function () {
+    let previewLocation = $(this).data("href");
+    let taskQueueId = $(this).data("task-queue-id");
+    let taskQueueParams = "&task_queue_id=" + taskQueueId;
+
+    window.location.href = previewLocation + taskQueueParams;
+  });
+}
+
 Paloma.controller("TaskQueues", {
   new () {
     $("#task-queue-modal").modal({
@@ -256,6 +280,7 @@ Paloma.controller("TaskQueues", {
     $(".task-queue-update-button").click(function() {
       loadResults();
     });
+    linkToSingleDataView();
   },
 
   show () {
@@ -269,5 +294,6 @@ Paloma.controller("TaskQueues", {
         toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
       }
     });
+    linkToSingleDataView();
   }
 });

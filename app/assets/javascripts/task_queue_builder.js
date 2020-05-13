@@ -416,17 +416,17 @@ loadEditPage = function () {
     //   });
     // });
 
-    $(document).on('click','.task-queue-item', function() {
-      let taskQueueTable = $(this).parent().parent().data().tableName;
-      let taskQueueItemPrimaryKey = $(this).data().taskQueueItemPrimaryKey;
-      let taskQueueId = $('#task-queue-item-modal').data().taskQueueId;
+    // $(document).on('click','.task-queue-item', function() {
+    //   let taskQueueTable = $(this).parent().parent().data().tableName;
+    //   let taskQueueItemPrimaryKey = $(this).data().taskQueueItemPrimaryKey;
+    //   let taskQueueId = $('#task-queue-item-modal').data().taskQueueId;
 
-      $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
-      $('#task-queue-item-modal').data('taskQueueItemPrimaryKey', taskQueueItemPrimaryKey);
-      $('#task-queue-item-modal').modal({});
+    //   $('#task-queue-item-modal').data('taskQueueTable', taskQueueTable);
+    //   $('#task-queue-item-modal').data('taskQueueItemPrimaryKey', taskQueueItemPrimaryKey);
+    //   $('#task-queue-item-modal').modal({});
 
-      getTaskQueueItem(taskQueueId, taskQueueItemPrimaryKey)
-    })
+    //   getTaskQueueItem(taskQueueId, taskQueueItemPrimaryKey)
+    // })
 
     $("#task-queue-record-activity-form").submit( function() {
       let taskQueueItemPrimaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
@@ -436,7 +436,7 @@ loadEditPage = function () {
 
     // getOptionsForDraggable("users");
 
-    initializeDraggable();
+    // initializeDraggable();
   }
 }
 

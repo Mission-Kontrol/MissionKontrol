@@ -10,7 +10,11 @@
 
       <ol class="breadcrumb">
         <li class="">
-          <span>Data views</span>
+          <% if @task_queue %>
+            <span><%= @task_queue.name %></span>
+          <% else %>
+            <span>Data views</span>
+          <% end %>
         </li>
 
         <li class="">
@@ -21,9 +25,9 @@
 
     <div class="col-sm-2 align-self-center">
       <div class="text-right">
-        <% if @layout_builder %>
+        <% if @layout_builder && !@task_queue %>
           <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-default" }) %>
-        <% else %>
+        <% elsif @layout_builder %>
           <%= link_to('New layout', new_layout_path(table: @current_table), html_options = { class: "btn btn-default" }) %>
         <% end %>
       </div>
