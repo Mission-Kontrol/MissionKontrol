@@ -62,6 +62,7 @@ Rails.application.routes.draw do
 
   # resources :view_builder
   resources :activities, only: %i[create index]
+  post 'activities/create_js', to: 'activities#create_js'
 
   resources :organisation_settings, only: %i[edit update]
   resources :admin_users, only: %i[new]

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Activity < ApplicationRecord
-  KINDS = %w[note call].freeze
+  KINDS = %w[note call meeting outcome].freeze
   ## TODO: Figure out the feedable_types based on database?
   # FEEDABLE_TYPES = Kuwinda::Presenter::ListAvailableTables.new(@database_connection).call
 

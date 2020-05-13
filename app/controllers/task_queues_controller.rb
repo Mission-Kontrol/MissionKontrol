@@ -89,6 +89,12 @@ class TaskQueuesController < ApplicationController
                                 task_queue.failure_outcome_timeout
                               end
 
+    task_queue_item_title = if params['outcome'] == 'success'
+                              task_queue.success_outcome_title
+                            else
+                              task_queue.failure_outcome_title
+                            end
+
     outcome = TaskQueueOutcome.create(
       outcome: outcome_params['outcome'],
       task_queue_id: outcome_params['task_queue_id'],
@@ -97,6 +103,8 @@ class TaskQueuesController < ApplicationController
       task_queue_item_reappear_at: Time.now + task_queue_item_timeout.to_i.days
     )
     outcome.save!
+
+    render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: task_queue_item_title }
   end
 
   def record

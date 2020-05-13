@@ -312,6 +312,52 @@ function linkToPreview () {
   });
 }
 
+function activityItem (data) {
+  return "<tr>" +
+    "<td>" +
+      data.created_at +
+    "</td>" +
+    "<td>" +
+      "<strong>" + data.user_name + "</strong>" +
+      "<span> added a </span><strong>tag: </strong>" +
+      "<span>" + data.activity.content + "</span>" +
+    "</td>" +
+  "</tr>"
+}
+
+function submitActivityForm (data) {
+  let formData = {
+    feedable_type: data.outcome.task_queue_item_table,
+    feedable_id: parseInt(data.outcome.task_queue_item_primary_key),
+    kind: "outcome",
+    user_id: data.user_id,
+    content: data.outcome_content
+  }
+  $.ajax({
+    url: "/activities/create_js",
+    type: "POST",
+    data: formData,
+    async: true,
+    dataType: "script",
+    error () {
+      window.toastr.error("Something went wrong, please try again.");
+    },
+    success (data) {
+      if ($(".all-activities-tab").find("table > tbody > tr").length === 3) {
+        $(".all-activities-tab").find("table > tbody > tr:last").remove();
+      }
+      $(".all-activities-tab").find(".activities-history--table").prepend(activityItem(JSON.parse(data)));
+      $('.all-activities-tab .default-message').remove();
+      if ($(".activity-tab-for-outcomes").find("table > tbody > tr").length === 3) {
+        $(".activity-tab-for-outcomes").find("table > tbody > tr:last").remove();
+      }
+      $(".activity-tab-for-outcomes").find(".activities-history--table").prepend(activityItem(JSON.parse(data)));
+      $('.activity-tab-for-outcomes .default-message').remove();
+      window.toastr.success("Task queue outcome updated.");
+    }
+  });
+}
+
 function applyOutcomeRule () {
   $(".task-queue--outcome-button").click(function (event) {
     event.preventDefault();
@@ -337,10 +383,10 @@ function applyOutcomeRule () {
       error () {
                 window.toastr.error("Something went wrong, please try again.");
              },
-      success () {
-        window.toastr.success("Task queue outcome updated.");
+      success (data) {
+        submitActivityForm(data);
         $(".task-queue--outcome-buttons").addClass("hide");
-        // TODO: Add a comment to activity history marking outcome
+        window.toastr.success("Task queue outcome updated.");
       }
     });
   });

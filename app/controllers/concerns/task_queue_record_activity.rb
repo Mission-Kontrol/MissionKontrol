@@ -23,6 +23,7 @@ module TaskQueueRecordActivity
     select_call_activities
     select_note_activities
     select_meeting_activities
+    select_outcome_activities
   end
 
   def select_all_activities
@@ -44,6 +45,12 @@ module TaskQueueRecordActivity
   def select_note_activities
     @activities.notes = @activities_for_task_queue_record.select do |i|
       i.kind == 'note'
+    end
+  end
+
+  def select_outcome_activities
+    @activities_for_task_queue_record.select do |i|
+      i.kind == 'outcome'
     end
   end
 end
