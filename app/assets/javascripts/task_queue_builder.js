@@ -312,32 +312,32 @@ getTaskQueueItem = function (taskQueueId, taskQueueItemPrimaryKey) {
   });
 }
 
-applyOutcomeRule = function (outcome) {
-  let table = $('#task-queue-item-modal').data('taskQueueTable');
-  let primaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
-  let taskQueueId = $('#task-queue-item-modal').data('taskQueueId');
-  let url = "/task_queues/" + taskQueueId + "/outcome";
-  let data = {};
+// applyOutcomeRule = function (outcome) {
+//   // let table = $('#task-queue-item-modal').data('taskQueueTable');
+//   // let primaryKey = $('#task-queue-item-modal').data('taskQueueItemPrimaryKey');
+//   // let taskQueueId = $('#task-queue-item-modal').data('taskQueueId');
+//   // let url = "/task_queues/" + taskQueueId + "/outcome";
+//   // let data = {};
 
-  data['outcome'] = outcome;
-  data['table'] = table;
-  data['primary_key'] = primaryKey;
-  data['task_queue_id'] = taskQueueId;
+//   // data['outcome'] = outcome;
+//   // data['table'] = table;
+//   // data['primary_key'] = primaryKey;
+//   // data['task_queue_id'] = taskQueueId;
 
-  $.ajax({
-    url,
-    type: "POST",
-    data,
-    async: true,
-    dataType: "json",
-    error(XMLHttpRequest, errorTextStatus, error){
-              window.toastr.error("Something went wrong, please try again.");
-           },
-    success(data){
-      window.toastr.success("Task queue outcome updated.");
-    }
-  });
-}
+//   // $.ajax({
+//   //   url,
+//   //   type: "POST",
+//   //   data,
+//   //   async: true,
+//   //   dataType: "json",
+//   //   error(XMLHttpRequest, errorTextStatus, error){
+//   //             window.toastr.error("Something went wrong, please try again.");
+//   //          },
+//   //   success(data){
+//   //     window.toastr.success("Task queue outcome updated.");
+//   //   }
+//   // });
+// }
 
 loadIndexPage = function () {
   if (isCurrentControllerTaskQueues) {

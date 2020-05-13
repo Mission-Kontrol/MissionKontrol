@@ -19,11 +19,11 @@
   <% if @task_queue %>
     <div class="task-queue--outcome-buttons">
       <% if @task_queue.success_outcome_title.present? && @task_queue.success_outcome_timeout.present? %>
-        <a href="#" onclick="applyOutcomeRule('success')" class="btn btn-primary"><%= @task_queue.success_outcome_title %></a>
+        <a href="" class="btn btn-primary task-queue--outcome-button" data-outcome="success" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.success_outcome_title %></a>
       <% end %>
 
       <% if @task_queue.failure_outcome_title.present? && @task_queue.failure_outcome_timeout.present? %>
-        <a href="#" onclick="applyOutcomeRule('failure')" class="btn btn-danger"><%= @task_queue.failure_outcome_title %></a>
+        <a href="" class="btn btn-danger task-queue--outcome-button" data-outcome="failure" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.failure_outcome_title %></a>
       <% end %>
     </div>
   <% end %>

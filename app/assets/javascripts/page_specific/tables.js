@@ -312,6 +312,40 @@ function linkToPreview () {
   });
 }
 
+function applyOutcomeRule () {
+  $(".task-queue--outcome-button").click(function (event) {
+    event.preventDefault();
+    let table = location.pathname.substr(1).split("/")[1];
+    let primaryKey = location.pathname.substr(1).split("/")[2].split("?")[0];
+    let outcome = $(this).data("outcome");
+    let taskQueueId = $(this).data("task-queue-id");
+    let url = "/task_queues/" + taskQueueId + "/outcome";
+
+    let data = {
+      outcome,
+      table,
+      primary_key: primaryKey,
+      task_queue_id: taskQueueId
+    }
+
+    $.ajax({
+      url,
+      type: "POST",
+      data,
+      async: true,
+      dataType: "json",
+      error () {
+                window.toastr.error("Something went wrong, please try again.");
+             },
+      success () {
+        window.toastr.success("Task queue outcome updated.");
+        $(".task-queue--outcome-buttons").addClass("hide");
+        // TODO: Add a comment to activity history marking outcome
+      }
+    });
+  });
+}
+
 Paloma.controller("Tables", {
   show () {
     fetchDataForTable();
@@ -323,6 +357,7 @@ Paloma.controller("Tables", {
   preview () {
     fetchDataForRelatedTables();
     updateEditableFieldInput();
+    applyOutcomeRule();
     rotateNestedTableIcon();
   }
 });

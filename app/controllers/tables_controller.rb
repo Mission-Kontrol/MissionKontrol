@@ -42,6 +42,16 @@ class TablesController < ApplicationController
 
   def preview
     @task_queue = TaskQueue.find(params[:task_queue_id]) if params[:task_queue_id]
+    existing_outcomes = TaskQueueOutcome.select do |outcome|
+      outcome.task_queue_id == @task_queue.id &&
+      outcome.task_queue_item_primary_key == params[:record_id] &&
+      outcome.task_queue_item_reappear_at >= Date.today
+    end if @task_queue
+
+    if existing_outcomes && existing_outcomes.any?
+      @task_queue = nil
+    end
+
     respond_to do |format|
       format.html do
         render_preview_html
