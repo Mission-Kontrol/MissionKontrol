@@ -48,8 +48,11 @@ module TaskQueueRender
       columns << { data: c }
     end
 
+    outcome_records = @task_queue.task_queue_outcomes.map(&:task_queue_item_primary_key)
+    display_data = sql_result.to_hash.reject { |row| outcome_records.include? row["id"].to_s }
+
     render json: {
-      data: sql_result.to_hash,
+      data: display_data,
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: @target_db.count(@task_queue.table).rows[0][0],
@@ -66,8 +69,11 @@ module TaskQueueRender
       columns << { data: c }
     end
 
+    outcome_records = @task_queue.task_queue_outcomes.map(&:task_queue_item_primary_key)
+    display_data = sql_result.to_hash.reject { |row| outcome_records.include? row["id"].to_s }
+
     render json: {
-      data: sql_result.to_hash,
+      data: display_data,
       columns: columns,
       draw: params['draw'].to_i,
       recordsTotal: @target_db.count(@task_queue.table).rows[0][0],
