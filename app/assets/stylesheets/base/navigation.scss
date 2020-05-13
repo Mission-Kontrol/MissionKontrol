@@ -19,19 +19,23 @@
 }
 
 .nav > li.active > a {
-  color: #ffffff;
+  color: #fff;
 }
 
-.navbar-default .nav > li > a:hover, .navbar-default .nav > li > a:focus {
+.navbar-default .nav > li > a:hover,
+.navbar-default .nav > li > a:focus {
   background-color: darken($nav-bg, 3%);
   color: white;
 }
 
-.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
   background: #fff;
 }
 
-.nav.navbar-top-links > li > a:hover, .nav.navbar-top-links > li > a:focus {
+.nav.navbar-top-links > li > a:hover,
+.nav.navbar-top-links > li > a:focus {
   background-color: transparent;
 }
 
@@ -155,15 +159,18 @@
   left: auto;
 }
 
-.dropdown-messages, .dropdown-alerts {
+.dropdown-messages,
+.dropdown-alerts {
   padding: 10px 10px 10px 10px;
 }
 
-.dropdown-messages li a, .dropdown-alerts li a {
+.dropdown-messages li a,
+.dropdown-alerts li a {
   font-size: 12px;
 }
 
-.dropdown-messages li em, .dropdown-alerts li em {
+.dropdown-messages li em,
+.dropdown-alerts li em {
   font-size: 10px;
 }
 
@@ -207,7 +214,7 @@ ul.nav-second-level {
 }
 
 .nav-header a {
-  color: #DFE4ED;
+  color: #dfe4ed;
 }
 
 .nav-header .text-muted {
@@ -258,11 +265,11 @@ ul.nav-second-level {
   float: right;
 }
 
-.fa.arrow:before {
+.fa.arrow::before {
   content: "\f104";
 }
 
-.active > a > .fa.arrow:before {
+.active > a > .fa.arrow::before {
   content: "\f107";
 }
 
@@ -323,7 +330,7 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 }
 
 .mini-navbar li.active .nav-second-level {
-  left: 65px
+  left: 65px;
 }
 
 .navbar-default .special_link a {
@@ -370,7 +377,11 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   margin-bottom: -15px;
 }
 
-.pace-done .navbar-static-side, .pace-done .nav-header, .pace-done li.active, .pace-done #page-wrapper, .pace-done .footer {
+.pace-done .navbar-static-side,
+.pace-done .nav-header,
+.pace-done li.active,
+.pace-done #page-wrapper,
+.pace-done .footer {
   -webkit-transition: all 0.4s;
   -moz-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -384,7 +395,8 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   z-index: 2030;
 }
 
-.navbar-fixed-top, .navbar-static-top {
+.navbar-fixed-top,
+.navbar-static-top {
   background: $gray;
 }
 
@@ -392,18 +404,20 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   margin-top: 0;
 }
 
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
   -moz-border-bottom-colors: none;
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
   background: none;
-  border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
+  border-color: #ddd #ddd rgba(0, 0, 0, 0);
   border-bottom: $gray;
   border-image: none;
   border-style: solid;
   border-width: 1px;
-  color: #555555;
+  color: #555;
   cursor: default;
 }
 
@@ -457,7 +471,9 @@ body.mini-navbar .navbar-static-side {
   width: 70px;
 }
 
-body.mini-navbar .profile-element, body.mini-navbar .nav-label, body.mini-navbar .navbar-default .nav li a span {
+body.mini-navbar .profile-element,
+body.mini-navbar .nav-label,
+body.mini-navbar .navbar-default .nav li a span {
   display: none;
 }
 
@@ -547,6 +563,7 @@ body.canvas-menu.mini-navbar .navbar-default .nav > li > .nav-second-level li a 
 .fixed-sidebar.mini-navbar .nav-second-level li a,
 .canvas-menu.mini-navbar .nav-second-level li a {
   padding: 10px 10px 10px 15px;
+  // padding: 7px 10px 7px 52px;
 }
 
 .fixed-sidebar.mini-navbar .nav-second-level,
@@ -554,11 +571,12 @@ body.canvas-menu.mini-navbar .navbar-default .nav > li > .nav-second-level li a 
   position: relative;
   padding: 0;
   font-size: 13px;
+  left: 0;
 }
 
 .fixed-sidebar.mini-navbar li.active .nav-second-level,
 .canvas-menu.mini-navbar li.active .nav-second-level {
-  left: 0
+  left: 0;
 }
 
 body.fixed-sidebar.mini-navbar .navbar-default .nav > li > a,
@@ -575,16 +593,6 @@ body.canvas-menu.mini-navbar .navbar-default .nav li a span {
 
 body.canvas-menu.mini-navbar .navbar-default .nav li .profile-element a span {
   display: block;
-}
-
-.canvas-menu.mini-navbar .nav-second-level li a,
-.fixed-sidebar.mini-navbar .nav-second-level li a {
-  padding: 7px 10px 7px 52px
-}
-
-.fixed-sidebar.mini-navbar .nav-second-level,
-.canvas-menu.mini-navbar .nav-second-level {
-  left: 0
 }
 
 body.canvas-menu nav.navbar-static-side {
@@ -611,7 +619,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 .side-nav {
   position: fixed;
   width: 351px;
-  height:100vh;
+  height: 100vh;
   overflow: scroll;
 }
 

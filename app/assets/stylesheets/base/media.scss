@@ -11,18 +11,18 @@
     position: fixed;
     overflow-y: scroll;
     height: 100vh;
+    scrollbar-width: thin;
+    scrollbar-color: $blueberry $nav-dark;
   }
 
   .navbar-static-side::-webkit-scrollbar {
     width: 11px;
   }
-  .navbar-static-side {
-    scrollbar-width: thin;
-    scrollbar-color: $blueberry $nav-dark;
-  }
+
   .navbar-static-side::-webkit-scrollbar-track {
     background: $nav-dark;
   }
+
   .navbar-static-side::-webkit-scrollbar-thumb {
     background-color: $blueberry;
     border-radius: 6px;
@@ -37,7 +37,6 @@
 }
 
 @media (max-width: 768px) {
-
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 0;
@@ -105,13 +104,11 @@
     -o-transition: background-color 500ms linear;
     -ms-transition: background-color 500ms linear;
     transition: background-color 500ms linear;
-    background-color: #f3f3f4
+    background-color: #f3f3f4;
   }
-
 }
 
 @media (max-width: 350px) {
-
   .timeline-item .date {
     text-align: left;
     width: 110px;

@@ -63,6 +63,7 @@
       background-color: $gray;
       color: $blueberry;
       height: 37px;
+
       @extend .bold;
 
       th {
@@ -95,6 +96,7 @@
       background-color: $background-gray;
       height: 37px;
       color: $dark-grey;
+
       @extend .medium;
 
       th {
@@ -109,6 +111,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
     tr > td:first-child {
       color: $purple;
     }
@@ -124,6 +127,7 @@
     tr {
       color: $blueberry;
       height: 37px;
+
       @extend .bold;
 
       th:last-child {
@@ -138,6 +142,7 @@
 
     tr > td:first-child {
       color: $blueberry;
+
       @extend .medium;
     }
   }
@@ -174,7 +179,7 @@ div.dataTables_wrapper div.dataTables_filter label {
     height: 30px;
     border-radius: 2px;
     box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
-    background-color: #ffffff;
+    background-color: #fff;
     background-position-x: left;
     background-position-y: center;
     background-repeat: no-repeat;
@@ -200,6 +205,7 @@ div.dataTables_wrapper div.dataTables_filter label {
     border: none;
     background-color: inherit;
     color: $blueberry;
+
     @extend .medium;
     @extend h5;
   }
@@ -215,6 +221,7 @@ div.dataTables_wrapper div.dataTables_filter label {
     display: inline;
     line-height: 36px;
     vertical-align: top;
+
     @extend h5;
 
     &#target-table-admin-users_info {
@@ -283,7 +290,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
   font-size: 24px;
   color: #726d73;
   padding-top: 10px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .header-container2-content {
@@ -310,7 +317,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
 
   a {
     text-decoration: none;
-    color: #726d73
+    color: #726d73;
   }
 }
 
@@ -318,6 +325,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
   padding-left: 30px;
   padding-bottom: 12px;
 }
+
 .twilio_dialer_buttons {
   padding-top: 15px;
   text-align: right;
@@ -329,7 +337,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
 
     select {
       float: right;
-      border-radius: 0px;
+      border-radius: 0;
       border: none;
       border-bottom: solid 0.5px #979797;
       width: 150px;
@@ -343,10 +351,13 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
     .table--settings-select,
     .table--settings-nested-select {
       -webkit-appearance: none;
+
       /* for webkit browsers */
       -moz-appearance: none;
+
       /* for firefox */
       appearance: none;
+
       /* for modern browsers */
     }
 
@@ -361,7 +372,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
     #team:focus:invalid,
     .table--settings-select::-ms-expand,
     .table--settings-nested-select:focus:invalid {
-      border-color: #FD6347;
+      border-color: #fd6347;
     }
 
     #dropdown:required:valid,
@@ -399,7 +410,7 @@ div.dataTables_wrapper div.dt-buttons .buttons-csv {
 }
 
 img.rotate {
-  -webkit-transform:rotate(270deg);
+  -webkit-transform: rotate(270deg);
   -moz-transform: rotate(270deg);
   -ms-transform: rotate(270deg);
   -o-transform: rotate(270deg);

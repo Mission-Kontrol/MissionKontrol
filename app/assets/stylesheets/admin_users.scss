@@ -12,13 +12,15 @@
   padding-top: 10%;
 }
 
-.users-teams--header, .users-status--header {
+.users-teams--header,
+.users-status--header {
   h5 {
     display: inline;
   }
 }
 
-.users-teams--table, .users-status--table {
+.users-teams--table,
+.users-status--table {
   table {
     width: 100%;
 
@@ -31,10 +33,13 @@
     }
   }
 
-  .users-teams--table-data, .users-status--table-data {
+  .users-teams--table-data,
+  .users-status--table-data {
     color: $blueberry;
+
     @extend h4;
     @extend .medium;
+
     cursor: pointer;
   }
 
@@ -56,27 +61,34 @@
       padding-bottom: 3px;
       background: url(/assets/images/icons/triangle.svg) no-repeat;
       background-position: 85px 8px;
-      border-radius: 0px;
+      border-radius: 0;
     }
 
-    #dropdown, #team {
+    #dropdown,
+    #team {
       -webkit-appearance: none;
+
       /* for webkit browsers */
       -moz-appearance: none;
+
       /* for firefox */
       appearance: none;
+
       /* for modern browsers */
     }
 
-    #dropdown::-ms-expand, #team::-ms-expand {
+    #dropdown::-ms-expand,
+    #team::-ms-expand {
       display: none;
     }
 
-    #dropdown:focus:invalid, #team:focus:invalid {
-      border-color: #FD6347;
+    #dropdown:focus:invalid,
+    #team:focus:invalid {
+      border-color: #fd6347;
     }
 
-    #dropdown:required:valid, #team:required:valid {
+    #dropdown:required:valid,
+    #team:required:valid {
       border-color: #006400;
     }
   }

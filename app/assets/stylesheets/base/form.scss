@@ -45,12 +45,15 @@ input {
     background: url(/assets/images/icons/triangle.svg) no-repeat;
     background-position: 96% 50%;
     cursor: pointer;
-    border-radius: 0px;
+    border-radius: 0;
     -webkit-appearance: none;
+
     /* for webkit browsers */
     -moz-appearance: none;
+
     /* for firefox */
     appearance: none;
+
     /* for modern browsers */
   }
 
