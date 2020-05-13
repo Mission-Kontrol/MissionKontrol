@@ -16,6 +16,18 @@
 </div>
 
 <div class="row">
+  <% if @task_queue %>
+    <div class="task-queue--outcome-buttons">
+      <% if @task_queue.success_outcome_title.present? && @task_queue.success_outcome_timeout.present? %>
+        <a href="#" onclick="applyOutcomeRule('success')" class="btn btn-primary"><%= @task_queue.success_outcome_title %></a>
+      <% end %>
+
+      <% if @task_queue.failure_outcome_title.present? && @task_queue.failure_outcome_timeout.present? %>
+        <a href="#" onclick="applyOutcomeRule('failure')" class="btn btn-danger"><%= @task_queue.failure_outcome_title %></a>
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="col-sm-12 light-grey-bg">
     <div class="tabs-container">
       <div class="tab-content">

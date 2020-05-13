@@ -130,3 +130,11 @@
   min-height: 25px;
   border: 2px dashed #eaeaea;
 }
+
+.task-queue--outcome-buttons {
+  display: flex;
+
+  a {
+    margin: 10px auto;
+  }
+}
