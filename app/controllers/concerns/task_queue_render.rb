@@ -75,20 +75,10 @@ module TaskQueueRender
     }
   end
 
-  # TODO: fix this
-  # rubocop:disable Metrics/AbcSize
   def load_task_queue
     @task_queue = TaskQueue.find(params[:id])
-    @task_queue.name = params['task_queue']['name'] if params['task_queue']['name']
-    @task_queue.details = params['task_queue']['details'] if params['task_queue']['details']
-    @task_queue.query_builder_rules = params['task_queue']['query_builder_rules'] if params['task_queue']['query_builder_rules']
-    @task_queue.query_builder_sql = params['task_queue']['query_builder_sql'] if params['task_queue']['query_builder_sql']
-    @task_queue.raw_sql = params['task_queue']['raw_sql'] if params['task_queue']['raw_sql']
-    @task_queue.draggable_fields = params['task_queue']['draggable_fields'] if params['task_queue']['draggable_fields']
-    @task_queue.success_outcome_title = params['task_queue']['success_outcome_title'] if params['task_queue']['success_outcome_title']
-    @task_queue.success_outcome_timeout = params['task_queue']['success_outcome_timeout'] if params['task_queue']['success_outcome_timeout']
-    @task_queue.failure_outcome_title = params['task_queue']['failure_outcome_title'] if params['task_queue']['failure_outcome_title']
-    @task_queue.failure_outcome_timeout = params['task_queue']['failure_outcome_timeout'] if params['task_queue']['failure_outcome_timeout']
+    attributes_to_update = task_queue_update_params.reject{|_, v| v.blank?}
+    @task_queue.update_attributes(attributes_to_update)
   end
-  # rubocop:enable Metrics/AbcSize
+
 end

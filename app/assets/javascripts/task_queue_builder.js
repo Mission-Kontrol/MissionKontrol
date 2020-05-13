@@ -16,7 +16,7 @@
 // let updateTaskQueueDraggableFields;
 // let updateTaskQueueItemFeed;
 // let addToTaskQueueActivityStream;
-// let applyOutcomeRule;
+let applyOutcomeRule;
 // let loadIndexPage;
 // let loadEditPage;
 

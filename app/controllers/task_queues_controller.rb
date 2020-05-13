@@ -28,7 +28,8 @@ class TaskQueuesController < ApplicationController
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
     @target_db = target_db
-    result = @task_queue.to_sql.blank? ? @target_db.all(@task_queue.table, 10, 0) : @target_db.query(@task_queue.to_sql, 10, 0)
+    result = @target_db.all(@task_queue.table, 10, 0)
+    # result = @task_queue.to_sql.blank? ? @target_db.all(@task_queue.table, 10, 0) : @target_db.query(@task_queue.to_sql, 10, 0)
     @task_queue_headers = result.columns
   end
 
@@ -88,12 +89,13 @@ class TaskQueuesController < ApplicationController
                                 task_queue.failure_outcome_timeout
                               end
 
-    outcome = TaskQueueOutcome.new
-    outcome.outcome = params['outcome']
-    outcome.task_queue_id = params['task_queue_id']
-    outcome.task_queue_item_table = params['table']
-    outcome.task_queue_item_primary_key = params['primary_key']
-    outcome.task_queue_item_reappear_at = Time.now + task_queue_item_timeout.to_i.days
+    outcome = TaskQueueOutcome.create(
+      outcome: outcome_params['outcome'],
+      task_queue_id: outcome_params['task_queue_id'],
+      task_queue_item_table: outcome_params['table'],
+      task_queue_item_primary_key: outcome_params['primary_key'],
+      task_queue_item_reappear_at: Time.now + task_queue_item_timeout.to_i.days
+    )
     outcome.save!
   end
 
@@ -118,6 +120,23 @@ class TaskQueuesController < ApplicationController
                                        :details,
                                        :table,
                                        :database_id)
+  end
+
+  def task_queue_update_params
+    params.permit(:name,
+                  :details,
+                  :query_builder_rules,
+                  :query_builder_sql,
+                  :raw_sql,
+                  :draggable_fields,
+                  :success_outcome_title,
+                  :success_outcome_timeout,
+                  :failure_outcome_title,
+                  :failure_outcome_timeout)
+  end
+
+  def outcome_params
+    params.permit(:outcome, :task_queue_id, :table, :primary_key)
   end
 
   def handle_success(action:, js_func:, notice:)

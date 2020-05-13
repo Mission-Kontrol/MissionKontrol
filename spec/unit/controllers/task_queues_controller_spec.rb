@@ -108,33 +108,44 @@ describe TaskQueuesController, type: :controller do
     subject { get :edit, params: { id: task_queue.id } }
     let(:mock_target_db) { double('TargetDbDouble') }
 
-    context 'when task queue has sql' do
-      before do
-        allow(mock_target_db).to receive(:query).and_return(1)
-        allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
-        subject
-      end
-    end
-
-    context 'when task queue does not have sql' do
-      before do
-        allow(mock_target_db).to receive(:all).and_return(1)
-        allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
-        subject
-      end
+    before do
+      allow(mock_target_db).to receive(:query).and_return(1)
+      allow(Kuwinda::Repository::TargetDB).to receive(:new).and_return(mock_target_db)
+      subject
     end
   end
 
   describe 'POST update' do
+    subject { patch :update, params: params }
+
+    let!(:task_queue) { create(:task_queue) }
+    let(:params) do
+      {
+        id: task_queue.id,
+        name: '',
+        details: 'Task queue details updated',
+        query_builder_rules: 'Query rules updated',
+        query_builder_sql: 'Query SQL updated',
+        raw_sql: 'Raw SQL updated',
+        success_outcome_title: 'Success title updated',
+        success_outcome_timeout: 7,
+        failure_outcome_title: 'Failute title updated',
+        failure_outcome_timeout: 1
+      }
+    end
+
+    it 'updates the task queue attributes' do
+      subject
+      task_queue.reload
+      expect(task_queue.details).to eq 'Task queue details updated'
+    end
   end
 
   describe 'GET preview' do
   end
 
-  describe 'GET table_fields_with_type' do
-  end
-
   describe 'POST outcome' do
+    
   end
 
   describe 'GET record' do
