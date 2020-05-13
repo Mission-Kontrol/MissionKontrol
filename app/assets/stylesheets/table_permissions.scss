@@ -4,6 +4,7 @@
       background-color: $gray;
       color: $purple;
       height: 37px;
+
       th {
         padding-left: 40px;
         vertical-align: middle;
@@ -27,11 +28,12 @@
   }
 
   tbody {
-    background: rgba(255, 255, 255, .5);
+    background: rgba(255, 255, 255, 0.5);
 
     tr {
       opacity: 1;
       height: 42px;
+
       td {
         vertical-align: middle;
         padding-left: 40px;
@@ -93,8 +95,8 @@
   }
 }
 
- /* Style the buttons that are used to open and close the accordion panel */
- .accordion {
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
   background-color: #ddd;
   margin-bottom: 10px;
   color: #444;
@@ -132,7 +134,8 @@ table.settings--permissions-table {
   }
 
   tbody > tr {
-    th, td {
+    th,
+    td {
       border-top: none;
     }
   }

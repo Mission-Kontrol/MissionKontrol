@@ -19,7 +19,7 @@
   .top-nav-item-for-queue-layout {
     color: black;
     font-size: 14px;
-    text-decoration:underline;
+    text-decoration: underline;
     margin-right: 10px;
     text-align: center;
   }
@@ -45,7 +45,7 @@
       width: 100%;
 
       a {
-        margin-right: 0px;
+        margin-right: 0;
         border-radius: 0;
         border: none;
 
@@ -57,7 +57,7 @@
     }
 
     li.a {
-      margin-right: 0px !important;
+      margin-right: 0 !important;
     }
   }
 }
@@ -69,7 +69,7 @@
   .top-nav-item-for-queue-layout {
     color: black;
     font-size: 14px;
-    text-decoration:underline;
+    text-decoration: underline;
     margin-right: 10px;
     text-align: center;
   }

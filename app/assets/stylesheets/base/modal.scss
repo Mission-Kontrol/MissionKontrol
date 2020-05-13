@@ -34,7 +34,7 @@
   }
 
   .modal--close-btn {
-    padding: 0px;
+    padding: 0;
     float: right;
     font-size: 18px;
     cursor: pointer;
@@ -125,7 +125,7 @@
   .record--modal-input {
     width: 80%;
     text-align: right;
-    padding-right: 0px;
+    padding-right: 0;
   }
 
   .record--modal-input {
@@ -134,13 +134,13 @@
   }
 
   @-webkit-keyframes animate-right {
-    from {right:-300px; opacity:0}
-    to {right:0; opacity:1}
+    from { right: -300px; opacity: 0; }
+    to { right: 0; opacity: 1; }
   }
 
   @keyframes animate-right {
-    from {right:-300px; opacity:0}
-    to {right:0; opacity:1}
+    from { right: -300px; opacity: 0; }
+    to { right: 0; opacity: 1; }
   }
 }
 

@@ -5,7 +5,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-
 // Variables, Mixins, Base
 @import "base/variables";
 @import "base/typography";
@@ -16,19 +15,15 @@
 @import "base/modal";
 @import "base/form";
 @import "base/activity";
-
 @import "views";
 @import "admin_users";
 @import 'table';
 @import 'layout_builder';
 @import 'single_view_builder';
-
 @import 'dashboard';
-
 @import 'table_permissions';
 @import 'components/tooltipster';
 @import 'components/toastr';
-
 @import "base/media";
 
 // Clear layout on print mode
