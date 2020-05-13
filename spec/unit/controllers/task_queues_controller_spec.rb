@@ -145,7 +145,6 @@ describe TaskQueuesController, type: :controller do
   end
 
   describe 'POST outcome' do
-    
   end
 
   describe 'GET record' do

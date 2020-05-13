@@ -2,7 +2,7 @@
 
 class TaskQueue < ApplicationRecord
   validates :name, :table, presence: true
-  has_many :task_queue_outcomes 
+  has_many :task_queue_outcomes
 
   OUTCOME_TIMEOUTS = [
     ['1 Day', '1'],

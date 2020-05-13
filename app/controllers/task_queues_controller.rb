@@ -29,7 +29,6 @@ class TaskQueuesController < ApplicationController
     @database_connection = database_connection
     @target_db = target_db
     result = @target_db.all(@task_queue.table, 10, 0)
-    # result = @task_queue.to_sql.blank? ? @target_db.all(@task_queue.table, 10, 0) : @target_db.query(@task_queue.to_sql, 10, 0)
     @task_queue_headers = result.columns
   end
 

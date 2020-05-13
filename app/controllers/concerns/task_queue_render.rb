@@ -49,7 +49,7 @@ module TaskQueueRender
     end
 
     outcome_records = @task_queue.task_queue_outcomes.map(&:task_queue_item_primary_key)
-    display_data = sql_result.to_hash.reject { |row| outcome_records.include? row["id"].to_s }
+    display_data = sql_result.to_hash.reject { |row| outcome_records.include? row['id'].to_s }
 
     render json: {
       data: display_data,
@@ -70,7 +70,7 @@ module TaskQueueRender
     end
 
     outcome_records = @task_queue.task_queue_outcomes.map(&:task_queue_item_primary_key)
-    display_data = sql_result.to_hash.reject { |row| outcome_records.include? row["id"].to_s }
+    display_data = sql_result.to_hash.reject { |row| outcome_records.include? row['id'].to_s }
 
     render json: {
       data: display_data,
@@ -83,8 +83,7 @@ module TaskQueueRender
 
   def load_task_queue
     @task_queue = TaskQueue.find(params[:id])
-    attributes_to_update = task_queue_update_params.reject{|_, v| v.blank?}
+    attributes_to_update = task_queue_update_params.reject { |_, v| v.blank? }
     @task_queue.update_attributes(attributes_to_update)
   end
-
 end

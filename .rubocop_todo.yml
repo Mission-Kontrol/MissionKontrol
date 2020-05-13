@@ -227,6 +227,7 @@ Metrics/ClassLength:
   Exclude:
     - 'app/controllers/admin_users_controller.rb'
     - 'app/controllers/tables_controller.rb'
+    - 'app/controllers/task_queues_controller.rb'
     - 'lib/kuwinda/repository/target_db.rb'
 
 # Offense count: 1
