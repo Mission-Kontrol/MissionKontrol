@@ -122,15 +122,17 @@ describe TaskQueuesController, type: :controller do
     let(:params) do
       {
         id: task_queue.id,
-        name: '',
-        details: 'Task queue details updated',
-        query_builder_rules: 'Query rules updated',
-        query_builder_sql: 'Query SQL updated',
-        raw_sql: 'Raw SQL updated',
-        success_outcome_title: 'Success title updated',
-        success_outcome_timeout: 7,
-        failure_outcome_title: 'Failute title updated',
-        failure_outcome_timeout: 1
+        task_queue: {
+          name: '',
+          details: 'Task queue details updated',
+          query_builder_rules: 'Query rules updated',
+          query_builder_sql: 'Query SQL updated',
+          raw_sql: 'Raw SQL updated',
+          success_outcome_title: 'Success title updated',
+          success_outcome_timeout: 7,
+          failure_outcome_title: 'Failute title updated',
+          failure_outcome_timeout: 1
+        }
       }
     end
 
