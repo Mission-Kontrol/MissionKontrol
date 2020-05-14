@@ -59,11 +59,13 @@ class DatabasesController < ApplicationController
     @database_connection = database_connection
     table = params[:table]
     related_tables = relatable_tables(table)
-    @fields_with_type = list_table_fields_with_type(table)
+    table_fields_with_type = list_table_fields_with_type(table)
+    all_fields_with_type = []
+    table_fields_with_type.each { |field| all_fields_with_type << field }
     related_tables.each do |related_table|
-      list_related_table_fields_with_type(related_table).each { |field| @fields_with_type << field }
+      list_related_table_fields_with_type(related_table).each { |field| all_fields_with_type << field }
     end
-    render json: @fields_with_type
+    render json: all_fields_with_type
   end
 
   private

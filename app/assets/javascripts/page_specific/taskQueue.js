@@ -197,7 +197,7 @@ function loadQueryBuilder (data) {
 
 function getFieldsWithType (table) {
   $.ajax({
-    url: "/table_fields_with_type",
+    url: "/related_table_fields_with_type",
     type: "GET",
     data: {
       table,
