@@ -29,6 +29,7 @@ class TaskQueuesController < ApplicationController
     @database_connection = database_connection
     @target_db = target_db
     result = @target_db.all(@task_queue.table, 10, 0)
+    @task_queue_sql = task_queue_to_sql
     @task_queue_headers = result.columns
   end
 
@@ -130,15 +131,15 @@ class TaskQueuesController < ApplicationController
   end
 
   def task_queue_update_params
-    params.permit(:name,
-                  :details,
-                  :query_builder_rules,
-                  :query_builder_sql,
-                  :raw_sql,
-                  :success_outcome_title,
-                  :success_outcome_timeout,
-                  :failure_outcome_title,
-                  :failure_outcome_timeout)
+    params.require(:task_queue).permit(:name,
+                                       :details,
+                                       :query_builder_rules,
+                                       :query_builder_sql,
+                                       :raw_sql,
+                                       :success_outcome_title,
+                                       :success_outcome_timeout,
+                                       :failure_outcome_title,
+                                       :failure_outcome_timeout)
   end
 
   def outcome_params

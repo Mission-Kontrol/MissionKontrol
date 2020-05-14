@@ -14,6 +14,12 @@ module Kuwinda
         end
       end
 
+      def related_fields
+        Rails.cache.fetch("related_table_fields_with_type/#{database.spec.config[:database]}/#{table}", expires_in: 12.hours) do
+          database.connection.columns(table.downcase).map{|f| ["#{table}.#{f.name}", f.type.to_s, table]}
+        end
+      end
+
       private
 
       attr_reader :database, :table

@@ -58,6 +58,7 @@ Rails.application.routes.draw do
 
   resources :databases
   get 'table_fields_with_type', to: 'databases#table_fields_with_type'
+  get 'related_table_fields_with_type', to: 'databases#related_table_fields_with_type'
 
 
   # resources :view_builder

@@ -49,7 +49,7 @@
           <%= form_for(@task_queue, html: {class: "m-t"}, remote: true) do |f| %>
             <div class="form-group">
               <%= f.label :raw_sql %>
-              <%= f.text_field :raw_sql, class: "form-control", value: @task_queue.to_sql %>
+              <%= f.text_field :raw_sql, class: "form-control", value: @task_queue_sql %>
             </div>
           <% end %>
           <br>

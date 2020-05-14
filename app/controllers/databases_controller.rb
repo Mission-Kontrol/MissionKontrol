@@ -54,6 +54,18 @@ class DatabasesController < ApplicationController
     render json: @fields_with_type.sort
   end
 
+  def related_table_fields_with_type
+    @database = Database.find(params[:id])
+    @database_connection = database_connection
+    table = params[:table]
+    related_tables = relatable_tables(table)
+    @fields_with_type = list_table_fields_with_type(table)
+    related_tables.each do |related_table|
+      list_related_table_fields_with_type(related_table).each { |field| @fields_with_type << field }
+    end
+    render json: @fields_with_type
+  end
+
   private
 
   def check_user_permissions
