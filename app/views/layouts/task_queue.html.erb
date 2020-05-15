@@ -11,11 +11,22 @@
   </head>
 
   <body class="gray-bg">
-    <div class="container-fluid white-bg ">
-      <div class="row">
-        <div class='col-sm-12'>
-          <%= render 'task_queues/shared/task_queue_topnavbar' %>
-        </div>
+    <div class="top-nav">
+      <div class='col-sm-12'>
+        <%= render 'layouts/task_queue_topnavbar' %>
+      </div>
+    </div>
+    <div class="task-queue--navigation-tabs border-bottom">
+      <div class="text-center top-tab-for-queue-layout">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="top-tab-item-for-queue-layout">Define</a>
+          </li>
+
+          <li role="presentation">
+            <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="top-tab-item-for-queue-layout">Publish</a>
+          </li>
+        </ul>
       </div>
     </div>
 

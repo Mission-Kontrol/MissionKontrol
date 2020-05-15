@@ -1,4 +1,55 @@
 <div class="row border-bottom">
+  <nav class="navbar navbar-static-top layouts-navbar" role="navigation">
+    <ul class="nav navbar-top-links navbar-left">
+      <li>
+        <%= link_to dashboard_path, :class => 'navbar-link left-layout-link' do %>
+          <span><img src="/assets/logos/kuwinda_thumbnail.png" alt="" class="logo-thumbnail"></span>
+        <% end %>
+      </li>
+
+      <li>
+        <ol class="breadcrumb layouts-layout_builder_topnavbar-breadcrumb">
+          <li>
+            <%= link_to 'Dashboard', dashboard_path %>
+          </li>
+
+          <% if @task_queue.name.blank? %>
+            <li>
+              New Queue
+            </li>
+          <% else %>
+            <li>
+              <%= link_to "Table: #{@task_queue.table.humanize}", table_path(@task_queue.database_id, table: @task_queue.table) %>
+            </li>
+            <% if @task_queue.persisted? %>
+              <li>
+                <%= link_to "Queue: #{@task_queue.name.humanize}", task_queue_path(@task_queue) %>
+              </li>
+            <% end %>
+          <% end %>
+        </ol>
+      </li>
+    </ul>
+
+    <ul class="nav navbar-top-links navbar-right">
+      <li>
+        <% if admin_user_signed_in? %>
+          <%= link_to destroy_admin_user_session_path, method: :delete, :class => 'navbar-link' do %>
+            <span><i class="fa fa-sign-out" aria-hidden="true"></i>Log out</span>
+          <% end %>
+        <% end %>
+      </li>
+    </ul>
+
+
+  </nav>
+
+</div>
+
+
+
+<% if false %>
+<div class="row border-bottom">
   <div class="col-sm-4">
     <nav class="navbar navbar-static-top layouts-navbar" role="navigation">
       <ul class="nav navbar-top-links navbar-left">
@@ -61,3 +112,4 @@
     </nav>
   </div>
 </div>
+<% end %>

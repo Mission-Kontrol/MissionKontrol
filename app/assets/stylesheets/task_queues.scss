@@ -1,6 +1,14 @@
+.task-queue--navigation-tabs {
+  margin-top: 76px;
+  border-bottom: 1px solid $border-grey;
+
+  @extend .white-bg;
+}
+
 .query-builder .rules-group-container {
   border: 1px solid $border-grey;
   background: $background-grey;
+  border-radius: 0;
 }
 
 .query-builder .rule-container {
@@ -27,14 +35,22 @@
     border-bottom: none;
 
     li.active a {
-      border: 1px solid #e3e3e3;
-      border-radius: 4px;
+      color: $purplish-grey;
+      border-color: white white black;
+    }
+
+    li > a:hover {
+      background: inherit;
+      border-color: white;
+    }
+
+    li > a:active:hover {
+      border-color: white white black;
     }
   }
 }
 
 .top-nav-for-queue-layout {
-  padding: 20px;
   padding-bottom: 0;
 
   .top-nav-item-for-queue-layout {
@@ -69,20 +85,31 @@
 
   .nav.nav-tabs {
     border-bottom: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     li {
-      width: 100%;
+      width: inherit;
+      display: flex;
 
       a {
         margin-right: 0;
         border-radius: 0;
         border: none;
-
-        i {
-          margin: 10px auto;
-          font-size: 18px;
-        }
+        padding: 0;
+        color: $navy;
       }
+
+      a:hover {
+        background-color: inherit;
+      }
+    }
+
+    li.active > a,
+    li.active > a:hover,
+    li.active > a:focus {
+      cursor: pointer;
     }
 
     li.a {
@@ -137,4 +164,9 @@
   a {
     margin: 10px auto;
   }
+}
+
+.task_queue_side_nav {
+  display: block;
+  height: 40px;
 }
