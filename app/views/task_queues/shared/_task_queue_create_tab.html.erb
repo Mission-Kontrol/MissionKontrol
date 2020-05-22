@@ -1,6 +1,6 @@
-<div role="tabpanel" class="tab-pane" id="profile">
-  <div class="row min-height-100vh">
-    <div class="col-sm-1 min-height-100vh white-bg no-margin">
+<div role="tabpanel" class="tab-pane" id="settings">
+  <div class="row min-height-100vh flex">
+    <div class="col-sm-1 white-bg no-margin side-nav-width">
       <br>
       <%= render 'task_queues/shared/task_queue_navigation' %>
     </div>
@@ -9,7 +9,7 @@
       <%= render 'shared/flash_message' %>
 
       <div class="tab-content ">
-        <div role="tabpanel" class="tab-pane active " id="task-queue-general-settings">
+        <div role="tabpanel" class="tab-pane task-queue-settings-tab active " id="task-queue-general-settings">
           <div class="row min-height-100vh">
             <div class="col-sm-12 col-md-4 min-height-100vh">
               <h1>General settings</h1>
@@ -34,7 +34,7 @@
           </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane" id="task-queue-outcome-settings">
+        <div role="tabpanel" class="tab-pane task-queue-settings-tab" id="task-queue-outcome-settings">
           <div class="row">
             <div class="col-sm-6">
               <h1>Outcome settings</h1>

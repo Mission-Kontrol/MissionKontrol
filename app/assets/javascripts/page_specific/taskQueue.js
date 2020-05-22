@@ -299,8 +299,6 @@ Paloma.controller("TaskQueues", {
         if (typeof columns !== "undefined") {
           loadTaskQueuePreviewDataTable(columns);
         }
-
-        window.toastr.info("Task queue updated.");
       }
     });
   },
