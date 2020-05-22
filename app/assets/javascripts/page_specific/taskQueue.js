@@ -275,12 +275,34 @@ Paloma.controller("TaskQueues", {
 
   edit () {
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
+    let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
 
     getFieldsWithType(taskQueueTable);
     $(".task-queue-update-button").click(function() {
       loadResults();
     });
     linkToSingleDataView();
+
+    var params = {};
+    params["task_queue"] = {}
+    $.ajax({
+      url: "/task_queues/" + taskQueueId,
+      type: "PATCH",
+      data: { "task_queue": { "param": null } },
+      dataType: "json",
+      error() {
+        window.toastr.error("Task queue preview failed, review SQL.");
+      },
+      success(response) {
+        let columns = response.columns;
+
+        if (typeof columns !== "undefined") {
+          loadTaskQueuePreviewDataTable(columns);
+        }
+
+        window.toastr.info("Task queue updated.");
+      }
+    });
   },
 
   show () {

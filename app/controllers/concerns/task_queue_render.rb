@@ -50,7 +50,7 @@ module TaskQueueRender
     elsif !task_queue_to_sql.blank?
       @target_db.query(task_queue_to_sql, limit, offset)
     else
-      {}
+      @target_db.all(task_queue.table, limit, offset)
     end
   end
 
