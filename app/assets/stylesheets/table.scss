@@ -237,6 +237,13 @@ div.dataTables_wrapper div.dataTables_filter label {
 
     button {
       left: 4%;
+
+      &:active {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        color: $blueberry;
+        @extend .bold;
+      }
     }
 
     .dt-button-collection {
@@ -249,6 +256,12 @@ div.dataTables_wrapper div.dataTables_filter label {
   .table--import {
     background: url(/assets/images/icons/import.png) no-repeat center left;
     padding: 6px 20px;
+
+    &:active:hover,
+    &:active,
+    &:hover {
+      background: url(/assets/images/icons/import.png) no-repeat center left;
+    }
   }
 
   .table--export {
@@ -258,12 +271,24 @@ div.dataTables_wrapper div.dataTables_filter label {
     &.false {
       display: none;
     }
+
+    &:active:hover,
+    &:active,
+    &:hover {
+      background: url(/assets/images/icons/export.png) no-repeat center left;
+    }
   }
 
   .table--colvis {
     background: url(/assets/images/icons/import.png) no-repeat center left;
     padding: 6px 20px;
     border: none;
+
+    &:active:hover,
+    &:active,
+    &:hover {
+      background: url(/assets/images/icons/import.png) no-repeat center left;
+    }
   }
 
   .table--add {
@@ -271,6 +296,12 @@ div.dataTables_wrapper div.dataTables_filter label {
     padding: 6px 20px;
     border: none;
     background-color: inherit;
+
+    &:active:hover,
+    &:active,
+    &:hover {
+      background: url(/assets/images/icons/plus.png) no-repeat center left;
+    }
   }
 
   .table--settings {
@@ -278,7 +309,17 @@ div.dataTables_wrapper div.dataTables_filter label {
     padding: 6px 20px;
     border: none;
     background-color: inherit;
+
+    &:active:hover,
+    &:active,
+    &:hover {
+      background: url(/assets/images/icons/settings-black.png) no-repeat center left;
+    }
   }
+}
+
+.target-table--add-record {
+  padding: 20px 0;
 }
 
 div.dataTables_wrapper div.dt-buttons .buttons-csv {
