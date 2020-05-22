@@ -11,7 +11,7 @@
       <li class="active"><a data-toggle="tab" href="#tab-1">All</a></li>
       <li class="hide"><a data-toggle="tab" href="#tab-2">Calls</a></li>
       <li class=""><a data-toggle="tab" href="#tab-4">Notes</a></li>
-      <li class=""><a data-toggle="tab" href="#tab-outcomes">Outcomes</a></li>
+      <li class=""><a data-toggle="tab" href="#tab-outcomes">Task Queues</a></li>
     </ul>
   </div>
 </div>
@@ -97,7 +97,7 @@
 <% unless index %>
   <div class="row">
     <div class="col-sm-12 show-more-button">
-      <%= link_to "Show more", activities_path(feedable_type: feedable_type, feedable_id: feedable_id), class: "btn btn-block btn-purple btn-large" %>
+      <%= link_to "Show more", activities_path(feedable_type: feedable_type, feedable_id: feedable_id, database_id: @database.id), class: "btn btn-block btn-purple btn-large" %>
     </div>
   </div>
 <% end %>

@@ -1,4 +1,18 @@
-<%= render 'shared/page_banner_header', title: 'Activity', items: ['Activity', "#{@feedable_type.humanize}", "#{@feedable_id}"] %>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h1>Activity history</h1>
+
+    <ol class="breadcrumb">
+      <li class="">
+        <%= link_to @feedable_type.humanize, table_path(table: @feedable_type, id: @feedable_type.downcase) %>
+      </li>
+
+      <li class="">
+        <%= link_to @feedable_id, table_record_preview_path(table: @feedable_type, table_name: @feedable_type, record_id: @feedable_id, database_id: @database_id) %>
+      </li>
+    </ol>
+  </div>
+</div>
 
 <div class="panel-body">
   <div class="row">
