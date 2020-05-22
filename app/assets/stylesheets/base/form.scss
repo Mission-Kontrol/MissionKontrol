@@ -1,3 +1,7 @@
+.form-control {
+  border-radius: 0;
+}
+
 input:focus,
 select:focus,
 textarea:focus,
@@ -35,6 +39,7 @@ button:focus {
 input {
   padding-bottom: 5px;
   margin-bottom: 5px;
+  border-radius: 0;
 }
 
 #new_database {
