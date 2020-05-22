@@ -212,9 +212,21 @@ div.dataTables_wrapper div.dataTables_filter label {
 }
 
 .table--info {
+  display: flex;
+  align-items: baseline;
+
   #target-table-admin-users_paginate,
   .dataTables_paginate {
     display: inline;
+
+    .pagination {
+      height: 26px;
+
+      a:hover {
+        color: $blueberry;
+        background-color: $white;
+      }
+    }
   }
 
   .dataTables_info {
@@ -230,10 +242,8 @@ div.dataTables_wrapper div.dataTables_filter label {
   }
 
   .dt-buttons.btn-group {
-    float: right;
+    margin-left: auto;
     min-width: 270px;
-    display: flex;
-    justify-content: flex-end;
 
     button {
       left: 4%;
