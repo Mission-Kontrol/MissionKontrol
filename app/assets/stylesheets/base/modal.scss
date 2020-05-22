@@ -182,6 +182,9 @@
 .edit--record-panel,
 .add--record-panel {
   padding: 0;
+  background-color: $background-grey !important;
+  border: none;
+  border-radius: 0;
 }
 
 .modal-footer {
