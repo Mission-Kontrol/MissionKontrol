@@ -6,6 +6,7 @@ class TaskQueueOutcome < ApplicationRecord
     failure
   ].freeze
 
+  belongs_to :task_queue
   validates :outcome, inclusion: { in: OUTCOMES }
   validates :outcome,
             :task_queue_id,

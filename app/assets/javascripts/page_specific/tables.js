@@ -280,45 +280,6 @@ function fetchDataForRelatedTables() {
   }
 }
 
-function loadTaskQueuePreviewDataTable (columns) {
-  if ($.fn.dataTable.isDataTable("#task-queue-preview-table")) {
-    var table = $("#task-queue-preview-table").DataTable();
-    table.destroy();
-  }
-
-  $("#task-queue-preview-table").DataTable({
-    colReorder: true,
-    deferRender: true,
-    autoWidth: false,
-    scrollX: true,
-    serverSide: true,
-    ajax: "/task_queues/" + location.pathname.split("/")[2] + "/preview",
-    dom: "Bfrtip",
-    columns,
-    stateSave: true,
-    stateSaveCallback(settings, data) {
-      stateSaveCallbackFunction(settings, data, $(this));
-    },
-    stateLoadCallback(settings, callback) {
-      stateLoadCallbackFunction($(this), callback);
-    },
-    buttons: [
-      "colvis",
-      {
-        "extend": "csv",
-        "className": "btn btn-warning",
-      }
-    ],
-    createdRow(row, data, dataIndex) {
-      let id = data.id;
-      $(row).addClass("task-queue-item");
-      $(row).attr( "data-task-queue-item-primary-key", id);
-    }
-  });
-
-  $("#task-queue-preview-table").removeClass("hide");
-}
-
 function rotateIcon (icon, nestedRowOpen) {
   if (nestedRowOpen) {
     icon.removeClass("rotate");
@@ -351,6 +312,87 @@ function linkToPreview () {
   });
 }
 
+function activityItem (data) {
+  return "<tr>" +
+    "<td>" +
+      data.created_at +
+    "</td>" +
+    "<td>" +
+      "<strong>" + data.user_name + "</strong>" +
+      "<span> added a </span><strong>tag: </strong>" +
+      "<span>" + data.activity.content + "</span>" +
+    "</td>" +
+  "</tr>";
+}
+
+function submitActivityForm (data) {
+  let formData = {
+    feedable_type: data.outcome.task_queue_item_table,
+    feedable_id: parseInt(data.outcome.task_queue_item_primary_key),
+    kind: "outcome",
+    user_id: data.user_id,
+    content: data.outcome_content
+  };
+
+  $.ajax({
+    url: "/activities/create_js",
+    type: "POST",
+    data: formData,
+    async: true,
+    dataType: "script",
+    error () {
+      window.toastr.error("Something went wrong, please try again.");
+    },
+    success (data) {
+      if ($(".all-activities-tab").find("table > tbody > tr").length === 3) {
+        $(".all-activities-tab").find("table > tbody > tr:last").remove();
+      }
+      $(".all-activities-tab").find(".activities-history--table").prepend(activityItem(JSON.parse(data)));
+      $(".all-activities-tab .default-message").remove();
+      if ($(".activity-tab-for-outcomes").find("table > tbody > tr").length === 3) {
+        $(".activity-tab-for-outcomes").find("table > tbody > tr:last").remove();
+      }
+      $(".activity-tab-for-outcomes").find(".activities-history--table").prepend(activityItem(JSON.parse(data)));
+      $(".activity-tab-for-outcomes .default-message").remove();
+      window.toastr.success("Task queue outcome updated.");
+    }
+  });
+}
+
+function applyOutcomeRule () {
+  $(".task-queue--outcome-button").click(function (event) {
+    event.preventDefault();
+    let table = location.pathname.substr(1).split("/")[1];
+    let primaryKey = location.pathname.substr(1).split("/")[2].split("?")[0];
+    let outcome = $(this).data("outcome");
+    let taskQueueId = $(this).data("task-queue-id");
+    let url = "/task_queues/" + taskQueueId + "/outcome";
+
+    let data = {
+      outcome,
+      table,
+      primary_key: primaryKey,
+      task_queue_id: taskQueueId
+  };
+
+    $.ajax({
+      url,
+      type: "POST",
+      data,
+      async: true,
+      dataType: "json",
+      error () {
+                window.toastr.error("Something went wrong, please try again.");
+             },
+      success (data) {
+        submitActivityForm(data);
+        $(".task-queue--outcome-buttons").addClass("hide");
+        window.toastr.success("Task queue outcome updated.");
+      }
+    });
+  });
+}
+
 Paloma.controller("Tables", {
   show () {
     fetchDataForTable();
@@ -362,6 +404,7 @@ Paloma.controller("Tables", {
   preview () {
     fetchDataForRelatedTables();
     updateEditableFieldInput();
+    applyOutcomeRule();
     rotateNestedTableIcon();
   }
 });

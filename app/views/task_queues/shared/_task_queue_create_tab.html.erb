@@ -2,7 +2,7 @@
   <div class="row min-height-100vh">
     <div class="col-sm-1 min-height-100vh white-bg no-margin">
       <br>
-      <%= render 'layouts/task_queue_navigation' %>
+      <%= render 'task_queues/shared/task_queue_navigation' %>
     </div>
 
     <div class="col-sm-11  min-height-100vh ">
@@ -29,69 +29,13 @@
 
               <br>
 
-              <button type="button" name="button" class="btn btn-primary task-queue-update-button">Update Task Queue</button>
-            </div>
-          </div>
-        </div>
-
-        <div role="tabpanel" class="tab-pane " id="task-queue-field-settings">
-          <div class="row min-height-100vh gray-bg">
-            <div class="col-sm-3 min-height-100vh ">
-              <h1>Field settings</h1>
-
-              <p>Drag fields for task queue here.</p>
-
-              <div class="light-border-bottom"></div>
-
-              <div class="" id="layout-builder-draggable-fields-container">
-              </div>
-            </div>
-
-            <div class="col-sm-9 min-height-100vh ">
-              <div class="row white-bg min-height-100vh">
-                <div class="top-nav-for-task-queue-field-settings ">
-                  <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                      <a href="#task-queue-field-settings-builder" aria-controls="task-queue-field-settings-builder" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Builder</a>
-                    </li>
-
-                    <li role="presentation">
-                      <a href="#task-queue-field-settings-preview" aria-controls="task-queue-field-settings-preview" role="tab" data-toggle="tab" class="top-nav-item-for-queue-layout">Preview</a>
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="tab-content ">
-                  <div role="tabpanel" class="tab-pane active" id="task-queue-field-settings-builder">
-                    <div class="row min-height-100vh no-margin">
-                      <div class="col-sm-4 min-height-100vh">
-                        <div>
-                          <br>
-                          <div id="task-queue-draggable-field-settings-container" data-fields-for-container="<%= @task_queue.draggable_fields.to_json %>" style="min-height: 25px">
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-8 gray-bg min-height-100vh">
-                        <br>
-                        <% if @activities %>
-                          <%= render 'shared/activity_history_template', feedable_type: 'task_queue', feedable_id: @task_queue.id %>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div role="tabpanel" class="tab-pane" id="task-queue-field-settings-preview">
-                    <%= render 'task_queues/preview_show' %>
-                  </div>
-                </div>
-              </div>
+              <button type="button" name="button" class="btn btn-primary task-queue-update-button" id="task-queue-update-button">Update Task Queue</button>
             </div>
           </div>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="task-queue-outcome-settings">
-          <div class="row white-bg">
+          <div class="row">
             <div class="col-sm-6">
               <h1>Outcome settings</h1>
               <p>
@@ -145,7 +89,7 @@
               <div class="row">
               <div class="col-sm-12">
                 <br>
-                <button type="button" name="button" class="btn btn-primary task-queue-update-button">Update Task Queue</button>
+                <button type="button" name="button" class="btn btn-primary task-queue-update-button" id="task-queue-update-button">Update Task Queue</button>
                 <br>
                 <br>
                 <br>

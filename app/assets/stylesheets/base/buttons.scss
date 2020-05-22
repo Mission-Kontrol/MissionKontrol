@@ -10,6 +10,12 @@
   }
 }
 
+.btn-xs {
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1;
+}
+
 .btn-large {
   width: 411px;
   height: 33px;
@@ -37,8 +43,8 @@
   &.active:hover,
   &.active:focus,
   &.dropdown-toggle {
-    background-color: darken($button-green, 3%);
-    border-color: darken($button-green, 3%);
+    background-color: darken($button-green, 10%);
+    border-color: darken($button-green, 10%);
     background-image: none;
   }
 
@@ -52,8 +58,8 @@
   &[disabled]:focus,
   &[disabled]:active,
   &.active[disabled] {
-    background-color: lighten($button-green, 4%);
-    border-color: lighten($button-green, 4%);
+    background-color: lighten($button-green, 10%);
+    border-color: lighten($button-green, 10%);
   }
 }
 
@@ -120,8 +126,8 @@
   &[disabled]:focus,
   &[disabled]:active,
   &.active[disabled] {
-    background-color: lighten($blue, 4%);
-    border-color: lighten($blue, 4%);
+    background-color: lighten($blue, 10%);
+    border-color: lighten($blue, 10%);
   }
 }
 
@@ -138,8 +144,8 @@
   &.active:hover,
   &.active:focus,
   &.dropdown-toggle {
-    background-color: darken($very-light-pink, 3%);
-    border-color: darken($very-light-pink, 3%);
+    background-color: darken($very-light-pink, 10%);
+    border-color: darken($very-light-pink, 10%);
     background-image: none;
   }
 
@@ -153,8 +159,8 @@
   &[disabled]:focus,
   &[disabled]:active,
   &.active[disabled] {
-    background-color: lighten($very-light-pink, 4%);
-    border-color: lighten($very-light-pink, 4%);
+    background-color: lighten($very-light-pink, 10%);
+    border-color: lighten($very-light-pink, 10%);
   }
 }
 
@@ -199,7 +205,6 @@
 .btn-danger {
   background-color: $red;
   border-color: $red;
-  line-height: 0.8;
 
   &:hover,
   &:focus,
@@ -210,8 +215,8 @@
   &.active:hover,
   &.active:focus,
   &.dropdown-toggle {
-    background-color: darken($red, 3%);
-    border-color: darken($red, 3%);
+    background-color: darken($red, 10%);
+    border-color: darken($red, 10%);
     background-image: none;
   }
 
@@ -225,7 +230,7 @@
   &[disabled]:focus,
   &[disabled]:active,
   &.active[disabled] {
-    background-color: lighten($red, 4%);
-    border-color: lighten($red, 4%);
+    background-color: lighten($red, 10%);
+    border-color: lighten($red, 10%);
   }
 }

@@ -13,13 +13,15 @@ Rails.application.routes.draw do
     root to: "admin_user_registrations#new"
   end
 
-  resources :task_queues, only: %i[index show create edit update] do
+  resources :task_queues, only: %i[new index show create edit update] do
     member do
       post 'outcome'
       get 'record'
       get 'preview'
       get 'field_settings'
     end
+
+    # get 'table_fields_with_type'
   end
 
   resources :tables, only: %i[index show]
@@ -35,15 +37,15 @@ Rails.application.routes.draw do
   patch 'table_field', to: 'tables#update_table_field', as: 'update_table_field'
   patch 'related_table_field', to: 'tables#update_related_table_field', as: 'update_related_table_field'
 
-  get 'layouts/table_fields_with_type', to: 'layout_builder#table_fields_with_type'
+  # get 'layouts/table_fields_with_type', to: 'layout_builder#table_fields_with_type'
   resources :layout_builder, as: "layouts", path: 'layouts'
   get 'layouts/:id/preview', to: 'layout_builder#preview', as: 'layout_builder_preview'
   patch 'layouts/:id/related_tables', to: 'layout_builder#update_related_tables', as: 'update_related_tables'
   patch 'layouts/:id/related_tables/remove', to: 'layout_builder#remove_related_table', as: 'remove_related_table'
 
-  get 'view_builder/table_fields', to: 'view_builder#table_fields'
-  # get 'view_builder/view', to: 'view_builder#view_page'
-  get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
+  # get 'view_builder/table_fields', to: 'view_builder#table_fields'
+  # # get 'view_builder/view', to: 'view_builder#view_page'
+  # get 'view_builder/retrieve_data', to: 'view_builder#retrieve_data'
 
   get 'users/edit', to: 'admin_users#edit'
   get 'users/:id', to: 'admin_users#show_modal'
@@ -55,9 +57,13 @@ Rails.application.routes.draw do
   get 'users', to: 'admin_users#index'
 
   resources :databases
+  get 'table_fields_with_type', to: 'databases#table_fields_with_type'
+  get 'related_table_fields_with_type', to: 'databases#related_table_fields_with_type'
 
-  resources :view_builder
+
+  # resources :view_builder
   resources :activities, only: %i[create index]
+  post 'activities/create_js', to: 'activities#create_js'
 
   resources :organisation_settings, only: %i[edit update]
   resources :admin_users, only: %i[new]

@@ -44,36 +44,36 @@
         </ul>
       </li>
 
-      <% if Rails.env.development? || Rails.env.staging? %>
-        <li class="<%= active_controller?('task_queues') %> hide">
-          <%= link_to task_queues_path do %>
-            <i class="fa fa-list" aria-hidden="true"></i>
-            <span class="nav-label" data-i18n="nav.queues">Task Queues</span> <span class="fa arrow"></span>
-          <% end %>
+      <li class="<%= active_controller?('task_queues') || active_controller?('layout_builder') || active_controller?('admin_users') || active_controller?('databases') || active_controller?('permissions') %>">
+        <a href="" id="nav-link-for-task-queues">
+          <span class="nav-label" data-i18n="nav.layouts">TASK QUEUES</span> <span class="fa arrow"></span>
+        </a>
 
-          <ul class="nav nav-second-level collapse">
-            <li>
-              <%= link_to "Create Task Queue", task_queues_path %>
+        <ul class="nav nav-second-level collapse">
+          <% @available_databases&.each do |database| %>
+            <li class="">
+              <a href="" id="nav-link-for-database-task-queues">
+                <span class="nav-label"><%= database.friendly_name %></span><span class="fa arrow"></span>
+              </a>
+              <ul class="nav nav-second-level collapse">
+                <% if @task_queues %>
+                  <% @task_queues.select { |task_queue|  task_queue.database_id == database.id }.each do |task_queue| %>
+                    <li class="">
+                      <%= link_to task_queue_path(task_queue), id: "nav-link-for-task-queues" do %>
+                        <%= image_tag('/assets/images/icons/settings-1.png') %>  <%= task_queue.name %>
+                      <% end %>
+                    </li>
+                  <% end%>
+                <% end %>
+              </ul>
             </li>
-
-            <% if @task_queues.present? %>
-              <li>
-                <a href="#" class="divider"></a>
-              </li>
-            <% end %>
-
-            <% @task_queues&.each do |q| %>
-              <li class="">
-                <%= link_to q.name, edit_task_queue_path(q) %>
-              </li>
-            <% end %>
-          </ul>
-        </li>
-      <% end %>
+          <% end %>
+        </ul>
+      </li>
 
       <% if current_admin_user.admin_abilities? %>
         <li class="<%= active_controller?('organisation_settings') || active_controller?('layout_builder') || active_controller?('admin_users') || active_controller?('databases') || active_controller?('permissions') %>">
-          <a href="" id="nav-link-for-tables">
+          <a href="" id="nav-link-for-settings">
             <span class="nav-label" data-i18n="nav.layouts">SETTINGS</span> <span class="fa arrow"></span>
           </a>
 
@@ -96,6 +96,11 @@
             <li class="<%= active_controller?('layout_builder') %>">
               <%= link_to layouts_path do %>
                 <%= image_tag('/assets/images/icons/settings-1.png') %> Layouts
+              <% end %>
+            </li>
+            <li class="<%= active_controller?('task_queues') %>">
+              <%= link_to task_queues_path, id: "nav-link-for-task-queues" do %>
+                <%= image_tag('/assets/images/icons/settings-1.png') %>  Task Queues
               <% end %>
             </li>
             <li class="<%= active_controller?('databases') %>">

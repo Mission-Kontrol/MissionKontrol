@@ -33,14 +33,6 @@ class LayoutBuilderController < ApplicationController
     @view_builder = ViewBuilder.find(params[:id])
   end
 
-  def table_fields_with_type
-    @view_builder = ViewBuilder.find(params[:id])
-    @database = Database.find(@view_builder.database_id)
-    @database_connection = database_connection
-    @fields_with_type = list_table_fields_with_type(params[:table])
-    render json: @fields_with_type.sort
-  end
-
   def edit
     @view_builder = ViewBuilder.find(params[:id])
     @database = Database.find(@view_builder.database_id)

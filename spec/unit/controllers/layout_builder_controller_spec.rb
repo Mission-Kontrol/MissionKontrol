@@ -83,31 +83,6 @@ describe LayoutBuilderController, type: :controller do
     end
   end
 
-  describe 'GET table_fields_with_type' do
-    subject { get :table_fields_with_type, params: params }
-    let(:params) { { id: view_builder.id, table: table_name } }
-
-    let(:json_response) do
-      [
-        ["id", "string", table_name],
-        ["name", "string", table_name],
-        ["user", "string", table_name]
-      ]
-    end
-
-    before do
-      subject
-    end
-
-    it 'assigns fields_with_type' do
-      expect(assigns(:fields_with_type)).to eq fields_with_type
-    end
-
-    it 'renders a sorted json of fields_with_type' do
-      expect(JSON.parse(response.body)).to eq json_response
-    end
-  end
-
   ## TODO: Come back to this - see todo comment in method
   xdescribe 'GET edit' do
     subject { get :edit, params: params }

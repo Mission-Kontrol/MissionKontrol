@@ -1,20 +1,35 @@
 # frozen_string_literal: true
 
 class TaskQueuesController < ApplicationController
-  include TaskQueuePreview
+  include TaskQueueRender
   include TaskQueueRecordActivity
+  include TableActivity
+  include DatabasePresenterActions
+
   layout 'task_queue'
-  before_action :set_activities
+  before_action :set_database, only: %i[new create]
+  before_action :set_activities, only: :edit
 
   def index
+    @databases = Database.all
+    @task_queues = TaskQueue.all
+    render layout: 'standard'
+  end
+
+  def new
+    database_connection
     @task_queue = TaskQueue.new
+    @available_tables = available_tables
     @work_lists = WorkList.order(created_at: :desc)
   end
 
   def edit
     @task_queue = TaskQueue.find(params[:id])
-    @repo = Kuwinda::Repository::TargetDB.new(@task_queue.table)
-    result = @task_queue.to_sql.blank? ? @repo.all(10, 0) : @repo.query(@task_queue.to_sql, 10, 0)
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
+    @target_db = target_db
+    result = @target_db.all(@task_queue.table, 10, 0)
+    @task_queue_sql = task_queue_to_sql
     @task_queue_headers = result.columns
   end
 
@@ -31,6 +46,8 @@ class TaskQueuesController < ApplicationController
   def update
     load_task_queue
     @task_queue.save!
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
     data = data_for_preview(@task_queue)
     render action: 'update/success', json: data
   rescue StandardError
@@ -39,21 +56,28 @@ class TaskQueuesController < ApplicationController
 
   def preview
     @task_queue = TaskQueue.find(params[:id])
-    offset = params['start']
-    limit = params['length']
-    columns = []
-    sql_result = build_query_for_preview(@task_queue, limit, offset)
-    sql_result.columns.each do |c|
-      columns << { data: c }
-    end
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
+    render_preview_js
+  end
 
-    render json: {
-      data: sql_result.to_hash,
-      columns: columns,
-      draw: params['draw'].to_i,
-      recordsTotal: @target_db.count.rows[0][0],
-      recordsFiltered: sql_result.count
-    }
+  # TODO: this is duplicate of preview
+  def show
+    @task_queue = TaskQueue.find(params[:id])
+    @database = Database.find(@task_queue.database_id)
+    @database_connection = database_connection
+    @target_db = target_db
+    respond_to do |format|
+      format.html do
+        sql_result = @target_db.all(@task_queue.table)
+        @headers = sql_result ? sql_result.columns : []
+        render layout: 'standard'
+      end
+
+      format.js do
+        render_show_js
+      end
+    end
   end
 
   def outcome
@@ -65,13 +89,22 @@ class TaskQueuesController < ApplicationController
                                 task_queue.failure_outcome_timeout
                               end
 
-    outcome = TaskQueueOutcome.new
-    outcome.outcome = params['outcome']
-    outcome.task_queue_id = params['task_queue_id']
-    outcome.task_queue_item_table = params['table']
-    outcome.task_queue_item_primary_key = params['primary_key']
-    outcome.task_queue_item_reappear_at = Time.now + task_queue_item_timeout.to_i.days
+    task_queue_item_title = if params['outcome'] == 'success'
+                              task_queue.success_outcome_title
+                            else
+                              task_queue.failure_outcome_title
+                            end
+
+    outcome = TaskQueueOutcome.create(
+      outcome: outcome_params['outcome'],
+      task_queue_id: outcome_params['task_queue_id'],
+      task_queue_item_table: outcome_params['table'],
+      task_queue_item_primary_key: outcome_params['primary_key'],
+      task_queue_item_reappear_at: Time.now + task_queue_item_timeout.to_i.days
+    )
     outcome.save!
+
+    render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: task_queue_item_title }
   end
 
   def record
@@ -90,26 +123,27 @@ class TaskQueuesController < ApplicationController
 
   private
 
-  # rubocop:disable Metrics/AbcSize
-  def load_task_queue
-    @task_queue = TaskQueue.find(params[:id])
-    @task_queue.name = params['task_queue']['name'] if params['task_queue']['name']
-    @task_queue.details = params['task_queue']['details'] if params['task_queue']['details']
-    @task_queue.query_builder_rules = params['task_queue']['query_builder_rules'] if params['task_queue']['query_builder_rules']
-    @task_queue.query_builder_sql = params['task_queue']['query_builder_sql'] if params['task_queue']['query_builder_sql']
-    @task_queue.raw_sql = params['task_queue']['raw_sql'] if params['task_queue']['raw_sql']
-    @task_queue.draggable_fields = params['task_queue']['draggable_fields'] if params['task_queue']['draggable_fields']
-    @task_queue.success_outcome_title = params['task_queue']['success_outcome_title'] if params['task_queue']['success_outcome_title']
-    @task_queue.success_outcome_timeout = params['task_queue']['success_outcome_timeout'] if params['task_queue']['success_outcome_timeout']
-    @task_queue.failure_outcome_title = params['task_queue']['failure_outcome_title'] if params['task_queue']['failure_outcome_title']
-    @task_queue.failure_outcome_timeout = params['task_queue']['failure_outcome_timeout'] if params['task_queue']['failure_outcome_timeout']
-  end
-  # rubocop:enable Metrics/AbcSize
-
   def task_queue_params
     params.require(:task_queue).permit(:name,
                                        :details,
-                                       :table)
+                                       :table,
+                                       :database_id)
+  end
+
+  def task_queue_update_params
+    params.require(:task_queue).permit(:name,
+                                       :details,
+                                       :query_builder_rules,
+                                       :query_builder_sql,
+                                       :raw_sql,
+                                       :success_outcome_title,
+                                       :success_outcome_timeout,
+                                       :failure_outcome_title,
+                                       :failure_outcome_timeout)
+  end
+
+  def outcome_params
+    params.permit(:outcome, :task_queue_id, :table, :primary_key)
   end
 
   def handle_success(action:, js_func:, notice:)
@@ -148,5 +182,9 @@ class TaskQueuesController < ApplicationController
     end
 
     record
+  end
+
+  def set_database
+    @database = Database.find(params[:database_id] || task_queue_params[:database_id])
   end
 end

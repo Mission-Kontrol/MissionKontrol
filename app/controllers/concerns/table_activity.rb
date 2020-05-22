@@ -11,6 +11,7 @@ module TableActivity
     @activities.calls = []
     @activities.meetings = []
     @activities.notes = []
+    @activities.outcomes = []
   end
 
   def set_activities_for_table
@@ -31,6 +32,7 @@ module TableActivity
     select_call_activities
     select_note_activities
     select_meeting_activities
+    select_outcome_activities
   end
 
   def select_all_activities
@@ -52,6 +54,12 @@ module TableActivity
   def select_note_activities
     @activities.notes = @activities_for_table.select do |i|
       i.kind == 'note'
+    end
+  end
+
+  def select_outcome_activities
+    @activities.outcomes = @activities_for_table.select do |i|
+      i.kind == 'outcome'
     end
   end
 end

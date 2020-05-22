@@ -11,11 +11,24 @@
       <li class="active"><a data-toggle="tab" href="#tab-1">All</a></li>
       <li class="hide"><a data-toggle="tab" href="#tab-2">Calls</a></li>
       <li class=""><a data-toggle="tab" href="#tab-4">Notes</a></li>
+      <li class=""><a data-toggle="tab" href="#tab-outcomes">Outcomes</a></li>
     </ul>
   </div>
 </div>
 
 <div class="row">
+  <% if @task_queue %>
+    <div class="task-queue--outcome-buttons">
+      <% if @task_queue.success_outcome_title.present? && @task_queue.success_outcome_timeout.present? %>
+        <a href="" class="btn btn-primary task-queue--outcome-button" data-outcome="success" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.success_outcome_title %></a>
+      <% end %>
+
+      <% if @task_queue.failure_outcome_title.present? && @task_queue.failure_outcome_timeout.present? %>
+        <a href="" class="btn btn-danger task-queue--outcome-button" data-outcome="failure" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.failure_outcome_title %></a>
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="col-sm-12 light-grey-bg">
     <div class="tabs-container">
       <div class="tab-content">
@@ -55,6 +68,21 @@
               <% else %>
                 <p class="default-message">No notes has been recored for this <%= feedable_type %>.</p>
                 <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: true } %>
+              <% end %>
+            </div>
+
+            <%= render 'activities/form', feedable_type: feedable_type, feedable_id: feedable_id %>
+          </div>
+        </div>
+
+        <div id="tab-outcomes" class="tab-pane activity-tab-for-outcomes">
+          <div class="panel-body">
+            <div class="activity-stream">
+              <% if @activities && @activities.outcomes.size > 0 %>
+                <%= render 'shared/activity_stream', activities: @activities.outcomes, locals: { hide: false } %>
+              <% else %>
+                <p class="default-message">No outcomes have been recored for this <%= feedable_type %>.</p>
+                <%= render 'shared/activity_stream', activities: @activities.outcomes, locals: { hide: true } %>
               <% end %>
             </div>
 

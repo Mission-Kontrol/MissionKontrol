@@ -19,7 +19,7 @@
             </li>
           <% else %>
             <li>
-              <%= link_to "Table: #{@view_builder.table_name.humanize}", table_path(@view_builder.table_name, table: @view_builder.table_name) %>
+              <%= link_to "Table: #{@view_builder.table_name.humanize}", table_path(@view_builder.database_id, table: @view_builder.table_name) %>
             </li>
             <% if @view_builder.persisted? %>
               <li>

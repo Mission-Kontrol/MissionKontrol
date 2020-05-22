@@ -43,6 +43,17 @@ video {
   align-self: center;
 }
 
+.no-overflow {
+  overflow-x: visible;
+}
+
+.alert-danger {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
 /* WRAPPERS */
 
 #wrapper {

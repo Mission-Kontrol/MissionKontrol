@@ -15,6 +15,15 @@ if ("<%= @activity.kind %>" === "note") {
   $('.activity-tab-for-notes .default-message').remove();
 }
 
+if ("<%= @activity.kind %>" === "outcome") {
+  if ($(".activity-tab-for-outcomes").find("table > tbody > tr").length === 3) {
+    $(".activity-tab-for-outcomes").find("table > tbody > tr:last").remove();
+  }
+
+  $(".activity-tab-for-outcomes").find(".activities-history--table").prepend("<%= j render @activity %>");
+  $('.activity-tab-for-outcomes .default-message').remove();
+}
+
 if ("<%= @activity.kind %>" === "call") {
   $(".activity-tab-for-calls .activity-stream").prepend("<%= j render @activity %>");
   $('.activity-tab-for-calls .default-message').remove();

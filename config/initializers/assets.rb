@@ -21,4 +21,6 @@ Rails.application.config.assets.precompile += %w[
   shopify/draggable.bundle.js
   shopify/sortable.js
   sweetAlert/sweetalert.min.js
+  moment/moment.min.js
+  query-builder/query-builder.min.js
 ]

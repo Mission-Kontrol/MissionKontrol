@@ -2,6 +2,8 @@
 
 class DatabasesController < ApplicationController
   include DatabaseActions
+  include DatabasePresenterActions
+
   layout 'standard'
 
   before_action :check_user_permissions, only: %i[new edit]
@@ -43,6 +45,27 @@ class DatabasesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = 'Something went wrong trying to delete this database. Please try again.'
     redirect_to(databases_path)
+  end
+
+  def table_fields_with_type
+    @database = Database.find(params[:id])
+    @database_connection = database_connection
+    @fields_with_type = list_table_fields_with_type(params[:table])
+    render json: @fields_with_type.sort
+  end
+
+  def related_table_fields_with_type
+    @database = Database.find(params[:id])
+    @database_connection = database_connection
+    table = params[:table]
+    related_tables = relatable_tables(table)
+    table_fields_with_type = list_table_fields_with_type(table)
+    all_fields_with_type = []
+    table_fields_with_type.each { |field| all_fields_with_type << field }
+    related_tables.each do |related_table|
+      list_related_table_fields_with_type(related_table).each { |field| all_fields_with_type << field }
+    end
+    render json: all_fields_with_type
   end
 
   private

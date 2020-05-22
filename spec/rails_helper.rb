@@ -40,6 +40,8 @@ RSpec.configure do |config|
     TargetTableSetting.all.each(&:delete)
     DataTableState.all.each(&:delete)
     Database.all.each(&:delete)
+    TaskQueue.all.each(&:delete)
+    WorkList.all.each(&:delete)
     # DatabaseCleaner.clean
   end
 

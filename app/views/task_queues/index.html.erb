@@ -1,20 +1,50 @@
-<div class="row">
-  <div class="col-sm-12">
-    <br>
-    <div id="builder"></div>
-    <br>
-    <h3>Query Builder Rules</h3>
-    <textarea name="" class="qb-rules form-control" id="myTextarea"></textarea>
-    <br>
-    <button id="btn-get" type="button" name="button" class="btn btn-success">Show rules</button>
-    <button type="button" name="button" class="btn btn-success">Save</button>
-    <br>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-6">
+    <h1>Available Task Queues</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%= link_to 'Home', dashboard_path %>
+      </li>
+
+      <li class="breadcrumb-item">
+        <%= link_to 'Task Queues', task_queues_path %>
+      </li>
+    </ol>
   </div>
 </div>
 
-<div class="modal fade" id="new-task-queue-modal" tabindex="-1" role="dialog" aria-labelledby="new-task-queue-modal">
-  <div class="modal-dialog" role="document">
-    <%= render partial: 'task_queues/new/new_queue_modal_screen_1' %>
-    <%= render partial: 'task_queues/new/new_queue_modal_screen_2' %>
+<div class="wrapper wrapper-content animated ">
+  <div class="row">
+    <div class="col-sm-12">
+      <% @databases.each do |database| %>
+        <button class="accordion"><%= database.friendly_name %><span class="float-right"><img src="/assets/images/icons/plus-thick.png"></span></button>
+        <div class="panel">
+          <div class="col-sm-2 pull-right margin-top-nav">
+            <%= link_to('Add new', new_task_queue_path(database_id: database.id), html_options = { class: "btn btn-purple" }) %>
+          </div>
+          <table id="table-layouts-<%= database.id %>" class="table" data-database-id="<%= database.id %>">
+            <thead class="thead-light">
+              <tr>
+                <th>Task queue name</th>
+                <th>Table</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody class="table-borderless table-hover">
+              <% @task_queues.select { |task_queue| task_queue.database_id == database.id }.each do |task_queue| %>
+                <tr>
+                  <td><%= task_queue.name %></td>
+                  <td><%= task_queue.table.humanize %></td>
+                  <td>
+                    <%= link_to('Edit', edit_task_queue_path(task_queue.id), html_options = { class: "btn btn-primary btn-wide" }) %>
+                  </td>
+                </tr>
+              <% end if @task_queues %>
+            </tbody>
+          </table>
+          <br />
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

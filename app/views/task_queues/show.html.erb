@@ -1,0 +1,27 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'dataTable/datatables.min.js' %>
+<% end %>
+
+<%= render 'shared/page_banner_header', title: @task_queue.name.capitalize, items: ['Task Queue', @task_queue.name.capitalize] %>
+
+<div class="wrapper wrapper-content animated ">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <table id="target-table-task-queues" class="table hide" data-table-name="<%= @task_queue.table %>" data-database-id="<%= @task_queue.database_id %>" data-can-export="<%= current_admin_user.export_abilities? %>">
+              <thead>
+                <tr>
+                  <% @headers.each do |header| %>
+                    <th class='column-<%= header %>'><%= header.humanize %></th>
+                  <% end %>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

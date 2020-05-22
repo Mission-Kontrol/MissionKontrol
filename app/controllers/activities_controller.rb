@@ -19,6 +19,23 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def create_js
+    @activity = Activity.new(js_activity_params)
+
+    respond_to do |format|
+      if @activity.save
+        json = {
+          activity: @activity,
+          created_at: @activity.created_at.strftime('%a, %d %b %Y at %I:%M'),
+          user_name: @activity.admin_user.full_name
+        }
+        format.js { render action: 'success', json: json }
+      else
+        format.js { render action: 'failure', status: :unprocessable_entity }
+      end
+    end
+  end
+
   def index
     @activity = Activity.new
     @feedable_type = params[:feedable_type]
@@ -40,5 +57,13 @@ class ActivitiesController < ApplicationController
                                      :feedable_id,
                                      :user_id,
                                      :twilio_call_sid)
+  end
+
+  def js_activity_params
+    params.permit(:content,
+                  :kind,
+                  :feedable_type,
+                  :feedable_id,
+                  :user_id)
   end
 end
