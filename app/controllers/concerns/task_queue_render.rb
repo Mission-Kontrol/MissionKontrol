@@ -101,9 +101,13 @@ module TaskQueueRender
     }
   end
 
-  def load_task_queue
-    @task_queue = TaskQueue.find(params[:id])
+  def update_task_queue
     attributes_to_update = task_queue_update_params.reject { |_, v| v.blank? }
     @task_queue.update_attributes(attributes_to_update)
+
+    if params['task_queue']['success_database'] || params['task_queue']['failure_database']
+      @task_queue.success_database_update = params['task_queue']['success_database']
+      @task_queue.failure_database_update = params['task_queue']['failure_database']
+    end
   end
 end

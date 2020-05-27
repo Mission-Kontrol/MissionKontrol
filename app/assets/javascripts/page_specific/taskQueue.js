@@ -230,10 +230,6 @@ function loadResults () {
 
   params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
   params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
-  params["task_queue"]["success_outcome_title"] = document.getElementById("task_queue_success_outcome_title").value;
-  params["task_queue"]["success_outcome_timeout"] = document.getElementById("task_queue_success_outcome_timeout").value;
-  params["task_queue"]["failure_outcome_title"] = document.getElementById("task_queue_failure_outcome_title").value;
-  params["task_queue"]["failure_outcome_timeout"] = document.getElementById("task_queue_failure_outcome_timeout").value;
 
   $.ajax({
     url: "/task_queues/" + taskQueueId,
@@ -255,6 +251,27 @@ function loadResults () {
   });
 }
 
+function updateSettings(button) {
+  var taskQueueId = document.getElementById("builder").dataset.taskQueueId;
+  var params = {};
+  $(button.form).serializeArray().map(function (x) {
+    params[x.name] = x.value;
+  });
+
+  $.ajax({
+    url: "/task_queues/" + taskQueueId,
+    type: "PATCH",
+    data: params,
+    dataType: "json",
+    error() {
+      window.toastr.error("Task queue preview failed, please review errors and try again.");
+    },
+    success() {
+      window.toastr.info("Task queue updated.");
+    }
+  });
+}
+
 function linkToSingleDataView () {
   $("body").on("click", ".clickable-row", function () {
     let previewLocation = $(this).data("href");
@@ -263,6 +280,59 @@ function linkToSingleDataView () {
 
     window.location.href = previewLocation + taskQueueParams;
   });
+}
+
+function showLabel(outcome) {
+  let label = $("#task-queue-" + outcome + "-label");
+  if (label.hasClass("hide")) {
+    label.removeClass("hide");
+  }
+}
+
+function hideInput(outcome, input) {
+  let inputField = $("#task-queue-" + outcome + input);
+  if (!inputField.hasClass("hide")) {
+    inputField.addClass("hide");
+  }
+}
+
+function displayUpdateField (field, outcome) {
+  if (field.value === "Boolean") {
+    hideInput(outcome, "-text");
+    $("#task-queue-" + outcome + "-boolean").removeClass("hide");
+    showLabel(outcome);
+  } else if (field.value === "Text") {
+    hideInput(outcome, "-boolean");
+    $("#task-queue-" + outcome + "-text").removeClass("hide");
+    showLabel(outcome);
+  } else if (field.value === "Increment") {
+    hideInput(outcome, "-boolean");
+    hideInput(outcome, "-text");
+    if (!$("#task-queue-" + outcome + "-label").hasClass("hide")) {
+      $("#task-queue-" + outcome + "-label").addClass("hide");
+    }
+  }
+}
+
+function loadCorrectInput() {
+  let successType = $("#task_queue_success_database_update_type").val();
+  let failureType = $("#task_queue_failure_database_update_type").val();
+
+  if (successType === "Boolean") {
+    showLabel('success');
+    $("#task-queue-success-boolean").removeClass("hide");
+  } else if (successType === "Text") {
+    showLabel('success');
+    $("#task-queue-success-text").removeClass("hide");
+  }
+
+  if (failureType === "Boolean") {
+    showLabel('failure');
+    $("#task-queue-failure-boolean").removeClass("hide");
+  } else if (failureType === "Text") {
+    showLabel('failure');
+    $("#task-queue-failure-text").removeClass("hide");
+  }
 }
 
 Paloma.controller("TaskQueues", {
@@ -278,10 +348,25 @@ Paloma.controller("TaskQueues", {
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
 
     getFieldsWithType(taskQueueTable);
+
     $(".task-queue-update-button").click(function() {
       loadResults();
     });
+
+    $(".task-queue-update-settings").click(function(evt) {
+      evt.preventDefault();
+      updateSettings(this);
+    });
+
     linkToSingleDataView();
+
+    $("#task_queue_success_database_update_type").change(function() {
+      displayUpdateField(this, 'success');
+    })
+
+    $("#task_queue_failure_database_update_type").change(function() {
+      displayUpdateField(this, 'failure');
+    })
 
     var params = {};
     params["task_queue"] = {}
@@ -301,6 +386,8 @@ Paloma.controller("TaskQueues", {
         }
       }
     });
+
+    loadCorrectInput();
   },
 
   show () {

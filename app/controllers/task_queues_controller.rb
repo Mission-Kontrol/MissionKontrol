@@ -31,6 +31,7 @@ class TaskQueuesController < ApplicationController
     result = @target_db.all(@task_queue.table, 10, 0)
     @task_queue_sql = task_queue_to_sql
     @task_queue_headers = result.columns
+    @table_fields = list_table_fields_with_type(@task_queue.table)
   end
 
   def create
@@ -44,7 +45,8 @@ class TaskQueuesController < ApplicationController
   end
 
   def update
-    load_task_queue
+    @task_queue = TaskQueue.find(params[:id])
+    update_task_queue
     @task_queue.save!
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
@@ -138,8 +140,10 @@ class TaskQueuesController < ApplicationController
                                        :raw_sql,
                                        :success_outcome_title,
                                        :success_outcome_timeout,
+                                       :success_database,
                                        :failure_outcome_title,
-                                       :failure_outcome_timeout)
+                                       :failure_outcome_timeout,
+                                       :failure_database)
   end
 
   def outcome_params

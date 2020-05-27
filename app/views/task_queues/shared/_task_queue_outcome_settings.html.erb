@@ -1,0 +1,186 @@
+<div role="tabpanel" class="tab-pane task-queue-settings-tab" id="task-queue-outcome-settings">
+  <div class="row">
+    <div class="col-sm-8">
+      <h1>Outcome settings</h1>
+      <p>
+        Every list is actionable, these outcomes will define how long before the record re-appears on the list depending on the outcome of the action.
+      </p>
+      <br/>
+      <br/>
+
+      <%= form_for @task_queue, html: { id: "Blabla" } do |f| %>
+        <h4 class="bold">Success</h4>
+        <p>Settings for when a user actions a queue item and the green button is clicked.</p>
+        <br/>
+        <div class="row">
+          <div class="col-sm-12">
+            <p class="bold">Button label</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="form-group">
+              <%= f.text_field :success_outcome_title, class: "form-control", placeholder: "E.g. Talked to customer" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <p class="bold">Queue action</p>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <p>Hide from queue for X hours, leave blank for no action.</p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <div class="form-group">
+              <%= f.number_field :success_outcome_timeout, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p>Hours</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-9">
+            <p class="bold">Database update</p>
+            <p>Update a database field when success is set.</p>
+          </div>
+          <div class="col-sm-3">
+            <label class="switch">
+              <div class='toggle'>
+                <%= check_box_tag "task_queue[success_database][enabled]", true, @task_queue.success_database_update.try(:[], "enabled"), class: 'form-control toggle-state' %>
+                <div class='toggle-inner'>
+                  <div class='indicator'></div>
+                </div>
+                <div class='active-bg'></div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12 col-md-4">
+            <p>Update field</p>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+              <%= select_tag("task_queue[success_database][update_field]", options_for_select(@table_fields.map { |field| field.first }, @task_queue.success_database_update.try(:[], "update_field")), { class: "form-control" }) %>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-4">
+            <p>Update type</p>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+              <%= select_tag("task_queue[success_database][update_type]", options_for_select(["Increment", "Boolean", "Text"], @task_queue.success_database_update.try(:[], "update_type")), { class: "form-control" }) %>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-4">
+            <p class="hide" id="task-queue-success-label">Update to</p>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+              <%= select_tag("task_queue[success_database][update_boolean]", options_for_select(["True", "False"], @task_queue.success_database_update.try(:[], "update_boolean")), { class: "form-control hide", id: "task-queue-success-boolean" }) %>
+              <%= text_field_tag "task_queue[success_database][update_text]", @task_queue.success_database_update.try(:[], "update_text"), class: "form-control hide", id: "task-queue-success-text" %>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+        <br/>
+
+        <h4 class="bold">Failure</h4>
+        <p>Settings for when a user actions a queue item and the red button is clicked.</p>
+        <br/>
+        <div class="row">
+          <div class="col-sm-12">
+            <p class="bold">Button label</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="form-group">
+              <%= f.text_field :failure_outcome_title, class: "form-control", placeholder: "E.g. Did not talk to customer" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <p class="bold">Queue action</p>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <p>Hide from queue for X hours, leave blank for no action.</p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <div class="form-group">
+              <%= f.number_field :failure_outcome_timeout, class: "form-control" %>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p>Hours</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-9">
+            <p class="bold">Database update</p>
+            <p>Update a database field when failure is set.</p>
+          </div>
+          <div class="col-sm-3">
+            <label class="switch">
+              <div class='toggle'>
+                <%= check_box_tag "task_queue[failure_database][enabled]", true, @task_queue.failure_database_update.try(:[], "enabled"), class: 'form-control toggle-state' %>
+                <div class='toggle-inner'>
+                  <div class='indicator'></div>
+                </div>
+                <div class='active-bg'></div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12 col-md-4">
+            <p>Update field</p>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+              <%= select_tag("task_queue[failure_database][update_field]", options_for_select(@table_fields.map { |field| field.first }, @task_queue.failure_database_update.try(:[], "update_field")), { class: "form-control" }) %>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-4">
+            <p>Update type</p>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+              <%= select_tag("task_queue[failure_database][update_type]", options_for_select(["Increment", "Boolean", "Text"], @task_queue.failure_database_update.try(:[], "update_type")), { class: "form-control" }) %>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-4">
+            <p class="hide" id="task-queue-failure-label">Update to</p>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+              <%= select_tag("task_queue[failure_database][update_boolean]", options_for_select(["True", "False"], @task_queue.failure_database_update.try(:[], "update_boolean")), { class: "form-control hide", id: "task-queue-failure-boolean" }) %>
+              <%= text_field_tag "task_queue[failure_database][update_text]", @task_queue.failure_database_update.try(:[], "update_text"), class: "form-control hide", id: "task-queue-failure-text" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <br>
+            <%= f.submit "Update Task Queue", class: "btn btn-primary pull-right task-queue-update-settings", id: "task-queue-update-settings" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -5,10 +5,7 @@ class TaskQueue < ApplicationRecord
   has_many :task_queue_outcomes
 
   OUTCOME_TIMEOUTS = [
-    ['1 Day', '1'],
-    ['5 Days', '5'],
-    ['1 week', '7'],
-    ['2 weeks', '14'],
-    ['1 month', '30']
+    ['Hours', 'hours'],
+    ['Days', 'days']
   ].freeze
 end
