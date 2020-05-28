@@ -238,3 +238,7 @@
     border-color: lighten($red, 10%);
   }
 }
+
+.no-click {
+  cursor: default;
+}

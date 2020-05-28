@@ -133,7 +133,8 @@ class TaskQueuesController < ApplicationController
                                        :success_database,
                                        :failure_outcome_title,
                                        :failure_outcome_timeout,
-                                       :failure_database)
+                                       :failure_database,
+                                       :enabled)
   end
 
   def outcome_params

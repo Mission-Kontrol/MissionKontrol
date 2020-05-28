@@ -314,6 +314,25 @@ function displayUpdateField (field, outcome) {
   }
 }
 
+function updateTaskQueue(checkbox) {
+  var taskQueueId = document.getElementById("builder").dataset.taskQueueId;
+
+  var params = { "task_queue[enabled]": checkbox.checked };
+
+  $.ajax({
+    url: "/task_queues/" + taskQueueId,
+    type: "PATCH",
+    data: params,
+    dataType: "json",
+    error() {
+      window.toastr.error("Task queue preview failed, please review errors and try again.");
+    },
+    success() {
+      window.toastr.info("Task queue updated.");
+    }
+  });
+}
+
 function loadCorrectInput() {
   let successType = $("#task_queue_success_database_update_type").val();
   let failureType = $("#task_queue_failure_database_update_type").val();
@@ -366,6 +385,10 @@ Paloma.controller("TaskQueues", {
 
     $("#task_queue_failure_database_update_type").change(function() {
       displayUpdateField(this, 'failure');
+    })
+
+    $("#task-queue-enable").change(function() {
+      updateTaskQueue(this);
     })
 
     var params = {};
