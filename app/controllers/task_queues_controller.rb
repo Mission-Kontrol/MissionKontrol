@@ -83,30 +83,20 @@ class TaskQueuesController < ApplicationController
   end
 
   def outcome
-    task_queue = TaskQueue.find(params['task_queue_id'])
+    task_queue = TaskQueue.find(outcome_params['task_queue_id'])
+    @database = Database.find(task_queue.database_id)
+    @database_connection = database_connection
+    @target_db = target_db
+    outcome_success = outcome_params['outcome'] == 'success'
 
-    task_queue_item_timeout = if params['outcome'] == 'success'
-                                task_queue.success_outcome_timeout
-                              else
-                                task_queue.failure_outcome_timeout
-                              end
+    item_timeout = outcome_success ? task_queue.success_outcome_timeout : task_queue.failure_outcome_timeout
+    item_title = outcome_success ? task_queue.success_outcome_title : task_queue.failure_outcome_title
 
-    task_queue_item_title = if params['outcome'] == 'success'
-                              task_queue.success_outcome_title
-                            else
-                              task_queue.failure_outcome_title
-                            end
+    outcome = create_outcome(outcome_params, item_timeout)
 
-    outcome = TaskQueueOutcome.create(
-      outcome: outcome_params['outcome'],
-      task_queue_id: outcome_params['task_queue_id'],
-      task_queue_item_table: outcome_params['table'],
-      task_queue_item_primary_key: outcome_params['primary_key'],
-      task_queue_item_reappear_at: Time.now + task_queue_item_timeout.to_i.days
-    )
-    outcome.save!
+    complete_outcome_actions(task_queue, outcome_params)
 
-    render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: task_queue_item_title }
+    render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: item_title }
   end
 
   def record

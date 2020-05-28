@@ -28,7 +28,7 @@
         <% if @layout_builder && !@task_queue %>
           <%= link_to('Edit layout', edit_layout_path(@layout_builder.id), html_options = { class: "btn btn-default" }) %>
         <% elsif !@layout_builder %>
-          <%= link_to('New layout', new_layout_path(table: @current_table), html_options = { class: "btn btn-default" }) %>
+          <%= link_to('New layout', new_layout_path(table: @current_table, database_id: @database.id), html_options = { class: "btn btn-default" }) %>
         <% else %>
         <% end %>
       </div>
@@ -48,7 +48,7 @@
           <div class="ibox-content">
             <div class="row">
               <div class="col-xs-12 text-center">
-                <h1>This layout is empty. Add fields to view in your layout <%= link_to('here', new_layout_path(table: @current_table), html_options = { class: "underline" }) %></h1>
+                <h1>This layout is empty. Add fields to view in your layout <%= link_to('here', new_layout_path(table: @current_table, database_id: @database.id), html_options = { class: "underline" }) %></h1>
               </div>
             </div>
           </div>
