@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
   end
 
   def load_databases_with_task_queues
-    database_ids = TaskQueue.enabled.map { |queue| queue.database_id }.uniq
+    database_ids = TaskQueue.enabled.map(&:database_id).uniq
     @databases_with_task_queues = Database.where(id: database_ids)
   end
 
