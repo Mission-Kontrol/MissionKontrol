@@ -213,6 +213,7 @@ div.dataTables_wrapper div.dataTables_filter label {
 
 .table--info {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
 
   #target-table-admin-users_paginate,
