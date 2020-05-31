@@ -11,7 +11,7 @@ function loadTaskQueuePreviewDataTable (columns) {
     scrollX: true,
     serverSide: true,
     ajax: "/task_queues/" + location.pathname.split("/")[2] + "/preview",
-    dom: "f<'table--info'pB>rti<'clear'>",
+    dom: "<'table--info'pB>rti<'clear'>",
     pagingType: "simple_numbers",
     language: {
       paginate: {
@@ -32,6 +32,11 @@ function loadTaskQueuePreviewDataTable (columns) {
       stateLoadCallbackFunction($(this), callback);
     },
     buttons: [
+      {
+        extend: "colvis",
+        className: "table--colvis",
+        text: "Columns"
+      },
       {
         extend: "csv",
         className: "table--export ",
@@ -90,6 +95,11 @@ function loadTaskQueueDataTable (columns) {
       stateLoadCallbackFunction($(this), callback);
     },
     buttons: [
+      {
+        extend: "colvis",
+        className: "table--colvis",
+        text: "Columns"
+      },
       {
         extend: "csv",
         className: "table--export ",
