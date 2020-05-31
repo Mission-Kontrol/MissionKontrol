@@ -17,7 +17,9 @@
         <a href="" class="btn btn-danger task-queue--outcome-button" data-outcome="failure" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.failure_outcome_title %></a>
       <% end %>
 
-      <a href="" class="btn btn-purple task-queue--next-item"  data-task-queue-id="<%= @task_queue.id %>">Next queue item</a>
+      <a href=
+"/tables/<%= @task_queue.table %>/<%= @record_id %>?table=<%= @task_queue.table %>&database_id=<%= @task_queue.database_id %>&task_queue_id=<%= @task_queue.id %>" class="btn btn-purple task-queue--next-item">Next queue item</a>
     </div>
   </div>
 </div>
+

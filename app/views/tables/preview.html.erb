@@ -11,14 +11,18 @@
       <ol class="breadcrumb">
         <li class="">
           <% if @task_queue %>
-            <span><%= @task_queue.name %></span>
+            <span>Task Queue</span>
           <% else %>
             <span>Data views</span>
           <% end %>
         </li>
 
         <li class="">
-          <%= link_to @current_table.capitalize, table_path(table: @current_table, id: @current_table.downcase) %>
+          <% if @task_queue %>
+            <%= @task_queue.name %>
+          <% else %>
+            <%= link_to @current_table.capitalize, table_path(table: @current_table, id: @current_table.downcase) %>
+          <% end %>
         </li>
       </ol>
     </div>

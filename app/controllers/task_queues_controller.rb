@@ -60,7 +60,7 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.find(params[:id])
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
-    render_preview_js
+    render_preview_js_task_queue
   end
 
   # TODO: this is duplicate of preview
@@ -77,7 +77,7 @@ class TaskQueuesController < ApplicationController
       end
 
       format.js do
-        render_show_js
+        render_show_js_task_queue
       end
     end
   end

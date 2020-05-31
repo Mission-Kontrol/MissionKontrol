@@ -59,7 +59,7 @@ module TaskQueueRender
     build_response_for_preview(query)
   end
 
-  def render_preview_js
+  def render_preview_js_task_queue
     offset = params['start']
     limit = params['length']
     columns = []
@@ -80,7 +80,7 @@ module TaskQueueRender
     }
   end
 
-  def render_show_js
+  def render_show_js_task_queue
     offset = params['start']
     limit = params['length']
     columns = []

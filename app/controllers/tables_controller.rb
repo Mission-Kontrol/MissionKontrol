@@ -5,6 +5,7 @@ class TablesController < ApplicationController
   include TableRender
   include DatabasePresenterActions
   include RelatableTables
+  include TaskQueueRender
 
   layout 'standard'
 
@@ -49,6 +50,9 @@ class TablesController < ApplicationController
       end
     end
 
+    task_queue_records = build_query_for_preview(@task_queue, nil, nil).rows
+    task_queue_records.map.with_index { |array, index| @index = index if array.first == params[:record_id].to_i }
+    @record_id = task_queue_records[@index + 1].first
     @task_queue = existing_outcomes&.any? ? nil : @task_queue
 
     respond_to do |format|
