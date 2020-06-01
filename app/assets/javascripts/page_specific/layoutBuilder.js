@@ -177,6 +177,9 @@ function initializeDragula () {
 }
 
 Paloma.controller("LayoutBuilder", {
+  index () {
+    $(".spinner").hide();
+  },
   new () {
     $("#layout-builder-modal").modal({
       backdrop: "static",

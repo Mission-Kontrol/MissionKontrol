@@ -63,11 +63,15 @@ module TaskQueueRender
     offset = params['start']
     limit = params['length']
     columns = []
-    sql_result = build_query_for_preview(@task_queue, limit, offset)
+    sql_result = Rails.cache.fetch("task_queue/#{@task_queue.id}/preview_js", expires_in: 2.hours) do
+      build_query_for_preview(@task_queue, limit, offset)
+    end
+
     sql_result.columns.each do |c|
       columns << { data: c }
     end
 
+    @target_db = target_db
     outcome_records = @task_queue.task_queue_outcomes.map(&:task_queue_item_primary_key)
     display_data = sql_result.to_hash.reject { |row| outcome_records.include? row['id'].to_s }
 
@@ -84,11 +88,16 @@ module TaskQueueRender
     offset = params['start']
     limit = params['length']
     columns = []
-    sql_result = build_query_for_preview(@task_queue, limit, offset)
+
+    sql_result = Rails.cache.fetch("task_queue/#{@task_queue.id}/show_js", expires_in: 2.hours) do
+      build_query_for_preview(@task_queue, limit, offset)
+    end
+
     sql_result.columns.each do |c|
       columns << { data: c }
     end
 
+    @target_db = target_db
     outcome_records = @task_queue.task_queue_outcomes.map(&:task_queue_item_primary_key)
     display_data = sql_result.to_hash.reject { |row| outcome_records.include? row['id'].to_s }
 

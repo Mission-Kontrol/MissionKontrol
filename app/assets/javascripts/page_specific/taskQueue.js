@@ -153,7 +153,7 @@ function initQueryBuilder (filters) {
   });
 
   let taskQueueRules = $("#builder").data().taskQueueRules;
-
+  $(".spinner").hide();
   if (!$.isEmptyObject(taskQueueRules) ) {
     $("#builder").queryBuilder("setRules", taskQueueRules);
   }
@@ -184,6 +184,7 @@ function buildFilterForDataType (type, id) {
 }
 
 function loadQueryBuilder (data) {
+  $(".spinner").show();
   const filters = [];
 
   for (var i = 0; i < data.length; i++) {
@@ -365,6 +366,10 @@ function loadCorrectInput() {
 }
 
 Paloma.controller("TaskQueues", {
+  index () {
+    $(".spinner").hide();
+  },
+
   new () {
     $("#task-queue-modal").modal({
       backdrop: "static",
@@ -373,6 +378,7 @@ Paloma.controller("TaskQueues", {
   },
 
   edit () {
+    $(".spinner").show();
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
     let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
 
@@ -421,6 +427,10 @@ Paloma.controller("TaskQueues", {
     });
 
     loadCorrectInput();
+
+    $(window).load(function() {
+      $(".spinner").hide();
+    });
   },
 
   show () {
