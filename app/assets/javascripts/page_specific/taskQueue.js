@@ -349,18 +349,18 @@ function loadCorrectInput() {
   let failureType = $("#task_queue_failure_database_update_type").val();
 
   if (successType === "Boolean") {
-    showLabel('success');
+    showLabel("success");
     $("#task-queue-success-boolean").removeClass("hide");
   } else if (successType === "Text") {
-    showLabel('success');
+    showLabel("success");
     $("#task-queue-success-text").removeClass("hide");
   }
 
   if (failureType === "Boolean") {
-    showLabel('failure');
+    showLabel("failure");
     $("#task-queue-failure-boolean").removeClass("hide");
   } else if (failureType === "Text") {
-    showLabel('failure');
+    showLabel("failure");
     $("#task-queue-failure-text").removeClass("hide");
   }
 }
@@ -396,19 +396,19 @@ Paloma.controller("TaskQueues", {
     linkToSingleDataView();
 
     $("#task_queue_success_database_update_type").change(function() {
-      displayUpdateField(this, 'success');
-    })
+      displayUpdateField(this, "success");
+    });
 
     $("#task_queue_failure_database_update_type").change(function() {
-      displayUpdateField(this, 'failure');
-    })
+      displayUpdateField(this, "failure");
+    });
 
     $("#task-queue-enable").change(function() {
       updateTaskQueue(this);
-    })
+    });
 
     var params = {};
-    params["task_queue"] = {}
+    params["task_queue"] = {};
     $.ajax({
       url: "/task_queues/" + taskQueueId,
       type: "PATCH",
