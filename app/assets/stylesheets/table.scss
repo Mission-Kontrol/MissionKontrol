@@ -263,6 +263,11 @@ div.dataTables_wrapper div.dataTables_filter label {
     }
   }
 
+  .btn-group,
+  .btn-group-vertical {
+    display: flex;
+  }
+
   .table--import {
     background: url(/assets/images/icons/import.png) no-repeat center left;
     padding: 6px 20px;

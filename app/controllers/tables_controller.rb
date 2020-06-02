@@ -48,12 +48,12 @@ class TablesController < ApplicationController
         outcome.task_queue_item_primary_key == params[:record_id] &&
           outcome.task_queue_item_reappear_at >= Date.today
       end
-    end
 
-    task_queue_records = build_query_for_preview(@task_queue, nil, nil).rows
-    task_queue_records.map.with_index { |array, index| @index = index if array.first == params[:record_id].to_i }
-    @record_id = task_queue_records[@index + 1].first
-    @task_queue = existing_outcomes&.any? ? nil : @task_queue
+      task_queue_records = build_query_for_preview(@task_queue, nil, nil).rows
+      task_queue_records.map.with_index { |array, index| @index = index if array.first == params[:record_id].to_i }
+      @record_id = task_queue_records[@index + 1].first
+      @task_queue = existing_outcomes&.any? ? nil : @task_queue
+    end
 
     respond_to do |format|
       format.html do

@@ -161,6 +161,7 @@ function loadDataTable (columns) {
     ],
     initComplete(settings, json) {
       initCompleteFunction(settings, json, searchableTable);
+      $(".spinner").hide();
     }
   });
 
@@ -406,5 +407,6 @@ Paloma.controller("Tables", {
     updateEditableFieldInput();
     applyOutcomeRule();
     rotateNestedTableIcon();
+    $(".spinner").hide();
   }
 });
