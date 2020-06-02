@@ -239,6 +239,10 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Max: 20
 
+Metrics/ModuleLength:
+  Exclude:
+    - 'app/controllers/concerns/database_actions.rb'
+
 # Offense count: 1
 Metrics/PerceivedComplexity:
   Max: 17
