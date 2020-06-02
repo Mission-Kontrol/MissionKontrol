@@ -84,7 +84,6 @@ class DatabasesController < ApplicationController
                                      :port,
                                      :name,
                                      :password,
-                                     :password_changed,
                                      :username)
   end
 
