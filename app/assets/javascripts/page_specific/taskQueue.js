@@ -371,9 +371,28 @@ Paloma.controller("TaskQueues", {
   },
 
   new () {
-    $("#task-queue-modal").modal({
+    $("#new-task-queue-modal").modal({
       backdrop: "static",
       keyboard: false
+    });
+
+    $("#queue-builder-modal-next-button").click(function() {
+      $("#new-queue-modal-screen-1").toggleClass("hide");
+      $("#new-queue-modal-screen-2").toggleClass("hide");
+    });
+
+    $("#queue-builder-modal-back-button").click(function() {
+      $("#new-queue-modal-screen-1").toggleClass("hide");
+      $("#new-queue-modal-screen-2").toggleClass("hide");
+    });
+
+    $("#queue-builder-modal-save-button").click(function() {
+      var params = {};
+      params["task_queue"] = {};
+      params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
+      params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
+      params["task_queue"]["table"] = document.getElementById("task_queue_table").value;
+      saveTaskQueue(params);
     });
   },
 

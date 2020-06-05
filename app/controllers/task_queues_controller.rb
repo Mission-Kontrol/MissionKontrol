@@ -151,7 +151,7 @@ class TaskQueuesController < ApplicationController
 
     return true unless outcome
 
-    if outcome.task_queue_item_reappear_at < Time.now
+    if outcome.task_queue_item_reapper_at && outcome.task_queue_item_reappear_at < Time.now
       outcome.delete
       true
     else

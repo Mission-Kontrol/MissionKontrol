@@ -42,11 +42,11 @@
               <div class="row flex justify-content-center">
                 <div class="col-sm-12">
                   <div class="task-queue--outcome-buttons">
-                    <% if @task_queue.success_outcome_title.present? && @task_queue.success_outcome_timeout.present? %>
+                    <% if @task_queue.success_outcome_title.present? %>
                       <a href="" class="btn btn-primary task-queue--outcome-button no-click"><%= @task_queue.success_outcome_title %></a>
                     <% end %>
 
-                    <% if @task_queue.failure_outcome_title.present? && @task_queue.failure_outcome_timeout.present? %>
+                    <% if @task_queue.failure_outcome_title.present? %>
                       <a href="" class="btn btn-danger task-queue--outcome-button no-click"><%= @task_queue.failure_outcome_title %></a>
                     <% end %>
 

@@ -192,5 +192,6 @@ Paloma.controller("LayoutBuilder", {
     initializeDraggable();
     loadDraggableFields();
     initializeDragula();
+    $(".spinner").hide();
   }
 });

@@ -55,12 +55,13 @@ module TaskQueueRecordActivity
   end
 
   def create_outcome(outcome_params, item_timeout)
+    item_reappear_time = item_timeout ? Time.now + item_timeout.to_i.hours : nil
     TaskQueueOutcome.create!(
       outcome: outcome_params['outcome'],
       task_queue_id: outcome_params['task_queue_id'],
       task_queue_item_table: outcome_params['table'],
       task_queue_item_primary_key: outcome_params['primary_key'],
-      task_queue_item_reappear_at: Time.now + item_timeout.to_i.hours
+      task_queue_item_reappear_at: item_reappear_time
     )
   end
 
