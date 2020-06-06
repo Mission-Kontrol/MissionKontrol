@@ -1,7 +1,7 @@
 .nav > li > a {
   color: white;
   font-weight: bold;
-  padding: 14px 20px 14px 25px;
+  padding: 14px 6px;
   display: block;
   font-size: 14px;
   font-stretch: normal;
@@ -189,14 +189,11 @@
 
 ul.nav-second-level {
   background: darken($nav-bg, 3%);
+  padding-left: 6px;
 
   li > a {
     font-weight: normal;
     opacity: 80%;
-  }
-
-  &.nav-databases {
-    padding-left: 30px;
   }
 }
 
@@ -279,8 +276,7 @@ ul.nav-second-level {
 }
 
 .nav-second-level li a {
-  padding: 7px 20px 7px 10px;
-  padding-left: 25px;
+  padding: 7px 10px 7px 12px;
 
   img {
     padding-right: 10px;
