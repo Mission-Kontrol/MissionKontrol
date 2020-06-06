@@ -33,7 +33,9 @@
             <div class="col-sm-8 white-bg">
               <div class="row">
                 <div class="col-sm-12 no-padding">
-                  <h4 class="bold margin-15">Task Queue: <%= @task_queue.name %></h4>
+                  <h4 class="bold margin-15">Task Queue:
+                    <span class="task-queue--name"><%= @task_queue.name %></span>
+                  <h4>
                 </div>
                 <div class="col-sm-12 light-grey-bg flex min-height-50">
                   <h4 class="task-queue--details"><%= @task_queue.details %></h4>

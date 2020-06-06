@@ -278,8 +278,10 @@ function updateSettings(button) {
       window.toastr.error("Task queue preview failed, please review errors and try again.");
     },
     success(data) {
-      $(".task-queue--outcome-button-success")[0].text = data['task_queue']['success_outcome_title'];
-      $(".task-queue--outcome-button-failure")[0].text = data['task_queue']['failure_outcome_title'];
+      $(".task-queue--outcome-button-success")[0].text = data["task_queue"]["success_outcome_title"];
+      $(".task-queue--outcome-button-failure")[0].text = data["task_queue"]["failure_outcome_title"];
+      $(".task-queue--name")[0].innerText = data["task_queue"]["name"];
+      $(".task-queue--details")[0].innerText = data["task_queue"]["details"];
       window.toastr.info("Task queue updated.");
     }
   });

@@ -25,11 +25,8 @@
                   <%= f.label :details, "Enter details of the task" %>
                   <%= f.text_area :details, class: "form-control" %>
                 </div>
+                <%= f.submit "Update Task Queue", class: "btn btn-primary pull-right task-queue-update-settings", id: "task-queue-update-settings" %>
               <% end %>
-
-              <br>
-
-              <button type="button" name="button" class="btn btn-primary task-queue-update-button" id="task-queue-update-button">Update Task Queue</button>
             </div>
           </div>
         </div>
