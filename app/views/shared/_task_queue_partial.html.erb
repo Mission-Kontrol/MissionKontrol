@@ -10,11 +10,11 @@
   <div class="col-sm-6">
     <div class="task-queue--outcome-buttons">
       <% if @task_queue.success_outcome_title.present? %>
-        <a href="" class="btn btn-primary task-queue--outcome-button" data-outcome="success" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.success_outcome_title %></a>
+        <a href="" class="btn btn-primary task-queue--outcome-button task-queue--outcome-button-success" data-outcome="success" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.success_outcome_title %></a>
       <% end %>
 
       <% if @task_queue.failure_outcome_title.present? %>
-        <a href="" class="btn btn-danger task-queue--outcome-button" data-outcome="failure" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.failure_outcome_title %></a>
+        <a href="" class="btn btn-danger task-queue--outcome-button task-queue--outcome-button-failure" data-outcome="failure" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.failure_outcome_title %></a>
       <% end %>
 
       <% if @record_id %>

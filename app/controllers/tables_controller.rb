@@ -46,7 +46,7 @@ class TablesController < ApplicationController
     if @task_queue
       existing_outcomes = @task_queue.task_queue_outcomes.select do |outcome|
         outcome.task_queue_item_primary_key == params[:record_id] &&
-          (outcome.task_queue_item_reapper_at && outcome.task_queue_item_reappear_at >= Date.today)
+          (outcome.task_queue_item_reappear_at && outcome.task_queue_item_reappear_at >= Date.today)
       end
 
       task_queue_records = build_query_for_preview(@task_queue, nil, nil).rows

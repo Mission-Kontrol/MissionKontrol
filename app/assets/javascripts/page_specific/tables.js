@@ -364,6 +364,7 @@ function submitActivityForm (data) {
 function applyOutcomeRule () {
   $(".task-queue--outcome-button").click(function (event) {
     event.preventDefault();
+    $(".spinner").show();
     let table = location.pathname.substr(1).split("/")[1];
     let primaryKey = location.pathname.substr(1).split("/")[2].split("?")[0];
     let outcome = $(this).data("outcome");
@@ -388,8 +389,10 @@ function applyOutcomeRule () {
              },
       success (data) {
         submitActivityForm(data);
-        $(".task-queue--outcome-buttons").addClass("hide");
+        $(".task-queue--outcome-button-success").addClass("hide");
+        $(".task-queue--outcome-button-failure").addClass("hide");
         window.toastr.success("Task queue outcome updated.");
+        $(".spinner").hide();
       }
     });
   });
