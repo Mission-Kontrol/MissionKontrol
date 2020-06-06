@@ -225,6 +225,35 @@ function getFieldsWithType (table) {
   });
 }
 
+function getFieldTypeInput (table, fieldName) {
+  var tableFields = null;
+  $.ajax({
+    url: "/table_fields_with_type",
+    type: "GET",
+    data: {
+      table,
+      id: $("#database-id").text().trim()
+    },
+    async: false,
+    dataType: "json",
+    error() {
+      window.toastr.error("Invalid target database, please review credentials.");
+    },
+    success(data) {
+      tableFields = data;
+    }
+  });
+
+  var result = null;
+  for ( i=0; i < tableFields.length; i++ ) {
+    if (tableFields[i][0] === fieldName) {
+      result = tableFields[i]
+    }
+  }
+
+  return result;
+}
+
 function loadResults () {
   var taskQueueId = document.getElementById("builder").dataset.taskQueueId;
 
@@ -262,12 +291,44 @@ function loadResults () {
   });
 }
 
+function validateField(outcome, fieldType, selectedFieldType) {
+  if (fieldType[1] === "string" && selectedFieldType === "Text") {
+
+  } else if (fieldType[1] === "integer" && selectedFieldType === "Increment") {
+
+  } else if (fieldType[1] === "text" && selectedFieldType === "Text") {
+
+  } else if (fieldType[1] === "datetime" && selectedFieldType === "DateTime") {
+
+  } else if (fieldType[1] === "boolean" && selectedFieldType === "Boolean") {
+
+  } else {
+    window.toastr.error("Your selected update type does not match your " + outcome + " field type. Please select a valid type for that field.");
+    return false;
+  }
+}
+
+function validateFieldType(params) {
+  var taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
+  var successField = params["task_queue[success_database][update_field]"];
+  var failureField = params["task_queue[failure_database][update_field]"];
+  var success = getFieldTypeInput(taskQueueTable, successField);
+  var failure = getFieldTypeInput(taskQueueTable, failureField);
+  var successValid = validateField("success", success, params["task_queue[success_database][update_type]"]);
+  var failureValid = validateField("failure", failure, params["task_queue[failure_database][update_type]"]);
+  return successValid && failureValid;
+}
+
 function updateSettings(button) {
   var taskQueueId = document.getElementById("builder").dataset.taskQueueId;
   var params = {};
   $(button.form).serializeArray().map(function (x) {
     params[x.name] = x.value;
   });
+
+  if (validateFieldType(params) === false) {
+    return;
+  }
 
   $.ajax({
     url: "/task_queues/" + taskQueueId,

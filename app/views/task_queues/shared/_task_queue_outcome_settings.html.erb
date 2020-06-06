@@ -75,7 +75,7 @@
           </div>
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-              <%= select_tag("task_queue[success_database][update_type]", options_for_select(["Increment", "Boolean", "Text"], @task_queue.success_database_update.try(:[], "update_type")), { class: "form-control" }) %>
+              <%= select_tag("task_queue[success_database][update_type]", options_for_select(["Increment", "Boolean", "Text", "DateTime"], @task_queue.success_database_update.try(:[], "update_type")), { class: "form-control", id: "task-queue-success-type" }) %>
             </div>
           </div>
 
@@ -159,7 +159,7 @@
           </div>
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-              <%= select_tag("task_queue[failure_database][update_type]", options_for_select(["Increment", "Boolean", "Text"], @task_queue.failure_database_update.try(:[], "update_type")), { class: "form-control" }) %>
+              <%= select_tag("task_queue[failure_database][update_type]", options_for_select(["Increment", "Boolean", "Text", "DateTime"], @task_queue.failure_database_update.try(:[], "update_type")), { class: "form-control" }) %>
             </div>
           </div>
 
