@@ -25,5 +25,10 @@
       <% end %>
     <% end %>
 
+    <% if @related_tables.nil? %>
+      <br />
+      <h4 class="italic">No related tables</h4>
+    <% end %>
+
   </div>
 <% end %>
