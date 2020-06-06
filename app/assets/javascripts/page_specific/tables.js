@@ -66,6 +66,7 @@ function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleCo
 function loadDataTable (columns) {
   let canExport = $(".data-table").data("can-export");
   let tableName = $(".data-table").data("table-name");
+  let databaseName = $(".data-table").data("database-name");
   var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
   let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
 
@@ -79,6 +80,8 @@ function loadDataTable (columns) {
   let colOrderable = [
     { orderable: false, targets: reorderTargets }
   ];
+
+  let today = new Date()
 
   columns.unshift({
     data: "",
@@ -143,7 +146,8 @@ function loadDataTable (columns) {
       {
         extend: "csv",
         className: "table--export " + canExport,
-        text: "Export"
+        text: "Export",
+        filename: today.toISOString().split('T')[0] + "_" + databaseName + "_" + tableName
       },
       {
         text: "Settings",
