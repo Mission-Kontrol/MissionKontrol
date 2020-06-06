@@ -1,11 +1,11 @@
-<div id="new-queue-modal-screen-2" class="hide">
+<div id="new-queue-modal-screen-2" class="">
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title">Bring your new queue to life</h4>
     </div>
 
     <div class="modal-body">
-      <%= form_for(@task_queue, html: {class: "m-t"}) do |f| %>
+      <%= form_for(@task_queue) do |f| %>
         <div class="form-group">
           <p>
             <b>Give it a name</b>
@@ -30,10 +30,9 @@
           <%= f.text_area :details, class: "form-control", placeholder: 'Call customers who have not logged in within the last 30 days.' %>
         </div>
 
-        <%= f.hidden_field :database_id, value: @database.id %>
-
-        <div class="form-group">
-          <a class="btn btn-default" id="queue-builder-modal-back-button">Back</a>
+        <div class="form-group task_queue_modal_submit">
+          <%= f.hidden_field :database_id, value: @database.id %>
+          <%# <a class="btn btn-default" id="queue-builder-modal-back-button"></a> %>
           <%= f.submit  class: "btn btn-primary pull-right" %>
         </div>
       <% end %>

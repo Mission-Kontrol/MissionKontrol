@@ -376,15 +376,15 @@ Paloma.controller("TaskQueues", {
       keyboard: false
     });
 
-    $("#queue-builder-modal-next-button").click(function() {
-      $("#new-queue-modal-screen-1").toggleClass("hide");
-      $("#new-queue-modal-screen-2").toggleClass("hide");
-    });
+    // $("#queue-builder-modal-next-button").click(function() {
+    //   $("#new-queue-modal-screen-1").toggleClass("hide");
+    //   $("#new-queue-modal-screen-2").toggleClass("hide");
+    // });
 
-    $("#queue-builder-modal-back-button").click(function() {
-      $("#new-queue-modal-screen-1").toggleClass("hide");
-      $("#new-queue-modal-screen-2").toggleClass("hide");
-    });
+    // $("#queue-builder-modal-back-button").click(function() {
+    //   $("#new-queue-modal-screen-1").toggleClass("hide");
+    //   $("#new-queue-modal-screen-2").toggleClass("hide");
+    // });
 
     $("#queue-builder-modal-save-button").click(function() {
       var params = {};
