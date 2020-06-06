@@ -456,6 +456,7 @@ Paloma.controller("TaskQueues", {
     $.ajax({
       dataType: "json",
       url: "/" + (location.pathname+location.search).substr(1),
+      cache: false,
       success(d) {
         loadTaskQueueDataTable(d.columns);
       },

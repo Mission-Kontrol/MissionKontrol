@@ -199,6 +199,7 @@ function fetchDataForTable() {
   $.ajax({
     dataType: "json",
     url: "/" + (location.pathname+location.search).substr(1),
+    cache: false,
     success(d) {
       loadDataTable(d.columns);
     },
