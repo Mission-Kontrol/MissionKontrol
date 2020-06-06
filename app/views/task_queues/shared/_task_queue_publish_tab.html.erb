@@ -9,20 +9,28 @@
       <div class="tab-content">
         <div class="tab-pane task-queue-settings-tab active">
           <div class="row flex align-items-flex-end">
-            <div class="col-sm-9 col-md-3">
-              <h1>Enable Task queue</h1>
-              <h4>Enable or Disable the task queue here.</h4>
-            </div>
-            <div class="col-sm-3 col-md-1">
-              <label class="switch">
-                <div class='toggle'>
-                  <%= check_box_tag "task_queue[enabled]", true, @task_queue.try(:[], "enabled"), class: 'form-control toggle-state', id: 'task-queue-enable' %>
-                  <div class='toggle-inner'>
-                    <div class='indicator'></div>
+            <div class="col-sm-8">
+              <div class="row flex">
+                <div class="col-sm-11">
+                  <div class="task-queue-preview--header">
+                    <h1>Enable Task queue</h1>
+                    <h4>Enable or Disable the task queue here.</h4>
                   </div>
-                  <div class='active-bg'></div>
                 </div>
-              </label>
+                <div class="col-sm-1 align-self-flex-end">
+                  <div class="task-queue-enable--button">
+                    <label class="switch">
+                      <div class='toggle'>
+                        <%= check_box_tag "task_queue[enabled]", true, @task_queue.try(:[], "enabled"), class: 'form-control toggle-state', id: 'task-queue-enable' %>
+                        <div class='toggle-inner'>
+                          <div class='indicator'></div>
+                        </div>
+                        <div class='active-bg'></div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <br/>
@@ -54,6 +62,7 @@
 
                     <a href="" class="btn btn-purple task-queue--next-item no-click"  data-task-queue-id="<%= @task_queue.id %>">Next queue item</a>
                   </div>
+                  <br/>
                 </div>
               </div>
             </div>
