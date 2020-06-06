@@ -43,11 +43,11 @@
                 <div class="col-sm-12">
                   <div class="task-queue--outcome-buttons">
                     <% if @task_queue.success_outcome_title.present? %>
-                      <a href="" class="btn btn-primary task-queue--outcome-button no-click"><%= @task_queue.success_outcome_title %></a>
+                      <a href="" class="btn btn-primary task-queue--outcome-button task-queue--outcome-button-success no-click"><%= @task_queue.success_outcome_title %></a>
                     <% end %>
 
                     <% if @task_queue.failure_outcome_title.present? %>
-                      <a href="" class="btn btn-danger task-queue--outcome-button no-click"><%= @task_queue.failure_outcome_title %></a>
+                      <a href="" class="btn btn-danger task-queue--outcome-button task-queue--outcome-button-failure no-click"><%= @task_queue.failure_outcome_title %></a>
                     <% end %>
 
                     <a href="" class="btn btn-purple task-queue--next-item no-click"  data-task-queue-id="<%= @task_queue.id %>">Next queue item</a>

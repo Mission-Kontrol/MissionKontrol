@@ -277,7 +277,9 @@ function updateSettings(button) {
     error() {
       window.toastr.error("Task queue preview failed, please review errors and try again.");
     },
-    success() {
+    success(data) {
+      $(".task-queue--outcome-button-success")[0].text = data['task_queue']['success_outcome_title'];
+      $(".task-queue--outcome-button-failure")[0].text = data['task_queue']['failure_outcome_title'];
       window.toastr.info("Task queue updated.");
     }
   });
@@ -375,16 +377,6 @@ Paloma.controller("TaskQueues", {
       backdrop: "static",
       keyboard: false
     });
-
-    // $("#queue-builder-modal-next-button").click(function() {
-    //   $("#new-queue-modal-screen-1").toggleClass("hide");
-    //   $("#new-queue-modal-screen-2").toggleClass("hide");
-    // });
-
-    // $("#queue-builder-modal-back-button").click(function() {
-    //   $("#new-queue-modal-screen-1").toggleClass("hide");
-    //   $("#new-queue-modal-screen-2").toggleClass("hide");
-    // });
 
     $("#queue-builder-modal-save-button").click(function() {
       var params = {};
