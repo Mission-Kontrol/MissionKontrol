@@ -4,7 +4,7 @@
       <div class="modal--header">
         <div class="row">
           <div class="col-sm-10">
-            <h3><%= @table.humanize %></h3>
+            <h2>Table settings: <%= @table.humanize %></h2>
           </div>
           <div class="col-sm-2">
             <div class="modal--close-btn">
@@ -14,6 +14,11 @@
         </div>
       </div>
       <div class="modal--content">
+        <div class="row">
+          <div class="col-sm-12">
+            <p>Settings that you change here will change for everyone viewing and interacting with this table.</p>
+          </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
               <h4>GENERAL</h4>
@@ -89,8 +94,8 @@
                     <p>Set fields that can be edited by teams with edit permiossion on this table.</p>
                   </th>
                   <th scope="col">
-                    <h4>Reference</h4>
-                    <p>Enter table.fieldname to show that instead of a field that is an ID.</p>
+                    <h4>Friendly label</h4>
+                    <p>Enter a label that you would like to reference this field by.</p>
                   </th>
                   <th scope="col">
                     <h4>Mandatory</h4>

@@ -11,7 +11,7 @@ function loadTaskQueuePreviewDataTable (columns) {
     scrollX: true,
     serverSide: true,
     ajax: "/task_queues/" + location.pathname.split("/")[2] + "/preview",
-    dom: "f<'table--info'pB>rti<'clear'>",
+    dom: "<'table--info'pB>rti<'clear'>",
     pagingType: "simple_numbers",
     language: {
       paginate: {
@@ -32,6 +32,11 @@ function loadTaskQueuePreviewDataTable (columns) {
       stateLoadCallbackFunction($(this), callback);
     },
     buttons: [
+      {
+        extend: "colvis",
+        className: "table--colvis",
+        text: "Columns"
+      },
       {
         extend: "csv",
         className: "table--export ",
@@ -91,6 +96,11 @@ function loadTaskQueueDataTable (columns) {
     },
     buttons: [
       {
+        extend: "colvis",
+        className: "table--colvis",
+        text: "Columns"
+      },
+      {
         extend: "csv",
         className: "table--export ",
         text: "Export"
@@ -143,7 +153,7 @@ function initQueryBuilder (filters) {
   });
 
   let taskQueueRules = $("#builder").data().taskQueueRules;
-
+  $(".spinner").hide();
   if (!$.isEmptyObject(taskQueueRules) ) {
     $("#builder").queryBuilder("setRules", taskQueueRules);
   }
@@ -174,6 +184,7 @@ function buildFilterForDataType (type, id) {
 }
 
 function loadQueryBuilder (data) {
+  $(".spinner").show();
   const filters = [];
 
   for (var i = 0; i < data.length; i++) {
@@ -230,10 +241,6 @@ function loadResults () {
 
   params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
   params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
-  params["task_queue"]["success_outcome_title"] = document.getElementById("task_queue_success_outcome_title").value;
-  params["task_queue"]["success_outcome_timeout"] = document.getElementById("task_queue_success_outcome_timeout").value;
-  params["task_queue"]["failure_outcome_title"] = document.getElementById("task_queue_failure_outcome_title").value;
-  params["task_queue"]["failure_outcome_timeout"] = document.getElementById("task_queue_failure_outcome_timeout").value;
 
   $.ajax({
     url: "/task_queues/" + taskQueueId,
@@ -255,6 +262,27 @@ function loadResults () {
   });
 }
 
+function updateSettings(button) {
+  var taskQueueId = document.getElementById("builder").dataset.taskQueueId;
+  var params = {};
+  $(button.form).serializeArray().map(function (x) {
+    params[x.name] = x.value;
+  });
+
+  $.ajax({
+    url: "/task_queues/" + taskQueueId,
+    type: "PATCH",
+    data: params,
+    dataType: "json",
+    error() {
+      window.toastr.error("Task queue preview failed, please review errors and try again.");
+    },
+    success() {
+      window.toastr.info("Task queue updated.");
+    }
+  });
+}
+
 function linkToSingleDataView () {
   $("body").on("click", ".clickable-row", function () {
     let previewLocation = $(this).data("href");
@@ -265,22 +293,163 @@ function linkToSingleDataView () {
   });
 }
 
+function showLabel(outcome) {
+  let label = $("#task-queue-" + outcome + "-label");
+  if (label.hasClass("hide")) {
+    label.removeClass("hide");
+  }
+}
+
+function hideInput(outcome, input) {
+  let inputField = $("#task-queue-" + outcome + input);
+  if (!inputField.hasClass("hide")) {
+    inputField.addClass("hide");
+  }
+}
+
+function displayUpdateField (field, outcome) {
+  if (field.value === "Boolean") {
+    hideInput(outcome, "-text");
+    $("#task-queue-" + outcome + "-boolean").removeClass("hide");
+    showLabel(outcome);
+  } else if (field.value === "Text") {
+    hideInput(outcome, "-boolean");
+    $("#task-queue-" + outcome + "-text").removeClass("hide");
+    showLabel(outcome);
+  } else if (field.value === "Increment") {
+    hideInput(outcome, "-boolean");
+    hideInput(outcome, "-text");
+    if (!$("#task-queue-" + outcome + "-label").hasClass("hide")) {
+      $("#task-queue-" + outcome + "-label").addClass("hide");
+    }
+  }
+}
+
+function updateTaskQueue(checkbox) {
+  var taskQueueId = document.getElementById("builder").dataset.taskQueueId;
+
+  var params = { "task_queue[enabled]": checkbox.checked };
+
+  $.ajax({
+    url: "/task_queues/" + taskQueueId,
+    type: "PATCH",
+    data: params,
+    dataType: "json",
+    error() {
+      window.toastr.error("Task queue preview failed, please review errors and try again.");
+    },
+    success() {
+      window.toastr.info("Task queue updated.");
+    }
+  });
+}
+
+function loadCorrectInput() {
+  let successType = $("#task_queue_success_database_update_type").val();
+  let failureType = $("#task_queue_failure_database_update_type").val();
+
+  if (successType === "Boolean") {
+    showLabel("success");
+    $("#task-queue-success-boolean").removeClass("hide");
+  } else if (successType === "Text") {
+    showLabel("success");
+    $("#task-queue-success-text").removeClass("hide");
+  }
+
+  if (failureType === "Boolean") {
+    showLabel("failure");
+    $("#task-queue-failure-boolean").removeClass("hide");
+  } else if (failureType === "Text") {
+    showLabel("failure");
+    $("#task-queue-failure-text").removeClass("hide");
+  }
+}
+
 Paloma.controller("TaskQueues", {
+  index () {
+    $(".spinner").hide();
+  },
+
   new () {
-    $("#task-queue-modal").modal({
+    $("#new-task-queue-modal").modal({
       backdrop: "static",
       keyboard: false
+    });
+
+    // $("#queue-builder-modal-next-button").click(function() {
+    //   $("#new-queue-modal-screen-1").toggleClass("hide");
+    //   $("#new-queue-modal-screen-2").toggleClass("hide");
+    // });
+
+    // $("#queue-builder-modal-back-button").click(function() {
+    //   $("#new-queue-modal-screen-1").toggleClass("hide");
+    //   $("#new-queue-modal-screen-2").toggleClass("hide");
+    // });
+
+    $("#queue-builder-modal-save-button").click(function() {
+      var params = {};
+      params["task_queue"] = {};
+      params["task_queue"]["name"] = document.getElementById("task_queue_name").value;
+      params["task_queue"]["details"] = document.getElementById("task_queue_details").value;
+      params["task_queue"]["table"] = document.getElementById("task_queue_table").value;
+      saveTaskQueue(params);
     });
   },
 
   edit () {
+    $(".spinner").show();
     let taskQueueTable = document.getElementById("builder").dataset.taskQueueTable;
+    let taskQueueId = document.getElementById("builder").dataset.taskQueueId;
 
     getFieldsWithType(taskQueueTable);
+
     $(".task-queue-update-button").click(function() {
       loadResults();
     });
+
+    $(".task-queue-update-settings").click(function(evt) {
+      evt.preventDefault();
+      updateSettings(this);
+    });
+
     linkToSingleDataView();
+
+    $("#task_queue_success_database_update_type").change(function() {
+      displayUpdateField(this, "success");
+    });
+
+    $("#task_queue_failure_database_update_type").change(function() {
+      displayUpdateField(this, "failure");
+    });
+
+    $("#task-queue-enable").change(function() {
+      updateTaskQueue(this);
+    });
+
+    var params = {};
+    params["task_queue"] = {};
+    $.ajax({
+      url: "/task_queues/" + taskQueueId,
+      type: "PATCH",
+      data: { "task_queue": { "param": null } },
+      dataType: "json",
+      error() {
+        window.toastr.error("Task queue preview failed, review SQL.");
+      },
+      success(response) {
+        let columns = response.columns;
+
+        if (typeof columns !== "undefined") {
+          loadTaskQueuePreviewDataTable(columns);
+        }
+      }
+    });
+
+    loadCorrectInput();
+
+    $(window).load(function() {
+      $(".spinner").hide();
+    });
   },
 
   show () {

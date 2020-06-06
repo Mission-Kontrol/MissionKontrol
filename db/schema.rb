@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_07_093234) do
+ActiveRecord::Schema.define(version: 2020_06_05_105826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(version: 2020_05_07_093234) do
     t.integer "task_queue_id", null: false
     t.string "task_queue_item_table", null: false
     t.string "task_queue_item_primary_key", null: false
-    t.datetime "task_queue_item_reappear_at", null: false
+    t.datetime "task_queue_item_reappear_at"
     t.string "outcome", null: false
     t.index ["task_queue_id", "task_queue_item_primary_key"], name: "task_queue_item_unique", unique: true
   end
@@ -148,6 +148,9 @@ ActiveRecord::Schema.define(version: 2020_05_07_093234) do
     t.string "failure_outcome_title"
     t.string "failure_outcome_timeout"
     t.integer "database_id"
+    t.jsonb "success_database_update"
+    t.jsonb "failure_database_update"
+    t.boolean "enabled", default: true
   end
 
   create_table "view_builders", force: :cascade do |t|

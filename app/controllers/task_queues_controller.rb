@@ -31,6 +31,7 @@ class TaskQueuesController < ApplicationController
     result = @target_db.all(@task_queue.table, 10, 0)
     @task_queue_sql = task_queue_to_sql
     @task_queue_headers = result.columns
+    @table_fields = list_table_fields_with_type(@task_queue.table)
   end
 
   def create
@@ -44,7 +45,8 @@ class TaskQueuesController < ApplicationController
   end
 
   def update
-    load_task_queue
+    @task_queue = TaskQueue.find(params[:id])
+    update_task_queue
     @task_queue.save!
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
@@ -58,7 +60,7 @@ class TaskQueuesController < ApplicationController
     @task_queue = TaskQueue.find(params[:id])
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
-    render_preview_js
+    render_preview_js_task_queue
   end
 
   # TODO: this is duplicate of preview
@@ -75,36 +77,26 @@ class TaskQueuesController < ApplicationController
       end
 
       format.js do
-        render_show_js
+        render_show_js_task_queue
       end
     end
   end
 
   def outcome
-    task_queue = TaskQueue.find(params['task_queue_id'])
+    task_queue = TaskQueue.find(outcome_params['task_queue_id'])
+    @database = Database.find(task_queue.database_id)
+    @database_connection = database_connection
+    @target_db = target_db
+    outcome_success = outcome_params['outcome'] == 'success'
 
-    task_queue_item_timeout = if params['outcome'] == 'success'
-                                task_queue.success_outcome_timeout
-                              else
-                                task_queue.failure_outcome_timeout
-                              end
+    item_timeout = outcome_success ? task_queue.success_outcome_timeout : task_queue.failure_outcome_timeout
+    item_title = outcome_success ? task_queue.success_outcome_title : task_queue.failure_outcome_title
 
-    task_queue_item_title = if params['outcome'] == 'success'
-                              task_queue.success_outcome_title
-                            else
-                              task_queue.failure_outcome_title
-                            end
+    outcome = create_outcome(outcome_params, item_timeout)
 
-    outcome = TaskQueueOutcome.create(
-      outcome: outcome_params['outcome'],
-      task_queue_id: outcome_params['task_queue_id'],
-      task_queue_item_table: outcome_params['table'],
-      task_queue_item_primary_key: outcome_params['primary_key'],
-      task_queue_item_reappear_at: Time.now + task_queue_item_timeout.to_i.days
-    )
-    outcome.save!
+    complete_outcome_actions(task_queue, outcome_params)
 
-    render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: task_queue_item_title }
+    render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: item_title }
   end
 
   def record
@@ -138,8 +130,11 @@ class TaskQueuesController < ApplicationController
                                        :raw_sql,
                                        :success_outcome_title,
                                        :success_outcome_timeout,
+                                       :success_database,
                                        :failure_outcome_title,
-                                       :failure_outcome_timeout)
+                                       :failure_outcome_timeout,
+                                       :failure_database,
+                                       :enabled)
   end
 
   def outcome_params
@@ -156,7 +151,7 @@ class TaskQueuesController < ApplicationController
 
     return true unless outcome
 
-    if outcome.task_queue_item_reappear_at < Time.now
+    if outcome.task_queue_item_reapper_at && outcome.task_queue_item_reappear_at < Time.now
       outcome.delete
       true
     else

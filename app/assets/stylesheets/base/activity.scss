@@ -11,7 +11,7 @@ form.activity-comment-form {
   flex-direction: row;
   border-top: 0.5px solid $border-grey;
   border-bottom: 0.5px solid $border-grey;
-  padding: 2px;
+  padding: 0 0 0 2px;
 }
 
 .activity-comment-form--input {
@@ -82,6 +82,13 @@ table.activities-history--table {
   .nav-tabs > li.active > a,
   .nav-tabs > li.active > a:hover,
   .nav-tabs > li.active > a:focus {
+    border: none;
+  }
+
+  .nav-tabs > li > a:hover,
+  .nav-tabs > li > a:focus {
+    background-color: inherit;
+    color: $text-color;
     border: none;
   }
 

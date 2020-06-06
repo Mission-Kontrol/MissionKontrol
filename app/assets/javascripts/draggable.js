@@ -177,7 +177,10 @@ initializeDraggable = function () {
 
   window.draggable = new window.Draggable.Sortable(document.querySelectorAll(containers), {
     draggable: ".layout-builder-draggable-item",
-    handle: ".layout-builder-draggable-item"
+    handle: ".layout-builder-draggable-item",
+    stack: "div",
+    distance: 0,
+    zIndex: 5
   });
   const fieldsContainer = document.querySelectorAll("#sv_builder_primary_table_draggable_fields_container")[0];
 

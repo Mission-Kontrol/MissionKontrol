@@ -38,6 +38,7 @@ class ActivitiesController < ApplicationController
 
   def index
     @activity = Activity.new
+    @database_id = params[:database_id]
     @feedable_type = params[:feedable_type]
     @feedable_id = params[:feedable_id]
     @activities_for_table = Activity.where(

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include License
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  before_action :set_cache_headers, :load_available_databases, :load_task_queues
+  before_action :set_cache_headers, :load_available_databases, :load_task_queues, :load_databases_with_task_queues
   protect_from_forgery with: :exception
 
   rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
@@ -72,6 +72,11 @@ class ApplicationController < ActionController::Base
 
   def load_task_queues
     @task_queues = TaskQueue.all
+  end
+
+  def load_databases_with_task_queues
+    database_ids = TaskQueue.enabled.map(&:database_id).uniq
+    @databases_with_task_queues = Database.where(id: database_ids)
   end
 
   def check_target_db_connection

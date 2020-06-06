@@ -11,6 +11,5 @@ class TaskQueueOutcome < ApplicationRecord
   validates :outcome,
             :task_queue_id,
             :task_queue_item_table,
-            :task_queue_item_primary_key,
-            :task_queue_item_reappear_at, presence: true
+            :task_queue_item_primary_key, presence: true
 end

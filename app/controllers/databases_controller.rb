@@ -97,7 +97,7 @@ class DatabasesController < ApplicationController
                                                  :domain_url,
                                                  :gem_token)
 
-    permitted.merge!(password: params[:database][:password]) if params[:database][:password_changed]
+    permitted.merge!(password: params[:database][:password]) if params[:database][:password_changed] == 'true'
     permitted
   end
 

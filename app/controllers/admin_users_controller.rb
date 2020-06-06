@@ -88,8 +88,10 @@ class AdminUsersController < ApplicationController
   def destroy
     @user = AdminUser.find(params[:id])
 
-    if last_admin_user?
-      format.js { 'delete_failure' }
+    if last_admin_user? || current_admin_user.id == @user.id
+      respond_to do |format|
+        format.js { render 'delete_failure' }
+      end
     else
       @user.delete
       @admin_user_roles = admin_user_roles

@@ -90,6 +90,8 @@ module Kuwinda
         end
 
         conn.exec_query(query_string)
+      rescue ActiveRecord::StatementInvalid
+        nil
       end
 
       def count(table)

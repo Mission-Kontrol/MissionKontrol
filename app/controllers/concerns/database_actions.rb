@@ -55,7 +55,7 @@ module DatabaseActions
       adapter: Kuwinda::DatabaseAdapter.adapter(database_params[:adapter]),
       host: database_params[:host],
       username: database_params[:username],
-      password: password_param,
+      password: database_password,
       database: database_params[:name],
       port: database_params[:port]
     ).connection
@@ -63,6 +63,14 @@ module DatabaseActions
     connection.active?
   rescue PG::ConnectionBad
     false
+  end
+
+  def database_password
+    if @database.persisted?
+      @database.password == password_param ? decrypt_password(@database.password) : password_param
+    else
+      password_param
+    end
   end
 
   def test_gem_connection
@@ -127,5 +135,10 @@ module DatabaseActions
 
   def target_db
     @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
+  end
+
+  def decrypt_password(password)
+    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
+    crypt.decrypt_and_verify(password)
   end
 end

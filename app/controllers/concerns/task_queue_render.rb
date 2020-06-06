@@ -50,7 +50,7 @@ module TaskQueueRender
     elsif !task_queue_to_sql.blank?
       @target_db.query(task_queue_to_sql, limit, offset)
     else
-      {}
+      @target_db.all(task_queue.table, limit, offset)
     end
   end
 
@@ -59,11 +59,12 @@ module TaskQueueRender
     build_response_for_preview(query)
   end
 
-  def render_preview_js
+  def render_preview_js_task_queue
     offset = params['start']
     limit = params['length']
     columns = []
     sql_result = build_query_for_preview(@task_queue, limit, offset)
+
     sql_result.columns.each do |c|
       columns << { data: c }
     end
@@ -80,11 +81,13 @@ module TaskQueueRender
     }
   end
 
-  def render_show_js
+  def render_show_js_task_queue
     offset = params['start']
     limit = params['length']
     columns = []
+
     sql_result = build_query_for_preview(@task_queue, limit, offset)
+
     sql_result.columns.each do |c|
       columns << { data: c }
     end
@@ -101,9 +104,13 @@ module TaskQueueRender
     }
   end
 
-  def load_task_queue
-    @task_queue = TaskQueue.find(params[:id])
+  def update_task_queue
     attributes_to_update = task_queue_update_params.reject { |_, v| v.blank? }
     @task_queue.update_attributes(attributes_to_update)
+
+    return unless params['task_queue']['success_database'] || params['task_queue']['failure_database']
+
+    @task_queue.success_database_update = params['task_queue']['success_database']
+    @task_queue.failure_database_update = params['task_queue']['failure_database']
   end
 end

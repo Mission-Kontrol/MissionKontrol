@@ -29,6 +29,10 @@
   margin-bottom: 0;
 }
 
+.btn-square {
+  border-radius: 0;
+}
+
 /* BUTTONS */
 .btn-primary {
   background-color: $button-green;
@@ -233,4 +237,8 @@
     background-color: lighten($red, 10%);
     border-color: lighten($red, 10%);
   }
+}
+
+.no-click {
+  cursor: default;
 }

@@ -64,6 +64,10 @@
   padding: 0 !important;
 }
 
+.padding-bottom {
+  padding-bottom: 50px;
+}
+
 .p-w-sm {
   padding: 0 15px;
 }
@@ -104,6 +108,26 @@
   margin-bottom: 40px;
 }
 
+.margin-15 {
+  margin: 15px;
+}
+
 .space-20 {
   margin: 20px 0;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.min-height-50 {
+  min-height: 50px;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-flex-end {
+  align-items: flex-end;
 }

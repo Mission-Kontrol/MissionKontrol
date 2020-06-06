@@ -1,3 +1,9 @@
+<% if @task_queue %>
+  <div class="wrapper">
+    <%= render 'shared/task_queue_partial', task_queue: @task_queue %>
+  </div>
+<% end %>
+
 <div class="wrapper" style="">
   <% unless draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container1) &&
           draggable_fields_container_is_empty?(layout_builder.draggable_fields_main_container2) &&
@@ -28,7 +34,7 @@
   <% end %>
 </div>
 
-<div class="animated ">
+<div class="padding-bottom">
   <% @relatable_tables.each do |relative| %>
     <% if layout_builder.related_tables.include?(relative[:name]) %>
       <div class="row">

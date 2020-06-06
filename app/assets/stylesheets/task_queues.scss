@@ -5,6 +5,12 @@
   @extend .white-bg;
 }
 
+.task_queue_modal_submit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .query-builder .rules-group-container {
   border: 1px solid $border-grey;
   background: $background-grey;
@@ -169,4 +175,12 @@
 .task_queue_side_nav {
   display: block;
   height: 40px;
+}
+
+.task-queue-settings-tab {
+  padding-left: 20px;
+}
+
+.task-queue--details {
+  margin: auto 0;
 }

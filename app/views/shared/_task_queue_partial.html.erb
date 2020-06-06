@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="col-sm-12 no-padding">
+	  <h4 class="bold margin-space">Task Queue: <%= @task_queue.name %></h4>
+	</div>
+  <div class="col-sm-12 light-grey-bg flex min-height-50">
+    <h4 class="task-queue--details"><%= @task_queue.details %></h4>
+  </div>
+</div>
+<div class="row flex justify-content-center">
+  <div class="col-sm-6">
+    <div class="task-queue--outcome-buttons">
+      <% if @task_queue.success_outcome_title.present? %>
+        <a href="" class="btn btn-primary task-queue--outcome-button" data-outcome="success" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.success_outcome_title %></a>
+      <% end %>
+
+      <% if @task_queue.failure_outcome_title.present? %>
+        <a href="" class="btn btn-danger task-queue--outcome-button" data-outcome="failure" data-task-queue-id="<%= @task_queue.id %>"><%= @task_queue.failure_outcome_title %></a>
+      <% end %>
+
+      <% if @record_id %>
+        <a href=
+"/tables/<%= @task_queue.table %>/<%= @record_id %>?table=<%= @task_queue.table %>&database_id=<%= @task_queue.database_id %>&task_queue_id=<%= @task_queue.id %>" class="btn btn-purple task-queue--next-item">Next queue item</a>
+      <% end %>
+    </div>
+  </div>
+</div>
+
