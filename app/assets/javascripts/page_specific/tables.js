@@ -10,6 +10,9 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
     dom: "",
     data,
     stateSave: true,
+    stateSaveParams: function (settings, data) {
+      data.search.search = "";
+    },
     scrollX: true,
     processing: false,
     stateSaveCallback(settings, data) {
@@ -113,6 +116,9 @@ function loadDataTable (columns) {
     dom: "f<'table--info'piB>rt<'clear'>",
     columns,
     stateSave: true,
+    stateSaveParams: function (settings, data) {
+      data.search.search = "";
+    },
     stateSaveCallback(settings, data) {
       stateSaveCallbackFunction(settings, data, $(this));
     },
@@ -237,6 +243,9 @@ function loadRelatedDataTable (columns, id, ajax) {
       dom: "f<'table--info'piB>rt<'clear'>",
       columns,
       stateSave: true,
+      stateSaveParams: function (settings, data) {
+        data.search.search = "";
+      },
       stateSaveCallback(settings, data) {
         stateSaveCallbackFunction(settings, data, $(this));
       },

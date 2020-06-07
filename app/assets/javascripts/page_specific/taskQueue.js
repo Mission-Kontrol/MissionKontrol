@@ -25,6 +25,9 @@ function loadTaskQueuePreviewDataTable (columns) {
     },
     columns,
     stateSave: true,
+    stateSaveParams: function (settings, data) {
+      data.search.search = "";
+    },
     stateSaveCallback(settings, data) {
       stateSaveCallbackFunction(settings, data, $(this));
     },
@@ -88,6 +91,9 @@ function loadTaskQueueDataTable (columns) {
     },
     columns,
     stateSave: true,
+    stateSaveParams: function (settings, data) {
+      data.search.search = "";
+    },
     stateSaveCallback(settings, data) {
       stateSaveCallbackFunction(settings, data, $(this));
     },
