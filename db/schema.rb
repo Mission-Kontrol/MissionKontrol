@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_05_105826) do
+ActiveRecord::Schema.define(version: 2020_06_07_113114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2020_06_05_105826) do
     t.string "feedable_type", null: false
     t.integer "feedable_id", null: false
     t.integer "user_id"
+    t.integer "database_id"
     t.index ["feedable_type", "feedable_id"], name: "index_activities_on_feedable_type_and_feedable_id"
   end
 

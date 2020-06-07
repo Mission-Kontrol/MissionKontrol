@@ -57,6 +57,7 @@ class ActivitiesController < ApplicationController
                                      :feedable_type,
                                      :feedable_id,
                                      :user_id,
+                                     :database_id,
                                      :twilio_call_sid)
   end
 
@@ -65,6 +66,7 @@ class ActivitiesController < ApplicationController
                   :kind,
                   :feedable_type,
                   :feedable_id,
+                  :database_id,
                   :user_id)
   end
 end

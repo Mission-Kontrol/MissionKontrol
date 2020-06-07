@@ -24,10 +24,10 @@
           <div class="panel-body">
             <div class="activity-stream">
               <% if @activities && @activities.all.size > 0 %>
-                <%= render 'shared/activity_stream', activities: @activities.all, locals: { hide: false } %>
+                <%= render 'shared/activity_stream', activities: @activities.all, locals: { hide: false, link: false } %>
               <% else %>
                 <p class="default-message">No activity has been recored for this <%= feedable_type %>.</p>
-                <%= render 'shared/activity_stream', activities: @activities.all, locals: { hide: true } %>
+                <%= render 'shared/activity_stream', activities: @activities.all, locals: { hide: true, link: false } %>
               <% end %>
             </div>
 
@@ -39,10 +39,10 @@
           <div class="panel-body">
             <div class="activity-stream">
               <% if @activities && @activities.calls.size > 0 %>
-                <%= render 'shared/activity_stream', activities: @activities.calls, locals: { hide: false } %>
+                <%= render 'shared/activity_stream', activities: @activities.calls, locals: { hide: false, link: false } %>
               <% else %>
                 <p class="default-message">No calls has been recored for this <%= feedable_type %>.</p>
-                <%= render 'shared/activity_stream', activities: @activities.calls, locals: { hide: true } %>
+                <%= render 'shared/activity_stream', activities: @activities.calls, locals: { hide: true, link: false } %>
               <% end %>
             </div>
           </div>
@@ -52,10 +52,10 @@
           <div class="panel-body">
             <div class="activity-stream">
               <% if @activities && @activities.notes.size > 0 %>
-                <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: false } %>
+                <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: false, link: false } %>
               <% else %>
                 <p class="default-message">No notes has been recored for this <%= feedable_type %>.</p>
-                <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: true } %>
+                <%= render 'shared/activity_stream', activities: @activities.notes, locals: { hide: true, link: false } %>
               <% end %>
             </div>
 
@@ -67,10 +67,10 @@
           <div class="panel-body">
             <div class="activity-stream">
               <% if @activities && @activities.outcomes.size > 0 %>
-                <%= render 'shared/activity_stream', activities: @activities.outcomes, locals: { hide: false } %>
+                <%= render 'shared/activity_stream', activities: @activities.outcomes, locals: { hide: false, link: false } %>
               <% else %>
                 <p class="default-message">No outcomes have been recored for this <%= feedable_type %>.</p>
-                <%= render 'shared/activity_stream', activities: @activities.outcomes, locals: { hide: true } %>
+                <%= render 'shared/activity_stream', activities: @activities.outcomes, locals: { hide: true, link: false } %>
               <% end %>
             </div>
 

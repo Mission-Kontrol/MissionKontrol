@@ -15,13 +15,13 @@ module TableActivity
   end
 
   def set_activities_for_table
-    ## TODO: add database id to activity table
     feedable_type = params[:table]
     feedable_id = params[:record_id]
 
     @activities_for_table = Activity.where(
       feedable_type: feedable_type,
-      feedable_id: feedable_id
+      feedable_id: feedable_id,
+      database_id: @database.id
     ).last(3).sort_by(&:created_at).reverse
 
     group_activities_by_kind

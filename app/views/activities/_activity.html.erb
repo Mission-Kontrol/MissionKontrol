@@ -4,5 +4,8 @@
   </td>
   <td>
     <%= render_activity(activity) %>
+    <% if locals[:link] %>
+      <span>to a <%= link_to "record", table_record_preview_path(table: activity.feedable_type, table_name: activity.feedable_type, record_id: activity.feedable_id, database_id: activity.database_id) %> on <%= link_to activity.feedable_type, table_path(id: activity.database_id, table: activity.feedable_type) %> table</span>
+    <% end %>
   </td>
 </tr>
