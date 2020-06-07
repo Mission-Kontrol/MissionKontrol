@@ -25,7 +25,7 @@ function loadTaskQueuePreviewDataTable (columns) {
     },
     columns,
     stateSave: true,
-    stateSaveParams: function (settings, data) {
+    stateSaveParams(settings, data) {
       data.search.search = "";
     },
     stateSaveCallback(settings, data) {
@@ -91,7 +91,7 @@ function loadTaskQueueDataTable (columns) {
     },
     columns,
     stateSave: true,
-    stateSaveParams: function (settings, data) {
+    stateSaveParams(settings, data) {
       data.search.search = "";
     },
     stateSaveCallback(settings, data) {
@@ -253,7 +253,7 @@ function getFieldTypeInput (table, fieldName) {
   var result = null;
   for ( i=0; i < tableFields.length; i++ ) {
     if (tableFields[i][0] === fieldName) {
-      result = tableFields[i]
+      result = tableFields[i];
     }
   }
 
@@ -299,15 +299,15 @@ function loadResults () {
 
 function validateField(outcome, fieldType, selectedFieldType) {
   if (fieldType[1] === "string" && selectedFieldType === "Text") {
-
+    return true;
   } else if (fieldType[1] === "integer" && selectedFieldType === "Increment") {
-
+    return true;
   } else if (fieldType[1] === "text" && selectedFieldType === "Text") {
-
+    return true;
   } else if (fieldType[1] === "datetime" && selectedFieldType === "DateTime") {
-
+    return true;
   } else if (fieldType[1] === "boolean" && selectedFieldType === "Boolean") {
-
+    return true;
   } else {
     window.toastr.error("Your selected update type does not match your " + outcome + " field type. Please select a valid type for that field.");
     return false;

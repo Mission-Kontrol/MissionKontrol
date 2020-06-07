@@ -10,7 +10,7 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
     dom: "",
     data,
     stateSave: true,
-    stateSaveParams: function (settings, data) {
+    stateSaveParams(settings, data) {
       data.search.search = "";
     },
     scrollX: true,
@@ -84,7 +84,7 @@ function loadDataTable (columns) {
     { orderable: false, targets: reorderTargets }
   ];
 
-  let today = new Date()
+  let today = new Date();
 
   columns.unshift({
     data: "",
@@ -116,7 +116,7 @@ function loadDataTable (columns) {
     dom: "f<'table--info'piB>rt<'clear'>",
     columns,
     stateSave: true,
-    stateSaveParams: function (settings, data) {
+    stateSaveParams(settings, data) {
       data.search.search = "";
     },
     stateSaveCallback(settings, data) {
@@ -153,7 +153,7 @@ function loadDataTable (columns) {
         extend: "csv",
         className: "table--export " + canExport,
         text: "Export",
-        filename: today.toISOString().split('T')[0] + "_" + databaseName + "_" + tableName
+        filename: today.toISOString().split("T")[0] + "_" + databaseName + "_" + tableName
       },
       {
         text: "Settings",
@@ -243,7 +243,7 @@ function loadRelatedDataTable (columns, id, ajax) {
       dom: "f<'table--info'piB>rt<'clear'>",
       columns,
       stateSave: true,
-      stateSaveParams: function (settings, data) {
+      stateSaveParams(settings, data) {
         data.search.search = "";
       },
       stateSaveCallback(settings, data) {

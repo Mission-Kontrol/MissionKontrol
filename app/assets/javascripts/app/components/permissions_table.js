@@ -117,7 +117,7 @@ function loadPermissionsDataTable (columns, databaseId, table) {
     ajax: "/" + (location.pathname+location.search).substr(1) + "?database_id=" + databaseId,
     columns,
     stateSave: true,
-    stateSaveParams: function (settings, data) {
+    stateSaveParams(settings, data) {
       data.search.search = "";
     },
     stateSaveCallback(settings, data) {
