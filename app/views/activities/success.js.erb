@@ -3,7 +3,7 @@ if ($(".all-activities-tab").find("table > tbody > tr").length === 3) {
   $(".all-activities-tab").find("table > tbody > tr:last").remove();
 }
 
-$(".all-activities-tab").find(".activities-history--table").prepend("<%= j render @activity %>");
+$(".all-activities-tab").find(".activities-history--table").prepend("<%= j render @activity, locals: { link: false } %>");
 $('.all-activities-tab .default-message').remove();
 
 if ("<%= @activity.kind %>" === "note") {
@@ -11,7 +11,7 @@ if ("<%= @activity.kind %>" === "note") {
     $(".activity-tab-for-notes").find("table > tbody > tr:last").remove();
   }
 
-  $(".activity-tab-for-notes").find(".activities-history--table").prepend("<%= j render @activity %>");
+  $(".activity-tab-for-notes").find(".activities-history--table").prepend("<%= j render @activity, locals: { link: false } %>");
   $('.activity-tab-for-notes .default-message').remove();
 }
 
@@ -20,17 +20,17 @@ if ("<%= @activity.kind %>" === "outcome") {
     $(".activity-tab-for-outcomes").find("table > tbody > tr:last").remove();
   }
 
-  $(".activity-tab-for-outcomes").find(".activities-history--table").prepend("<%= j render @activity %>");
+  $(".activity-tab-for-outcomes").find(".activities-history--table").prepend("<%= j render @activity, locals: { link: false } %>");
   $('.activity-tab-for-outcomes .default-message').remove();
 }
 
 if ("<%= @activity.kind %>" === "call") {
-  $(".activity-tab-for-calls .activity-stream").prepend("<%= j render @activity %>");
+  $(".activity-tab-for-calls .activity-stream").prepend("<%= j render @activity, locals: { link: false } %>");
   $('.activity-tab-for-calls .default-message').remove();
 }
 
 if ("<%= @activity.kind %>" === "meeting") {
-  $(".activity-tab-for-meetings .activity-stream").prepend("<%= j render @activity %>");
+  $(".activity-tab-for-meetings .activity-stream").prepend("<%= j render @activity, locals: { link: false } %>");
   $('.activity-tab-for-meetings .default-message').remove();
 }
 

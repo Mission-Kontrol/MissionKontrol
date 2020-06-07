@@ -11,6 +11,9 @@ class DashboardController < ApplicationController
   def show
     full_license = OrganisationSetting.last.full_license
     @trial_license = !full_license
+    @activities_for_user = Activity.where(
+      user_id: current_admin_user.id
+    ).sort_by(&:created_at).reverse[0..4]
   end
 
   def license

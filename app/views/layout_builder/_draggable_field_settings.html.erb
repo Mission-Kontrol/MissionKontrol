@@ -7,12 +7,6 @@
   <div id="sv_builder_primary_table_draggable_fields_container">
   </div>
 </div>
-<div class="light-border-bottom layout-builder-side-nav-available-table">
-  <a href="#" class="sv_builder_table_navigation-other greyish-brown" disable="true" data-table-name="<%= primary_table %>" data-database-id="<%= @database.id %>">
-    Other
-    <i class="fa fa-angle-right float-right" aria-hidden="true"></i>
-  </a>
-</div>
 
 <h3 class="blueberry medium">Related tables</h3>
 <h4>Drag tables into the layout to add them to the view</h4>
@@ -29,6 +23,11 @@
         <div class="draggable-list-for-relatable-table" id="draggable-list-for-relatable-table-<%= table %>">
         </div>
       <% end %>
+    <% end %>
+
+    <% if @related_tables.nil? %>
+      <br />
+      <h4 class="italic">No related tables</h4>
     <% end %>
 
   </div>

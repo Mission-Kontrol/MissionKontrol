@@ -93,6 +93,8 @@ module TaskQueueRecordActivity
       then task_queue.success_database_update['update_text']
     when 'Increment'
       then get_value(task_queue, task_queue.success_database_update, outcome_params)
+    when 'DateTime'
+      then DateTime.now.utc.to_s(:db)
     end
   end
 
@@ -104,6 +106,8 @@ module TaskQueueRecordActivity
       then task_queue.failure_database_update['update_text']
     when 'Increment'
       then get_value(task_queue, task_queue.failure_database_update, outcome_params)
+    when 'DateTime'
+      then DateTime.now.utc.to_s(:db)
     end
   end
 

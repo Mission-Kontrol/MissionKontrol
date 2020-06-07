@@ -51,6 +51,7 @@ class TaskQueuesController < ApplicationController
     @database = Database.find(@task_queue.database_id)
     @database_connection = database_connection
     data = data_for_preview(@task_queue)
+    data.merge!(task_queue: @task_queue)
     render action: 'update/success', json: data
   rescue StandardError
     render action: 'update/error', status: 422, json: {}

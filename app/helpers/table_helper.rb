@@ -83,7 +83,7 @@ module TableHelper
     when :datetime
       datetime_field_tag(field_name, nil, class: "record--modal-input", required: input[:required], value: value)
     else
-      text_field_tag(field_name, nil, class: "record--modal-input", required: input[:required], value: value)
+      text_field_tag(field_name, nil, class: "record--modal-input", required: input[:required], value: value, data: { lastpass: "disable", lpignore: "true" })
     end
   end
 

@@ -9,7 +9,7 @@
       <br/>
 
       <%= form_for @task_queue, html: { id: "Blabla" } do |f| %>
-        <h4 class="bold">Success</h4>
+        <h2 class="bold">Success</h2>
         <p>Settings for when a user actions a queue item and the green button is clicked.</p>
         <br/>
         <div class="row">
@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-
+        <br/>
         <div class="row">
           <div class="col-sm-12">
             <p class="bold">Queue action</p>
@@ -41,13 +41,13 @@
             <%# <p>Hours</p> %>
           </div>
         </div>
-
+        <br/>
         <div class="row">
-          <div class="col-sm-9">
+          <div class="col-sm-11">
             <p class="bold">Database update</p>
             <p>Update a database field when success is set.</p>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-1">
             <label class="switch">
               <div class='toggle'>
                 <%= check_box_tag "task_queue[success_database][enabled]", true, @task_queue.success_database_update.try(:[], "enabled"), class: 'form-control toggle-state' %>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-12 col-md-4">
+          <div class="col-sm-12 col-md-6">
             <p>Update field</p>
           </div>
           <div class="col-sm-6 col-md-6">
@@ -70,16 +70,16 @@
             </div>
           </div>
 
-          <div class="col-sm-12 col-md-4">
+          <div class="col-sm-12 col-md-6">
             <p>Update type</p>
           </div>
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-              <%= select_tag("task_queue[success_database][update_type]", options_for_select(["Increment", "Boolean", "Text"], @task_queue.success_database_update.try(:[], "update_type")), { class: "form-control" }) %>
+              <%= select_tag("task_queue[success_database][update_type]", options_for_select(["Increment", "Boolean", "Text", "DateTime"], @task_queue.success_database_update.try(:[], "update_type")), { class: "form-control", id: "task-queue-success-type" }) %>
             </div>
           </div>
 
-          <div class="col-sm-12 col-md-4">
+          <div class="col-sm-12 col-md-6">
             <p class="hide" id="task-queue-success-label">Update to</p>
           </div>
           <div class="col-sm-6 col-md-6">
@@ -93,7 +93,7 @@
         <br/>
         <br/>
 
-        <h4 class="bold">Failure</h4>
+        <h2 class="bold">Failure</h2>
         <p>Settings for when a user actions a queue item and the red button is clicked.</p>
         <br/>
         <div class="row">
@@ -108,7 +108,7 @@
             </div>
           </div>
         </div>
-
+        <br/>
         <div class="row">
           <div class="col-sm-12">
             <p class="bold">Queue action</p>
@@ -125,13 +125,13 @@
             <%# <p>Hours</p> %>
           </div>
         </div>
-
+        <br/>
         <div class="row">
-          <div class="col-sm-9">
+          <div class="col-sm-11">
             <p class="bold">Database update</p>
             <p>Update a database field when failure is set.</p>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-1">
             <label class="switch">
               <div class='toggle'>
                 <%= check_box_tag "task_queue[failure_database][enabled]", true, @task_queue.failure_database_update.try(:[], "enabled"), class: 'form-control toggle-state' %>
@@ -145,7 +145,7 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-12 col-md-4">
+          <div class="col-sm-12 col-md-6">
             <p>Update field</p>
           </div>
           <div class="col-sm-6 col-md-6">
@@ -154,16 +154,16 @@
             </div>
           </div>
 
-          <div class="col-sm-12 col-md-4">
+          <div class="col-sm-12 col-md-6">
             <p>Update type</p>
           </div>
           <div class="col-sm-6 col-md-6">
             <div class="form-group">
-              <%= select_tag("task_queue[failure_database][update_type]", options_for_select(["Increment", "Boolean", "Text"], @task_queue.failure_database_update.try(:[], "update_type")), { class: "form-control" }) %>
+              <%= select_tag("task_queue[failure_database][update_type]", options_for_select(["Increment", "Boolean", "Text", "DateTime"], @task_queue.failure_database_update.try(:[], "update_type")), { class: "form-control" }) %>
             </div>
           </div>
 
-          <div class="col-sm-12 col-md-4">
+          <div class="col-sm-12 col-md-6">
             <p class="hide" id="task-queue-failure-label">Update to</p>
           </div>
           <div class="col-sm-6 col-md-6">

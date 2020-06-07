@@ -6,6 +6,7 @@ default: &default
   username: <%= ENV['KUWINDA_DATABASE_USER'] %>
   password: <%= ENV['KUWINDA_DATABASE_PASSWORD'] %>
   port: <%= ENV['KUWINDA_DATABASE_PORT'] { 5432 } %>
+  reaping_frequency: 0
 
 development:
   <<: *default

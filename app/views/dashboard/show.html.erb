@@ -74,3 +74,25 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-sm-12 light-grey-bg">
+    <div class="tabs-container">
+      <div class="tab-content">
+        <div id="tab-1" class="tab-pane active all-activities-tab">
+          <div class="panel-body">
+            <h2>Activity history</h2>
+            <div class="activity-stream">
+              <% if @activities_for_user %>
+                <%= render 'shared/activity_stream', activities: @activities_for_user, locals: { hide: false, link: true } %>
+              <% else %>
+                <p class="default-message">You haven't recorded any activity yet.</p>
+                <%= render 'shared/activity_stream', activities: @activities_for_user, locals: { hide: true, link: true } %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

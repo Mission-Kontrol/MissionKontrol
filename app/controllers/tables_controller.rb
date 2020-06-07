@@ -46,7 +46,7 @@ class TablesController < ApplicationController
     if @task_queue
       existing_outcomes = @task_queue.task_queue_outcomes.select do |outcome|
         outcome.task_queue_item_primary_key == params[:record_id] &&
-          (outcome.task_queue_item_reapper_at && outcome.task_queue_item_reappear_at >= Date.today)
+          (outcome.task_queue_item_reappear_at && outcome.task_queue_item_reappear_at >= Date.today)
       end
 
       task_queue_records = build_query_for_preview(@task_queue, nil, nil).rows
@@ -302,13 +302,17 @@ class TablesController < ApplicationController
     params.require(:editable_fields).permit!
   end
 
-  def update_editable_fields(settings, params)
-    params.each do |field|
+  def update_editable_fields(settings, editable_params)
+    editable_params.each do |field|
       value = field.first
       settings.editable_fields[value] = {
-        editable: ActiveModel::Type::Boolean.new.cast(params[value]['editable']),
-        mandatory: ActiveModel::Type::Boolean.new.cast(params[value]['mandatory'])
+        editable: ActiveModel::Type::Boolean.new.cast(editable_params[value]['editable']),
+        mandatory: ActiveModel::Type::Boolean.new.cast(editable_params[value]['mandatory'])
       }
     end
+
+    new_nested_table = params['nested_table'] == 'Disable' ? nil : params['nested_table']
+
+    @table_settings.update_attribute(:nested_table, new_nested_table)
   end
 end

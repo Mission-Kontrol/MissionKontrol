@@ -10,6 +10,9 @@ function loadNestedDataTable(columns, data, nestedTable, recordId) {
     dom: "",
     data,
     stateSave: true,
+    stateSaveParams(settings, data) {
+      data.search.search = "";
+    },
     scrollX: true,
     processing: false,
     stateSaveCallback(settings, data) {
@@ -66,6 +69,7 @@ function formatNestedTableColumns (data, tableName, nestedTable, nestedVisibleCo
 function loadDataTable (columns) {
   let canExport = $(".data-table").data("can-export");
   let tableName = $(".data-table").data("table-name");
+  let databaseName = $(".data-table").data("database-name");
   var nestedVisibleColumns = $(".data-table").data("nested-table-columns");
   let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
 
@@ -79,6 +83,8 @@ function loadDataTable (columns) {
   let colOrderable = [
     { orderable: false, targets: reorderTargets }
   ];
+
+  let today = new Date();
 
   columns.unshift({
     data: "",
@@ -110,6 +116,9 @@ function loadDataTable (columns) {
     dom: "f<'table--info'piB>rt<'clear'>",
     columns,
     stateSave: true,
+    stateSaveParams(settings, data) {
+      data.search.search = "";
+    },
     stateSaveCallback(settings, data) {
       stateSaveCallbackFunction(settings, data, $(this));
     },
@@ -143,7 +152,8 @@ function loadDataTable (columns) {
       {
         extend: "csv",
         className: "table--export " + canExport,
-        text: "Export"
+        text: "Export",
+        filename: today.toISOString().split("T")[0] + "_" + databaseName + "_" + tableName
       },
       {
         text: "Settings",
@@ -199,6 +209,7 @@ function fetchDataForTable() {
   $.ajax({
     dataType: "json",
     url: "/" + (location.pathname+location.search).substr(1),
+    cache: false,
     success(d) {
       loadDataTable(d.columns);
     },
@@ -232,6 +243,9 @@ function loadRelatedDataTable (columns, id, ajax) {
       dom: "f<'table--info'piB>rt<'clear'>",
       columns,
       stateSave: true,
+      stateSaveParams(settings, data) {
+        data.search.search = "";
+      },
       stateSaveCallback(settings, data) {
         stateSaveCallbackFunction(settings, data, $(this));
       },
@@ -363,6 +377,7 @@ function submitActivityForm (data) {
 function applyOutcomeRule () {
   $(".task-queue--outcome-button").click(function (event) {
     event.preventDefault();
+    $(".spinner").show();
     let table = location.pathname.substr(1).split("/")[1];
     let primaryKey = location.pathname.substr(1).split("/")[2].split("?")[0];
     let outcome = $(this).data("outcome");
@@ -387,8 +402,10 @@ function applyOutcomeRule () {
              },
       success (data) {
         submitActivityForm(data);
-        $(".task-queue--outcome-buttons").addClass("hide");
+        $(".task-queue--outcome-button-success").addClass("hide");
+        $(".task-queue--outcome-button-failure").addClass("hide");
         window.toastr.success("Task queue outcome updated.");
+        $(".spinner").hide();
       }
     });
   });
