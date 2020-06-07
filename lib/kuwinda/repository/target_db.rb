@@ -183,9 +183,15 @@ module Kuwinda
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
-        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
+        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+
+        if search.is_a? Integer
+          query("SELECT * FROM #{table} WHERE #{value['data']} = #{search_value}", limit, offset, order_column, order_dir)
+        else
+          query("SELECT * FROM #{table} WHERE #{value['data']} ILIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
+        end
       end
       # rubocop:enable Metrics/ParameterLists
 
@@ -194,9 +200,15 @@ module Kuwinda
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
-        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
+        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+
+        if search.is_a? Integer
+          query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} = #{search_value}", limit, offset)
+        else
+          query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} ILIKE '%#{search_value}%'", limit, offset)
+        end
       end
       # rubocop:enable Metrics/ParameterLists
 
@@ -205,9 +217,15 @@ module Kuwinda
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
-        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
+        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+
+        if search.is_a? Integer
+          query("SELECT * FROM #{table} WHERE #{value['data']} = #{search_value}", limit, offset, order_column, order_dir)
+        else
+          query("SELECT * FROM #{table} WHERE #{value['data']} LIKE '%#{search_value}%'", limit, offset, order_column, order_dir)
+        end
       end
       # rubocop:enable Metrics/ParameterLists
 
@@ -216,9 +234,15 @@ module Kuwinda
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
-        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text
+        return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+
+        if search.is_a? Integer
+          query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} = #{search_value}", limit, offset)
+        else
+          query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} LIKE '%#{search_value}%'", limit, offset)
+        end
       end
       # rubocop:enable Metrics/ParameterLists
 
