@@ -22,3 +22,11 @@ Metrics/ModuleLength:
 Layout/IndentFirstArrayElement:
   Exclude:
     - 'db/seeds.rb'
+
+Style/RescueModifier:
+  Exclude:
+    - 'lib/kuwinda/repository/target_db.rb'
+
+Lint/LiteralAsCondition:
+  Exclude:
+    - 'lib/kuwinda/repository/target_db.rb'
