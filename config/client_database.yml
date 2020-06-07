@@ -5,6 +5,7 @@ default: &default
   host: <%= ENV['CLIENT_DATABASE_HOST'] %>
   username: <%= ENV['CLIENT_DATABASE_USER'] %>
   password: <%= ENV['CLIENT_DATABASE_PASSWORD'] %>
+  reaping_frequency: 0
 
 development:
   <<: *default
