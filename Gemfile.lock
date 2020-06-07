@@ -173,6 +173,7 @@ GEM
     multipart-post (2.1.1)
     mysql2 (0.4.10)
     nenv (0.3.0)
+    newrelic_rpm (6.11.0.365)
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
@@ -381,6 +382,7 @@ DEPENDENCIES
   jquery-rails (~> 4.3)
   listen
   mysql2 (~> 0.4.10)
+  newrelic_rpm
   paloma (~> 6.0.0)
   pg (~> 1.2)
   pry-byebug
