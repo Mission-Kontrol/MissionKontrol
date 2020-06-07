@@ -270,18 +270,21 @@ div.dataTables_wrapper div.dataTables_filter label {
 
   .table--import {
     background: url(/assets/images/icons/import.png) no-repeat center left;
-    padding: 6px 20px;
+    padding: 6px 22px;
+    background-size: 16px;
 
     &:active:hover,
     &:active,
     &:hover {
       background: url(/assets/images/icons/import.png) no-repeat center left;
+      background-size: 16px;
     }
   }
 
   .table--export {
     background: url(/assets/images/icons/export.png) no-repeat center left;
-    padding: 6px 20px;
+    padding: 6px 22px;
+    background-size: 16px;
 
     &.false {
       display: none;
@@ -291,24 +294,27 @@ div.dataTables_wrapper div.dataTables_filter label {
     &:active,
     &:hover {
       background: url(/assets/images/icons/export.png) no-repeat center left;
+      background-size: 16px;
     }
   }
 
   .table--colvis {
-    background: url(/assets/images/icons/import.png) no-repeat center left;
-    padding: 6px 20px;
+    background: url(/assets/images/icons/column.png) no-repeat center left;
+    padding: 6px 22px;
     border: none;
+    background-size: 16px;
 
     &:active:hover,
     &:active,
     &:hover {
-      background: url(/assets/images/icons/import.png) no-repeat center left;
+      background: url(/assets/images/icons/column.png) no-repeat center left;
+      background-size: 16px;
     }
   }
 
   .table--add {
     background: url(/assets/images/icons/plus.png) no-repeat center left;
-    padding: 6px 20px;
+    padding: 6px 22px;
     border: none;
     background-color: inherit;
 
@@ -320,15 +326,17 @@ div.dataTables_wrapper div.dataTables_filter label {
   }
 
   .table--settings {
-    background: url(/assets/images/icons/settings-black.png) no-repeat center left;
-    padding: 6px 20px;
+    background: url(/assets/images/icons/settings.png) no-repeat center left;
+    padding: 6px 22px;
     border: none;
     background-color: inherit;
+    background-size: 16px;
 
     &:active:hover,
     &:active,
     &:hover {
-      background: url(/assets/images/icons/settings-black.png) no-repeat center left;
+      background: url(/assets/images/icons/settings.png) no-repeat center left;
+      background-size: 16px;
     }
   }
 }
