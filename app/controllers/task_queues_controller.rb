@@ -72,7 +72,7 @@ class TaskQueuesController < ApplicationController
     @target_db = target_db
     respond_to do |format|
       format.html do
-        sql_result = @target_db.all(@task_queue.table)
+        sql_result = @target_db.all(@task_queue.table, 10)
         @headers = sql_result ? sql_result.columns : []
         render layout: 'standard'
       end

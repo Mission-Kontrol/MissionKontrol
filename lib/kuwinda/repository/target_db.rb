@@ -10,7 +10,7 @@ module Kuwinda
         @conn = database.connection
       end
 
-      def all(table, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+      def all(table, limit = 10, offset = nil, order_column = nil, order_dir = nil)
         query("select * from #{table};", limit, offset, order_column, order_dir)
       end
 
@@ -75,7 +75,7 @@ module Kuwinda
         conn.exec_delete(sql)
       end
 
-      def query(sql, limit, offset, order_column = nil, order_dir = nil)
+      def query(sql, limit = 10, offset = nil, order_column = nil, order_dir = nil)
         if order_column.present? && order_dir.present?
           query_string = sql.split(';')
           query_string = "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
@@ -113,7 +113,7 @@ module Kuwinda
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def datatable_filter(database, table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+      def datatable_filter(database, table, search_value = nil, columns = nil, limit = 10, offset = nil, order_column = nil, order_dir = nil)
         return all(table, limit, offset, order_column, order_dir) if search_value.blank? || columns.nil?
 
         result = search_columns(database, table, search_value, columns, limit, offset, order_column, order_dir)
@@ -137,7 +137,7 @@ module Kuwinda
       private
 
       # rubocop:disable Metrics/ParameterLists
-      def search_columns(database, table, search_value = nil, columns = nil, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+      def search_columns(database, table, search_value = nil, columns = nil, limit = 10, offset = nil, order_column = nil, order_dir = nil)
         result = nil
         database_type = Kuwinda::DatabaseAdapter.adapter(database.adapter)
         columns.each do |_key, value|
@@ -158,7 +158,7 @@ module Kuwinda
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
-      def search_columns_related_table(database, table, search_value, foreign_key_title, foreign_key_value, columns, limit = nil, offset = nil)
+      def search_columns_related_table(database, table, search_value, foreign_key_title, foreign_key_value, columns, limit = 10, offset = nil)
         result = nil
         database_type = Kuwinda::DatabaseAdapter.adapter(database.adapter)
         columns.each do |_key, value|
@@ -179,7 +179,7 @@ module Kuwinda
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
-      def postgres_search(table, value, search_value, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+      def postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
@@ -196,7 +196,7 @@ module Kuwinda
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
-      def postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = nil, offset = nil)
+      def postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
@@ -213,7 +213,7 @@ module Kuwinda
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
-      def non_postgres_search(table, value, search_value, limit = nil, offset = nil, order_column = nil, order_dir = nil)
+      def non_postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
@@ -230,7 +230,7 @@ module Kuwinda
       # rubocop:enable Metrics/ParameterLists
 
       # rubocop:disable Metrics/ParameterLists
-      def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = nil, offset = nil)
+      def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
