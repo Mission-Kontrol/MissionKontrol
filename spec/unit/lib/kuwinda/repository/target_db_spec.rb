@@ -47,7 +47,7 @@ module Kuwinda
 
         context "when limit is not present" do
           it 'returns all records' do
-            expect(target_db.conn).to receive(:exec_query).with("select * from #{table};")
+            expect(target_db.conn).to receive(:exec_query).with("select * from #{table} limit 10;")
             target_db.all(table)
           end
         end
