@@ -40,14 +40,14 @@ module Kuwinda
         let(:table) { 'users' }
         context "when limit is present" do
           it 'returns the number of records in the limit' do
-            expect(target_db.conn).to receive(:exec_query).with("select * from #{table} limit 5;")
+            expect(target_db.conn).to receive(:exec_query).with("select * from #{table} limit 5 offset 0;")
             target_db.all(table, 5)
           end
         end
 
         context "when limit is not present" do
           it 'returns all records' do
-            expect(target_db.conn).to receive(:exec_query).with("select * from #{table} limit 10;")
+            expect(target_db.conn).to receive(:exec_query).with("select * from #{table} limit 10 offset 0;")
             target_db.all(table)
           end
         end

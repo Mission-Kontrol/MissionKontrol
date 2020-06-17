@@ -75,25 +75,17 @@ module Kuwinda
         conn.exec_delete(sql)
       end
 
-      def query(sql, limit = 10, offset = nil, order_column = nil, order_dir = nil)
+      def query(sql, limit = 10, offset = 0, order_column = nil, order_dir = nil)
+        query_string = sql.split(';')
         if order_column.present? && order_dir.present?
-          query_string = sql.split(';')
           query_string = "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
         else
           query_string = sql
         end
+        new_query_string = query_string.split(';').first
+        new_query_string = "#{new_query_string} limit #{limit || 10} offset #{offset || 0};"
 
-        if limit && offset
-          query_string = query_string.split(';')
-          query_string = "#{query_string[0]} limit #{limit} offset #{offset};"
-        elsif limit
-          query_string = query_string.split(';')
-          query_string = "#{query_string[0]} limit #{limit};"
-        else
-          query_string = sql
-        end
-
-        conn.exec_query(query_string)
+        conn.exec_query(new_query_string)
       rescue ActiveRecord::StatementInvalid
         nil
       end
