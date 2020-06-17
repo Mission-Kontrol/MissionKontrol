@@ -82,16 +82,8 @@ module Kuwinda
         else
           query_string = sql
         end
-        new_query_string = query_string.split(';')
-
-        if limit && offset
-          new_query_string = "#{new_query_string[0]} limit #{limit} offset #{offset};"
-        elsif limit
-          new_query_string = new_query_string.split(';')
-          new_query_string = "#{new_query_string[0]} limit #{limit};"
-        else
-          new_query_string = "#{new_query_string[0]} limit 10 offset 0;"
-        end
+        new_query_string = query_string.split(';').first
+        new_query_string = "#{new_query_string} limit #{limit || 10} offset #{offset || 0};"
 
         conn.exec_query(new_query_string)
       rescue ActiveRecord::StatementInvalid
