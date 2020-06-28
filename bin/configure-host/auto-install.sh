@@ -58,8 +58,9 @@ function fulfill_dependencies() {
             case "$ID" in
                 ubuntu|debian)
                     case "$VERSION_ID" in
-                        16.04|18.04|18.10|8|9|10)
+                        16.04|18.04|18.10|19.10|20.04|8|9|10)
                             if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                echo -e " [\e[1;37mINFO\e[0m] :: Installing docker."
                                 apt-get -qq update
                                 apt-get -qq install -y \
                                     apt-transport-https \
@@ -73,7 +74,7 @@ function fulfill_dependencies() {
                                     "deb [arch=amd64] https://download.docker.com/linux/$ID \
                                     $(lsb_release -cs) stable" >/dev/null
                                 apt-get -qq update
-
+                                echo -e " [\e[1;37mINFO\e[0m] :: Configuring docker."
                                 PKG="docker-ce docker-ce-cli containerd.io"
                                 if [ "$ID" == "debian" -a "$VERSION_ID" == "8" ]; then
                                     PKG="docker-ce"
@@ -81,6 +82,7 @@ function fulfill_dependencies() {
                                 apt-get -qq install -y $PKG >/dev/null
                             fi
                             if [ "$DOCKER_RUNNING" != "true" ]; then
+                                echo -e " [\e[1;37mINFO\e[0m] :: Starting docker."
                                 systemctl -q enable docker.service
                                 systemctl -q start docker.service
                             fi
@@ -93,8 +95,9 @@ function fulfill_dependencies() {
                     ;;
                 centos)
                     case "$VERSION_ID" in
-                        6|7)
+                        6|7|8)
                             if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                echo -e " [\e[1;37mINFO\e[0m] :: Installing docker."
                                 yum install -y -q \
                                     yum-utils \
                                     device-mapper-persistent-data \
@@ -106,10 +109,12 @@ function fulfill_dependencies() {
                             if [ "$DOCKER_RUNNING" != "true" ]; then
                                 case "$VERSION_ID" in
                                     7)
+                                        echo -e " [\e[1;37mINFO\e[0m] :: Starting docker."
                                         systemctl -q enable docker.service
                                         systemctl -q start docker.service
                                         ;;
                                     6)
+                                        echo -e " [\e[1;37mINFO\e[0m] :: Starting docker."
                                         chkconfig docker on >/dev/null
                                         service docker start >/dev/null
                                         ;;
@@ -126,12 +131,14 @@ function fulfill_dependencies() {
                     case "$VERSION_ID" in
                         28|29)
                             if [ "$DOCKER_INSTALLED" != "true" ]; then
+                                echo -e " [\e[1;37mINFO\e[0m] :: Installing docker."
                                 dnf install -y -q dnf-plugins-core
                                 dnf config-manager -y --add-repo \
                                     https://download.docker.com/linux/$ID/docker-ce.repo
                                 dnf install -y -q docker-ce docker-ce-cli containerd.io
                             fi
                             if [ "$DOCKER_RUNNING" != "true" ]; then
+                                echo -e " [\e[1;37mINFO\e[0m] :: Starting docker."
                                 systemctl -q enable docker.service
                                 systemctl -q start docker.service
                             fi
@@ -145,6 +152,7 @@ function fulfill_dependencies() {
                 amzn)
                     if [ "$DOCKER_INSTALLED" != "true" ]; then
                         case "$VERSION_ID" in
+                            echo -e " [\e[1;37mINFO\e[0m] :: Installing docker."
                             2) amazon-linux-extras install -y docker >/dev/null; ;;
                             2018.03) yum install -y -q docker
                         esac
@@ -152,10 +160,12 @@ function fulfill_dependencies() {
                     if [ "$DOCKER_RUNNING" != "true" ]; then
                         case "$VERSION_ID" in
                             2)
+                                echo -e " [\e[1;37mINFO\e[0m] :: Starting docker."
                                 systemctl -q enable docker.service
                                 systemctl -q start docker.service
                                 ;;
                             2018.03)
+                                echo -e " [\e[1;37mINFO\e[0m] :: Starting docker."
                                 chkconfig docker on >/dev/null
                                 service docker start >/dev/null
                                 ;;
@@ -360,12 +370,13 @@ if [ -n "$CMD" ]; then
             fulfill_dependencies
             configure_runtime
         fi
-        echo -e " [\e[1;37mINFO\e[0m] :: Downloading and starting application containers."
+        echo -e " [\e[1;37mINFO\e[0m] :: Downloading application containers."
         if [ "$CLEAN_START" == "yes" -o "$CMD" == "update" ]; then
             echo -e "           This may take a moment..."
             docker_compose pull
         fi
         if [ $? -eq 0 ]; then
+            echo -e " [\e[1;37mINFO\e[0m] :: Starting application containers."
             docker_compose up -d
         else
             echo -e " [\e[1;31mERRO\e[0m] :: An error has been encountered while downloading application image."
