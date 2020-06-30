@@ -197,9 +197,11 @@ class TablesController < ApplicationController
   end
 
   def tables_with_view_permission(database_id, tables)
-    Rails.cache.fetch("permissions/#{current_admin_user.id}_#{database_id}_viewable_tables", expires_in: 10.days) do
-      tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
-    end
+    tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
+    # Rails.cache.fetch("permissions/#{current_admin_user.id}_#{database_id}_viewable_tables", expires_in: 10.days) do
+    #   binding.pry
+    #   tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
+    # end
   end
 
   def target_db
@@ -207,6 +209,9 @@ class TablesController < ApplicationController
   end
 
   def set_database
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+
     @database = Database.find(database_params)
   end
 
@@ -263,6 +268,8 @@ class TablesController < ApplicationController
     nested_table_state.visible_columns.each do |value|
       nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
 
     nested_column_names.compact
   end

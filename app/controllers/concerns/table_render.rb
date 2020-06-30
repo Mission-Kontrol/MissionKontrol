@@ -9,6 +9,9 @@ module TableRender
   def render_show_html(table)
     sql_result = @target_db.all(table, 10, 0)
     @headers = sql_result ? sql_result.columns.unshift('') : []
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+
     render :show
   end
 

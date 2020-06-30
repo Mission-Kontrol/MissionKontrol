@@ -26,6 +26,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_organisation
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development]) unless ActiveRecord::Base.connected?
     @current_organisation ||= OrganisationSetting.last
   end
 
