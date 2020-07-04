@@ -12,6 +12,7 @@ module License
   end
 
   def license_valid?
+    current_organisation = OrganisationSetting.last
     return false unless current_organisation&.license_key_present?
 
     license_key = current_organisation.license_key

@@ -14,11 +14,13 @@ class TablesController < ApplicationController
   before_action :set_current_table,
                 :check_license
 
-  before_action :target_db, except: :index
-  before_action :set_main_table, only: :show
-  before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings update_table_field]
+  before_action :set_database, :set_databases
   before_action :check_user_permissions, only: %i[show]
+  before_action :set_main_table, only: :show
   before_action :set_activities, only: :preview
+
+  before_action :target_db, except: :index
+  before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings update_table_field]
 
   def index
     set_database
@@ -204,6 +206,10 @@ class TablesController < ApplicationController
     # end
   end
 
+  def set_databases
+    @databases = Database.all.sort
+  end
+
   def target_db
     @target_db ||= Kuwinda::Repository::TargetDB.new(database_connection)
   end
@@ -220,7 +226,7 @@ class TablesController < ApplicationController
   end
 
   def database_connection
-    set_database
+    # set_database
     @database_connection = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
   end
 

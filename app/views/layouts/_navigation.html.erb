@@ -35,12 +35,31 @@
         <% end %>
       </li>
 
-      <li id="nav-link-databases" class="<%= active_controller?('tables') && active_action?('show') %>">
-        <a href="" id="nav-link-for-available-databases" class="nav-link-for-available-databases">
+      <li class="nav-link-databases <%= active_controller?('tables') && active_action?('show') %>">
+        <a href="" id="nav-link-for-databases" class="nav-link-for-databases">
           <span class="nav-label" data-i18n="nav.dashboard">DATA</span> <span class="fa arrow"></span>
         </a>
 
-        <ul class="nav nav-second-level collapse" id="nav-populate-available-databases">
+        <ul class="nav nav-second-level collapse">
+          <% if @databases.any? %>
+            <% @databases.each do |database| %>
+              <li class="<%= 'active' if database.id == current_database_view_id %>">
+                <a href="" class="nav-link-databases" data-database-id="<%= database.id %>">
+                  <span class="nav-label" data-i18n="nav.layouts">
+                    <%= database.friendly_name %>
+                  </span><span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level nav-databases collapse" id="nav-populate-available-databases-<%= database.id %>">
+                  <% database_tables = tables_with_view_permission(database) %>
+                  <% database_tables.each do |table| %>
+                    <li>
+                      <a href="/tables/<%= database.id %>?table=<%= table %>"><%= table %></a>
+                    <li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+          <% end %>
         </ul>
       </li>
 
@@ -87,6 +106,7 @@
 
           <ul class="nav nav-second-level collapse">
             <li class="">
+              <% current_organisation = OrganisationSetting.last %>
               <%= link_to edit_organisation_setting_path(current_organisation), id: "nav-link-for-general-settings" do %>
                 <%= image_tag('/assets/images/icons/settings-1.png') %>  General
               <% end %>

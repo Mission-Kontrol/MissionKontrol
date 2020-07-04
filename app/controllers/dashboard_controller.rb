@@ -5,6 +5,7 @@ class DashboardController < ApplicationController
   before_action :load_admin_db_config,
                 :load_task_queues,
                 :check_license, only: [:show]
+  before_action :set_databases
 
   layout 'license', only: %i[license verify_license]
 
@@ -36,6 +37,10 @@ class DashboardController < ApplicationController
   end
 
   private
+
+  def set_databases
+    @databases = Database.all.sort
+  end
 
   def save_license(license_key:, full_license:)
     OrganisationSetting.create!(

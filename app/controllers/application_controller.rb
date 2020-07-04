@@ -2,6 +2,8 @@
 
 class ApplicationController < ActionController::Base
   include License
+  include DatabasePresenterActions
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   before_action :set_cache_headers, :load_available_databases, :load_task_queues, :load_databases_with_task_queues
@@ -25,17 +27,19 @@ class ApplicationController < ActionController::Base
     request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
 
-  def current_organisation
-    ActiveRecord::Base.connection_pool.disconnect!
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development]) unless ActiveRecord::Base.connected?
-    @current_organisation ||= OrganisationSetting.last
-  end
+  # def current_organisation
+  #   binding.pry
+  #   # ActiveRecord::Base.connection_pool.disconnect!
+  #   # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development]) unless ActiveRecord::Base.connected?
+  #   @current_organisation ||= OrganisationSetting.last
+  # end
 
   protected
 
   def handle_invalid_client_db_error
     @available_tables = []
     @task_queues = []
+    current_organisation = OrganisationSetting.last
 
     render_view = if request.path == edit_organisation_setting_path(current_organisation)
                     render 'organisation_settings/edit'
@@ -45,6 +49,7 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_openssl_error
+    current_organisation = OrganisationSetting.last
     license_key = current_organisation.license_key
 
     unless license_key.blank?

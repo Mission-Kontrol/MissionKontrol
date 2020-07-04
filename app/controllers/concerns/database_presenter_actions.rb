@@ -9,6 +9,10 @@ module DatabasePresenterActions
     Kuwinda::UseCase::DatabaseConnection.new(@database).execute
   end
 
+  def database_connection(database)
+    Kuwinda::UseCase::DatabaseConnection.new(database).execute
+  end
+
   def relatable_tables(table)
     Kuwinda::Presenter::ListRelatableTables.new(@database_connection, table).call
   end
@@ -27,6 +31,11 @@ module DatabasePresenterActions
 
   def available_tables
     @database_connection = database_connection
+    Kuwinda::Presenter::ListAvailableTables.new(@database_connection).call
+  end
+
+  def available_tables(database)
+    @database_connection = database_connection(database)
     Kuwinda::Presenter::ListAvailableTables.new(@database_connection).call
   end
 end
