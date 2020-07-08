@@ -41,7 +41,7 @@
         </a>
 
         <ul class="nav nav-second-level collapse">
-          <% if @databases.any? %>
+          <% if @databases %>
             <% @databases.each do |database| %>
               <li class="<%= 'active' if database.id == current_database_view_id %>">
                 <a href="" class="nav-link-databases" data-database-id="<%= database.id %>">
@@ -69,7 +69,7 @@
         </a>
 
         <ul class="nav nav-second-level collapse">
-          <% if @databases_with_task_queues.any? %>
+          <% if @databases_with_task_queues %>
             <% @databases_with_task_queues&.each do |database| %>
               <li class="">
                 <a href="" id="nav-link-for-database-task-queues">

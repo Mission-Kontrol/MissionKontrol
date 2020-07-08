@@ -9,15 +9,22 @@ class ApplicationController < ActionController::Base
   before_action :set_cache_headers, :load_available_databases, :load_task_queues, :load_databases_with_task_queues
   protect_from_forgery with: :exception
 
+  around_action :handle_internal_db_errors
+
+  # around_action :handle_external_db_errors
+
   rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
+
+  # rescue_from PG::UndefinedTable, ActiveRecord::ConnectionNotEstablished, with: :handle_internal_db_error
 
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
               PG::ConnectionBad,
               Mysql2::Error,
               ActiveSupport::MessageVerifier::InvalidSignature,
-              ActiveRecord::ConnectionNotEstablished,
               SocketError, :with => :handle_invalid_client_db_error
+
+  # rescue_from ActiveRecord::ConnectionNotEstablished, with: :reconnect_to_database
 
   def check_license
     redirect_to license_path unless license_valid? || Rails.env.development?
@@ -30,13 +37,55 @@ class ApplicationController < ActionController::Base
   # def current_organisation
   #   binding.pry
   #   # ActiveRecord::Base.connection_pool.disconnect!
-  #   # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development]) unless ActiveRecord::Base.connected?
+  #   # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym]) unless ActiveRecord::Base.connected?
   #   @current_organisation ||= OrganisationSetting.last
   # end
 
   protected
 
+  def handle_internal_db_errors
+    begin
+      yield
+    rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect!
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        yield if ActiveRecord::Base.connection.active?
+      else
+        redirect_to '/database_connection_error', format: 'js'
+      end
+    end
+  end
+
+  def handle_external_db_errors
+    # begin
+    #   yield
+    # rescue PG::ConnectionBad, Mysql2::Error, InvalidClientDatabaseError, ActiveRecord::NoDatabaseError
+      
+    # end
+  end
+
+  def handle_internal_db_error
+    # binding.pry
+    if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      ActiveRecord::Base.connection_pool.disconnect!
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+      return if ActiveRecord::Base.connection.active?
+    else
+      redirect_to '/database_connection_error', format: 'js'
+    end
+  end
+
   def handle_invalid_client_db_error
+    # p '-----------------------------------try to reconnect-------------------------------------'
+    # ActiveRecord::Base.connection_pool.disconnect!
+    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    # return if ActiveRecord::Base.connection.active?
+    # p '-----------------------------------tried to reconnect-------------------------------------'
+    if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      ActiveRecord::Base.connection_pool.disconnect!
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    end
     @available_tables = []
     @task_queues = []
     current_organisation = OrganisationSetting.last
@@ -44,8 +93,15 @@ class ApplicationController < ActionController::Base
     render_view = if request.path == edit_organisation_setting_path(current_organisation)
                     render 'organisation_settings/edit'
                   else
+                    # ActiveRecord::Base.connection_pool.disconnect!
+                    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
                     redirect_to '/database_connection_error', format: 'js'
                   end
+  end
+
+  def reconnect_to_database
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
   end
 
   def handle_openssl_error

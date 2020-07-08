@@ -9,7 +9,7 @@ module Kuwinda
       end
 
       def call
-        Rails.cache.fetch("related_tables/#{database.spec.config[:database]}/#{table}", expires_in: 12.hours) do
+        Rails.cache.fetch("related_tables/#{database.database.friendly_name}/#{table}", expires_in: 12.hours) do
           table_relationships
         end
       end
@@ -20,14 +20,17 @@ module Kuwinda
 
       def all_tables_and_fields
         @hash_of_tables_and_columns = {}
-        database.connect.connection.tables.each do |table|
+        connection = database.connect.connection
+        tables = connection.tables
+
+        tables.each do |table|
           @hash_of_tables_and_columns[table] = []
-          database.connection.columns(table).each do |column|
+          connection.columns(table).each do |column|
             @hash_of_tables_and_columns[table] << column.name
           end
         end
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
 
         @hash_of_tables_and_columns
       end

@@ -34,4 +34,6 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  config.before(:suite) { Rails.cache.fetch('license-license_key', expires_in: 24.hours) { 'license-license_key' } }
 end

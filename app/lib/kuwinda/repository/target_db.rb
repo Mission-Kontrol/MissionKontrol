@@ -7,28 +7,41 @@ module Kuwinda
                     :conn
 
       def initialize(database)
-        @conn = database
+        @database = database
+        @conn = database.connect.connection
       end
 
       def all(table, limit = 10, offset = nil, order_column = nil, order_dir = nil)
         query("select * from #{table};", limit, offset, order_column, order_dir)
       end
 
+      # rubocop:disable Style/GuardClause, Lint/UselessAssignment
       def find(table, id)
         sql = "select * from #{table} where id=#{id};"
-        result = conn.connect.connection.exec_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
-    
+        retries = 0
+        result = conn.exec_query(sql)
         result.nil? ? result : result.first
+        ActiveRecord::Base.connection_pool.disconnect!
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+      rescue ActiveRecord::StatementInvalid => e
+        if (retries += 1) <= 2
+          sql = "select * from #{table} where id='#{id}';"
+          result = conn.exec_query(sql)
+          result.nil? ? result : result.first
+          ActiveRecord::Base.connection_pool.disconnect!
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        else
+          raise SqlDatabaseError.new(e.message)
+        end
       end
+      # rubocop:enable Style/GuardClause, Lint/UselessAssignment
 
       def find_related(table, foreign_key_title, foreign_key_value)
         sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
-        result = conn.connect.connection.exec_query(sql)
+        result = conn.exec_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
-    
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+
         result.nil? ? result : result.first
       end
 
@@ -36,36 +49,94 @@ module Kuwinda
         query("select * from #{table} where #{foreign_key_title}=#{foreign_key_value}", limit, offset)
       end
 
+      # rubocop:disable Style/GuardClause, Lint/UselessAssignment
       def update_record(table, field, value, id)
-        if field == 'updated_at'
+        updated_at_exists = table_columns(table).map(&:name).include?('updated_at')
+        if field == 'updated_at' && updated_at_exists
           sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
-        else
+        elsif updated_at_exists
           sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id=#{id};"
+        else
+          sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
         end
-        result = conn.connect.connection.exec_query(sql)
+        retries = 0
+        result = conn.exec_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
+      rescue ActiveRecord::StatementInvalid => e
+        if (retries += 1) <= 2
+          if field == 'updated_at' && updated_at_exists
+            sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
+          elsif updated_at_exists
+            sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id='#{id}';"
+          else
+            sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
+          end
+          result = conn.exec_query(sql)
+          ActiveRecord::Base.connection_pool.disconnect!
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          result
+        else
+          raise UnableToSaveRecordError.new(e.message)
+        end
+      rescue ActiveRecord::NotNullViolation => e
+        raise ActiveRecord::NotNullViolation(e.message)
+      rescue ActiveRecord::RecordNotUnique => e
+        raise ActiveRecord::RecordNotUnique(e.message)
+      rescue ActiveRecord::ActiveRecordError
+        raise ActiveRecord::ActiveRecordError
       end
+      # rubocop:enable Style/GuardClause, Lint/UselessAssignment
 
       def update_related_record(table, field, value, foreign_key_title, foreign_key_value)
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
-        result = conn.connect.connection.exec_query(sql)
+        result = conn.exec_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       end
 
+      # def create_record(table, record_params)
+      #   last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+      #   last_id = conn.exec_query(last_id_sql).rows.first.first
+
+      #   fields = '(id, '
+      #   values = "(#{last_id + 1}, "
+      #   field_types = %i[datetime inet integer string boolean time]
+
+      #   record_params.each do |field, value|
+      #     column = table_columns(table).select { |table_column| table_column.name == field }.first
+      #     fields += "#{field}, "
+
+      #     if field_types.include?(column.type) && value.empty?
+      #       values += column.default ? (column.default + ', ') : 'NULL, '
+      #     else
+      #       values += "'#{value}', "
+      #     end
+      #   end
+      #   fields += 'created_at, updated_at)'
+
+      #   values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
+      #   sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
+      #   result = conn.exec_query(sql)
+      #   ActiveRecord::Base.connection_pool.disconnect!
+      #   ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+      #   result
+      # end
       def create_record(table, record_params)
         last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
-        last_id = conn.connect.connection.exec_query(last_id_sql).rows.first.first
+        last_id_response = conn.exec_query(last_id_sql)
+        last_id = last_id_response.rows.first.nil? ? 0 : last_id_response.rows.first.first
+
+        raise UnableToSaveRecordError.new('Sorry, Id field is not an integer so we cannot add a new record') unless last_id.is_a? Integer
 
         fields = '(id, '
         values = "(#{last_id + 1}, "
         field_types = %i[datetime inet integer string boolean time]
-
+        table_columns = table_columns(table)
         record_params.each do |field, value|
-          column = table_columns(table).select { |table_column| table_column.name == field }.first
+          column = table_columns.select { |table_column| table_column.name == field }.first
           fields += "#{field}, "
 
           if field_types.include?(column.type) && value.empty?
@@ -74,23 +145,39 @@ module Kuwinda
             values += "'#{value}', "
           end
         end
-        fields += 'created_at, updated_at)'
+        if table_columns.map(&:name).include?('created_at') && table_columns.map(&:name).include?('updated_at')
+          fields += 'created_at, updated_at)'
 
-        values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
+          values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
+        else
+          fields_size = fields.size
+          fields = fields[0..fields_size - 3] + ')'
+          size = values.size
+          values = values[0..size - 3] + ')'
+        end
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
-        result = conn.connect.connection.exec_query(sql)
+
+        result = conn.exec_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
+      rescue ActiveRecord::StatementInvalid
+        raise ActiveRecord::StatementInvalid
+      rescue ActiveRecord::NotNullViolation
+        raise ActiveRecord::NotNullViolation
+      rescue ActiveRecord::RecordNotUnique
+        raise ActiveRecord::RecordNotUnique
+      rescue ActiveRecord::ActiveRecordError
+        raise ActiveRecord::ActiveRecordError
       end
 
       def delete_record(table, records_array)
         records = records_array.join(', ')
 
         sql = "DELETE FROM #{table} WHERE id IN (#{records});"
-        result = conn.connect.connection.exec_delete(sql)
+        result = conn.exec_delete(sql)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       end
 
@@ -104,9 +191,9 @@ module Kuwinda
         new_query_string = query_string.split(';').first
         new_query_string = "#{new_query_string} limit #{limit || 10} offset #{offset || 0};"
 
-        result = conn.connect.connection.exec_query(new_query_string)
+        result = conn.exec_query(new_query_string)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       rescue ActiveRecord::StatementInvalid
         nil
@@ -114,24 +201,27 @@ module Kuwinda
 
       def count(table)
         sql = "SELECT COUNT(*) FROM #{table};"
-        result = conn.connect.connection.exec_query(sql)
+        result = conn.exec_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       end
 
       def count_related(table, foreign_key_title, foreign_key_value)
         sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
-        result = conn.connect.connection.exec_query(sql)
+        result = conn.exec_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       end
 
       def table_columns(table)
-        result = conn.connect.connection.columns(table)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+        begin
+          result = conn.columns(table)
+        rescue PG::ConnectionBad, Mysql2::ConnectionBad, Mysql2::Error
+          conn = database.connect.connection
+          result = conn.columns(table)
+        end
         result
       end
 
@@ -203,7 +293,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
-        table_columns = conn.connect.connection.columns(table)
+        table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -220,7 +310,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
-        table_columns = conn.connect.connection.columns(table)
+        table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -237,7 +327,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
-        table_columns = conn.connect.connection.columns(table)
+        table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -254,7 +344,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
-        table_columns = conn.connect.connection.columns(table)
+        table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -278,6 +368,13 @@ module Kuwinda
           end
         end
         result
+      end
+
+      def re_establish_local_connection
+        if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+          ActiveRecord::Base.connection_pool.disconnect!
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        end
       end
     end
   end

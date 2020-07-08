@@ -216,7 +216,7 @@ class TablesController < ApplicationController
 
   def set_database
     ActiveRecord::Base.connection_pool.disconnect!
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
 
     @database = Database.find(database_params)
   end
@@ -275,7 +275,7 @@ class TablesController < ApplicationController
       nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
     ActiveRecord::Base.connection_pool.disconnect!
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
 
     nested_column_names.compact
   end

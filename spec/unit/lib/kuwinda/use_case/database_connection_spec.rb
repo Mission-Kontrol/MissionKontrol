@@ -13,11 +13,11 @@ describe Kuwinda::UseCase::DatabaseConnection do
     # TODO: more specific testing of error messages - InvalidClientDatabaseError not valid
 
     it 'establishes an active connection' do
-      expect(subject.connection.active?).to eq true
+      expect(subject.connect.connection.active?).to eq true
     end
 
     it 'can list the tables available in the database' do
-      expect(subject.connection.tables).to match_array expected_result
+      expect(subject.connect.connection.tables).to match_array expected_result
     end
   end
 end

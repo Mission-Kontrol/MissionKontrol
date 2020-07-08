@@ -22,26 +22,42 @@ RSpec.configure do |config|
     %r{gems\/rspec}
   ]
 
-  config.use_transactional_fixtures = false
+  DATABASE = YAML.load_file(File.join(Rails.root, "config", "database.yml"))[Rails.env]
+
+  # config.use_transactional_fixtures = false
   # config.before(:each) do
-  #   DatabaseCleaner.strategy = :truncation, { only: %w[admin_users organisation_settings] }
+  #   # ActiveRecord::Base.establish_connection DATABASE
+  #   DatabaseCleaner.clean_with(:truncation)
+  #   # DatabaseCleaner.strategy = :truncation, { only: %w[admin_users organisation_settings] }
   # end
 
   # config.before(:each) do
+  #   # ActiveRecord::Base.establish_connection DATABASE
+  #   DatabaseCleaner.strategy = :transaction
   #   DatabaseCleaner.start
+  #   # DatabaseCleaner.start
+  # end
+
+  # config.append_after(:each) do
+  #   # ActiveRecord::Base.establish_connection DATABASE
+  #   DatabaseCleaner.clean
+  #   # DatabaseCleaner.clean
   # end
 
   config.after(:each) do
-    AdminUser.all.each(&:delete)
-    OrganisationSetting.all.each(&:delete)
-    Role.all.each(&:delete)
-    Permission.all.each(&:delete)
-    ViewBuilder.all.each(&:delete)
-    TargetTableSetting.all.each(&:delete)
-    DataTableState.all.each(&:delete)
-    Database.all.each(&:delete)
-    TaskQueue.all.each(&:delete)
-    WorkList.all.each(&:delete)
+    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:test])
+    # ActiveRecord::Base.establish_connection DATABASE
+    AdminUser.all.each(&:delete) if AdminUser.all
+    OrganisationSetting.all.each(&:delete) if OrganisationSetting.all
+    Role.all.each(&:delete) if Role.all
+    Permission.all.each(&:delete) if Permission.all
+    ViewBuilder.all.each(&:delete) if ViewBuilder.all
+    TargetTableSetting.all.each(&:delete) if TargetTableSetting.all
+    DataTableState.all.each(&:delete) if DataTableState.all
+    Database.all.each(&:delete) if Database.all
+    TaskQueue.all.each(&:delete) if TaskQueue.all
+    WorkList.all.each(&:delete) if WorkList.all
     # DatabaseCleaner.clean
   end
 

@@ -9,10 +9,10 @@ module Kuwinda
       end
 
       def call
-        Rails.cache.fetch("table_fields/#{database.spec.config[:database]}/#{table}", expires_in: 12.hours) do
+        Rails.cache.fetch("table_fields/#{database.database.friendly_name}/#{table}", expires_in: 12.hours) do
           fields = database.connect.connection.columns(table.downcase).map(&:name)
           ActiveRecord::Base.connection_pool.disconnect!
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:development])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
 
           fields
         end

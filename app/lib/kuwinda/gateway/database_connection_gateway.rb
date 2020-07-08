@@ -17,9 +17,9 @@ module Kuwinda
         ActiveRecord::Base.establish_connection(credentials)
       end
 
-      private
-
       attr_reader :database
+
+      private
 
       def decrypt_password(password)
         crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
