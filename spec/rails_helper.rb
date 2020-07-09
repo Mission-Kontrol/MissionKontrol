@@ -45,8 +45,8 @@ RSpec.configure do |config|
   # end
 
   config.after(:each) do
-    ActiveRecord::Base.connection_pool.disconnect!
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[:test])
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: "test").first.configuration_hash)
     # ActiveRecord::Base.establish_connection DATABASE
     AdminUser.all.each(&:delete) if AdminUser.all
     OrganisationSetting.all.each(&:delete) if OrganisationSetting.all

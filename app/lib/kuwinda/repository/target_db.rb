@@ -20,16 +20,16 @@ module Kuwinda
         sql = "select * from #{table} where id=#{id};"
         retries = 0
         result = conn.exec_query(sql)
-        result.nil? ? result : result.first
         ActiveRecord::Base.connection_pool.disconnect!
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        result.nil? ? result : result.first
       rescue ActiveRecord::StatementInvalid => e
         if (retries += 1) <= 2
           sql = "select * from #{table} where id='#{id}';"
           result = conn.exec_query(sql)
-          result.nil? ? result : result.first
           ActiveRecord::Base.connection_pool.disconnect!
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          result.nil? ? result : result.first
         else
           raise SqlDatabaseError.new(e.message)
         end
@@ -38,9 +38,8 @@ module Kuwinda
 
       def find_related(table, foreign_key_title, foreign_key_value)
         sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
-        result = conn.exec_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+
+        result = execute_query(sql)
 
         result.nil? ? result : result.first
       end
@@ -91,9 +90,8 @@ module Kuwinda
 
       def update_related_record(table, field, value, foreign_key_title, foreign_key_value)
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
-        result = conn.exec_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        result = execute_query(sql)
+
         result
       end
 
@@ -175,9 +173,12 @@ module Kuwinda
         records = records_array.join(', ')
 
         sql = "DELETE FROM #{table} WHERE id IN (#{records});"
-        result = conn.exec_delete(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        begin
+          result = conn.exec_delete(sql)
+        rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
+          conn = database.connect.connection
+          result = conn.exec_delete(sql)
+        end
         result
       end
 
@@ -190,10 +191,8 @@ module Kuwinda
         end
         new_query_string = query_string.split(';').first
         new_query_string = "#{new_query_string} limit #{limit || 10} offset #{offset || 0};"
+        result = execute_query(new_query_string)
 
-        result = conn.exec_query(new_query_string)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       rescue ActiveRecord::StatementInvalid
         nil
@@ -201,24 +200,22 @@ module Kuwinda
 
       def count(table)
         sql = "SELECT COUNT(*) FROM #{table};"
-        result = conn.exec_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        result = execute_query(sql)
+
         result
       end
 
       def count_related(table, foreign_key_title, foreign_key_value)
         sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
-        result = conn.exec_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        result = execute_query(sql)
+
         result
       end
 
       def table_columns(table)
         begin
           result = conn.columns(table)
-        rescue PG::ConnectionBad, Mysql2::ConnectionBad, Mysql2::Error
+        rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
           conn = database.connect.connection
           result = conn.columns(table)
         end
@@ -370,11 +367,18 @@ module Kuwinda
         result
       end
 
-      def re_establish_local_connection
-        if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
-          ActiveRecord::Base.connection_pool.disconnect!
+      def execute_query(sql)
+        begin
+          result = conn.exec_query(sql)
+          ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
+          conn = database.connect.connection
+          result = conn.exec_query(sql)
+          ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         end
+        result
       end
     end
   end

@@ -215,7 +215,10 @@ class TablesController < ApplicationController
   end
 
   def set_database
-    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    @database = Database.find(database_params)
+  rescue ActiveRecord::ConnectionNotEstablished
     ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
 
     @database = Database.find(database_params)
@@ -262,10 +265,18 @@ class TablesController < ApplicationController
   end
 
   def set_nested_table
-    @current_table_settings = TargetTableSetting.find_by(name: @current_table, database_id: @database.id)
-    nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
+    begin
+      @current_table_settings = TargetTableSetting.find_by(name: @current_table, database_id: @database.id)
+      nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
 
-    @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []
+      @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []
+    rescue ActiveRecord::StatementInvalid
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        retry if ActiveRecord::Base.connection.active?
+      end
+    end
   end
 
   def nested_column_names(nested_table_state)
@@ -274,7 +285,7 @@ class TablesController < ApplicationController
     nested_table_state.visible_columns.each do |value|
       nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
-    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
     ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
 
     nested_column_names.compact

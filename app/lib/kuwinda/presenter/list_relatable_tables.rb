@@ -29,7 +29,7 @@ module Kuwinda
             @hash_of_tables_and_columns[table] << column.name
           end
         end
-        ActiveRecord::Base.connection_pool.disconnect!
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
 
         @hash_of_tables_and_columns

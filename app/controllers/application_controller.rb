@@ -19,8 +19,8 @@ class ApplicationController < ActionController::Base
 
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
-              PG::ConnectionBad,
-              Mysql2::Error,
+              # PG::ConnectionBad,
+              # Mysql2::Error,
               ActiveSupport::MessageVerifier::InvalidSignature,
               SocketError, :with => :handle_invalid_client_db_error
 
@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   # def current_organisation
   #   binding.pry
-  #   # ActiveRecord::Base.connection_pool.disconnect!
+  #   # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
   #   # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym]) unless ActiveRecord::Base.connected?
   #   @current_organisation ||= OrganisationSetting.last
   # end
@@ -47,8 +47,9 @@ class ApplicationController < ActionController::Base
     begin
       yield
     rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
+      # binding.pry
       if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
-        ActiveRecord::Base.connection_pool.disconnect!
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         yield if ActiveRecord::Base.connection.active?
       else
@@ -68,7 +69,7 @@ class ApplicationController < ActionController::Base
   def handle_internal_db_error
     # binding.pry
     if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
-      ActiveRecord::Base.connection_pool.disconnect!
+      ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
       ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
       return if ActiveRecord::Base.connection.active?
     else
@@ -78,12 +79,12 @@ class ApplicationController < ActionController::Base
 
   def handle_invalid_client_db_error
     # p '-----------------------------------try to reconnect-------------------------------------'
-    # ActiveRecord::Base.connection_pool.disconnect!
+    # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
     # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
     # return if ActiveRecord::Base.connection.active?
     # p '-----------------------------------tried to reconnect-------------------------------------'
     if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
-      ActiveRecord::Base.connection_pool.disconnect!
+      ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
       ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
     end
     @available_tables = []
@@ -93,14 +94,14 @@ class ApplicationController < ActionController::Base
     render_view = if request.path == edit_organisation_setting_path(current_organisation)
                     render 'organisation_settings/edit'
                   else
-                    # ActiveRecord::Base.connection_pool.disconnect!
+                    # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
                     # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
                     redirect_to '/database_connection_error', format: 'js'
                   end
   end
 
   def reconnect_to_database
-    ActiveRecord::Base.connection_pool.disconnect!
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
     ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
   end
 
@@ -140,6 +141,12 @@ class ApplicationController < ActionController::Base
   def load_databases_with_task_queues
     database_ids = TaskQueue.enabled.map(&:database_id).uniq
     @databases_with_task_queues = Database.where(id: database_ids)
+  rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
+    if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+      retry if ActiveRecord::Base.connection.active?
+    end
   end
 
   def check_target_db_connection
