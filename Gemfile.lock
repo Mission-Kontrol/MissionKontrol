@@ -189,7 +189,6 @@ GEM
     jwt (2.2.1)
     launchy (2.5.0)
       addressable (~> 2.7)
-    libv8 (3.16.14.19)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -257,7 +256,6 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     recursive-open-struct (1.1.0)
-    ref (2.0.0)
     regexp_parser (1.7.1)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -346,9 +344,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    therubyracer (0.12.3)
-      libv8 (~> 3.16.14.15)
-      ref
     thor (1.0.1)
     tilt (2.0.10)
     turbolinks (5.1.1)
@@ -431,7 +426,6 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen
-  therubyracer (~> 0.12.3)
   turbolinks (~> 5.1.0)
   twilio-ruby (~> 5.33.1)
   uglifier (~> 4.2.0)
