@@ -19,7 +19,16 @@ module Kuwinda
       def find(table, id)
         sql = "select * from #{table} where id=#{id};"
         retries = 0
-        result = conn.exec_query(sql)
+        # result = conn.exec_query(sql)
+        # ActiveRecord::Base.connection_pool.disconnect!
+        # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        if id.is_a? String
+          sql = "select * from #{table} where id='#{id}';"
+        else
+          sql = "select * from #{table} where id=#{id};"
+        end
+
+        result = execute_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result.nil? ? result : result.first
@@ -178,6 +187,12 @@ module Kuwinda
         rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
           conn = database.connect.connection
           result = conn.exec_delete(sql)
+        ensure
+          p "-----------------------------------------------------------------------------"
+          p "reconnect to local database"
+          p "-----------------------------------------------------------------------------"
+          ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         end
         result
       end
@@ -218,6 +233,12 @@ module Kuwinda
         rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
           conn = database.connect.connection
           result = conn.columns(table)
+        ensure
+          p "-----------------------------------------------------------------------------"
+          p "reconnect to local database"
+          p "-----------------------------------------------------------------------------"
+          ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         end
         result
       end
@@ -370,11 +391,13 @@ module Kuwinda
       def execute_query(sql)
         begin
           result = conn.exec_query(sql)
-          ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
           conn = database.connect.connection
           result = conn.exec_query(sql)
+        ensure
+          p "-----------------------------------------------------------------------------"
+          p "reconnect to local database"
+          p "-----------------------------------------------------------------------------"
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         end

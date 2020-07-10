@@ -139,13 +139,15 @@ class ApplicationController < ActionController::Base
   end
 
   def load_databases_with_task_queues
-    database_ids = TaskQueue.enabled.map(&:database_id).uniq
-    @databases_with_task_queues = Database.where(id: database_ids)
-  rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
-    if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
-      ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
-      retry if ActiveRecord::Base.connection.active?
+    begin
+      database_ids = TaskQueue.enabled&.map(&:database_id)&.uniq
+      @databases_with_task_queues = Database.where(id: database_ids)
+    rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        retry if ActiveRecord::Base.connection.active?
+      end
     end
   end
 
