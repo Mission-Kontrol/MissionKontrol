@@ -311,6 +311,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
+        conn = database.connect.connection
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
@@ -328,6 +329,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
+        conn = database.connect.connection
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
@@ -345,6 +347,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
+        conn = database.connect.connection
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
@@ -362,6 +365,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
+        conn = database.connect.connection
         table_columns = conn.columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
