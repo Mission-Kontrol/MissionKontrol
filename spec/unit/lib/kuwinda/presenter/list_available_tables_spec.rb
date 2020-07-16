@@ -15,7 +15,7 @@ describe Kuwinda::Presenter::ListAvailableTables do
 
   context 'listing tables' do
     it 'displays the available tables' do
-      expect(subject).to include('attending_events', 'users', 'events')
+      expect(subject).to include('attending_events', 'users')
     end
 
     it 'does not display the schema_migrations table' do

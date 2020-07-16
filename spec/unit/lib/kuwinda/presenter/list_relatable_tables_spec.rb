@@ -16,7 +16,7 @@ describe Kuwinda::Presenter::ListRelatableTables do
 
   context 'listing one to one connections' do
     it 'returns the tables with one to one relationships to the provided table' do
-      expect(subject).to include('events')
+      expect(subject).to include('attending_events')
     end
 
     it 'does not return tables without relationships to the provided table' do
