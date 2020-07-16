@@ -116,7 +116,6 @@ class AdminUsersController < ApplicationController
     render :index
   end
 
-  # rubocop:disable Metrics/MethodLength
   def render_show_js
     columns = []
     search = params.dig('search', 'value')
@@ -144,7 +143,6 @@ class AdminUsersController < ApplicationController
       recordsFiltered: AdminUser.all.count
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
   def field_names
     ['name', 'email', 'team', 'active']

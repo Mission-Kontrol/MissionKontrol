@@ -188,9 +188,6 @@ module Kuwinda
           conn = database.connect.connection
           result = conn.exec_delete(sql)
         ensure
-          p "-----------------------------------------------------------------------------"
-          p "reconnect to local database"
-          p "-----------------------------------------------------------------------------"
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         end
@@ -234,9 +231,6 @@ module Kuwinda
           conn = database.connect.connection
           result = conn.columns(table)
         ensure
-          p "-----------------------------------------------------------------------------"
-          p "reconnect to local database"
-          p "-----------------------------------------------------------------------------"
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         end
@@ -317,7 +311,7 @@ module Kuwinda
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+        search = search_value_integer(search_value)
 
         if search.is_a? Integer
           query("SELECT * FROM #{table} WHERE #{value['data']} = #{search_value}", limit, offset, order_column, order_dir)
@@ -335,7 +329,7 @@ module Kuwinda
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+        search = search_value_integer(search_value)
 
         if search.is_a? Integer
           query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} = #{search_value}", limit, offset)
@@ -353,7 +347,7 @@ module Kuwinda
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+        search = search_value_integer(search_value)
 
         if search.is_a? Integer
           query("SELECT * FROM #{table} WHERE #{value['data']} = #{search_value}", limit, offset, order_column, order_dir)
@@ -371,7 +365,7 @@ module Kuwinda
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
 
-        search = Integer(search_value) rescue nil ? Integer(search_value) : search_value
+        search = search_value_integer(search_value)
 
         if search.is_a? Integer
           query("SELECT * FROM #{table} WHERE #{foreign_key_title} = #{foreign_key_value} AND #{value['data']} = #{search_value}", limit, offset)
@@ -399,14 +393,17 @@ module Kuwinda
           conn = database.connect.connection
           result = conn.exec_query(sql)
         ensure
-          p "-----------------------------------------------------------------------------"
-          p "reconnect to local database"
-          p "-----------------------------------------------------------------------------"
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         end
         result
       end
+
+      # rubocop disable Style/RescueModifier, Lint/LiteralAsCondition
+      def search_value_integer(search_value)
+        Integer(search_value) rescue nil ? Integer(search_value) : search_value
+      end
+      # rubocop enable Style/RescueModifier, Lint/LiteralAsCondition
     end
   end
 end

@@ -152,7 +152,6 @@ function fulfill_dependencies() {
                 amzn)
                     if [ "$DOCKER_INSTALLED" != "true" ]; then
                         case "$VERSION_ID" in
-                            echo -e " [\e[1;37mINFO\e[0m] :: Installing docker."
                             2) amazon-linux-extras install -y docker >/dev/null; ;;
                             2018.03) yum install -y -q docker
                         esac
