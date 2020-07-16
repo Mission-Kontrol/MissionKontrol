@@ -46,7 +46,8 @@ module Kuwinda
 
       def create_record(table, record_params)
         last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
-        last_id = conn.exec_query(last_id_sql).rows.first.first
+        last_id_response = conn.exec_query(last_id_sql)
+        last_id = last_id_response.rows.first.empty? ? 0 : last_id_response.rows.first.first
         fields = '(id, '
         values = "(#{last_id + 1}, "
         field_types = %i[datetime inet integer string boolean time]

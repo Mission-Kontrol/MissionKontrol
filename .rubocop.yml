@@ -17,7 +17,9 @@ Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature']
 
 Metrics/ModuleLength:
-  Max: 105
+  Max: 200
+  Exclude:
+    - 'spec/unit/lib/kuwinda/repository/target_db_spec.rb'
 
 Layout/IndentFirstArrayElement:
   Exclude:
