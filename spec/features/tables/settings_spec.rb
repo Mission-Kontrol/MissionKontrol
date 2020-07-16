@@ -7,7 +7,7 @@ feature 'Modifying Table settings', js: true do
 
   scenario 'editing editable and mandatory settings' do
     find('.table--settings').click
-    select 'No', from: '[editable_fields][event_id][editable]'
+    select 'No', from: '[editable_fields][transaction_id][editable]'
     click_button 'Save'
     visit table_path(id: @database.id, table: 'attending_events')
     wait_for_ajax

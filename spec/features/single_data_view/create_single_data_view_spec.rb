@@ -4,7 +4,7 @@ feature 'Creating single data view', js: true do
   background do
     sign_in_as_admin_with_license
 
-    setup_tables_and_roles('events')
+    setup_tables_and_roles('transactions')
     visit layouts_path
   end
 
@@ -24,7 +24,7 @@ feature 'Creating single data view', js: true do
   end
 
   scenario 'creates a new layout with primary table fields visible' do
-    @view_builder = ViewBuilder.create(table_name: 'events', database_id: @database.id)
+    @view_builder = ViewBuilder.create(table_name: 'transactions', database_id: @database.id)
     visit edit_layout_path(@view_builder.id)
     find('.sv_builder_table_navigation').click
     expect(page).to have_content 'area'
@@ -32,7 +32,7 @@ feature 'Creating single data view', js: true do
   end
 
   scenario 'creates a new layout with related table fields visible' do
-    @view_builder = ViewBuilder.create(table_name: 'events', database_id: @database.id)
+    @view_builder = ViewBuilder.create(table_name: 'transactions', database_id: @database.id)
     visit edit_layout_path(@view_builder.id)
     expect(page).to have_selector :css, '.draggable-list-for-relatable-table'
   end

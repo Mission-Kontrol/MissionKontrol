@@ -7,7 +7,7 @@ feature 'Adding records with sufficient permissions', js: true do
 
   scenario 'with a single record selected creates the record' do
     find('.table--add-record-button').click
-    fill_in 'record[event_id]', with: 5
+    fill_in 'record[transaction_id]', with: 5
     fill_in 'record[user_id]', with: 7
     click_button 'Save'
     expect(page).to have_content('Record has been successfully created.')

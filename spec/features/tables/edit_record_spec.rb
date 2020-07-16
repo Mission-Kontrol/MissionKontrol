@@ -8,7 +8,7 @@ feature 'Editing records with sufficient permissions', js: true do
   scenario 'with a single record selected edits the record' do
     first('.data-table--select-input').click
     find('.filter-bar--edit > .white').click
-    find("input[name$='[event_id]']").set(5)
+    find("input[name$='[transaction_id]']").set(5)
     find("input[name$='[user_id]']").set(7)
     click_button 'Save'
     expect(page).to have_content('Record(s) has been successfully updated.')
@@ -18,9 +18,9 @@ feature 'Editing records with sufficient permissions', js: true do
     first('.data-table--select-input').click
     all('.data-table--select-input')[2].click
     find('.filter-bar--edit > .white').click
-    all("input[name$='[event_id]']")[0].set(5)
+    all("input[name$='[transaction_id]']")[0].set(5)
     all("input[name$='[user_id]']")[0].set(7)
-    all("input[name$='[event_id]']")[1].set(4)
+    all("input[name$='[transaction_id]']")[1].set(4)
     all("input[name$='[user_id]']")[1].set(6)
     click_button 'Save'
     expect(page).to have_content('Record(s) has been successfully updated.')

@@ -138,7 +138,16 @@ module Kuwinda
           end
 
           context 'when the id field is not numerical' do
+            let(:response) { double('ActiveRecord', rows: [["5a"]]) }
+            let(:table_columns) { [double('column', name: :event_id, type: :integer, default: nil), double('column', name: :user_id, type: :integer, default: nil)] }
+            before do
+              allow(target_db.conn).to receive(:exec_query).with(
+                "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+              ).and_return(response)
+            end
+
             it 'raises an error saying Id field is not numerical' do
+              expect { subject }.to raise_error(UnableToSaveRecordError, 'Sorry, Id field is not an integer so we cannot add a new record')
             end
           end
         end
@@ -164,7 +173,16 @@ module Kuwinda
           end
 
           context 'when the ids are not numerical' do
+            let(:response) { double('ActiveRecord', rows: [["5a"]]) }
+            let(:table_columns) { [double('column', name: :event_id, type: :integer, default: nil), double('column', name: :user_id, type: :integer, default: nil)] }
+            before do
+              allow(target_db.conn).to receive(:exec_query).with(
+                "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+              ).and_return(response)
+            end
+
             it 'raises an error saying Id field is not numerical' do
+              expect { subject }.to raise_error(UnableToSaveRecordError, 'Sorry, Id field is not an integer so we cannot add a new record')
             end
           end
         end
