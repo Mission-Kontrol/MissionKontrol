@@ -28,7 +28,7 @@ module Features
       editable_fields = {
         id: { editable: false, reference: '' },
         user_id: { editable: true, reference: '', mandatory: true },
-        event_id: { editable: true, reference: '', mandatory: false },
+        transaction_id: { editable: true, reference: '', mandatory: false },
         created_at: { editable: false, reference: '' },
         updated_at: { editable: false, reference: '' }
       }

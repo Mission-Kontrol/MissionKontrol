@@ -72,7 +72,7 @@ describe DatabasesController, type: :controller, js: true do
         {
           id: { editable: false, mandatory: false },
           user_id: { editable: false, mandatory: false },
-          event_id: { editable: false, mandatory: false },
+          transaction_id: { editable: false, mandatory: false },
           created_at: { editable: false, mandatory: false },
           updated_at: { editable: false, mandatory: false }
         }.with_indifferent_access
@@ -157,7 +157,7 @@ describe DatabasesController, type: :controller, js: true do
       {
         id: { editable: false, mandatory: false },
         user_id: { editable: true, mandatory: false },
-        event_id: { editable: true, mandatory: true },
+        transaction_id: { editable: false, mandatory: false },
         created_at: { editable: false, mandatory: false },
         updated_at: { editable: false, mandatory: false }
       }.with_indifferent_access
@@ -186,7 +186,7 @@ describe DatabasesController, type: :controller, js: true do
         {
           id: { editable: false, mandatory: false },
           user_id: { editable: true, mandatory: false },
-          event_id: { editable: true, mandatory: true },
+          transaction_id: { editable: false, mandatory: false },
           created_at: { editable: false, mandatory: false },
           updated_at: { editable: false, mandatory: false }
         }.with_indifferent_access

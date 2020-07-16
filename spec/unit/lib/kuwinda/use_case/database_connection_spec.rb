@@ -8,7 +8,7 @@ describe Kuwinda::UseCase::DatabaseConnection do
 
     let(:database) { create(:database) }
     let(:expected_result) do
-      %w[attending_events schema_migrations welcomes users events companies]
+      %w[attending_events schema_migrations welcomes users transactions companies]
     end
     # TODO: more specific testing of error messages - InvalidClientDatabaseError not valid
 

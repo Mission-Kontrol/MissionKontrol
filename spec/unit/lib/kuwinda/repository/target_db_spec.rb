@@ -99,6 +99,95 @@ module Kuwinda
         end
       end
 
+      describe '#create_record' do
+        subject { target_db.create_record(table, record_params) }
+        let(:table) { 'attending_events' }
+        let(:record_params) do
+          {
+            event_id: "5",
+            user_id: "7"
+          }
+        end
+
+        before do
+          travel_to Time.zone.local(2004, 11, 24, 0o1, 0o4, 44)
+        end
+
+        after do
+          travel_back
+        end
+
+        context 'when there are no other records in the table' do
+          context 'when the id field is numerical' do
+            let(:response) { double('ActiveRecord', rows: [[]]) }
+            let(:table_columns) { [double('column', name: :event_id, type: :integer, default: nil), double('column', name: :user_id, type: :integer, default: nil)] }
+            before do
+              allow(target_db.conn).to receive(:exec_query).with(
+                "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+              ).and_return(response)
+              allow(target_db.conn).to receive(:columns).and_return(table_columns)
+            end
+
+            it 'adds the record' do
+              expect(target_db.conn).to receive(:exec_query).with(
+                "INSERT INTO attending_events (id, event_id, user_id, created_at, updated_at) VALUES (1, '5', '7', '2004-11-24 01:04:44', '2004-11-24 01:04:44')"
+              )
+
+              subject
+            end
+          end
+
+          context 'when the id field is not numerical' do
+            let(:response) { double('ActiveRecord', rows: [["5a"]]) }
+            let(:table_columns) { [double('column', name: :event_id, type: :integer, default: nil), double('column', name: :user_id, type: :integer, default: nil)] }
+            before do
+              allow(target_db.conn).to receive(:exec_query).with(
+                "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+              ).and_return(response)
+            end
+
+            it 'raises an error saying Id field is not numerical' do
+              expect { subject }.to raise_error(UnableToSaveRecordError, 'Sorry, Id field is not an integer so we cannot add a new record')
+            end
+          end
+        end
+
+        context 'when there are other records in the table' do
+          context 'when the ids are numerical' do
+            let(:response) { double('ActiveRecord', rows: [[18]]) }
+            let(:table_columns) { [double('column', name: :event_id, type: :integer, default: nil), double('column', name: :user_id, type: :integer, default: nil)] }
+            before do
+              allow(target_db.conn).to receive(:exec_query).with(
+                "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+              ).and_return(response)
+              allow(target_db.conn).to receive(:columns).and_return(table_columns)
+            end
+
+            it 'adds the record' do
+              expect(target_db.conn).to receive(:exec_query).with(
+                "INSERT INTO attending_events (id, event_id, user_id, created_at, updated_at) VALUES (19, '5', '7', '2004-11-24 01:04:44', '2004-11-24 01:04:44')"
+              )
+
+              subject
+            end
+          end
+
+          context 'when the ids are not numerical' do
+            let(:response) { double('ActiveRecord', rows: [["5a"]]) }
+            let(:table_columns) { [double('column', name: :event_id, type: :integer, default: nil), double('column', name: :user_id, type: :integer, default: nil)] }
+            before do
+              allow(target_db.conn).to receive(:exec_query).with(
+                "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
+              ).and_return(response)
+            end
+
+            it 'raises an error saying Id field is not numerical' do
+              expect { subject }.to raise_error(UnableToSaveRecordError, 'Sorry, Id field is not an integer so we cannot add a new record')
+            end
+          end
+        end
+      end
+
       describe '#delete_record' do
         let(:records_array) { ["78"] }
         let(:table) { 'users' }
