@@ -56,6 +56,7 @@ module Kuwinda
         last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
         last_id_response = conn.exec_query(last_id_sql)
         last_id = last_id_response.rows.first.nil? ? 0 : last_id_response.rows.first.first
+
         raise UnableToSaveRecordError.new('Sorry, Id field is not an integer so we cannot add a new record') unless last_id.is_a? Integer
 
         fields = '(id, '
@@ -78,9 +79,9 @@ module Kuwinda
           values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
         else
           fields_size = fields.size
-          fields = fields[0..fields_size-3] + ')'
+          fields = fields[0..fields_size - 3] + ')'
           size = values.size
-          values = values[0..size-3] + ')'
+          values = values[0..size - 3] + ')'
         end
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
 

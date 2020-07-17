@@ -71,6 +71,14 @@ module Kuwinda
       end
 
       describe '#update_record' do
+        before do
+          travel_to Time.local(2004, 11, 24, 0o1, 0o4, 44)
+        end
+
+        after do
+          travel_back
+        end
+
         it 'updates the given record with the new value' do
           id = 1
           table = 'users'
@@ -119,7 +127,7 @@ module Kuwinda
 
         context 'when there are no other records in the table' do
           context 'when the id field is numerical' do
-            let(:response) { double('ActiveRecord', rows: [[]]) }
+            let(:response) { double('ActiveRecord', rows: [nil]) }
             let(:table_columns) { [double('column', name: :event_id, type: :integer, default: nil), double('column', name: :user_id, type: :integer, default: nil)] }
             before do
               allow(target_db.conn).to receive(:exec_query).with(
@@ -130,7 +138,7 @@ module Kuwinda
 
             it 'adds the record' do
               expect(target_db.conn).to receive(:exec_query).with(
-                "INSERT INTO attending_events (id, event_id, user_id, created_at, updated_at) VALUES (1, '5', '7', '2004-11-24 01:04:44', '2004-11-24 01:04:44')"
+                "INSERT INTO attending_events (id, event_id, user_id) VALUES (1, '5', '7')"
               )
 
               subject
@@ -165,7 +173,7 @@ module Kuwinda
 
             it 'adds the record' do
               expect(target_db.conn).to receive(:exec_query).with(
-                "INSERT INTO attending_events (id, event_id, user_id, created_at, updated_at) VALUES (19, '5', '7', '2004-11-24 01:04:44', '2004-11-24 01:04:44')"
+                "INSERT INTO attending_events (id, event_id, user_id) VALUES (19, '5', '7')"
               )
 
               subject
