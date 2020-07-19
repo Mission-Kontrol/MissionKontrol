@@ -114,12 +114,12 @@ module Kuwinda
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
 
         conn.exec_query(sql)
-      rescue ActiveRecord::StatementInvalid => e
-        raise UnableToSaveRecordError.new(e.message)
-      rescue ActiveRecord::NotNullViolation => e
-        raise ActiveRecord::NotNullViolation(e.message)
-      rescue ActiveRecord::RecordNotUnique => e
-        raise ActiveRecord::RecordNotUnique(e.message)
+      rescue ActiveRecord::StatementInvalid
+        raise ActiveRecord::StatementInvalid
+      rescue ActiveRecord::NotNullViolation
+        raise ActiveRecord::NotNullViolation
+      rescue ActiveRecord::RecordNotUnique
+        raise ActiveRecord::RecordNotUnique
       rescue ActiveRecord::ActiveRecordError
         raise ActiveRecord::ActiveRecordError
       end

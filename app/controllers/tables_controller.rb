@@ -142,9 +142,10 @@ class TablesController < ApplicationController
     @error = :NotUnique
     field = e.to_s.split('Key (').last.split(')=').first
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
-  rescue ActiveRecord::ActiveRecordError
+  rescue ActiveRecord::StatementInvalid => e
     @error = :Unknown
-  rescue ActiveRecord::StatementInvalid
+    @error_message = e.message
+  rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
     @error_message = 'Unable to save record. Please check your values and try again'
   end
@@ -170,9 +171,10 @@ class TablesController < ApplicationController
     @error = :NotUnique
     field = e.to_s.split('Key (').last.split(')=').first
     @error_message = "Unable to save record as #{field} already exists. Please change this field and try again."
-  rescue ActiveRecord::ActiveRecordError
+  rescue ActiveRecord::StatementInvalid => e
     @error = :Unknown
-  rescue ActiveRecord::StatementInvalid
+    @error_message = e.message
+  rescue ActiveRecord::ActiveRecordError
     @error = :Unknown
     @error_message = 'Unable to save record. Please check your values and try again'
   end
