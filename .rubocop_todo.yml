@@ -238,6 +238,9 @@ Metrics/CyclomaticComplexity:
 # Configuration parameters: CountComments, ExcludedMethods.
 Metrics/MethodLength:
   Max: 20
+  Exclude:
+    - 'lib/kuwinda/repository/target_db.rb'
+    - 'app/controllers/tables_controller.rb'
 
 Metrics/ModuleLength:
   Exclude:

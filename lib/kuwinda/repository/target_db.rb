@@ -31,12 +31,20 @@ module Kuwinda
       end
 
       def update_record(table, field, value, id)
-        if field == 'updated_at'
+        updated_at_exists = table_columns(table).map(&:name).include?('updated_at')
+        if field == 'updated_at' && updated_at_exists
           sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
-        else
+        elsif updated_at_exists
           sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id=#{id};"
+        else
+          sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
         end
         conn.exec_query(sql)
+        handle_errors
+      rescue ActiveRecord::StatementInvalid
+        sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
+        conn.exec_query(sql)
+        handle_errors
       end
 
       def update_related_record(table, field, value, foreign_key_title, foreign_key_value)
@@ -47,15 +55,16 @@ module Kuwinda
       def create_record(table, record_params)
         last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
         last_id_response = conn.exec_query(last_id_sql)
-        last_id = last_id_response.rows.first.empty? ? 0 : last_id_response.rows.first.first
+        last_id = last_id_response.rows.first.nil? ? 0 : last_id_response.rows.first.first
+
         raise UnableToSaveRecordError.new('Sorry, Id field is not an integer so we cannot add a new record') unless last_id.is_a? Integer
 
         fields = '(id, '
         values = "(#{last_id + 1}, "
         field_types = %i[datetime inet integer string boolean time]
-
+        table_columns = table_columns(table)
         record_params.each do |field, value|
-          column = table_columns(table).select { |table_column| table_column.name == field }.first
+          column = table_columns.select { |table_column| table_column.name == field }.first
           fields += "#{field}, "
 
           if field_types.include?(column.type) && value.empty?
@@ -64,11 +73,20 @@ module Kuwinda
             values += "'#{value}', "
           end
         end
-        fields += 'created_at, updated_at)'
+        if table_columns.map(&:name).include?('created_at') && table_columns.map(&:name).include?('updated_at')
+          fields += 'created_at, updated_at)'
 
-        values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
+          values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
+        else
+          fields_size = fields.size
+          fields = fields[0..fields_size - 3] + ')'
+          size = values.size
+          values = values[0..size - 3] + ')'
+        end
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
+
         conn.exec_query(sql)
+        handle_errors
       end
 
       def delete_record(table, records_array)
@@ -250,6 +268,17 @@ module Kuwinda
           end
         end
         result
+      end
+
+      def handle_errors
+      rescue ActiveRecord::StatementInvalid
+        raise UnableToSaveRecordError.new('Sorry, Id field is not an integer so we cannot add a new record')
+      rescue ActiveRecord::NotNullViolation => e
+        raise ActiveRecord::NotNullViolation(e)
+      rescue ActiveRecord::RecordNotUnique => e
+        raise ActiveRecord::RecordNotUnique(e)
+      rescue ActiveRecord::ActiveRecordError
+        raise ActiveRecord::ActiveRecordError
       end
     end
   end

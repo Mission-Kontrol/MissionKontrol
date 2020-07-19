@@ -1,7 +1,5 @@
-<% if @error == :NullViolation || @error == :NotUnique %>
-  toastr.error("<%= @error_message %>")
-<% elsif @error == :Unkown %>
-  toastr.error("Unable to save the record. Please check all your fields.")
+<% if @error %>
+  toastr.error("<%= @error_message || 'Unable to save the record. Please check all your fields.' %>")
 <% else %>
   toastr.success('Record(s) has been successfully updated.');
   $(".data-table").DataTable().ajax.reload();

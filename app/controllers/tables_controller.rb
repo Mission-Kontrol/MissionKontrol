@@ -128,6 +128,9 @@ class TablesController < ApplicationController
 
   def create_record
     @target_db.create_record(params[:table], record_params)
+  rescue UnableToSaveRecordError
+    @error = :Unknown
+    @error_message = 'Sorry, the Id field is not an integer so we cannot create a new record'
   rescue ActiveRecord::NotNullViolation => e
     @error = :NullViolation
     field = e.to_s.split('value in column ').last.split(' violates').first.split('\"').last
@@ -153,6 +156,9 @@ class TablesController < ApplicationController
       end
     end
 
+  rescue UnableToSaveRecordError
+    @error = :Unknown
+    @error_message = 'Sorry, unable to save the record. Please check your values and try again.'
   rescue ActiveRecord::NotNullViolation => e
     @error = :NullViolation
     field = e.to_s.split('value in column ').last.split(' violates').first.split('\"').last
