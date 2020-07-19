@@ -124,6 +124,9 @@ class TablesController < ApplicationController
       record = @target_db.find(@table, record_id)
       @records << record if record
     end
+  rescue SqlDatabaseError => e
+    @error = :Unknown
+    @error_message = e
   end
 
   def create_record

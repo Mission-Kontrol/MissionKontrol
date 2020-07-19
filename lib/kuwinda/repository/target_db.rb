@@ -14,11 +14,22 @@ module Kuwinda
         query("select * from #{table};", limit, offset, order_column, order_dir)
       end
 
+      # rubocop:disable Style/GuardClause, Lint/UselessAssignment
       def find(table, id)
         sql = "select * from #{table} where id=#{id};"
+        retries = 0
         result = conn.exec_query(sql)
         result.nil? ? result : result.first
+      rescue ActiveRecord::StatementInvalid => e
+        if (retries += 1) <= 2
+          sql = "select * from #{table} where id='#{id}';"
+          result = conn.exec_query(sql)
+          result.nil? ? result : result.first
+        else
+          raise SqlDatabaseError.new(e.message)
+        end
       end
+      # rubocop:enable Style/GuardClause, Lint/UselessAssignment
 
       def find_related(table, foreign_key_title, foreign_key_value)
         sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
@@ -30,6 +41,7 @@ module Kuwinda
         query("select * from #{table} where #{foreign_key_title}=#{foreign_key_value}", limit, offset)
       end
 
+      # rubocop:disable Style/GuardClause, Lint/UselessAssignment
       def update_record(table, field, value, id)
         updated_at_exists = table_columns(table).map(&:name).include?('updated_at')
         if field == 'updated_at' && updated_at_exists
@@ -39,13 +51,29 @@ module Kuwinda
         else
           sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
         end
+        retries = 0
         conn.exec_query(sql)
-        handle_errors
-      rescue ActiveRecord::StatementInvalid
-        sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
-        conn.exec_query(sql)
-        handle_errors
+      rescue ActiveRecord::StatementInvalid => e
+        if (retries += 1) <= 2
+          if field == 'updated_at' && updated_at_exists
+            sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
+          elsif updated_at_exists
+            sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id='#{id}';"
+          else
+            sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
+          end
+          conn.exec_query(sql)
+        else
+          raise UnableToSaveRecordError.new(e.message)
+        end
+      rescue ActiveRecord::NotNullViolation => e
+        raise ActiveRecord::NotNullViolation(e.message)
+      rescue ActiveRecord::RecordNotUnique => e
+        raise ActiveRecord::RecordNotUnique(e.message)
+      rescue ActiveRecord::ActiveRecordError
+        raise ActiveRecord::ActiveRecordError
       end
+      # rubocop:enable Style/GuardClause, Lint/UselessAssignment
 
       def update_related_record(table, field, value, foreign_key_title, foreign_key_value)
         sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE #{foreign_key_title}=#{foreign_key_value};"
@@ -86,7 +114,14 @@ module Kuwinda
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
 
         conn.exec_query(sql)
-        handle_errors
+      rescue ActiveRecord::StatementInvalid => e
+        raise UnableToSaveRecordError.new(e.message)
+      rescue ActiveRecord::NotNullViolation => e
+        raise ActiveRecord::NotNullViolation(e.message)
+      rescue ActiveRecord::RecordNotUnique => e
+        raise ActiveRecord::RecordNotUnique(e.message)
+      rescue ActiveRecord::ActiveRecordError
+        raise ActiveRecord::ActiveRecordError
       end
 
       def delete_record(table, records_array)
@@ -268,17 +303,6 @@ module Kuwinda
           end
         end
         result
-      end
-
-      def handle_errors
-      rescue ActiveRecord::StatementInvalid
-        raise UnableToSaveRecordError.new('Sorry, Id field is not an integer so we cannot add a new record')
-      rescue ActiveRecord::NotNullViolation => e
-        raise ActiveRecord::NotNullViolation(e)
-      rescue ActiveRecord::RecordNotUnique => e
-        raise ActiveRecord::RecordNotUnique(e)
-      rescue ActiveRecord::ActiveRecordError
-        raise ActiveRecord::ActiveRecordError
       end
     end
   end

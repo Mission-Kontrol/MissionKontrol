@@ -1,3 +1,9 @@
-$('#table--edit-record-modal').html("<%= j render("edit_record_modal")%>")
-$('.table--edit-record-modal').removeClass('hide');
-$('.table--edit-record-modal').addClass('show');
+<% if @error %>
+  toastr.error("<%= @error_message %>")
+<% else %>
+  $('#table--edit-record-modal').html("<%= j render("edit_record_modal")%>")
+  $('.table--edit-record-modal').removeClass('hide');
+  $('.table--edit-record-modal').addClass('show');
+<% end %>
+
+
