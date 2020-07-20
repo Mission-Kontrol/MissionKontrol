@@ -189,7 +189,7 @@ module Kuwinda
           result = conn.exec_delete(sql)
         ensure
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         end
         result
       end
@@ -232,7 +232,7 @@ module Kuwinda
           result = conn.columns(table)
         ensure
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         end
         result
       end
@@ -394,7 +394,7 @@ module Kuwinda
           result = conn.exec_query(sql)
         ensure
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         end
         result
       end

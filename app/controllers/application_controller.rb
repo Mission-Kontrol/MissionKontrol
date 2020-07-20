@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   # def current_organisation
   #   binding.pry
   #   # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-  #   # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym]) unless ActiveRecord::Base.connected?
+  #   # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first) unless ActiveRecord::Base.connected?
   #   @current_organisation ||= OrganisationSetting.last
   # end
 
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
       # binding.pry
       if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         yield if ActiveRecord::Base.connection.active?
       else
         redirect_to '/database_connection_error', format: 'js'
@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
     # binding.pry
     if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
       ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
       return if ActiveRecord::Base.connection.active?
     else
       redirect_to '/database_connection_error', format: 'js'
@@ -80,12 +80,12 @@ class ApplicationController < ActionController::Base
   def handle_invalid_client_db_error
     # p '-----------------------------------try to reconnect-------------------------------------'
     # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
     # return if ActiveRecord::Base.connection.active?
     # p '-----------------------------------tried to reconnect-------------------------------------'
     if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
       ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
     end
     @available_tables = []
     @task_queues = []
@@ -95,14 +95,14 @@ class ApplicationController < ActionController::Base
                     render 'organisation_settings/edit'
                   else
                     # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-                    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+                    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
                     redirect_to '/database_connection_error', format: 'js'
                   end
   end
 
   def reconnect_to_database
     ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
   end
 
   def handle_openssl_error
@@ -145,7 +145,7 @@ class ApplicationController < ActionController::Base
     rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
       if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         retry if ActiveRecord::Base.connection.active?
       end
     end

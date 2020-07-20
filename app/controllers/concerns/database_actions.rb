@@ -112,7 +112,7 @@ module DatabaseActions
         rescue ActiveRecord::StatementInvalid, PG::UndefinedTable
           if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
             ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-            ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+            ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
             retry if ActiveRecord::Base.connection.active?
           end
         end
@@ -125,7 +125,7 @@ module DatabaseActions
       rescue ActiveRecord::StatementInvalid, PG::UndefinedTable
         if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
           retry if ActiveRecord::Base.connection.active?
         end
       end

@@ -10,7 +10,7 @@ module TableRender
     sql_result = @target_db.all(table, 10, 0)
     @headers = sql_result ? sql_result.columns.unshift('') : []
     ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
     render :show
   end

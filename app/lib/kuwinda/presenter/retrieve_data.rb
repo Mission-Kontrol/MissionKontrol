@@ -13,7 +13,7 @@ module Kuwinda
         query_string = "SELECT #{query_fields} FROM #{table} #{query_limiter}"
         response = database.connect.connection.exec_query(query_string)
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
         display_results(response)
       end

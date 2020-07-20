@@ -12,7 +12,7 @@ module Kuwinda
         Rails.cache.fetch("table_fields_with_type/#{database.database.friendly_name}/#{table}", expires_in: 12.hours) do
           fields = database.connect.connection.columns(table.downcase).map{|f| [f.name, f.type.to_s, table]}
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
           fields
         end
       end
@@ -21,7 +21,7 @@ module Kuwinda
         Rails.cache.fetch("related_table_fields_with_type/#{database.database.friendly_name}/#{table}", expires_in: 12.hours) do
           fields = database.connect.connection.columns(table.downcase).map{|f| ["#{table}.#{f.name}", f.type.to_s, table]}
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
           fields
         end

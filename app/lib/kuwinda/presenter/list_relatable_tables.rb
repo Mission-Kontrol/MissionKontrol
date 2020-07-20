@@ -30,7 +30,7 @@ module Kuwinda
           end
         end
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
         @hash_of_tables_and_columns
       end

@@ -12,7 +12,7 @@ module Kuwinda
         Rails.cache.fetch("table_fields/#{database.database.friendly_name}/#{table}", expires_in: 12.hours) do
           fields = database.connect.connection.columns(table.downcase).map(&:name)
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
           fields
         end

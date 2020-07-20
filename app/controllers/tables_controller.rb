@@ -216,10 +216,10 @@ class TablesController < ApplicationController
 
   def set_database
     ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
     @database = Database.find(database_params)
   rescue ActiveRecord::ConnectionNotEstablished
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
     @database = Database.find(database_params)
   end
@@ -273,7 +273,7 @@ class TablesController < ApplicationController
     rescue ActiveRecord::StatementInvalid
       if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         retry if ActiveRecord::Base.connection.active?
       end
     end
@@ -286,7 +286,7 @@ class TablesController < ApplicationController
       nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
     end
     ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
     nested_column_names.compact
   end
