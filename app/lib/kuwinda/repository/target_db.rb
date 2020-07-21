@@ -68,7 +68,7 @@ module Kuwinda
           sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
         end
         retries = 0
-        result = conn.exec_query(sql)
+        result = execute_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
@@ -81,7 +81,7 @@ module Kuwinda
           else
             sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
           end
-          result = conn.exec_query(sql)
+          result = execute_query(sql)
           ActiveRecord::Base.connection_pool.disconnect!
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
           result
@@ -163,8 +163,8 @@ module Kuwinda
           values = values[0..size - 3] + ')'
         end
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
-
-        result = conn.exec_query(sql)
+        # binding.pry
+        result = execute_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
