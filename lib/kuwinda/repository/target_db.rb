@@ -44,24 +44,24 @@ module Kuwinda
       # rubocop:disable Style/GuardClause, Lint/UselessAssignment
       def update_record(table, field, value, id)
         updated_at_exists = table_columns(table).map(&:name).include?('updated_at')
-        if field == 'updated_at' && updated_at_exists
-          sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
-        elsif updated_at_exists
-          sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id=#{id};"
-        else
-          sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
-        end
+        sql = if field == 'updated_at' && updated_at_exists
+                "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
+              elsif updated_at_exists
+                "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id=#{id};"
+              else
+                "UPDATE #{table} SET #{field} = '#{value}' WHERE id=#{id};"
+              end
         retries = 0
         conn.exec_query(sql)
       rescue ActiveRecord::StatementInvalid => e
         if (retries += 1) <= 2
-          if field == 'updated_at' && updated_at_exists
-            sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
-          elsif updated_at_exists
-            sql = "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id='#{id}';"
-          else
-            sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
-          end
+          sql = if field == 'updated_at' && updated_at_exists
+                  "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
+                elsif updated_at_exists
+                  "UPDATE #{table} SET #{field} = '#{value}', updated_at = '#{DateTime.now.utc.to_s(:db)}' WHERE id='#{id}';"
+                else
+                  "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
+                end
           conn.exec_query(sql)
         else
           raise UnableToSaveRecordError.new(e.message)
@@ -95,11 +95,11 @@ module Kuwinda
           column = table_columns.select { |table_column| table_column.name == field }.first
           fields += "#{field}, "
 
-          if field_types.include?(column.type) && value.empty?
-            values += column.default ? (column.default + ', ') : 'NULL, '
-          else
-            values += "'#{value}', "
-          end
+          values += if field_types.include?(column.type) && value.empty?
+                      column.default ? (column.default + ', ') : 'NULL, '
+                    else
+                      "'#{value}', "
+                    end
         end
         if table_columns.map(&:name).include?('created_at') && table_columns.map(&:name).include?('updated_at')
           fields += 'created_at, updated_at)'
@@ -133,11 +133,11 @@ module Kuwinda
 
       def query(sql, limit = 10, offset = 0, order_column = nil, order_dir = nil)
         query_string = sql.split(';')
-        if order_column.present? && order_dir.present?
-          query_string = "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
-        else
-          query_string = sql
-        end
+        query_string = if order_column.present? && order_dir.present?
+                         "#{query_string[0]} ORDER BY #{order_column} #{order_dir};"
+                       else
+                         sql
+                       end
         new_query_string = query_string.split(';').first
         new_query_string = "#{new_query_string} limit #{limit || 10} offset #{offset || 0};"
 
@@ -192,11 +192,11 @@ module Kuwinda
           next unless value['searchable']
           next if value['data'].empty?
 
-          if database_type == 'postgresql'
-            filter = postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
-          else
-            filter = non_postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
-          end
+          filter = if database_type == 'postgresql'
+                     postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
+                   else
+                     non_postgres_search(table, value, search_value, limit, offset, order_column, order_dir)
+                   end
           next if filter.nil? || filter.rows.empty?
 
           result = create_result(filter, result)
@@ -213,11 +213,11 @@ module Kuwinda
           next unless value['searchable']
           next if value['data'].empty?
 
-          if database_type == 'postgresql'
-            filter = postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
-          else
-            filter = non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
-          end
+          filter = if database_type == 'postgresql'
+                     postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
+                   else
+                     non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit, offset)
+                   end
           next if filter.nil? || filter.rows.empty?
 
           result = create_result(filter, result)
