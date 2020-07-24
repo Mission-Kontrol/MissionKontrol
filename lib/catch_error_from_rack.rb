@@ -7,14 +7,14 @@ class CatchErrorFromRack
     @app = app
   end
 
+  # rubocop:disable Style/RescueModifier
   def call(env)
     status, headers, body = @app.call(env)
     [status, headers, body]
   rescue ActiveRecord::ConnectionNotEstablished
     connection_pool = nil
-    until connection_pool do
-      connection_pool = ActiveRecord::Base.connection_pool rescue nil
-    end
+
+    connection_pool = ActiveRecord::Base.connection_pool rescue nil until connection_pool
 
     ActiveRecord::Base.connection_pool.disconnect! if connection_pool
     ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
@@ -24,6 +24,7 @@ class CatchErrorFromRack
   rescue ActionController::BadRequest
     [301, { 'Location' => get_hostname(env) }, []]
   end
+  # rubocop:enable Style/RescueModifier
 
   def get_hostname(env)
     "#{env['SERVER_NAME']}:#{env['SERVER_PORT']}"
