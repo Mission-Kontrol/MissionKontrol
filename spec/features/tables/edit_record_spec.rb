@@ -23,7 +23,8 @@ feature 'Editing records with sufficient permissions', js: true do
     all("input[name$='[transaction_id]']")[1].set(4)
     all("input[name$='[user_id]']")[1].set(6)
     click_button 'Save'
-    expect(page).to have_content('Record(s) has been successfully updated.')
+    expect(find("tr:first-child > td:nth-child(3)").text).to eq '5'
+    expect(find("tr:first-child > td:nth-child(4)").text).to eq '7'
   end
 end
 

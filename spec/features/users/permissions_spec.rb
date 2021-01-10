@@ -34,6 +34,7 @@ feature 'Setting permissions', js: true do
     find('.tooltipster-tooltip[data-role="User"]').click
     find('a.permissions-enable-all[data-role="User"]').click
     expect(page.first('.tooltipster-tooltip[data-role="Admin"]')['src']).to have_content '/assets/images/icons/circle-with-check-symbol.png'
+    sleep 2
     expect(page.first('.tooltipster-tooltip[data-role="User"]')['src']).to have_content '/assets/images/icons/circle-with-check-symbol.png'
   end
 end

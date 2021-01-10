@@ -9,8 +9,13 @@ class CatchErrorFromRack
 
   # rubocop:disable Style/RescueModifier
   def call(env)
-    status, headers, body = @app.call(env)
-    [status, headers, body]
+    if ActiveRecord::Base.connection.active?
+      status, headers, body = @app.call(env)
+      [status, headers, body]
+    else
+      ActiveRecord::Base.connection_pool.disconnect! if connection_pool
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+    end
   rescue ActiveRecord::ConnectionNotEstablished
     connection_pool = nil
 

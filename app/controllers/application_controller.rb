@@ -9,11 +9,11 @@ class ApplicationController < ActionController::Base
   before_action :set_cache_headers, :load_available_databases, :load_task_queues, :load_databases_with_task_queues
   protect_from_forgery with: :exception
 
+  rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
+
   around_action :handle_internal_db_errors
 
   # around_action :handle_external_db_errors
-
-  rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
 
   # rescue_from PG::UndefinedTable, ActiveRecord::ConnectionNotEstablished, with: :handle_internal_db_error
 
@@ -46,8 +46,9 @@ class ApplicationController < ActionController::Base
   def handle_internal_db_errors
     begin
       yield
-    rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
-      # binding.pry
+    rescue OpenSSL::SSL::SSLError
+      handle_openssl_error
+    rescue
       if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
@@ -142,7 +143,7 @@ class ApplicationController < ActionController::Base
     begin
       database_ids = TaskQueue.enabled&.map(&:database_id)&.uniq
       @databases_with_task_queues = Database.where(id: database_ids)
-    rescue ActiveRecord::StatementInvalid, PG::UndefinedTable, PG::ConnectionBad
+    rescue
       if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)

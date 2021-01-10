@@ -10,7 +10,7 @@ feature 'Adding records with sufficient permissions', js: true do
     fill_in 'record[transaction_id]', with: 5
     fill_in 'record[user_id]', with: 7
     click_button 'Save'
-    expect(page).to have_content('Record has been successfully created.')
+    expect(find("tr:last-child > td:nth-child(3)").text).to eq '5'
   end
 end
 
