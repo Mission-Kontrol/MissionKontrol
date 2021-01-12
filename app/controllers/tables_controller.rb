@@ -267,7 +267,7 @@ class TablesController < ApplicationController
   def set_nested_table
     begin
       @current_table_settings = TargetTableSetting.find_by(name: @current_table, database_id: @database.id)
-      nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
+      nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings&.nested_table
 
       @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []
     rescue ActiveRecord::StatementInvalid
@@ -280,13 +280,21 @@ class TablesController < ApplicationController
   end
 
   def nested_column_names(nested_table_state)
-    nested_column_names = []
+    begin
+      nested_column_names = []
 
-    nested_table_state.visible_columns.each do |value|
-      nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
+      nested_table_state.visible_columns.each do |value|
+        nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
+      end
+    rescue ActiveRecord::StatementInvalid
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+        retry if ActiveRecord::Base.connection.active?
+      end
     end
-    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+    # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
     nested_column_names.compact
   end
