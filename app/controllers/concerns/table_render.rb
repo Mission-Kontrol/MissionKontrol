@@ -33,7 +33,13 @@ module TableRender
       columns << { data: c }
     end
 
-    data = sql_result.nil? ? {} : sql_result.to_hash.sort_by { |k| k['id'] }
+    data = if sql_result.nil?
+             {}
+           elsif order_column && order_dir
+             sql_result.to_hash
+           else
+             sql_result.to_hash.sort_by { |k| k['id'] }
+           end
 
     render json: {
       data: data,
