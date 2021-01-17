@@ -19,9 +19,6 @@ module Kuwinda
       def find(table, id)
         sql = "select * from #{table} where id=#{id};"
         retries = 0
-        # result = conn.exec_query(sql)
-        # ActiveRecord::Base.connection_pool.disconnect!
-        # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         if id.is_a? String
           sql = "select * from #{table} where id='#{id}';"
         else
@@ -108,33 +105,6 @@ module Kuwinda
         result
       end
 
-      # def create_record(table, record_params)
-      #   last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
-      #   last_id = conn.exec_query(last_id_sql).rows.first.first
-
-      #   fields = '(id, '
-      #   values = "(#{last_id + 1}, "
-      #   field_types = %i[datetime inet integer string boolean time]
-
-      #   record_params.each do |field, value|
-      #     column = table_columns(table).select { |table_column| table_column.name == field }.first
-      #     fields += "#{field}, "
-
-      #     if field_types.include?(column.type) && value.empty?
-      #       values += column.default ? (column.default + ', ') : 'NULL, '
-      #     else
-      #       values += "'#{value}', "
-      #     end
-      #   end
-      #   fields += 'created_at, updated_at)'
-
-      #   values += "'#{DateTime.now.utc.to_s(:db)}', '#{DateTime.now.utc.to_s(:db)}')"
-      #   sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
-      #   result = conn.exec_query(sql)
-      #   ActiveRecord::Base.connection_pool.disconnect!
-      #   ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
-      #   result
-      # end
       def create_record(table, record_params)
         last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
         last_id_response = conn.exec_query(last_id_sql)
@@ -167,7 +137,6 @@ module Kuwinda
           values = values[0..size - 3] + ')'
         end
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
-        # binding.pry
         result = execute_query(sql)
         ActiveRecord::Base.connection_pool.disconnect!
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])

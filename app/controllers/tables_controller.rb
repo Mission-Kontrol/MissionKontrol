@@ -200,10 +200,6 @@ class TablesController < ApplicationController
 
   def tables_with_view_permission(database_id, tables)
     tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
-    # Rails.cache.fetch("permissions/#{current_admin_user.id}_#{database_id}_viewable_tables", expires_in: 10.days) do
-    #   binding.pry
-    #   tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
-    # end
   end
 
   def set_databases
@@ -293,8 +289,6 @@ class TablesController < ApplicationController
         retry if ActiveRecord::Base.connection.active?
       end
     end
-    # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
 
     nested_column_names.compact
   end

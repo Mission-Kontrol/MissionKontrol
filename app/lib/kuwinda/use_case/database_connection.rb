@@ -9,8 +9,6 @@ module Kuwinda
       end
 
       def execute
-        # binding.pry
-        # gateway.connect
         gateway
       end
 

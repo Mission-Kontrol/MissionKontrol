@@ -19,7 +19,6 @@
 #     destination = find('#layout-builder-draggable-main-container3')
 #     source.drag_to destination
 #     sleep 15
-#     binding.pry
 #   end
 
 #   scenario 'from view container into field list' do

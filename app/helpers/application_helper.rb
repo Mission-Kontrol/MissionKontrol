@@ -20,22 +20,13 @@ module ApplicationHelper
     request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
 
-  # def current_organisation
-  #   @current_organisation ||= OrganisationSetting.last
-  # end
   def get_available_tables(database)
-    # binding.pry
     database_connection = Kuwinda::UseCase::DatabaseConnection.new(database).execute
     Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
-    # available_tables(database)
   end
 
   def tables_with_view_permission(database)
     get_available_tables(database).select { |table| current_admin_user.permission?(:view, table, database.id) }
-    # Rails.cache.fetch("permissions/#{current_admin_user.id}_#{database_id}_viewable_tables", expires_in: 10.days) do
-    #   binding.pry
-    #   tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
-    # end
   end
 
   def current_database_view_id

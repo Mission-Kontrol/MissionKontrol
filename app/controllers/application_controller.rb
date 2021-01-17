@@ -13,18 +13,10 @@ class ApplicationController < ActionController::Base
 
   around_action :handle_internal_db_errors
 
-  # around_action :handle_external_db_errors
-
-  # rescue_from PG::UndefinedTable, ActiveRecord::ConnectionNotEstablished, with: :handle_internal_db_error
-
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
-              # PG::ConnectionBad,
-              # Mysql2::Error,
               ActiveSupport::MessageVerifier::InvalidSignature,
               SocketError, :with => :handle_invalid_client_db_error
-
-  # rescue_from ActiveRecord::ConnectionNotEstablished, with: :reconnect_to_database
 
   def check_license
     redirect_to license_path unless license_valid? || Rails.env.development?
@@ -33,13 +25,6 @@ class ApplicationController < ActionController::Base
   def referred_from_demo?
     request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
-
-  # def current_organisation
-  #   binding.pry
-  #   # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-  #   # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first) unless ActiveRecord::Base.connected?
-  #   @current_organisation ||= OrganisationSetting.last
-  # end
 
   protected
 
@@ -59,16 +44,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def handle_external_db_errors
-    # begin
-    #   yield
-    # rescue PG::ConnectionBad, Mysql2::Error, InvalidClientDatabaseError, ActiveRecord::NoDatabaseError
-      
-    # end
-  end
-
   def handle_internal_db_error
-    # binding.pry
     if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
       ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
       ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
@@ -79,11 +55,6 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_invalid_client_db_error
-    # p '-----------------------------------try to reconnect-------------------------------------'
-    # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
-    # return if ActiveRecord::Base.connection.active?
-    # p '-----------------------------------tried to reconnect-------------------------------------'
     if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
       ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
       ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
@@ -92,13 +63,11 @@ class ApplicationController < ActionController::Base
     @task_queues = []
     current_organisation = OrganisationSetting.last
 
-    render_view = if request.path == edit_organisation_setting_path(current_organisation)
-                    render 'organisation_settings/edit'
-                  else
-                    # ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-                    # ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
-                    redirect_to '/database_connection_error', format: 'js'
-                  end
+    if request.path == edit_organisation_setting_path(current_organisation)
+      render 'organisation_settings/edit'
+    else
+      redirect_to '/database_connection_error', format: 'js'
+    end
   end
 
   def reconnect_to_database
@@ -125,10 +94,6 @@ class ApplicationController < ActionController::Base
     new_admin_user_session_path
   end
 
-  # def list_table_fields_with_type(table)
-  #   Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
-  # end
-
   private
 
   def load_available_databases
@@ -150,12 +115,6 @@ class ApplicationController < ActionController::Base
         retry if ActiveRecord::Base.connection.active?
       end
     end
-  end
-
-  def check_target_db_connection
-    # Kuwinda::UseCase::DatabaseConnection.new.execute unless ClientRecord.connection.active?
-
-    # raise InvalidClientDatabaseError.new unless ClientRecord.connection.active?
   end
 
   def set_cache_headers
