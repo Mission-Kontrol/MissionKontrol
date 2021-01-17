@@ -85,9 +85,6 @@ class TaskQueuesController < ApplicationController
 
   def outcome
     task_queue = TaskQueue.find(outcome_params['task_queue_id'])
-    @database = Database.find(task_queue.database_id)
-    @database_connection = database_connection
-    @target_db = target_db
     outcome_success = outcome_params['outcome'] == 'success'
 
     item_timeout = outcome_success ? task_queue.success_outcome_timeout : task_queue.failure_outcome_timeout
@@ -95,6 +92,9 @@ class TaskQueuesController < ApplicationController
 
     outcome = create_outcome(outcome_params, item_timeout)
 
+    @database = Database.find(task_queue.database_id)
+    @database_connection = database_connection
+    @target_db = target_db
     complete_outcome_actions(task_queue, outcome_params)
 
     render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: item_title }

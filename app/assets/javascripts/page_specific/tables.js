@@ -389,7 +389,7 @@ function applyOutcomeRule () {
       table,
       primary_key: primaryKey,
       task_queue_id: taskQueueId
-  };
+    };
 
     $.ajax({
       url,

@@ -54,7 +54,11 @@ module Kuwinda
       end
 
       def find_all_related(table, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
-        query("select * from #{table} where #{foreign_key_title}=#{foreign_key_value}", limit, offset)
+        if foreign_key_value.is_a? Integer
+          query("select * from #{table} where #{foreign_key_title}=#{foreign_key_value}", limit, offset)
+        else
+          query("select * from #{table} where #{foreign_key_title}='#{foreign_key_value}'", limit, offset)
+        end
       end
 
       # rubocop:disable Style/GuardClause, Lint/UselessAssignment
@@ -218,7 +222,13 @@ module Kuwinda
       end
 
       def count_related(table, foreign_key_title, foreign_key_value)
-        sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
+        foreign_key_value = search_value_integer(foreign_key_value)
+
+        if foreign_key_value.is_a? Integer
+          sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}=#{foreign_key_value};"
+        else
+          sql = "SELECT COUNT(*) FROM #{table} WHERE #{foreign_key_title}='#{foreign_key_value}';"
+        end
         result = execute_query(sql)
 
         result
