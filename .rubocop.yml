@@ -16,6 +16,10 @@ Documentation:
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature']
 
+Metrics/ClassLength:
+  Exclude:
+    - 'app/lib/kuwinda/repository/target_db.rb'
+
 Metrics/ModuleLength:
   Max: 200
   Exclude:

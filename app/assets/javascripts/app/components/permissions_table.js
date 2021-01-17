@@ -356,11 +356,11 @@ function togglePermissionAccordians () {
         img.attr({ "src": "/assets/images/icons/minus-thick.png" });
         panel.style.display = "block";
 
-        if (!$(panel.nextElementSibling).hasClass('task-queues')) {
+        if (!$(panel.nextElementSibling).hasClass("task-queues")) {
           var table = $(panel).find(".data-table-permissions");
 
           fetchDataForPermissionsTable(table);
-        };
+        }
       }
     });
   }

@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # rubocop:disable Style/RescueStandardError
   def handle_internal_db_errors
     begin
       yield
@@ -43,6 +44,7 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+  # rubocop:enable Style/RescueStandardError
 
   def handle_internal_db_error
     if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
@@ -104,6 +106,7 @@ class ApplicationController < ActionController::Base
     @task_queues = TaskQueue.all
   end
 
+  # rubocop:disable Style/RescueStandardError
   def load_databases_with_task_queues
     begin
       database_ids = TaskQueue.enabled&.map(&:database_id)&.uniq
@@ -116,6 +119,7 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+  # rubocop:enable Style/RescueStandardError
 
   def set_cache_headers
     if request.xhr?
