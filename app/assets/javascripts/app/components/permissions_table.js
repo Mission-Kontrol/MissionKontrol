@@ -355,9 +355,12 @@ function togglePermissionAccordians () {
       } else {
         img.attr({ "src": "/assets/images/icons/minus-thick.png" });
         panel.style.display = "block";
-        var table = $(panel).find(".data-table-permissions");
 
-        fetchDataForPermissionsTable(table);
+        if (!$(panel.nextElementSibling).hasClass("task-queues")) {
+          var table = $(panel).find(".data-table-permissions");
+
+          fetchDataForPermissionsTable(table);
+        }
       }
     });
   }

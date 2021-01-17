@@ -106,13 +106,29 @@ module DatabaseActions
       columns = target_db.table_columns(table)
 
       if target_table_settings_names.include? table
-        target_table_settings.find_by(name: table).update_editable_fields(columns)
-        next
+        begin
+          target_table_settings.find_by(name: table).update_editable_fields(columns)
+          next
+        rescue ActiveRecord::StatementInvalid, PG::UndefinedTable
+          if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+            ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+            ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+            retry if ActiveRecord::Base.connection.active?
+          end
+        end
       end
 
-      new_target_table_setting = TargetTableSetting.create!(name: table, database_id: @database.id)
-      new_target_table_setting.create_editable_fields(columns)
-      new_target_table_setting.save!
+      begin
+        new_target_table_setting = TargetTableSetting.create!(name: table, database_id: @database.id)
+        new_target_table_setting.create_editable_fields(columns)
+        new_target_table_setting.save!
+      rescue ActiveRecord::StatementInvalid, PG::UndefinedTable
+        if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+          ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+          retry if ActiveRecord::Base.connection.active?
+        end
+      end
     end
   end
 

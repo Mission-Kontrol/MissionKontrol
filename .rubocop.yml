@@ -16,19 +16,15 @@ Documentation:
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature']
 
+Metrics/ClassLength:
+  Exclude:
+    - 'app/lib/kuwinda/repository/target_db.rb'
+
 Metrics/ModuleLength:
   Max: 200
   Exclude:
     - 'spec/unit/lib/kuwinda/repository/target_db_spec.rb'
 
-Layout/IndentFirstArrayElement:
+Layout/FirstArrayElementIndentation:
   Exclude:
     - 'db/seeds.rb'
-
-Style/RescueModifier:
-  Exclude:
-    - 'lib/kuwinda/repository/target_db.rb'
-
-Lint/LiteralAsCondition:
-  Exclude:
-    - 'lib/kuwinda/repository/target_db.rb'

@@ -20,7 +20,18 @@ module ApplicationHelper
     request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
 
-  def current_organisation
-    @current_organisation ||= OrganisationSetting.last
+  def get_available_tables(database)
+    database_connection = Kuwinda::UseCase::DatabaseConnection.new(database).execute
+    Kuwinda::Presenter::ListAvailableTables.new(database_connection).call
+  end
+
+  def tables_with_view_permission(database)
+    get_available_tables(database).select { |table| current_admin_user.permission?(:view, table, database.id) }
+  end
+
+  def current_database_view_id
+    if (active_controller?('tables') && active_action?('show')) == "active"
+      request.original_fullpath.split("/")&.last.split("?").first&.to_i
+    end
   end
 end

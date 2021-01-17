@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 
-gem 'rails', '5.2.4.2'
+gem 'rails', github: 'rails/rails'
 
 gem 'bcrypt'
 gem 'bootstrap-sass', '>= 3.4.1'
@@ -21,11 +21,11 @@ gem 'rails-ujs', '~> 0.1.0'
 gem 'recursive-open-struct', '1.1.0'
 gem 'rolify'
 gem 'sass-rails', '~> 5.0.7'
-gem 'therubyracer', '~> 0.12.3'
+# gem 'therubyracer', '~> 0.12.3'
 gem 'turbolinks', '~> 5.1.0'
 gem 'uglifier', '~> 4.2.0'
 gem 'pg', '~> 1.2'
-gem 'mysql2', '~> 0.4.10'
+gem 'mysql2', '~> 0.5'
 gem 'clockwork', '~> 2.0'
 gem 'twilio-ruby', '~> 5.33.1'
 

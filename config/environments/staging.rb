@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "./lib/catch_error_from_rack"
+
 Rails.application.configure do
   # Settings specified here will take precedence over config/application.rb.
 
@@ -101,4 +103,6 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.middleware.insert_before 0, CatchErrorFromRack
 end

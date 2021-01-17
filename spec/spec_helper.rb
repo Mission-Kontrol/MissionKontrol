@@ -5,9 +5,9 @@ SimpleCov.start
 
 require 'webmock/rspec'
 require 'vcr'
-require 'codacy-coverage'
+# require 'codacy-coverage'
 
-Codacy::Reporter.start
+# Codacy::Reporter.start
 WebMock.disable_net_connect!(allow_localhost: true)
 
 VCR.configure do |config|
@@ -34,4 +34,6 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  config.before(:suite) { Rails.cache.fetch('license-license_key', expires_in: 24.hours) { 'license-license_key' } }
 end

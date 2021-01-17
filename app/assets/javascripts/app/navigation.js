@@ -163,7 +163,7 @@ function loadAvailableDatabaseSettingsNav () {
 $(document).ready(function() {
   loadAvailableDatabases();
   loadAvailableDatabaseSettings();
-  loadAvailableTables();
+  // loadAvailableTables();
   loadDatabasesNav();
   loadAvailableDatabaseSettingsNav();
 });

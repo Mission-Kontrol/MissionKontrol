@@ -31,3 +31,6 @@ config/sensitive_data/*
 coverage/
 
 node_modules/
+
+custom_plan.rb
+zeus.json

@@ -2,6 +2,8 @@
 
 class ApplicationController < ActionController::Base
   include License
+  include DatabasePresenterActions
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   before_action :set_cache_headers, :load_available_databases, :load_task_queues, :load_databases_with_task_queues
@@ -9,12 +11,11 @@ class ApplicationController < ActionController::Base
 
   rescue_from OpenSSL::SSL::SSLError, with: :handle_openssl_error
 
+  around_action :handle_internal_db_errors
+
   rescue_from InvalidClientDatabaseError,
               ActiveRecord::NoDatabaseError,
-              PG::ConnectionBad,
-              Mysql2::Error,
               ActiveSupport::MessageVerifier::InvalidSignature,
-              ActiveRecord::ConnectionNotEstablished,
               SocketError, :with => :handle_invalid_client_db_error
 
   def check_license
@@ -25,24 +26,59 @@ class ApplicationController < ActionController::Base
     request.host_with_port == 'demo.kuwinda.io' && Rails.env.production?
   end
 
-  def current_organisation
-    @current_organisation ||= OrganisationSetting.last
-  end
-
   protected
 
+  # rubocop:disable Style/RescueStandardError
+  def handle_internal_db_errors
+    begin
+      yield
+    rescue OpenSSL::SSL::SSLError
+      handle_openssl_error
+    rescue
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+        yield if ActiveRecord::Base.connection.active?
+      else
+        redirect_to '/database_connection_error', format: 'js'
+      end
+    end
+  end
+  # rubocop:enable Style/RescueStandardError
+
+  def handle_internal_db_error
+    if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+      return if ActiveRecord::Base.connection.active?
+    else
+      redirect_to '/database_connection_error', format: 'js'
+    end
+  end
+
   def handle_invalid_client_db_error
+    if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+      ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+    end
     @available_tables = []
     @task_queues = []
+    current_organisation = OrganisationSetting.last
 
-    render_view = if request.path == edit_organisation_setting_path(current_organisation)
-                    render 'organisation_settings/edit'
-                  else
-                    redirect_to '/database_connection_error', format: 'js'
-                  end
+    if request.path == edit_organisation_setting_path(current_organisation)
+      render 'organisation_settings/edit'
+    else
+      redirect_to '/database_connection_error', format: 'js'
+    end
+  end
+
+  def reconnect_to_database
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
   end
 
   def handle_openssl_error
+    current_organisation = OrganisationSetting.last
     license_key = current_organisation.license_key
 
     unless license_key.blank?
@@ -60,10 +96,6 @@ class ApplicationController < ActionController::Base
     new_admin_user_session_path
   end
 
-  # def list_table_fields_with_type(table)
-  #   Kuwinda::Presenter::ListTableFieldsWithType.new(ClientRecord, table).call
-  # end
-
   private
 
   def load_available_databases
@@ -74,16 +106,20 @@ class ApplicationController < ActionController::Base
     @task_queues = TaskQueue.all
   end
 
+  # rubocop:disable Style/RescueStandardError
   def load_databases_with_task_queues
-    database_ids = TaskQueue.enabled.map(&:database_id).uniq
-    @databases_with_task_queues = Database.where(id: database_ids)
+    begin
+      database_ids = TaskQueue.enabled&.map(&:database_id)&.uniq
+      @databases_with_task_queues = Database.where(id: database_ids)
+    rescue
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+        retry if ActiveRecord::Base.connection.active?
+      end
+    end
   end
-
-  def check_target_db_connection
-    # Kuwinda::UseCase::DatabaseConnection.new.execute unless ClientRecord.connection.active?
-
-    # raise InvalidClientDatabaseError.new unless ClientRecord.connection.active?
-  end
+  # rubocop:enable Style/RescueStandardError
 
   def set_cache_headers
     if request.xhr?

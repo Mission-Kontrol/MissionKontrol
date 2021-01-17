@@ -35,6 +35,11 @@ describe DashboardController, :type => :controller do
       before do
         create_user
         sign_in @user
+        Rails.cache.fetch(license_key, expires_in: 24.hours) { license_key }
+      end
+
+      after do
+        Rails.cache.delete(license_key)
       end
 
       context 'when client database connection is invalid' do

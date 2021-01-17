@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-sm-12">
       <% @databases.each do |database| %>
-        <button class="accordion"><%= database.friendly_name %><span class="float-right"><img src="/assets/images/icons/plus-thick.png"></span></button>
+        <button class="accordion task-queues"><%= database.friendly_name %><span class="float-right"><img src="/assets/images/icons/plus-thick.png"></span></button>
         <div class="panel">
           <div class="col-sm-2 pull-right margin-top-nav">
             <%= link_to('Add new', new_task_queue_path(database_id: database.id), html_options = { class: "btn btn-purple" }) %>

@@ -14,11 +14,13 @@ class TablesController < ApplicationController
   before_action :set_current_table,
                 :check_license
 
-  before_action :target_db, except: :index
-  before_action :set_main_table, only: :show
-  before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings update_table_field]
+  before_action :set_database, :set_databases
   before_action :check_user_permissions, only: %i[show]
+  before_action :set_main_table, only: :show
   before_action :set_activities, only: :preview
+
+  before_action :target_db, except: :index
+  before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings update_table_field]
 
   def index
     set_database
@@ -197,9 +199,11 @@ class TablesController < ApplicationController
   end
 
   def tables_with_view_permission(database_id, tables)
-    Rails.cache.fetch("permissions/#{current_admin_user.id}_#{database_id}_viewable_tables", expires_in: 10.days) do
-      tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
-    end
+    tables.select { |table| current_admin_user.permission?(:view, table, database_id) }
+  end
+
+  def set_databases
+    @databases = Database.all.sort
   end
 
   def target_db
@@ -207,6 +211,12 @@ class TablesController < ApplicationController
   end
 
   def set_database
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+    @database = Database.find(database_params)
+  rescue ActiveRecord::ConnectionNotEstablished
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+
     @database = Database.find(database_params)
   end
 
@@ -215,7 +225,7 @@ class TablesController < ApplicationController
   end
 
   def database_connection
-    set_database
+    # set_database
     @database_connection = Kuwinda::UseCase::DatabaseConnection.new(@database).execute
   end
 
@@ -251,17 +261,33 @@ class TablesController < ApplicationController
   end
 
   def set_nested_table
-    @current_table_settings = TargetTableSetting.find_by(name: @current_table, database_id: @database.id)
-    nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings.nested_table
+    begin
+      @current_table_settings = TargetTableSetting.find_by(name: @current_table, database_id: @database.id)
+      nested_table_state = DataTableState.find_by(table: @current_table_settings.nested_table) if @current_table_settings&.nested_table
 
-    @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []
+      @nested_column_names = nested_table_state ? nested_column_names(nested_table_state) : []
+    rescue ActiveRecord::StatementInvalid
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+        retry if ActiveRecord::Base.connection.active?
+      end
+    end
   end
 
   def nested_column_names(nested_table_state)
-    nested_column_names = []
+    begin
+      nested_column_names = []
 
-    nested_table_state.visible_columns.each do |value|
-      nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
+      nested_table_state.visible_columns.each do |value|
+        nested_column_names << @target_db.table_columns(@current_table_settings.nested_table)[value.to_i].try(:name)
+      end
+    rescue ActiveRecord::StatementInvalid
+      if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
+        ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+        retry if ActiveRecord::Base.connection.active?
+      end
     end
 
     nested_column_names.compact

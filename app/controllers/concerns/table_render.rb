@@ -9,10 +9,12 @@ module TableRender
   def render_show_html(table)
     sql_result = @target_db.all(table, 10, 0)
     @headers = sql_result ? sql_result.columns.unshift('') : []
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+
     render :show
   end
 
-  # rubocop:disable Metrics/MethodLength
   def render_show_js
     offset = params['start']
     limit = params['length']
@@ -31,7 +33,13 @@ module TableRender
       columns << { data: c }
     end
 
-    data = sql_result.nil? ? {} : sql_result.to_hash.sort_by { |k| k['id'] }
+    data = if sql_result.nil?
+             {}
+           elsif order_column && order_dir
+             sql_result.to_hash
+           else
+             sql_result.to_hash.sort_by { |k| k['id'] }
+           end
 
     render json: {
       data: data,
@@ -41,7 +49,6 @@ module TableRender
       recordsFiltered: @target_db.count(@table).rows[0][0]
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
   def render_preview_html
     # @target_db.table = @current_table
@@ -53,7 +60,6 @@ module TableRender
     set_relatable_tables
   end
 
-  # rubocop:disable Metrics/MethodLength
   def render_preview_js
     offset = params['start']
     limit = params['length']
@@ -82,5 +88,4 @@ module TableRender
       recordsFiltered: @target_db.count_related(table, foreign_key_title, foreign_key_value).rows[0][0]
     }
   end
-  # rubocop:enable Metrics/MethodLength
 end

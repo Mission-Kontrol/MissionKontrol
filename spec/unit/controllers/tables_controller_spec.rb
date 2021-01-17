@@ -41,6 +41,8 @@ describe TablesController, :type => :controller do
       context 'when client database connection is invalid' do
         it 'renders the bad connection template' do
           sign_in @user
+          get :show, params: { id: @database.id, table_name: 'users', table: 'users'}
+
           allow(controller).to receive(:show).and_raise(InvalidClientDatabaseError.new)
 
           get :show, params: { id: @database.id, table_name: 'users', table: 'users'}
@@ -54,6 +56,7 @@ describe TablesController, :type => :controller do
           sign_in @user
 
           get :show, params: { id: @database.id, table_name: 'users', table: 'users'}
+          # get :show, params: { id: @database.id, table_name: 'users', table: 'users'}
 
           expect(response).to render_template('show')
         end

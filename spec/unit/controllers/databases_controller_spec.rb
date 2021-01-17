@@ -99,7 +99,7 @@ describe DatabasesController, type: :controller, js: true do
       it 'saves the editable fields on the target table settings' do
         subject
 
-        expect(TargetTableSetting.find_by(name: 'attending_events').editable_fields).to eq expected_editable_fields
+        expect(TargetTableSetting.where(name: "attending_events").first.editable_fields).to eq expected_editable_fields
       end
 
       it 'renders the create template' do
