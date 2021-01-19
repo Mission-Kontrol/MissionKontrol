@@ -340,13 +340,14 @@ function activityItem (data) {
   "</tr>";
 }
 
-function submitActivityForm (data) {
+function submitActivityForm (data, databaseId) {
   let formData = {
     feedable_type: data.outcome.task_queue_item_table,
     feedable_id: parseInt(data.outcome.task_queue_item_primary_key),
     kind: "outcome",
     user_id: data.user_id,
-    content: data.outcome_content
+    content: data.outcome_content,
+    database_id: databaseId
   };
 
   $.ajax({
@@ -382,6 +383,7 @@ function applyOutcomeRule () {
     let primaryKey = location.pathname.substr(1).split("/")[2].split("?")[0];
     let outcome = $(this).data("outcome");
     let taskQueueId = $(this).data("task-queue-id");
+    let databaseId = location.search.split("database_id=")[1].split("&")[0];
     let url = "/task_queues/" + taskQueueId + "/outcome";
 
     let data = {
@@ -401,7 +403,7 @@ function applyOutcomeRule () {
                 window.toastr.error("Something went wrong, please try again.");
              },
       success (data) {
-        submitActivityForm(data);
+        submitActivityForm(data, databaseId);
         $(".task-queue--outcome-button-success").addClass("hide");
         $(".task-queue--outcome-button-failure").addClass("hide");
         window.toastr.success("Task queue outcome updated.");

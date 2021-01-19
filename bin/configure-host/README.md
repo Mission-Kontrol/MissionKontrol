@@ -1,6 +1,6 @@
 # Configure Host
 
-The Bash script that automate and simplify Kuwinda server configuration.
+The Bash script that automates and simplifies MissionKontrol server configuration.
 
 
 ## Script Options
