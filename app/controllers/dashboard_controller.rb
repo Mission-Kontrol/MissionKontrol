@@ -3,8 +3,8 @@
 class DashboardController < ApplicationController
   before_action :authenticate_admin_user!, except: %i[license verify_license]
   before_action :load_admin_db_config,
-                :load_task_queues,
-                :check_license, only: [:show]
+                :load_task_queues
+                # :check_license, only: [:show]
   before_action :set_databases
 
   layout 'license', only: %i[license verify_license]
@@ -18,7 +18,9 @@ class DashboardController < ApplicationController
   end
 
   def license
-    redirect_to dashboard_path if license_valid?
+    # Temporarily removing licensing
+    # redirect_to dashboard_path if license_valid?
+    redirect_to dashboard_path
   end
 
   def verify_license

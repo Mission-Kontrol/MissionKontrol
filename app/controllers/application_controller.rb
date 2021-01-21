@@ -19,7 +19,8 @@ class ApplicationController < ActionController::Base
               SocketError, :with => :handle_invalid_client_db_error
 
   def check_license
-    redirect_to license_path unless license_valid? || Rails.env.development?
+    # Temporarily removing licensing
+    # redirect_to license_path unless license_valid? || Rails.env.development?
   end
 
   def referred_from_demo?

@@ -18,7 +18,7 @@ describe DashboardController, :type => :controller do
     end
 
     context 'when admin does not have a license' do
-      it 'redirects to the license route' do
+      xit 'redirects to the license route' do
         sign_in admin_user
 
         VCR.use_cassette('license_key/validation_failure', :record => :new_episodes) do
@@ -78,7 +78,7 @@ describe DashboardController, :type => :controller do
     end
   end
 
-  describe 'POST verify_license' do
+  xdescribe 'POST verify_license' do
     subject { post :verify_license, params: { license_key: license_key } }
     context 'when license key is valid' do
       let(:license_key) { '2222222' }

@@ -60,11 +60,9 @@ class AdminUserRegistrationsController < Devise::RegistrationsController
   private
 
   def check_admin_user_exists
-    redirect_path = if OrganisationSetting.any? && AdminUser.any?
-                      new_admin_user_session_path
-                    elsif OrganisationSetting.none?
-                      license_path
-                    end
+    redirect_path = OrganisationSetting.any? && AdminUser.any? ? new_admin_user_session_path : nil
+
+    OrganisationSetting.create! if OrganisationSetting.none?
 
     redirect_to redirect_path if redirect_path.present?
   end

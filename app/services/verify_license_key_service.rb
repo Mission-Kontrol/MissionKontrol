@@ -20,14 +20,6 @@ class VerifyLicenseKeyService
 
     private
 
-    def call(endpoint)
-      base_url = 'https://www.missionkontrol.io/wp-json/lmfwc/v2/licenses'
-      query = {
-        consumer_key: 'ck_f7ee148e0937dc5c183e14703f5afc36da2080e7',
-        consumer_secret: 'cs_1cb993c7f8c0e53cb3ad4cf83eb8af79e340436b'
-      }
-
-      HTTParty.get(base_url + endpoint, query: query)
-    end
+    def call(endpoint); end
   end
 end

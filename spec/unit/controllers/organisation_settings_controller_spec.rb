@@ -76,7 +76,7 @@ describe OrganisationSettingsController, type: :controller, js: true do
         }
       end
 
-      it 'assigns @invalid_key' do
+      xit 'assigns @invalid_key' do
         VCR.use_cassette('license_key/valid_exceeded_activation') do
           subject
 
@@ -84,7 +84,7 @@ describe OrganisationSettingsController, type: :controller, js: true do
         end
       end
 
-      it 'does not update the organisation' do
+      xit 'does not update the organisation' do
         VCR.use_cassette('license_key/valid_exceeded_activation') do
           subject
 

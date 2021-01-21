@@ -6,14 +6,19 @@ feature 'Installation' do
     allow(OrganisationSetting).to receive(:any?).and_return(false)
   end
 
-  scenario 'without a license key' do
+  scenario 'takes you to new user registration page' do
+    visit root_path
+    expect(page).to have_current_path(new_admin_user_registration_path)
+  end
+
+  xscenario 'without a license key' do
     visit root_path
     expect(page).to have_current_path(license_path)
     expect(page).to have_content('You’ll need a license key to get set-up')
   end
 end
 
-feature 'Entering License Key' do
+xfeature 'Entering License Key' do
   background do
     allow(AdminUser).to receive(:any?).and_return(false)
   end
@@ -28,7 +33,7 @@ feature 'Entering License Key' do
   end
 end
 
-feature 'Creating an Admin User' do
+xfeature 'Creating an Admin User' do
   background do
     create(:organisation_setting, license_key: '22222222')
     create(:role)
