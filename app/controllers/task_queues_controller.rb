@@ -97,6 +97,9 @@ class TaskQueuesController < ApplicationController
     @target_db = target_db
     complete_outcome_actions(task_queue, outcome_params)
 
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+
     render json: { outcome: outcome, user_id: current_admin_user.id, outcome_content: item_title }
   end
 
