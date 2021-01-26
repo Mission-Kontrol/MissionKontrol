@@ -12,6 +12,9 @@ The separate missionkontrol relay rails gem improves write/update/delete validat
 - Automated task queues
 - RBAC permissions system
 
+## Product documentation
+Full documentation can be found here: https://www.missionkontrol.io
+
 ## Quickstart
 
 In order to get your development environment up and running, simply follow these steps.
