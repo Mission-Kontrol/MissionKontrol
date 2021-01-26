@@ -44,6 +44,8 @@ class TablesController < ApplicationController
   end
 
   def preview
+    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
     @task_queue = TaskQueue.find(params[:task_queue_id]) if params[:task_queue_id]
     if @task_queue
       existing_outcomes = @task_queue.task_queue_outcomes.select do |outcome|
