@@ -1,4 +1,16 @@
 # MissionKontrol
+MissionKontrol is an admin panel that allows users to CRUD data in one or more databases. The app has its own database that is used to store configuration and comments. Databases that you connect to are updated directly. 
+
+The separate missionkontrol relay rails gem improves write/update/delete validations. We are looking at adding the ability to update via webhook/API.
+
+![crud table](https://www.missionkontrol.io/wp-content/uploads/2021/01/tables.png)
+
+
+## Key features
+- CRUD tables w/serverside search
+- Drag & Drop views
+- Automated task queues
+- RBAC permissions system
 
 ## Quickstart
 
@@ -16,7 +28,7 @@ In order to get your development environment up and running, simply follow these
 Below is a guide to common development tasks you'll probably need whilst working on this application.
 
 Before running any of these commands, you need to make sure Docker is running with the following:
-
+ 
 ```sh
 make start
 ```
