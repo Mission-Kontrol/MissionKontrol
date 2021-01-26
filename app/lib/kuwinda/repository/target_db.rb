@@ -367,9 +367,9 @@ module Kuwinda
 
       def execute_query(sql)
         begin
-          result = conn.exec_query(sql)
+          result = @conn.exec_query(sql)
         rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
-          conn = database.connect.connection
+          conn = @database.connect.connection
           result = conn.exec_query(sql)
         ensure
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool

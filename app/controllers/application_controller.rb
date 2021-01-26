@@ -35,13 +35,20 @@ class ApplicationController < ActionController::Base
       yield
     rescue OpenSSL::SSL::SSLError
       handle_openssl_error
-    rescue
+    rescue ActiveRecord::ConnectionNotEstablished
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+      yield if ActiveRecord::Base.connection.active?
+    rescue => e
+      if e.message == "ActiveRecord::ConnectionNotEstablished"
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+        yield if ActiveRecord::Base.connection.active?
+      end
       if Rails.configuration.database_configuration[Rails.env]["database"] != ActiveRecord::Base.connection_db_config.configuration_hash[:database]
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         yield if ActiveRecord::Base.connection.active?
       else
-        redirect_to '/database_connection_error', format: 'js'
+        redirect_to('/database_connection_error', format: 'js') and return
       end
     end
   end
