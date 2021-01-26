@@ -26,13 +26,11 @@ module Kuwinda
         end
 
         result = execute_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result.nil? ? result : result.first
       rescue ActiveRecord::StatementInvalid => e
         if (retries += 1) <= 2
           sql = "select * from #{table} where id='#{id}';"
-          result = conn.exec_query(sql)
+          result = @conn.exec_query(sql)
           ActiveRecord::Base.connection_pool.disconnect!
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
           result.nil? ? result : result.first
@@ -70,8 +68,6 @@ module Kuwinda
         end
         retries = 0
         result = execute_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       rescue ActiveRecord::StatementInvalid => e
         if (retries += 1) <= 2
@@ -83,8 +79,6 @@ module Kuwinda
             sql = "UPDATE #{table} SET #{field} = '#{value}' WHERE id='#{id}';"
           end
           result = execute_query(sql)
-          ActiveRecord::Base.connection_pool.disconnect!
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
           result
         else
           raise UnableToSaveRecordError.new(e.message)
@@ -107,7 +101,7 @@ module Kuwinda
 
       def create_record(table, record_params)
         last_id_sql = "SELECT id FROM #{table} ORDER BY id DESC LIMIT 1;"
-        last_id_response = conn.exec_query(last_id_sql)
+        last_id_response = @conn.exec_query(last_id_sql)
         last_id = last_id_response.rows.first.nil? ? 0 : last_id_response.rows.first.first
 
         raise UnableToSaveRecordError.new('Sorry, Id field is not an integer so we cannot add a new record') unless last_id.is_a? Integer
@@ -138,8 +132,6 @@ module Kuwinda
         end
         sql = "INSERT INTO #{table} #{fields} VALUES #{values}"
         result = execute_query(sql)
-        ActiveRecord::Base.connection_pool.disconnect!
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env.to_sym])
         result
       rescue ActiveRecord::StatementInvalid
         raise ActiveRecord::StatementInvalid
@@ -156,10 +148,10 @@ module Kuwinda
 
         sql = "DELETE FROM #{table} WHERE id IN (#{records});"
         begin
-          result = conn.exec_delete(sql)
-        rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
-          conn = database.connect.connection
-          result = conn.exec_delete(sql)
+          result = @conn.exec_delete(sql)
+        rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
+          @conn = database.connect.connection
+          result = @conn.exec_delete(sql)
         ensure
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
@@ -205,13 +197,10 @@ module Kuwinda
 
       def table_columns(table)
         begin
-          result = conn.columns(table)
-        rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
-          conn = database.connect.connection
-          result = conn.columns(table)
-        ensure
-          ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-          ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+          result = @conn.columns(table)
+        rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
+          @conn = database.connect.connection
+          result = @conn.columns(table)
         end
         result
       end
@@ -284,8 +273,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
-        conn = database.connect.connection
-        table_columns = conn.columns(table)
+        table_columns = table_columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -302,8 +290,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
-        conn = database.connect.connection
-        table_columns = conn.columns(table)
+        table_columns = table_columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -320,8 +307,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_search(table, value, search_value, limit = 10, offset = nil, order_column = nil, order_dir = nil)
-        conn = database.connect.connection
-        table_columns = conn.columns(table)
+        table_columns = table_columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -338,8 +324,7 @@ module Kuwinda
 
       # rubocop:disable Metrics/ParameterLists
       def non_postgres_related_search(table, value, search_value, foreign_key_title, foreign_key_value, limit = 10, offset = nil)
-        conn = database.connect.connection
-        table_columns = conn.columns(table)
+        table_columns = table_columns(table)
         column = table_columns.select { |c| c.name == value['data'] }.first
 
         return if column.sql_type_metadata.type != :string && column.sql_type_metadata.type != :text && column.sql_type_metadata.type != :integer
@@ -368,9 +353,9 @@ module Kuwinda
       def execute_query(sql)
         begin
           result = @conn.exec_query(sql)
-        rescue ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
-          conn = @database.connect.connection
-          result = conn.exec_query(sql)
+        rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::StatementInvalid, PG::ConnectionBad, Mysql2::Error
+          @conn = @database.connect.connection
+          result = @conn.exec_query(sql)
         ensure
           ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
           ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)

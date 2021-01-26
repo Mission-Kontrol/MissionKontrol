@@ -47,8 +47,6 @@ class ApplicationController < ActionController::Base
         ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
         yield if ActiveRecord::Base.connection.active?
-      else
-        redirect_to('/database_connection_error', format: 'js') and return
       end
     end
   end
