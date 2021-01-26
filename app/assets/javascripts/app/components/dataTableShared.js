@@ -8,7 +8,7 @@ function stateLoadCallbackFunction(object, callback) {
             callback(json);
         },
         error(){
-            toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
+            // toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
         }
     });
 }
@@ -24,7 +24,7 @@ function stateSaveCallbackFunction(settings, data, object) {
         type: "POST",
         success(){},
         error(){
-            toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
+            // toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
         }
     });
 }

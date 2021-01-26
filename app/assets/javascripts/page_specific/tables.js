@@ -210,11 +210,21 @@ function fetchDataForTable() {
     dataType: "json",
     url: "/" + (location.pathname+location.search).substr(1),
     cache: false,
+    tryCount: 0,
+    retryLimit: 2,
     success(d) {
       loadDataTable(d.columns);
     },
-    error(){
-      toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
+    error(e){
+      if (e.statusText == "Internal Server Error") {
+        this.tryCount++;
+        if (this.tryCount <= this.retryLimit) {
+          $.ajax(this);
+          return;
+        }
+      } else {
+        toastr.error("Something went wrong. Please reload the page or speak to an Administrator");
+      }
     }
   });
 }
