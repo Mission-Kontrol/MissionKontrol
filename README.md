@@ -1,7 +1,7 @@
 # MissionKontrol
 MissionKontrol is an admin panel that allows users to CRUD data in one or more databases. The app has its own database that is used to store configuration and comments. Databases that you connect to are updated directly. 
 
-The separate missionkontrol relay rails gem improves write/update/delete validations. We are looking at adding the ability to update via webhook/API.
+The separate [missionkontrol relay rails gem](https://github.com/Mission-Kontrol/MissionKontrol-rails) improves write/update/delete validations. We are looking at adding the ability to update via webhook/API.
 
 ![crud table](https://www.missionkontrol.io/wp-content/uploads/2021/01/tables.png)
 
