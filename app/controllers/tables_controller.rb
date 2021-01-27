@@ -19,7 +19,7 @@ class TablesController < ApplicationController
   before_action :set_main_table, only: :show
   before_action :set_activities, only: :preview
 
-  before_action :target_db, except: :index
+  before_action :target_db, except: %i[index update_settings]
   before_action :set_nested_table, except: %i[add_record create_record index delete_record update_settings update_table_field]
 
   def index
@@ -44,8 +44,7 @@ class TablesController < ApplicationController
   end
 
   def preview
-    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+    set_database
     @task_queue = TaskQueue.find(params[:task_queue_id]) if params[:task_queue_id]
     if @task_queue
       existing_outcomes = @task_queue.task_queue_outcomes.select do |outcome|
@@ -95,6 +94,7 @@ class TablesController < ApplicationController
   end
 
   def settings
+    set_database
     set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
     @related_tables = relatable_tables(@table)
@@ -120,6 +120,7 @@ class TablesController < ApplicationController
   end
 
   def edit_record
+    set_database
     set_main_table
     @table_settings = TargetTableSetting.find_by(name: @table, database_id: @database.id)
     editable_columns_for_form
@@ -155,6 +156,7 @@ class TablesController < ApplicationController
   end
 
   def update_record
+    set_database
     not_authorized = !current_admin_user.permission?(:edit, @current_table, @database.id)
     raise NotAuthorizedError.new if not_authorized
 
@@ -184,6 +186,7 @@ class TablesController < ApplicationController
   end
 
   def delete_record
+    set_database
     not_authorized = !current_admin_user.permission?(:delete, @current_table, @database.id)
     raise NotAuthorizedError.new if not_authorized
 
@@ -213,8 +216,7 @@ class TablesController < ApplicationController
   end
 
   def set_database
-    ActiveRecord::Base.connection_pool.disconnect! if ActiveRecord::Base.connection_pool
-    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
+    reconnect_to_database
     @database = Database.find(database_params)
   rescue ActiveRecord::ConnectionNotEstablished
     ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations.configs_for(env_name: Rails.env).first)
