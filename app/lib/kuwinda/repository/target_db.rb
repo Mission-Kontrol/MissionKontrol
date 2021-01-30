@@ -40,6 +40,20 @@ module Kuwinda
       end
       # rubocop:enable Style/GuardClause, Lint/UselessAssignment
 
+      def find_by_primary_keys(table, primary_keys, primary_ids)
+        ids = primary_ids.split("+")
+        sql = "select * from #{table} where "
+        primary_keys.each_with_index do |primary_key, index|
+          if index.zero?
+            sql += "#{primary_key}='#{ids[index]}'"
+          else
+            sql += " and #{primary_key}='#{ids[index]}'"
+          end
+        end
+        result = execute_query(sql)
+        result.nil? ? result : result.first
+      end
+
       def find_related(table, foreign_key_title, foreign_key_value)
         sql = "select * from #{table} where #{foreign_key_title}=#{foreign_key_value};"
 
@@ -226,6 +240,14 @@ module Kuwinda
         result
       end
       # rubocop:enable Metrics/ParameterLists
+
+      def primary_keys(table)
+        sql = "SHOW KEYS FROM #{table} WHERE key_name = 'PRIMARY'"
+        result = execute_query(sql)
+        primary_keys = []
+        result.rows.each { |row| primary_keys << row[4] }
+        primary_keys
+      end
 
       private
 

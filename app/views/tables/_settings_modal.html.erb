@@ -43,6 +43,18 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-sm-8">
+              <h4>Primay key(s)</h4>
+              <p>Set the primary key(s) for the table. If there are mulitple keys, seperate them by a space (i.e. "customer_id category_id")</p>
+            </div>
+            <div class="col-sm-4">
+              <div class="table--settings-primary-keys">
+                <%= text_field_tag "primary_keys", @table_settings.primary_keys["primary_keys"], class: "form-control m-b" %>
+              </div>
+            </div>
+          </div>
+
 
           <div class="row">
             <div class="col-sm-12">

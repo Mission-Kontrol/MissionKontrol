@@ -84,6 +84,14 @@
     }
   }
 
+  .user--password-invalid {
+    color: $info-red;
+  }
+
+  .user--password-valid {
+    color: $boring-green;
+  }
+
   .user--delete-btn,
   .user--save-btn {
     float: right;

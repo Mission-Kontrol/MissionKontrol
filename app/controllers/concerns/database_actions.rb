@@ -43,6 +43,7 @@ module DatabaseActions
   def create_or_update_related_attributes
     create_or_update_available_permissions
     create_or_update_target_table_settings
+    update_primary_keys
   end
 
   def test_database_connection
@@ -107,6 +108,7 @@ module DatabaseActions
 
       if target_table_settings_names.include? table
         begin
+          reconnect_to_database
           target_table_settings.find_by(name: table).update_editable_fields(columns)
           next
         rescue ActiveRecord::StatementInvalid, PG::UndefinedTable
@@ -129,6 +131,22 @@ module DatabaseActions
           retry if ActiveRecord::Base.connection.active?
         end
       end
+    end
+  end
+
+  def update_primary_keys
+    @target_table_settings = TargetTableSetting.where(database_id: @database.id)
+    target_table_settings_names = @target_table_settings.map(&:name)
+    @target_db = target_db
+    target_table_primary_keys = {}
+    target_table_settings_names.each do |target_table|
+      primary_keys = @target_db.primary_keys(target_table)
+      target_table_primary_keys.merge!(target_table => primary_keys)
+    end
+    DatabaseConnection.reconnect_to_database
+
+    @target_table_settings.each do |target_table|
+      target_table.update_primary_keys(target_table_primary_keys[target_table&.name])
     end
   end
 

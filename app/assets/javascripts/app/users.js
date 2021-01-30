@@ -187,6 +187,13 @@ function validateForm () {
 
     var validForm = (fieldsFilled && passwordValid) || (update && fieldsFilled && passwordEmpty) || (update && fieldsFilled && !passwordEmpty && passwordValid);
 
+    if (passwordValid) {
+      $(".user--password-info").removeClass("user--password-invalid");
+      $(".user--password-info").addClass("user--password-valid");
+    } else {
+      $(".user--password-info").removeClass("user--password-valid");
+      $(".user--password-info").addClass("user--password-invalid");
+    }
     if (validForm) {
       $("input[type=submit]").prop("disabled", false);
     } else {

@@ -76,10 +76,6 @@
   tbody {
     background-color: $background-gray;
 
-    tr > td:nth-child(2) {
-      color: $purple;
-    }
-
     tr > td > .dataTables_wrapper {
       display: none;
     }
@@ -110,10 +106,6 @@
     tr {
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    tr > td:first-child {
-      color: $purple;
     }
 
     tr > td:nth-child(2) {
@@ -483,4 +475,5 @@ img.rotate {
 
 .table--clickable-cell {
   cursor: pointer;
+  color: $purple;
 }
