@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <table id="target-table-<%= @table.downcase %>" class="data-table data-table-main table" data-table-name='<%= current_table %>' data-database-name='<%= @database.friendly_name %>' data-nested-table='<%= table_settings.nested_table %>' data-can-export="<%= current_admin_user.export_abilities? %>" data-nested-table-columns="<%= @nested_column_names.to_json %>">
+    <table id="target-table-<%= @table.downcase %>" class="data-table data-table-main table" data-table-name='<%= current_table %>' data-database-name='<%= @database.friendly_name %>' data-nested-table='<%= table_settings.nested_table %>' data-can-export="<%= current_admin_user.export_abilities? %>" data-nested-table-columns="<%= @nested_column_names.to_json %>" data-primary-keys="<%= table_settings.primary_keys['primary_keys'] %>">
       <thead>
         <tr>
           <% unless @nested_column_names.empty? %>

@@ -51,9 +51,15 @@ module TableRender
   end
 
   def render_preview_html
-    # @target_db.table = @current_table
     @activity = Activity.new
-    @row = @target_db.find(@current_table, params[:record_id])
+    record_id = params[:record_id]
+    if record_id.include?("+")
+      target_table_setting = TargetTableSetting.where(database_id: @database.id, name: @current_table).first
+      primary_keys = target_table_setting.primary_keys['primary_keys']
+      @row = @target_db.find_by_primary_keys(@current_table, primary_keys, record_id)
+    else
+      @row = @target_db.find(@current_table, record_id)
+    end
     @layout_builder = ViewBuilder.where(table_name: @current_table, database_id: @database.id).last
     @fields_with_type = list_table_fields_with_type(@layout_builder.table_name) if @layout_builder
     set_activities_for_table

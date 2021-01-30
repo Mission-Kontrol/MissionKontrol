@@ -110,6 +110,14 @@ class TablesController < ApplicationController
     else
       @table_settings.update_attribute(params[:setting], params[:value])
     end
+
+    if params[:primary_keys]
+      primary_keys = params[:primary_keys].split(' ')
+      if @table_settings.primary_keys['primary_keys'] != primary_keys
+        @table_settings.update_attribute(:primary_keys, { 'primary_keys' => primary_keys })
+      end
+    end
+
     @result = @table_settings.save
   end
 

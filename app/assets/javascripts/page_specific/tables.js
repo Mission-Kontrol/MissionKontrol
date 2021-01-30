@@ -128,7 +128,24 @@ function loadDataTable (columns) {
     createdRow(row, data) {
       let table = $(this).data("table-name");
       let nestedTable = $(this).data("nested-table");
+      let primaryKeys = $(this).data("primary-keys");
       let id = data.id;
+      if (id == undefined) {
+        id = '';
+        $.each(primaryKeys, function(index, value) {
+          if (id == '') {
+            id += data[value];
+          } else {
+            id += "+"
+            id += data[value];
+          }
+        });
+        $.each(primaryKeys, function(index, value) {
+          if (data[value] == undefined) {
+            id = undefined;
+          }
+        });
+      }
       let previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
 
       if (nestedTable.length === 0) {
@@ -138,8 +155,13 @@ function loadDataTable (columns) {
       }
 
       $(row).addClass("table--nested-row");
-      $(row).addClass("table--preview-link");
-      $(row).attr("data-href",  previewUrl);
+      if (id === undefined) {
+        $($(row).children()[1]).removeClass("table--clickable-cell");
+        $($(row).children()[2]).removeClass("table--clickable-cell");
+      } else {
+        $(row).addClass("table--preview-link");
+        $(row).attr("data-href",  previewUrl);
+      }
       $(row).attr("data-nested-table", nestedTable);
       $(row).attr("data-record-id", id);
     },
@@ -271,10 +293,32 @@ function loadRelatedDataTable (columns, id, ajax) {
         ],
       createdRow(row, data, dataIndex) {
         var table = $(this).data("table-name");
+        let primaryKeys = $(this).data("primary-keys");
         var id = data.id;
+        if (id == undefined) {
+          id = '';
+          $.each(primaryKeys, function(index, value) {
+            if (id == '') {
+              id += data[value];
+            } else {
+              id += "+"
+              id += data[value];
+            }
+          });
+          $.each(primaryKeys, function(index, value) {
+            if (data[value] == undefined) {
+              id = undefined;
+            }
+          });
+        }
         var previewUrl = "/tables/" + table + "/" + id + "?table=" + table;
-        $(row).addClass("clickable-row");
-        $(row).attr("data-href",  previewUrl);
+
+        if (id != undefined) {
+          $($(row).children()[0]).addClass("table--clickable-cell");
+          $(row).addClass("table--preview-link");
+          $(row).attr("data-href",  previewUrl);
+        }
+        $(row).attr("data-record-id", id);
       },
       initComplete(settings, json) {
         initCompleteFunction(settings, json, searchableRelatedTable);
@@ -330,7 +374,13 @@ function rotateNestedTableIcon () {
 function linkToPreview () {
   $("body").on("click", ".table--clickable-cell", function () {
     let previewLocation = $(this).parent().data("href");
-    let databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
+    let searchDatabaseId = location.search.split("database_id=")[1];
+    let databaseId = '';
+    if (searchDatabaseId === undefined) {
+      databaseId = (location.pathname+location.search).substr(1).split("/")[1].split("?")[0];
+    } else {
+      databaseId = searchDatabaseId;
+    };
     let databaseParams = "&database_id=" + databaseId;
 
     window.location.href = previewLocation + databaseParams;
@@ -436,6 +486,7 @@ Paloma.controller("Tables", {
     updateEditableFieldInput();
     applyOutcomeRule();
     rotateNestedTableIcon();
+    linkToPreview();
     $(".spinner").hide();
   }
 });

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Database < ApplicationRecord
+  include DatabaseActions
   before_save :encrypt_database_password
 
   DATABASE_TYPES = [

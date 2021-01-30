@@ -2,7 +2,8 @@
   <div class="col-sm-12">
     <h4 class="bold margin-space"><%= current_table.humanize %></h4>
     <br>
-    <table id="target-table-<%= current_table.downcase %>" class="data-table data-table-main related-data-table table" data-table-name='<%= current_table %>' data-database-id='<%= @database.id %>'>
+    <% table_settings = TargetTableSetting.where(name: current_table, database_id: @database.id).first %>
+    <table id="target-table-<%= current_table.downcase %>" class="data-table data-table-main related-data-table table" data-table-name='<%= current_table %>' data-database-id='<%= @database.id %>' data-primary-keys="<%= table_settings.primary_keys['primary_keys'] %>">
       <thead>
         <tr>
           <% headers.each do |header|%>
