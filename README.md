@@ -1,4 +1,4 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/cdd60152444d4a74808154ab793ec445)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=regsapp/kuwinda&amp;utm_campaign=Badge_Grade) [![Open Source Helpers](https://www.codetriage.com/mission-kontrol/missionkontrol/badges/users.svg)](https://www.codetriage.com/mission-kontrol/missionkontrol) [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/cdd60152444d4a74808154ab793ec445)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=regsapp/kuwinda&amp;utm_campaign=Badge_Grade) [![Open Source Helpers](https://www.codetriage.com/mission-kontrol/missionkontrol/badges/users.svg)](https://www.codetriage.com/mission-kontrol/missionkontrol) [![AGPLv3 license](https://img.shields.io/badge/License-AGPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 
 
 # MissionKontrol
