@@ -12,15 +12,14 @@ The separate [missionkontrol relay rails gem](https://github.com/Mission-Kontrol
 - Automated task queues
 - RBAC permissions system
 
-## Product documentation
-Full documentation can be found here: https://www.missionkontrol.io
-
 **CRUD tables**
 ![crud table](https://www.missionkontrol.io/wp-content/uploads/2021/01/tables.png)
 
 **Permissions management**
 ![rbac_permissions](https://www.missionkontrol.io/wp-content/uploads/2021/10/rbac-permissions.png)
 
+## Product documentation
+Full documentation can be found here: https://www.missionkontrol.io
 
 ## Quickstart
 
