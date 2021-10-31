@@ -6,8 +6,11 @@ MissionKontrol is an admin panel that allows users to CRUD data in one or more d
 
 The separate [missionkontrol relay rails gem](https://github.com/Mission-Kontrol/MissionKontrol-rails) improves write/update/delete validations. We are looking at adding the ability to update via webhook/API.
 
+**CRUD tables**
 ![crud table](https://www.missionkontrol.io/wp-content/uploads/2021/01/tables.png)
 
+**Permissions management**
+![rbac_permissions](https://www.missionkontrol.io/wp-content/uploads/2021/10/rbac-permissions.png)
 
 ## Key features
 - CRUD tables w/serverside search
